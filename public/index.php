@@ -19,7 +19,7 @@ if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
 
     exit(1);
 }
-echo hapeed;
+
 /*
  *---------------------------------------------------------------
  * SET THE CURRENT DIRECTORY
