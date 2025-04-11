@@ -88,6 +88,7 @@ phpunit
 # Composer
 #-------------------------
 vendor/
+composer.lock
 
 #-------------------------
 # IDE / Development Files
@@ -127,3 +128,4 @@ nb-configuration.xml
 
 /results/
 /phpunit*.xml
+/composer.lock
