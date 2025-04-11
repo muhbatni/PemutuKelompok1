@@ -1,15 +1,15 @@
 <?php
-
 namespace App\Controllers;
 
-class Home extends BaseController
+class SurveyKepuasan extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Beranda";
+    $data["title"] = "Survey Kepuasan";
     echo view('layouts/header.php', $data);
-    echo view('layouts/tables.php');
+    echo view('survey_kepuasan/index.php');
     echo view('layouts/footer.php');
   }
 
 }
+?>
