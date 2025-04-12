@@ -28,9 +28,15 @@
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
+  <style>
+    .m-nav__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 <!-- end::Head -->
-<!-- end::Body -->
 
 <body
   class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
@@ -116,12 +122,18 @@
               </ul>
             </div>
             <!-- END: Horizontal Menu --> <!-- BEGIN: Topbar -->
-            <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
+            <div id="m_header_topbar" class="m-topbar">
               <div class="m-stack__item m-topbar__nav-wrapper">
                 <ul class="m-topbar__nav m-nav m-nav--inline">
-
+                  <li class="m-nav__item">
+                    <?php if (session()->get('isLoggedIn')): ?>
+                      <span>Welcome, <?= session()->get('username'); ?>!</>
+                      <?php else: ?>
+                        <span>You are not logged in.</span>
+                      <?php endif; ?>
+                  </li>
                   <li
-                    class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+                    class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
                     <a href="#" class="m-nav__link m-dropdown__toggle">
                       <span class="m-topbar__userpic">
@@ -141,11 +153,11 @@
                             </div>
                             <div class="m-card-user__details">
                               <span class="m-card-user__name m--font-weight-500">
-                                Username
+                                <?= session()->get('username'); ?>
                               </span>
-                              <a href="" class="m-card-user__email m--font-weight-300 m-link">
-                                Email
-                              </a>
+                              <span class="m-card-user__name m--font-weight-300 ">
+                                <?= session()->get('tipe') ?>
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -158,7 +170,7 @@
                                 </span>
                               </li>
                               <li class="m-nav__item">
-                                <a href="header/profile.html" class="m-nav__link">
+                                <a href="profile" class="m-nav__link">
                                   <i class="m-nav__link-icon flaticon-profile-1"></i>
                                   <span class="m-nav__link-title">
                                     <span class="m-nav__link-wrap">
@@ -176,8 +188,8 @@
                               </li>
                               <li class="m-nav__separator m-nav__separator--fit"></li>
                               <li class="m-nav__item">
-                                <a href="snippets/pages/user/login-1.html"
-                                  class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                <a href="auth/logout"
+                                  class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                   Logout
                                 </a>
                               </li>
@@ -261,6 +273,7 @@
       </div>
       <!-- END: Left Aside -->
       <div class="m-grid__item m-grid__item--fluid m-wrapper">
+        <?php include APPPATH . 'Views/partials/alerts.php'; ?>
         <!-- BEGIN: Subheader -->
         <div class="m-subheader ">
           <div class="d-flex align-items-center">

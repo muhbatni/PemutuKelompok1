@@ -5,7 +5,21 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('/home', 'Home::index');
-$routes->get("/survey-kepuasan", "SurveyKepuasan::index");
+
+$routes->get('registrasi', 'Registrasi::index');
+$routes->post('registrasi', 'Auth::register');
+
+$routes->get('login', 'Login::index');
+$routes->post('login', 'Auth::login');
+
+$routes->get('auth/logout', 'Auth::logout');
+
+$routes->get("survey-kepuasan", "SurveyKepuasan::index");
+
+$routes->group('', ['filter' => 'auth'], function ($routes) {
+  $routes->get('/', 'Dashboard::index');
+  $routes->get('dashboard', 'Dashboard::index');
+  // $routes->get('profile', 'Profile::index');
+  $routes->get('survey-kepuasan', 'SurveyKepuasan::index');
+});
 $routes->setAutoRoute(true);
