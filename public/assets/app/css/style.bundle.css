@@ -19879,7 +19879,7 @@ code {
   font-weight: 400;
   line-height: 1;
 }
-.m-card-user .m-card-user__details .m-card-user__email {
+.m-card-user .m-card-user__details .m-card-user__type {
   display: inline-block;
   padding: 6px 0 0 0;
   font-size: 1rem;
@@ -19902,7 +19902,7 @@ code {
   font-size: 1rem;
   line-height: 0.7;
 }
-.m-card-user.m-card-user--sm .m-card-user__details .m-card-user__email {
+.m-card-user.m-card-user--sm .m-card-user__details .m-card-user__type {
   padding: 4px 0 0 0;
   font-size: 0.8rem;
 }
@@ -19911,13 +19911,13 @@ code {
   color: #1b1c1e;
 }
 
-.m-card-user .m-card-user__details .m-card-user__email {
+.m-card-user .m-card-user__details .m-card-user__type {
   color: #7b7e8a;
 }
-.m-card-user .m-card-user__details .m-card-user__email:hover {
+.m-card-user .m-card-user__details .m-card-user__type:hover {
   color: #6f727d;
 }
-.m-card-user .m-card-user__details .m-card-user__email:hover:after {
+.m-card-user .m-card-user__details .m-card-user__type:hover:after {
   border-bottom: 1px solid #6f727d;
   opacity: 0.3;
   filter: alpha(opacity=30);
@@ -19927,13 +19927,13 @@ code {
   color: #d9dae3;
 }
 
-.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email {
+.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__type {
   color: #8284a1;
 }
-.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover {
+.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__type:hover {
   color: #9093ac;
 }
-.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover:after {
+.m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__type:hover:after {
   border-bottom: 1px solid #9093ac;
   opacity: 0.3;
   filter: alpha(opacity=30);

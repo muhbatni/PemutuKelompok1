@@ -144,19 +144,26 @@
                     <div class="m-dropdown__wrapper">
                       <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                       <div class="m-dropdown__inner">
-                        <div class="m-dropdown__header m--align-center"
-                          style="background: url(assets/app/media/img/misc/user_profile_bg.jpg); background-size: cover;">
+                        <!-- <div class="m-dropdown__header m--align-center"
+                          style="background: url(assets/app/media/img/misc/user_profile_bg.jpg); background-size: cover;"
+                          > -->
+                        <div class="m-dropdown__header m--align-center">
                           <div class="m-card-user m-card-user--skin-dark">
                             <div class="m-card-user__pic">
                               <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
                                 class="m--img-rounded m--marginless" alt="" />
                             </div>
-                            <div class="m-card-user__details">
+                            <div class="m-card-user__details m--flex m--items-end">
                               <span class="m-card-user__name m--font-weight-500">
                                 <?= session()->get('username'); ?>
                               </span>
-                              <span class="m-card-user__name m--font-weight-300 ">
-                                <?= session()->get('tipe') ?>
+                              <span class="m-card-user__email m--font-weight-300">
+                                <?= match (session()->get('tipe')) {
+                                  "1" => "Dosen",
+                                  "2" => "Laboran",
+                                  "3" => "Mahasiswa",
+                                  default => "Undefined",
+                                }; ?>
                               </span>
                             </div>
                           </div>
