@@ -1,24 +1,28 @@
 <?php
 
+use App\Controllers\Login;
+use App\Controllers\Registrasi;
 use CodeIgniter\Router\RouteCollection;
+
+use App\Controllers\Auth;
+use App\Controllers\Dashboard;
+use App\Controllers\SurveyKepuasan;
 
 /**
  * @var RouteCollection $routes
  */
 
-$routes->get('registrasi', 'Registrasi::index');
-$routes->post('registrasi', 'Auth::register');
+$routes->get('registrasi', [Registrasi::class, 'index']);
+$routes->post('registrasi', [Auth::class, 'register']);
 
-$routes->get('login', 'Login::index');
-$routes->post('login', 'Auth::login');
+$routes->get('login', [Login::class, 'index']);
+$routes->post('login', [Auth::class, 'login']);
 
-$routes->get('auth/logout', 'Auth::logout');
-
-$routes->get("survey-kepuasan", "SurveyKepuasan::index");
+$routes->get('auth/logout', [Auth::class, 'logout']);
 
 $routes->group('', ['filter' => 'auth'], function ($routes) {
-  $routes->get('/', 'Dashboard::index');
-  $routes->get('dashboard', 'Dashboard::index');
-  $routes->get('survey-kepuasan', 'SurveyKepuasan::index');
+  $routes->get('/', [Dashboard::class, 'index']);
+  $routes->get('dashboard', [Dashboard::class, 'index']);
+  $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
 });
 $routes->setAutoRoute(true);
