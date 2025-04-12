@@ -19,7 +19,6 @@ $routes->get("survey-kepuasan", "SurveyKepuasan::index");
 $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('/', 'Dashboard::index');
   $routes->get('dashboard', 'Dashboard::index');
-  // $routes->get('profile', 'Profile::index');
   $routes->get('survey-kepuasan', 'SurveyKepuasan::index');
 });
 $routes->setAutoRoute(true);
