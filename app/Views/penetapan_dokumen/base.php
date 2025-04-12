@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <title>
-    Pemutu
+    Title
   </title>
   <meta name="description" content="Latest updates and statistic charts">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,8 +24,6 @@
   <!--begin::Base Styles -->
   <link href="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>/public/assets/app/css/style.bundle.css" rel="stylesheet" type="text/css" />
-  <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
-  <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
 </head>
@@ -51,8 +49,8 @@
               </div>
               <div class="m-stack__item m-stack__item--middle m-brand__tools">
                 <!-- BEGIN: Left Aside Minimize Toggle -->
-                <a href="javascript:;" id="m_aside_left_minimize_toggle"
-                  class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block ">
+                <a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block 
+           ">
                   <span></span>
                 </a>
                 <!-- END -->
@@ -174,6 +172,39 @@
                                   </span>
                                 </a>
                               </li>
+                              <li class="m-nav__item">
+                                <a href="header/profile.html" class="m-nav__link">
+                                  <i class="m-nav__link-icon flaticon-share"></i>
+                                  <span class="m-nav__link-text">
+                                    Activity
+                                  </span>
+                                </a>
+                              </li>
+                              <li class="m-nav__item">
+                                <a href="header/profile.html" class="m-nav__link">
+                                  <i class="m-nav__link-icon flaticon-chat-1"></i>
+                                  <span class="m-nav__link-text">
+                                    Messages
+                                  </span>
+                                </a>
+                              </li>
+                              <li class="m-nav__separator m-nav__separator--fit"></li>
+                              <li class="m-nav__item">
+                                <a href="header/profile.html" class="m-nav__link">
+                                  <i class="m-nav__link-icon flaticon-info"></i>
+                                  <span class="m-nav__link-text">
+                                    FAQ
+                                  </span>
+                                </a>
+                              </li>
+                              <li class="m-nav__item">
+                                <a href="header/profile.html" class="m-nav__link">
+                                  <i class="m-nav__link-icon flaticon-lifebuoy"></i>
+                                  <span class="m-nav__link-text">
+                                    Support
+                                  </span>
+                                </a>
+                              </li>
                               <li class="m-nav__separator m-nav__separator--fit"></li>
                               <li class="m-nav__item">
                                 <a href="snippets/pages/user/login-1.html"
@@ -208,12 +239,12 @@
           data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
             <li class="m-menu__item  m-menu__item--active" aria-haspopup="true">
-              <a href="survey-kepuasan" class="m-menu__link ">
+              <a href="index.html" class="m-menu__link ">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-title">
                   <span class="m-menu__link-wrap">
                     <span class="m-menu__link-text">
-                      Survey Kepuasan
+                      Menu Item
                     </span>
                     <span class="m-menu__link-badge">
                       <span class="m-badge m-badge--danger">
@@ -255,31 +286,6 @@
                 </ul>
               </div>
             </li>
-            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
-              <a href="#" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon flaticon-share"></i>
-                <span class="m-menu__link-text">
-                  Lembaga Akreditasi
-                </span>
-                <i class="m-menu__ver-arrow la la-angle-right"></i>
-              </a>
-              <div class="m-menu__submenu">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="penetapan-dokumen" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Penetapan Dokumen
-                      </span>
-                    </a>
-                  </li>
-
-                </ul>
-              </div>
-            </li>
           </ul>
         </div>
         <!-- END: Aside Menu -->
@@ -291,10 +297,64 @@
           <div class="d-flex align-items-center">
             <div class="mr-auto">
               <h3 class="m-subheader__title ">
-                <?= $title ?>
+                Title
               </h3>
             </div>
           </div>
         </div>
         <!-- END: Subheader -->
         <div class="m-content">
+          <!--Begin::Main Portlet-->
+          <div class="row">
+            Konten
+          </div>
+          <!--End::Main Portlet-->
+        </div>
+      </div>
+    </div>
+    <!-- end:: Body -->
+    <!-- begin::Footer -->
+    <footer class="m-grid__item		m-footer ">
+      <div class="m-container m-container--fluid m-container--full-height m-page__container">
+        <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
+          <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
+            <span class="m-footer__copyright">
+              2025 &copy; Web by
+              <a href="#" class="m-link">
+                Pemrograman Web
+              </a>
+            </span>
+          </div>
+          <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
+            <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
+              <li class="m-nav__item">
+                <a href="#" class="m-nav__link">
+                  <span class="m-nav__link-text">
+                    Footer Menu
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- end::Footer -->
+  </div>
+  <!-- end:: Page -->
+
+  <!-- begin::Scroll Top -->
+  <div class="m-scroll-top m-scroll-top--skin-top" data-toggle="m-scroll-top" data-scroll-offset="500"
+    data-scroll-speed="300">
+    <i class="la la-arrow-up"></i>
+  </div>
+  <!-- end::Scroll Top -->
+
+  <!--begin::Base Scripts -->
+  <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+  <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
+  <!--end::Base Scripts -->
+</body>
+<!-- end::Body -->
+
+</html>
