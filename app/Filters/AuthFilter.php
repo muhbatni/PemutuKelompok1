@@ -10,9 +10,7 @@ class AuthFilter implements FilterInterface
 {
   public function before(RequestInterface $request, $arguments = null)
   {
-    // Check if the user is logged in
     if (!session()->get('isLoggedIn')) {
-      // Redirect to the login page if not authenticated
       return redirect()->to(base_url('public/login'))->with('error', 'Kamu harus login terlebih dahulu.');
     }
   }
