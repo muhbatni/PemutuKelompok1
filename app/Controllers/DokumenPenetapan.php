@@ -1,13 +1,13 @@
 <?php
 namespace App\Controllers;
 
-class PenetapanDokumen extends BaseController
+class DokumenPenetapan extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Penetapan Dokumen";
+    $data["title"] = "Dokumen Penetapan";
     echo view('layouts/header.php', $data);
-    echo view('penetapan_dokumen/index.php');
+    echo view('dokumen_penetapan/index.php');
     echo view('layouts/footer.php');
   }
 
