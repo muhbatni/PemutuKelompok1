@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class UserModel extends Model
 {
-  protected $table = 'm_user'; // Name of the database table
-  protected $primaryKey = 'id'; // Primary key of the table
+  protected $table = 'm_user';
+  protected $primaryKey = 'id';
 
   // Fields that are allowed to be inserted or updated
   protected $allowedFields = ['username', 'password', 'tipe'];
@@ -16,7 +16,7 @@ class UserModel extends Model
   protected $validationRules = [
     'username' => 'required|min_length[5]|max_length[50]|is_unique[m_user.username]',
     'password' => 'required|min_length[8]',
-    'tipe' => 'required|in_list[1,2,3]', // Assuming 'tipe' can be 'admin' or 'user'
+    'tipe' => 'required|in_list[1,2,3]',
   ];
 
   protected $validationMessages = [
