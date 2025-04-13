@@ -1,13 +1,13 @@
 <?php
 namespace App\Controllers;
 
-class Dashboard extends BaseController
+class Akreditasi extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Dashboard";
+    $data["title"] = "Akreditasi";
     echo view('layouts/header.php', $data);
-    echo view('dashboard/form.php');
+    echo view('akreditasi/form.php');
     echo view('layouts/footer.php');
   }
 

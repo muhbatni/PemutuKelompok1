@@ -267,7 +267,7 @@
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                  <a href="dokumen-penetapan" class="m-menu__link ">
+                  <a href="kriteria-akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -275,7 +275,7 @@
                         Kriteria Akreditasi
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="syarat-unggul" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -283,7 +283,7 @@
                         Syarat Unggul
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="instrumen-pemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -296,10 +296,10 @@
                         <span></span>
                       </i>
                       <span class="m-menu__link-text">
-                        Penetapan Dokumen
+                        Dokumen Penetapan
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -307,7 +307,7 @@
                         Akreditasi
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="periode" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -315,7 +315,7 @@
                         Periode
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="input-datapemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
