@@ -54,21 +54,38 @@
                 </div>
                 <form class="m-login__form m-form" action="registrasi" method="post">
                   <div class="form-group m-form__group">
-                    <input class="form-control m-input" type="text" placeholder="Username" name="username">
+                    <input class="form-control m-input" type="text" placeholder="Username" name="username"
+                      value="<?= isset($old['username']) ? esc($old['username']) : '' ?>" autocomplete="off">
+                    <?php if (isset($errors['username'])): ?>
+                      <small class="text-danger"><?= esc($errors['username']) ?></small>
+                    <?php endif; ?>
                   </div>
                   <div class="form-group m-form__group">
-                    <input class="form-control m-input" type="password" placeholder="Password" name="password">
+                    <input class="form-control m-input" type="password" placeholder="Password" name="password"
+                      value="<?= isset($old['password']) ? esc($old['password']) : '' ?>">
+                    <?php if (isset($errors['password'])): ?>
+                      <small class="text-danger"><?= esc($errors['password']) ?></small>
+                    <?php endif; ?>
                   </div>
                   <div class="form-group m-form__group">
                     <input class="form-control m-input m-login__form-input--last" type="password"
-                      placeholder="Konfirmasi Password" autocomplete="off">
+                      placeholder="Konfirmasi Password" name="konfirmasi_password"
+                      value="<?= isset($old['konfirmasi_password']) ? esc($old['konfirmasi_password']) : '' ?>">
+                    <?php if (isset($errors['konfirmasi_password'])): ?>
+                      <small class="text-danger"><?= esc($errors['konfirmasi_password']) ?></small>
+                    <?php endif; ?>
                   </div>
                   <select class="form-control m-input" name="tipe">
                     <option value="">Pilih Tipe Akun</option>
-                    <option value="1">Dosen</option>
-                    <option value="2">Laboran</option>
-                    <option value="3">Peserta/Mahasiswa</option>
+                    <option value="1" <?= isset($old['tipe']) && $old['tipe'] == '1' ? 'selected' : '' ?>>Dosen</option>
+                    <option value="2" <?= isset($old['tipe']) && $old['tipe'] == '2' ? 'selected' : '' ?>>Laboran
+                    </option>
+                    <option value="3" <?= isset($old['tipe']) && $old['tipe'] == '3' ? 'selected' : '' ?>>
+                      Peserta/Mahasiswa</option>
                   </select>
+                  <?php if (isset($errors['tipe'])): ?>
+                    <small class="text-danger"><?= esc($errors['tipe']) ?></small>
+                  <?php endif; ?>
                   <div class="row form-group m-form__group m-login__form-sub">
                     <div class="col m--align-left">
                       <label class="m-checkbox m-checkbox--focus">
