@@ -2,41 +2,51 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel; // Ensure you have a UserModel for database interaction
+use App\Models\UserModel;
 
 class Auth extends BaseController
 {
+
   public function register()
   {
+    $validation = service('validation');
     $userModel = new UserModel();
     $data = [
       'username' => $this->request->getPost('username'),
       'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-      'tipe' => $this->request->getPost('tipe'),
+      'tipe' => $this->request->getPost('tipe')
     ];
-
-    if ($userModel->insert($data)) {
-      return redirect()->to(base_url('public/login'))->with('success', 'Registrasi berhasil!');
-    } else {
-      return redirect()->to(base_url('public/registrasi'))->with('error', 'Registrasi gagal, silahkan coba lagi!');
+    if (!$validation->run($this->request->getPost(), "signup")) {
+      return view(
+        'registrasi/index',
+        [
+          'errors' => $validation->getErrors(),
+          'old' => $this->request->getPost()
+        ]
+      );
     }
+    if ($userModel->insert($data)) {
+      return redirect()->to(base_url('public/login'))->with('success', 'Registrasi berhasil, silahkan login!');
+    }
+    return redirect()->to(base_url('public/registrasi'))->with('error', 'Registrasi gagal, silahkan coba lagi!');
   }
 
   public function login()
   {
     $userModel = new UserModel();
-    $username = $this->request->getPost('username');
-    $password = $this->request->getPost('password');
-
-    $user = $userModel->where('username', $username)->first();
+    $data = [
+      'username' => $this->request->getPost('username'),
+      'password' => $this->request->getPost('password'),
+    ];
+    $user = $userModel->where('username', $data['username'])->first();
     if (!$user) {
       return redirect()->to(base_url('public/login'))->with('error', 'Username atau password salah!');
     }
-    if (password_verify($password, $user['password'])) {
+    if (password_verify($data['password'], $user['password'])) {
       session()->set([
         'username' => $user['username'],
         'tipe' => $user['tipe'],
-        'isLoggedIn' => true,
+        'logged_in' => true,
       ]);
       return redirect()->to(base_url('public/dashboard'))->with('success', 'Login berhasil!');
     }
@@ -45,7 +55,22 @@ class Auth extends BaseController
 
   public function logout()
   {
-    session()->destroy();
+    session()->remove('username');
+    session()->remove('tipe');
+    session()->remove('logged_in');
     return redirect()->to(base_url('public/login'))->with('success', 'Logout berhasil!');
+  }
+
+  public function getDisplayName()
+  {
+    $userModel = new UserModel();
+    if (session()->get('username') == null) {
+      return null;
+    }
+    $user = $userModel->where('username', session()->get('username'))->first();
+    if ($user) {
+      return $user['nama'] ?? $user['username'];
+    }
+    return 'User not found';
   }
 }
