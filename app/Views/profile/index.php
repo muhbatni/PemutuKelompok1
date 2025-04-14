@@ -13,6 +13,9 @@
           </div>
         </div>
       </div>
+      <?php
+      $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
+      ?>
       <form class="m-form m-form--fit m-form--label-align-right" action="/pemutu/public/profile/edit" method="post"
         enctype="multipart/form-data">
         <div class="m-portlet__body">
@@ -29,8 +32,8 @@
                   <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>" class="m--img-rounded m--marginless"
                     alt="user-profile" />
                 <?php else: ?>
-                  <img id="profileImagePreview" src="<?= base_url(); ?>/public/assets/app/media/img/users/user1.jpg"
-                    class="m--img-rounded m--marginless" alt="user-profile" />
+                  <img id="profileImagePreview" src="<?= $default_avatar ?>" class="m--img-rounded m--marginless"
+                    alt="user-profile" />
                 <?php endif; ?>
                 <script>
                   document.querySelector('input[name="foto"]').addEventListener('change', function (event) {
