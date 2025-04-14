@@ -4,7 +4,7 @@
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Form Input Instrumen Pemutugit </h3>
+            <h3 class="m-portlet__head-text">Form Input Instrumen Pemutu </h3>
           </div>
         </div>
       </div>
