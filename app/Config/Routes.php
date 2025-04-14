@@ -9,6 +9,7 @@ use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
 use App\Controllers\InputAuditor;
 use App\Controllers\StandarAudit;
+use App\Controllers\PelaksanaanAudit;
 
 /**
  * @var RouteCollection $routes
