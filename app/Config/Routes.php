@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
 use App\Controllers\Auth;
 use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
+use App\Controllers\InputAuditor;
 
 /**
  * @var RouteCollection $routes
@@ -24,5 +25,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('/', [Dashboard::class, 'index']);
   $routes->get('dashboard', [Dashboard::class, 'index']);
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
+  $routes->get('/input-auditor', [InputAuditor::class, 'index']);
 });
 $routes->setAutoRoute(true);
+?>
+
