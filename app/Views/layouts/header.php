@@ -26,6 +26,7 @@
   <link href="<?= base_url(); ?>/public/assets/app/css/style.bundle.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
   <style>
@@ -38,7 +39,8 @@
 </head>
 <!-- end::Head -->
 <?php
-use App\Controllers\Auth;
+use App\Models\UserModel;
+$user = new UserModel();
 ?>
 
 <body
@@ -53,7 +55,7 @@ use App\Controllers\Auth;
           <div class="m-stack__item m-brand  m-brand--skin-dark ">
             <div class="m-stack m-stack--ver m-stack--general">
               <div class="m-stack__item m-stack__item--middle m-brand__logo">
-                <a href="index.html" class="m-brand__logo-wrapper">
+                <a href="dashboard" class="m-brand__logo-wrapper">
                   <img alt=""
                     src="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/logo_default_dark.png" />
                 </a>
@@ -129,8 +131,7 @@ use App\Controllers\Auth;
               <div class="m-stack__item m-topbar__nav-wrapper">
                 <ul class="m-topbar__nav m-nav m-nav--inline">
                   <?php
-                  $auth = new Auth();
-                  $display_name = $auth->getDisplayName() ?? 'Guest';
+                  $display_name = $user->getDisplayName() ?? 'Guest';
                   ?>
                   <li class="m-nav__item">
                     <?php if (session()->get('logged_in')): ?>
@@ -142,10 +143,15 @@ use App\Controllers\Auth;
                   <li
                     class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
-                    <a href="#" class="m-nav__link m-dropdown__toggle">
+                    <a href="profile" class="m-nav__link m-dropdown__toggle">
                       <span class="m-topbar__userpic">
-                        <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
-                          class="m--img-rounded m--marginless m--img-centered" alt="" />
+                        <?php if ($user->getAvatar()): ?>
+                          <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>"
+                            class="m--img-rounded m--marginless" alt="user-profile" />
+                        <?php else: ?>
+                          <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
+                            class="m--img-rounded m--marginless" alt="user-profile" />
+                        <?php endif; ?>
                       </span>
                     </a>
                     <div class="m-dropdown__wrapper">
@@ -156,8 +162,13 @@ use App\Controllers\Auth;
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
                               <div class="m-card-user__pic">
-                                <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
-                                  class="m--img-rounded m--marginless" alt="user-profile" />
+                                <?php if ($user->getAvatar()): ?>
+                                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>"
+                                    class="m--img-rounded m--marginless" alt="user-profile" />
+                                <?php else: ?>
+                                  <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
+                                    class="m--img-rounded m--marginless" alt="user-profile" />
+                                <?php endif; ?>
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
@@ -183,7 +194,7 @@ use App\Controllers\Auth;
                                   </span>
                                 </li>
                                 <li class="m-nav__item">
-                                  <a href="dashboard" class="m-nav__link">
+                                  <a href="profile" class="m-nav__link">
                                     <i class="m-nav__link-icon flaticon-profile-1"></i>
                                     <span class="m-nav__link-title">
                                       <span class="m-nav__link-wrap">

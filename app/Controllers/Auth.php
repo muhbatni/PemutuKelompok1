@@ -47,6 +47,7 @@ class Auth extends BaseController
         'username' => $user['username'],
         'tipe' => $user['tipe'],
         'logged_in' => true,
+        'foto' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
       ]);
       return redirect()->to(base_url('public/dashboard'))->with('success', 'Login berhasil!');
     }
@@ -58,19 +59,7 @@ class Auth extends BaseController
     session()->remove('username');
     session()->remove('tipe');
     session()->remove('logged_in');
+    session()->remove('foto');
     return redirect()->to(base_url('public/login'))->with('success', 'Logout berhasil!');
-  }
-
-  public function getDisplayName()
-  {
-    $userModel = new UserModel();
-    if (session()->get('username') == null) {
-      return null;
-    }
-    $user = $userModel->where('username', session()->get('username'))->first();
-    if ($user) {
-      return $user['nama'] ?? $user['username'];
-    }
-    return 'User not found';
   }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Login;
+use App\Controllers\Profile;
 use App\Controllers\Registrasi;
 use CodeIgniter\Router\RouteCollection;
 
@@ -23,6 +24,9 @@ $routes->get('auth/logout', [Auth::class, 'logout']);
 $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('/', [Dashboard::class, 'index']);
   $routes->get('dashboard', [Dashboard::class, 'index']);
+  $routes->get('profile', [Profile::class, 'index']);
+  $routes->post('profile/edit', [Profile::class, 'edit']);
+  // $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
 });
 $routes->setAutoRoute(true);
