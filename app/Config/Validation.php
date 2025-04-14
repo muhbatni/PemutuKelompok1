@@ -69,4 +69,19 @@ class Validation extends BaseConfig
       'in_list' => 'User type harus antara 1 (dosen), 2 (laboran), atau 3 (peserta/mahasiswa).',
     ]
   ];
+
+  public array $profile = [
+    'nama' => 'max_length[50]',
+    'foto' => 'is_image[foto]|max_size[foto,2048]|ext_in[jpg,jpeg,png]',
+  ];
+
+  public array $profile_errors = [
+    'nama' => [
+      'max_length' => 'Nama tidak bisa melebihi 50 karakter.'
+    ],
+    'foto' => [
+      'max_size' => 'Ukuran foto tidak boleh lebih dari 2MB.',
+      'ext_in' => 'Ekstensi foto harus jpg, jpeg, atau png.'
+    ]
+  ];
 }
