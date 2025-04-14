@@ -29,6 +29,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
   $routes->get('/input-auditor', [InputAuditor::class, 'index']);
   $routes->get('/standar-audit', [StandarAudit::class, 'index']);
+  $routes->get('/pelaksanaan-audit',[PelaksanaanAudit::class, 'index']);
 });
 $routes->setAutoRoute(true);
 ?>
