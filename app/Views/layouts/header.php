@@ -303,6 +303,22 @@ use App\Controllers\Auth;
 
                 </ul>
               </div>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="standar-audit" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Standar Audit
+                      </span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
