@@ -8,6 +8,7 @@ use App\Controllers\Auth;
 use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
 use App\Controllers\InputAuditor;
+use App\Controllers\StandarAudit;
 
 /**
  * @var RouteCollection $routes
@@ -26,6 +27,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('dashboard', [Dashboard::class, 'index']);
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
   $routes->get('/input-auditor', [InputAuditor::class, 'index']);
+  $routes->get('/standar-audit', [StandarAudit::class, 'index']);
 });
 $routes->setAutoRoute(true);
 ?>
