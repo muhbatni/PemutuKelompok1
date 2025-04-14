@@ -41,6 +41,7 @@
 <?php
 use App\Models\UserModel;
 $user = new UserModel();
+$default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
 ?>
 
 <body
@@ -146,11 +147,9 @@ $user = new UserModel();
                     <a href="profile" class="m-nav__link m-dropdown__toggle">
                       <span class="m-topbar__userpic">
                         <?php if ($user->getAvatar()): ?>
-                          <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>"
-                            class="m--img-rounded m--marginless" alt="user-profile" />
+                          <img src="<?= $user->getAvatar(); ?>" class="m--img-rounded m--marginless" alt="user-profile" />
                         <?php else: ?>
-                          <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
-                            class="m--img-rounded m--marginless" alt="user-profile" />
+                          <img src="<?= $default_avatar ?>" class="m--img-rounded m--marginless" alt="user-profile" />
                         <?php endif; ?>
                       </span>
                     </a>
@@ -166,8 +165,8 @@ $user = new UserModel();
                                   <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>"
                                     class="m--img-rounded m--marginless" alt="user-profile" />
                                 <?php else: ?>
-                                  <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
-                                    class="m--img-rounded m--marginless" alt="user-profile" />
+                                  <img src="<?= $default_avatar ?>" class="m--img-rounded m--marginless"
+                                    alt="user-profile" />
                                 <?php endif; ?>
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">

@@ -42,7 +42,7 @@ class UserModel extends Model
     }
     if (session()->get('foto')) {
       $encoded_image = base64_encode(session()->get('foto'));
-      return "data:image/jpeg;base64,$encoded_image";
+      return "data:image/*;base64,$encoded_image";
     }
     $user = $userModel->where('username', session()->get('username'))->first();
     if (!$user['foto']) {
@@ -51,6 +51,6 @@ class UserModel extends Model
     $image = pg_unescape_bytea($user['foto']);
     $encoded_image = base64_encode($image);
     session()->set('foto', $image);
-    return "data:image/jpeg;base64,$encoded_image";
+    return "data:image/*;base64,$encoded_image";
   }
 }
