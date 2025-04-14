@@ -24,6 +24,7 @@
   <!--begin::Base Styles -->
   <link href="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>/public/assets/app/css/style.bundle.css" rel="stylesheet" type="text/css" />
+  <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -145,13 +146,13 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                     class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
                     <a href="profile" class="m-nav__link m-dropdown__toggle">
-                      <span class="m-topbar__userpic">
+                      <div class="profile-picture-nav">
                         <?php if ($user->getAvatar()): ?>
-                          <img src="<?= $user->getAvatar(); ?>" class="m--img-rounded m--marginless" alt="user-profile" />
+                          <img src="<?= $user->getAvatar(); ?>" class="profile-picture" alt="user-profile" />
                         <?php else: ?>
-                          <img src="<?= $default_avatar ?>" class="m--img-rounded m--marginless" alt="user-profile" />
+                          <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
                         <?php endif; ?>
-                      </span>
+                      </div>
                     </a>
                     <div class="m-dropdown__wrapper">
                       <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
@@ -160,13 +161,12 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                           style="background: url(); background-size: cover;">
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
-                              <div class="m-card-user__pic">
+                              <div class="profile-picture-dropdown">
                                 <?php if ($user->getAvatar()): ?>
-                                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>"
-                                    class="m--img-rounded m--marginless" alt="user-profile" />
-                                <?php else: ?>
-                                  <img src="<?= $default_avatar ?>" class="m--img-rounded m--marginless"
+                                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>" class="profile-picture"
                                     alt="user-profile" />
+                                <?php else: ?>
+                                  <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
                                 <?php endif; ?>
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">

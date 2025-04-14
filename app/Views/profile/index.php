@@ -14,6 +14,7 @@
         </div>
       </div>
       <?php
+      $user = new App\Models\UserModel();
       $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
       ?>
       <form class="m-form m-form--fit m-form--label-align-right" action="/pemutu/public/profile/edit" method="post"
@@ -21,47 +22,45 @@
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
             <div class="m-card-user m-card-user--skin-dark w-full">
-              <div class="m-card-user__pic">
-                <?php if (isset($errors['foto'])): ?>
-                  <small class="text-danger"><?= esc($errors['foto']) ?></small>
-                <?php endif; ?>
-                <input type="file" name="foto" accept="image/jpeg, image/png" />
-                <?php
-                $user = new App\Models\UserModel();
-                if ($user->getAvatar()): ?>
-                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>" class="m--img-rounded m--marginless"
-                    alt="user-profile" />
-                <?php else: ?>
-                  <img id="profileImagePreview" src="<?= $default_avatar ?>" class="m--img-rounded m--marginless"
-                    alt="user-profile" />
-                <?php endif; ?>
-                <script>
-                  document.querySelector('input[name="foto"]').addEventListener('change', function (event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = function (e) {
-                        document.getElementById('profileImagePreview').src = e.target.result;
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  });
-                </script>
+              <div class="profile">
+                <div class="profile-picture-wrapper">
+                  <img id="profileImagePreview" src="<?= $user->getAvatar() ?: $default_avatar ?>"
+                    class="profile-picture" alt="user-profile" />
+                  <input type="file" name="foto" accept="image/jpeg, image/png" class="profile-img-input" />
+                  <i class="flaticon-edit-1"></i>
+                </div>
+                <div class="profile-details-wrapper">
+                  <?php if (isset($errors['foto'])): ?>
+                    <small class="text-danger"><?= esc($errors['foto']) ?></small>
+                  <?php endif; ?>
+                  <?php if (isset($errors['nama'])): ?>
+                    <small class="text-danger"><?= esc($errors['nama']) ?></small>
+                  <?php endif; ?>
+                  <p class="form-control-static">
+                    <?= session()->get('username'); ?>
+                  </p>
+                  <label for="exampleInputEmail1">
+                    Nama (Optional)
+                  </label>
+                  <input type="text" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    placeholder="Nama" name="nama" value="<?= esc($old['nama'] ?? $user->getDisplayName()) ?>">
+                  <span class="m-form__help">
+                    Masukkan nama untuk ditampilkan pada halaman.
+                  </span>
+                </div>
               </div>
-              <p class="form-control-static">
-                <?= session()->get('username'); ?>
-              </p>
-              <label for="exampleInputEmail1">
-                Nama (Optional)
-              </label>
-              <input type="text" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Nama" name="nama" value="<?= esc($old['nama'] ?? $user->getDisplayName()) ?>">
-              <span class="m-form__help">
-                Masukkan nama untuk ditampilkan pada halaman.
-              </span>
-              <?php if (isset($errors['nama'])): ?>
-                <small class="text-danger"><?= esc($errors['nama']) ?></small>
-              <?php endif; ?>
+              <script>
+                document.querySelector('input[name="foto"]').addEventListener('change', function (event) {
+                  const file = event.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                      document.getElementById('profileImagePreview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                });
+              </script>
             </div>
           </div>
           <div class="m-portlet__foot m-portlet__foot--fit">
