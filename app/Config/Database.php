@@ -24,27 +24,6 @@ class Database extends Config
    *
    * @var array<string, mixed>
    */
-  public array $default = [
-    'DSN' => '',
-    'hostname' => 'localhost',
-    'username' => 'postgres',
-    'password' => 'unggul',
-    'database' => 'pemutu',
-    'schema' => 'public',
-    'DBDriver' => 'Postgre',
-    'DBPrefix' => '',
-    'pConnect' => false,
-    'DBDebug' => true,
-    'charset' => 'utf8',
-    'swapPre' => '',
-    'failover' => [],
-    'port' => 5432,
-    'dateFormat' => [
-      'date' => 'Y-m-d',
-      'datetime' => 'Y-m-d H:i:s',
-      'time' => 'H:i:s',
-    ],
-  ];
 
   //    /**
   //     * Sample database connection for SQLite3.
@@ -193,6 +172,24 @@ class Database extends Config
     // we don't overwrite live data on accident.
     if (ENVIRONMENT === 'testing') {
       $this->defaultGroup = 'tests';
+    }
+    if (ENVIRONMENT === 'development') {
+      $this->default = [
+        'DSN' => '',
+        'hostname' => getenv('database.default.hostname'),
+        'username' => getenv('database.default.username'),
+        'password' => getenv('database.default.password'),
+        'database' => getenv('database.default.database'),
+        'schema' => 'public',
+        'DBDriver' => 'Postgre',
+        'DBPrefix' => '',
+        'pConnect' => false,
+        'DBDebug' => true,
+        'charset' => 'utf8',
+        'swapPre' => '',
+        'failover' => [],
+        'port' => getenv('database.default.port') ?: 5432,
+      ];
     }
   }
 }

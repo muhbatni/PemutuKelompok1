@@ -28,9 +28,18 @@
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
+  <style>
+    .m-nav__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 <!-- end::Head -->
-<!-- end::Body -->
+<?php
+use App\Controllers\Auth;
+?>
 
 <body
   class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
@@ -116,12 +125,22 @@
               </ul>
             </div>
             <!-- END: Horizontal Menu --> <!-- BEGIN: Topbar -->
-            <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
+            <div id="m_header_topbar" class="m-topbar">
               <div class="m-stack__item m-topbar__nav-wrapper">
                 <ul class="m-topbar__nav m-nav m-nav--inline">
-
+                  <?php
+                  $auth = new Auth();
+                  $display_name = $auth->getDisplayName() ?? 'Guest';
+                  ?>
+                  <li class="m-nav__item">
+                    <?php if (session()->get('logged_in')): ?>
+                      <span>Welcome, <?= esc($display_name); ?>!</>
+                      <?php else: ?>
+                        <span>You are not logged in.</span>
+                      <?php endif; ?>
+                  </li>
                   <li
-                    class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+                    class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
                     <a href="#" class="m-nav__link m-dropdown__toggle">
                       <span class="m-topbar__userpic">
@@ -133,59 +152,65 @@
                       <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                       <div class="m-dropdown__inner">
                         <div class="m-dropdown__header m--align-center"
-                          style="background: url(assets/app/media/img/misc/user_profile_bg.jpg); background-size: cover;">
-                          <div class="m-card-user m-card-user--skin-dark">
-                            <div class="m-card-user__pic">
-                              <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
-                                class="m--img-rounded m--marginless" alt="" />
-                            </div>
-                            <div class="m-card-user__details">
-                              <span class="m-card-user__name m--font-weight-500">
-                                Username
-                              </span>
-                              <a href="" class="m-card-user__email m--font-weight-300 m-link">
-                                Email
-                              </a>
+                          style="background: url(); background-size: cover;">
+                          <div class="m-dropdown__header m--align-center">
+                            <div class="m-card-user m-card-user--skin-dark">
+                              <div class="m-card-user__pic">
+                                <img src="<?= base_url(); ?>/public/assets/app/media/img/users/user4.jpg"
+                                  class="m--img-rounded m--marginless" alt="user-profile" />
+                              </div>
+                              <div class="m-card-user__details m--flex m--items-end">
+                                <span class="m-card-user__name m--font-weight-500">
+                                  <?= esc($display_name); ?>
+                                </span>
+                                <span class="m-card-user__email m--font-weight-300">
+                                  <?= match (session()->get('tipe')) {
+                                    "1" => "Dosen",
+                                    "2" => "Laboran",
+                                    "3" => "Mahasiswa",
+                                    default => "Undefined",
+                                  }; ?>
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="m-dropdown__body">
-                          <div class="m-dropdown__content">
-                            <ul class="m-nav m-nav--skin-light">
-                              <li class="m-nav__section m--hide">
-                                <span class="m-nav__section-text">
-                                  Section
-                                </span>
-                              </li>
-                              <li class="m-nav__item">
-                                <a href="header/profile.html" class="m-nav__link">
-                                  <i class="m-nav__link-icon flaticon-profile-1"></i>
-                                  <span class="m-nav__link-title">
-                                    <span class="m-nav__link-wrap">
-                                      <span class="m-nav__link-text">
-                                        My Profile
-                                      </span>
-                                      <span class="m-nav__link-badge">
-                                        <span class="m-badge m-badge--success">
+                          <div class="m-dropdown__body">
+                            <div class="m-dropdown__content">
+                              <ul class="m-nav m-nav--skin-light">
+                                <li class="m-nav__section m--hide">
+                                  <span class="m-nav__section-text">
+                                    Section
+                                  </span>
+                                </li>
+                                <li class="m-nav__item">
+                                  <a href="dashboard" class="m-nav__link">
+                                    <i class="m-nav__link-icon flaticon-profile-1"></i>
+                                    <span class="m-nav__link-title">
+                                      <span class="m-nav__link-wrap">
+                                        <span class="m-nav__link-text">
+                                          My Profile
+                                        </span>
+                                        <span class="m-nav__link-badge">
+                                          <!-- <span class="m-badge m-badge--success">
                                           2
+                                        </span> -->
                                         </span>
                                       </span>
                                     </span>
-                                  </span>
-                                </a>
-                              </li>
-                              <li class="m-nav__separator m-nav__separator--fit"></li>
-                              <li class="m-nav__item">
-                                <a href="snippets/pages/user/login-1.html"
-                                  class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-                                  Logout
-                                </a>
-                              </li>
-                            </ul>
+                                  </a>
+                                </li>
+                                <li class="m-nav__separator m-nav__separator--fit"></li>
+                                <li class="m-nav__item">
+                                  <a href="auth/logout"
+                                    class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                    Logout
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                   </li>
                 </ul>
               </div>
@@ -261,6 +286,7 @@
       </div>
       <!-- END: Left Aside -->
       <div class="m-grid__item m-grid__item--fluid m-wrapper">
+        <?php include APPPATH . 'Views/partials/alerts.php'; ?>
         <!-- BEGIN: Subheader -->
         <div class="m-subheader ">
           <div class="d-flex align-items-center">
