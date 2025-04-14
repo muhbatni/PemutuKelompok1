@@ -7,7 +7,7 @@ class DokumenPenetapan extends BaseController
   {
     $data["title"] = "Dokumen Penetapan";
     echo view('layouts/header.php', $data);
-    echo view('dokumen_penetapan/form.php');
+    echo view('dokumen-penetapan/form.php');
     echo view('layouts/footer.php');
   }
 
