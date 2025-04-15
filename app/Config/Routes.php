@@ -33,6 +33,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('profile', [Profile::class, 'index']);
   $routes->post('profile/edit', [Profile::class, 'edit']);
   // $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
+
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
   $routes->get('/input-auditor', [InputAuditor::class, 'index']);
   $routes->get('/standar-audit', [StandarAudit::class, 'index']);
@@ -43,4 +44,3 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 });
 $routes->setAutoRoute(true);
 ?>
-
