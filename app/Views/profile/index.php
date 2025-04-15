@@ -26,12 +26,13 @@
                 <div class="profile-picture-wrapper">
                   <img id="profileImagePreview" src="<?= $user->getAvatar() ?: $default_avatar ?>"
                     class="profile-picture" alt="user-profile" />
-                  <input type="file" name="foto" accept="image/jpeg, image/png" class="profile-img-input" />
+                  <input type="file" name="avatar" accept="image/jpeg, image/png" class="profile-img-input"
+                    onchange="getPreviewImage(this)" />
                   <i class="flaticon-edit-1"></i>
                 </div>
                 <div class="profile-details-wrapper">
-                  <?php if (isset($errors['foto'])): ?>
-                    <small class="text-danger"><?= esc($errors['foto']) ?></small>
+                  <?php if (isset($errors['avatar'])): ?>
+                    <small class="text-danger"><?= esc($errors['avatar']) ?></small>
                   <?php endif; ?>
                   <?php if (isset($errors['nama'])): ?>
                     <small class="text-danger"><?= esc($errors['nama']) ?></small>
@@ -49,18 +50,6 @@
                   </span>
                 </div>
               </div>
-              <script>
-                document.querySelector('input[name="foto"]').addEventListener('change', function (event) {
-                  const file = event.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                      document.getElementById('profileImagePreview').src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                });
-              </script>
             </div>
           </div>
           <div class="m-portlet__foot m-portlet__foot--fit">

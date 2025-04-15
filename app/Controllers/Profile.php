@@ -23,22 +23,22 @@ class Profile extends BaseController
     $userModel = new UserModel();
     $user = $userModel->where('username', session()->get('username'))->first();
     $data = ['nama' => $this->request->getPost('nama')];
-    $foto = $this->request->getFile('foto');
+    $foto = $this->request->getFile('avatar');
     if ($foto && $foto->isValid()) {
       $data['foto'] = pg_escape_bytea(file_get_contents($foto->getTempName()));
     }
-    // if (!$this->validate("profile")) {
-    //   echo view('layouts/header', ['title' => 'Profile']);
-    //   echo view(
-    //     'profile/index',
-    //     [
-    //       'errors' => $validation->getErrors(),
-    //       'old' => $this->request->getPost()
-    //     ]
-    //   );
-    //   echo view('layouts/footer');
-    //   return;
-    // }
+    if (!$this->validate("profile")) {
+      echo view('layouts/header', ['title' => 'Profile']);
+      echo view(
+        'profile/index',
+        [
+          'errors' => $validation->getErrors(),
+          'old' => $this->request->getPost()
+        ]
+      );
+      echo view('layouts/footer');
+      return;
+    }
     // Remove empty fields
     $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
     if (empty($data)) {

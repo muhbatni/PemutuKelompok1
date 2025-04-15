@@ -19,6 +19,20 @@
         sessionStorage.fonts = true;
       }
     });
+
+    const getPreviewImage = (event) => {
+      const file = event.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const image = document.querySelector('#profileImagePreview');
+          document.querySelector('#profileImagePreview').src = e.target.result;
+          console.log('Image element:', image);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
   </script>
   <!--end::Web font -->
   <!--begin::Base Styles -->

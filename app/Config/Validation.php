@@ -58,7 +58,7 @@ class Validation extends BaseConfig
     'password' => [
       'required' => 'Password perlu diisi.',
       'min_length' => 'Password harus terdiri dari 8 karakter atau lebih.',
-      'regex_match' => 'Password harus terdiri dari huruf dan angka, minimal 8 karakter.'
+      'regex_match' => 'Password harus terdiri dari huruf dan angka.'
     ],
     'konfirmasi_password' => [
       'required_with' => 'Password perlu diisi terlebih dahulu.',
@@ -72,14 +72,14 @@ class Validation extends BaseConfig
 
   public array $profile = [
     'nama' => 'max_length[50]',
-    'foto' => 'is_image[foto]|max_size[foto,2048]|ext_in[jpg,jpeg,png]',
+    'avatar' => 'is_image[avatar]|max_size[avatar,2048]|ext_in[avatar,jpg,jpeg,png]',
   ];
 
   public array $profile_errors = [
     'nama' => [
       'max_length' => 'Nama tidak bisa melebihi 50 karakter.'
     ],
-    'foto' => [
+    'avatar' => [
       'max_size' => 'Ukuran foto tidak boleh lebih dari 2MB.',
       'ext_in' => 'Ekstensi foto harus jpg, jpeg, atau png.'
     ]
