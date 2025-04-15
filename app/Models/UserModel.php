@@ -3,12 +3,22 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class UserModel extends Model
 {
   protected $table = 'm_user';
   protected $primaryKey = 'id';
+  protected $useAutoIncrement = false;
   protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto'];
+
+  protected $beforeInsert = ['generateUUID'];
+
+  protected function generateUUID(array $data)
+  {
+    $data['data']['id'] = Uuid::uuid4()->toString();
+    return $data;
+  }
 
   /**
    * Get the display name of a user by username.
