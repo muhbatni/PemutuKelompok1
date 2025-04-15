@@ -16,21 +16,12 @@
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right">
         <div class="m-portlet__body">
-          <div class="form-group m-form__group m--margin-top-10">
-            <div class="alert m-alert m-alert--default" role="alert">
-              The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap
-              with additional classes.
-            </div>
-          </div>
           <div class="form-group m-form__group">
-            <label for="exampleInputEmail1">
-              Email address
+            <label for="example-text-input">
+              Nama Standar
             </label>
-            <input type="email" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
-              placeholder="Enter email">
-            <span class="m-form__help">
-              We'll never share your email with anyone else.
-            </span>
+            <input class="form-control m-input" type="text" id="example-text-input"
+              placeholder="Standar 1">
           </div>
           <div class="form-group m-form__group">
             <label for="exampleInputPassword1">
