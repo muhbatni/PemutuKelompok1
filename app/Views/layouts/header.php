@@ -54,9 +54,10 @@
 </head>
 <!-- end::Head -->
 <?php
-use App\Models\UserModel;
-$user = new UserModel();
-$default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
+$user = new App\Models\UserModel();
+$displayName = $user->getDisplayName() ?? 'Guest';
+$defaultAvatar = base_url() . '/public/assets/app/media/img/users/300_14.jpg';
+$avatar = $user->getAvatar() ?? $defaultAvatar;
 ?>
 
 <body
@@ -71,7 +72,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
           <div class="m-stack__item m-brand  m-brand--skin-dark ">
             <div class="m-stack m-stack--ver m-stack--general">
               <div class="m-stack__item m-stack__item--middle m-brand__logo">
-                <a href="dashboard" class="m-brand__logo-wrapper">
+                <a href="/pemutu/public/dashboard" class="m-brand__logo-wrapper">
                   <img alt=""
                     src="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/logo_default_dark.png" />
                 </a>
@@ -146,26 +147,15 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
             <div id="m_header_topbar" class="m-topbar">
               <div class="m-stack__item m-topbar__nav-wrapper">
                 <ul class="m-topbar__nav m-nav m-nav--inline">
-                  <?php
-                  $display_name = $user->getDisplayName() ?? 'Guest';
-                  ?>
                   <li class="m-nav__item">
-                    <?php if (session()->get('user_id')): ?>
-                      <span>Welcome, <?= esc($display_name); ?>!</>
-                      <?php else: ?>
-                        <span>You are not logged in.</span>
-                      <?php endif; ?>
+                    <span>Welcome, <?= esc($displayName); ?>!</>
                   </li>
                   <li
                     class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
-                    <a href="profile" class="m-nav__link m-dropdown__toggle">
+                    <a href="/pemutu/public/profile" class="m-nav__link m-dropdown__toggle">
                       <div class="profile-picture-nav">
-                        <?php if ($user->getAvatar()): ?>
-                          <img src="<?= $user->getAvatar(); ?>" class="profile-picture" alt="user-profile" />
-                        <?php else: ?>
-                          <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
-                        <?php endif; ?>
+                        <img src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                       </div>
                     </a>
                     <div class="m-dropdown__wrapper">
@@ -176,16 +166,12 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
                               <div class="profile-picture-dropdown">
-                                <?php if ($user->getAvatar()): ?>
-                                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>" class="profile-picture"
-                                    alt="user-profile" />
-                                <?php else: ?>
-                                  <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
-                                <?php endif; ?>
+                                <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture"
+                                  alt="user-profile" />
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
-                                  <?= esc($display_name); ?>
+                                  <?= esc($displayName); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
                                   <?= match (session()->get('user_type')) {
@@ -207,7 +193,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                                   </span>
                                 </li>
                                 <li class="m-nav__item">
-                                  <a href="profile" class="m-nav__link">
+                                  <a href="/pemutu/public/profile" class="m-nav__link">
                                     <i class="m-nav__link-icon flaticon-profile-1"></i>
                                     <span class="m-nav__link-title">
                                       <span class="m-nav__link-wrap">
@@ -257,7 +243,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
           data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
             <li class="m-menu__item  m-menu__item--active" aria-haspopup="true">
-              <a href="survey-kepuasan" class="m-menu__link ">
+              <a href="/pemutu/public/survey-kepuasan" class="m-menu__link ">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-title">
                   <span class="m-menu__link-wrap">
@@ -315,7 +301,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="input-auditor" class="m-menu__link ">
+                    <a href="/pemutu/public/input-auditor" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -331,7 +317,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="standar-audit" class="m-menu__link ">
+                    <a href="/pemutu/public/standar-audit" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -341,13 +327,12 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                     </a>
                   </li>
                 </ul>
-                
               </div>
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="pelaksanaan-audit" class="m-menu__link ">
+                    <a href="/pemutu/public/pelaksanaan-audit" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -362,7 +347,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="data-dukung" class="m-menu__link ">
+                    <a href="/pemutu/public/data-dukung" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
