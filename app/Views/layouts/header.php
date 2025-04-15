@@ -323,7 +323,7 @@ use App\Controllers\Auth;
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="standar-audit" class="m-menu__link ">
+                    <a href="pelaksanaan-audit" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
