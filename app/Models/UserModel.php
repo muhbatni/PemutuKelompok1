@@ -19,10 +19,11 @@ class UserModel extends Model
   public function getDisplayName()
   {
     $userModel = new UserModel();
-    if (session()->get('username') == null) {
+    $user_id = session()->get('user_id');
+    if (!$user_id) {
       return null;
     }
-    $user = $userModel->where('username', session()->get('username'))->first();
+    $user = $userModel->where('id', $user_id)->first();
     if ($user) {
       return $user['nama'] ?? $user['username'];
     }
@@ -37,20 +38,21 @@ class UserModel extends Model
   public function getAvatar()
   {
     $userModel = new UserModel();
-    if (!session()->get('username')) {
+    $user_id = session()->get('user_id');
+    if (!$user_id) {
       return null;
     }
-    if (session()->get('foto')) {
-      $encoded_image = base64_encode(session()->get('foto'));
+    if (session()->get('user_avatar')) {
+      $encoded_image = base64_encode(session()->get('user_avatar'));
       return "data:image/*;base64,$encoded_image";
     }
-    $user = $userModel->where('username', session()->get('username'))->first();
+    $user = $userModel->where('id', $user_id)->first();
     if (!$user['foto']) {
       return null;
     }
     $image = pg_unescape_bytea($user['foto']);
     $encoded_image = base64_encode($image);
-    session()->set('foto', $image);
+    session()->set('user_avatar', $image);
     return "data:image/*;base64,$encoded_image";
   }
 }

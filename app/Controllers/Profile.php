@@ -21,7 +21,8 @@ class Profile extends BaseController
     }
     $validation = service('validation');
     $userModel = new UserModel();
-    $user = $userModel->where('username', session()->get('username'))->first();
+    $user_id = session()->get('user_id');
+    $user = $userModel->where('id', $user_id)->first();
     $data = ['nama' => $this->request->getPost('nama')];
     $foto = $this->request->getFile('avatar');
     if ($foto && $foto->isValid()) {
@@ -47,7 +48,7 @@ class Profile extends BaseController
     if ($userModel->update($user['id'], $data)) {
       if (isset($data['foto'])) {
         $image = pg_unescape_bytea($data['foto']);
-        session()->set('foto', $image);
+        session()->set('user_avatar', $image);
       }
       return redirect()->to(base_url('public/profile'))->with('success', 'Profile updated successfully!');
     }

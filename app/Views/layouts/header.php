@@ -150,7 +150,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                   $display_name = $user->getDisplayName() ?? 'Guest';
                   ?>
                   <li class="m-nav__item">
-                    <?php if (session()->get('logged_in')): ?>
+                    <?php if (session()->get('user_id')): ?>
                       <span>Welcome, <?= esc($display_name); ?>!</>
                       <?php else: ?>
                         <span>You are not logged in.</span>
@@ -188,7 +188,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                                   <?= esc($display_name); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
-                                  <?= match (session()->get('tipe')) {
+                                  <?= match (session()->get('user_type')) {
                                     "1" => "Dosen",
                                     "2" => "Laboran",
                                     "3" => "Mahasiswa",

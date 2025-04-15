@@ -38,7 +38,7 @@
                     <small class="text-danger"><?= esc($errors['nama']) ?></small>
                   <?php endif; ?>
                   <p class="form-control-static">
-                    <?= session()->get('username'); ?>
+                    <?= $user->getDisplayName(); ?>
                   </p>
                   <label for="exampleInputEmail1">
                     Nama (Optional)
