@@ -103,7 +103,7 @@
               Submit
             </button>
             <button type="reset" class="btn btn-secondary">
-              Cancel
+              Reset
             </button>
           </div>
         </div>

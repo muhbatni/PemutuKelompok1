@@ -15,9 +15,20 @@
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
-          <div class="col-xl-8 order-2 order-xl-1">
+        <div class="col-xl-4 order-1 order-xl-1 m--align-left">
+            <a href="input-pelaksanaan-audit" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+              <span>
+                <i class="flaticon-add"></i>
+                <span>
+                  Tambah Audit
+                </span>
+              </span>
+            </a>
+            <div class="m-separator m-separator--dashed d-xl-none"></div>
+          </div>
+          <div class="col-xl-8 order-2 order-xl-2">
             <div class="form-group m-form__group row align-items-center">
-              <div class="col-md-4">
+              <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
                   <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
                     id="generalSearch">
@@ -29,17 +40,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-            <a href="input-pelaksanaan-audit" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-              <span>
-                <i class="la la-cart-plus"></i>
-                <span>
-                  New Order
-                </span>
-              </span>
-            </a>
-            <div class="m-separator m-separator--dashed d-xl-none"></div>
           </div>
         </div>
       </div>
