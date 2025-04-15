@@ -32,14 +32,14 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('/', [Dashboard::class, 'index']);
   $routes->get('dashboard', [Dashboard::class, 'index']);
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
-  $routes->get('/lembaga/dashboard', [DashboardPeriode::class, 'index']);
-  $routes->get('/lembaga/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
-  $routes->get('/lembaga/kriteria-akreditasi', [KriteriaAkreditasi::class, 'index']);
-  $routes->get('/lembaga/syarat-unggul', [SyaratUnggul::class, 'index']);
-  $routes->get('/lembaga/instrumen-pemutu',  [InstrumenPemutu::class, 'index']);
-  $routes->get('/lembaga/akreditasi',  [Akreditasi::class, 'index']);
-  $routes->get('/lembaga/periode',  [Periode::class, 'index']);
-  $routes->get('/lembaga/input-datapemutu',  [InputDataPemutu::class, 'index']);
+  $routes->get('/dashboard-periode', [DashboardPeriode::class, 'index']);
+  $routes->get('/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
+  $routes->get('/kriteria-akreditasi', [KriteriaAkreditasi::class, 'index']);
+  $routes->get('/syarat-unggul', [SyaratUnggul::class, 'index']);
+  $routes->get('/instrumen-pemutu',  [InstrumenPemutu::class, 'index']);
+  $routes->get('/akreditasi',  [Akreditasi::class, 'index']);
+  $routes->get('/periode',  [Periode::class, 'index']);
+  $routes->get('/input-datapemutu',  [InputDataPemutu::class, 'index']);
 });
 
 $routes->setAutoRoute(true);

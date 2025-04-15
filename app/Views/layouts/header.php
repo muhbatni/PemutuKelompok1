@@ -292,7 +292,7 @@ use App\Controllers\Auth;
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                  <a href="lembaga/kriteria-akreditasi" class="m-menu__link ">
+                  <a href="kriteria-akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -300,7 +300,7 @@ use App\Controllers\Auth;
                         Kriteria Akreditasi
                       </span>
                     </a>
-                    <a href="lembaga/syarat-unggul" class="m-menu__link ">
+                    <a href="syarat-unggul" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -308,7 +308,7 @@ use App\Controllers\Auth;
                         Syarat Unggul
                       </span>
                     </a>
-                    <a href="lembaga/instrumen-pemutu" class="m-menu__link ">
+                    <a href="instrumen-pemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -316,7 +316,7 @@ use App\Controllers\Auth;
                         Instrumen Pemutu
                       </span>
                     </a>
-                    <a href="lembaga/dokumen-penetapan" class="m-menu__link ">
+                    <a href="dokumen-penetapan" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -324,7 +324,7 @@ use App\Controllers\Auth;
                         Dokumen Penetapan
                       </span>
                     </a>
-                    <a href="lembaga/akreditasi" class="m-menu__link ">
+                    <a href="akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -332,7 +332,7 @@ use App\Controllers\Auth;
                         Akreditasi
                       </span>
                     </a>
-                    <a href="lembaga/periode" class="m-menu__link ">
+                    <a href="periode" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -340,7 +340,7 @@ use App\Controllers\Auth;
                         Periode
                       </span>
                     </a>
-                    <a href="lembaga/input-datapemutu" class="m-menu__link ">
+                    <a href="input-datapemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -348,7 +348,7 @@ use App\Controllers\Auth;
                         Input Data Pemutu
                       </span>
                     </a>
-                    <a href="lembaga/dashboard" class="m-menu__link ">
+                    <a href="dashboard-periode" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
