@@ -8,6 +8,12 @@ use CodeIgniter\Router\RouteCollection;
 use App\Controllers\Auth;
 use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
+use App\Controllers\InputAuditor;
+use App\Controllers\StandarAudit;
+use App\Controllers\PelaksanaanAudit;
+use App\Controllers\InputStandarAudit;
+use App\Controllers\InputPelaksanaanAudit;
+use App\Controllers\DataDukung;
 
 /**
  * @var RouteCollection $routes
@@ -28,5 +34,13 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/edit', [Profile::class, 'edit']);
   // $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
   $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
+  $routes->get('/input-auditor', [InputAuditor::class, 'index']);
+  $routes->get('/standar-audit', [StandarAudit::class, 'index']);
+  $routes->get('/input-standar-audit', [InputStandarAudit::class, 'index']);
+  $routes->get('/pelaksanaan-audit', [PelaksanaanAudit::class, 'index']);
+  $routes->get('/input-pelaksanaan-audit', [InputPelaksanaanAudit::class, 'index']);
+  $routes->get('/data-dukung', [DataDukung::class, 'index']);
 });
 $routes->setAutoRoute(true);
+?>
+
