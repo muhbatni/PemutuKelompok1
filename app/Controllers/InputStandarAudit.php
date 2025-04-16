@@ -1,15 +1,15 @@
 <?php
-
 namespace App\Controllers;
 
-class Dashboard extends BaseController
+class InputStandarAudit extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Dashboard";
+    $data["title"] = "Input Standar Audit";
     echo view('layouts/header.php', $data);
-    echo view('layouts/tables.php');
+    echo view('standar_audit/form.php');
     echo view('layouts/footer.php');
+    
   }
 
 }

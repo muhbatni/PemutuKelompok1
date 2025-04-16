@@ -50,10 +50,9 @@ class Auth extends BaseController
     }
     if (password_verify($data['password'], $user['password'])) {
       session()->set([
-        'username' => $user['username'],
-        'tipe' => $user['tipe'],
-        'logged_in' => true,
-        'foto' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
+        'user_id' => $user['id'],
+        'user_type' => $user['tipe'],
+        'user_avatar' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
       ]);
       return redirect()->to(base_url('public/dashboard'))->with('success', 'Login berhasil!');
     }
@@ -62,13 +61,14 @@ class Auth extends BaseController
 
   public function logout()
   {
-    if (!session()->get('logged_in')) {
+    if (!session()->get('user_id')) {
       return redirect()->to(base_url('public/login'))->with('error', 'Anda belum login!');
     }
-    session()->remove('username');
-    session()->remove('tipe');
-    session()->remove('logged_in');
-    session()->remove('foto');
+    session()->remove('user_id');
+    session()->remove('user_type');
+    if (session()->get('user_avatar')) {
+      session()->remove('user_avatar');
+    }
     return redirect()->to(base_url('public/login'))->with('success', 'Logout berhasil!');
   }
 }

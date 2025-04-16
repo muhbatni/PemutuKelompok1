@@ -3,12 +3,29 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class UserModel extends Model
 {
   protected $table = 'm_user';
   protected $primaryKey = 'id';
+  protected $useAutoIncrement = false;
   protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto'];
+
+  protected $beforeInsert = ['generateUUID'];
+
+  /**
+   * Get the display name of a user by username.
+   *
+   * @param array $data
+   * @return array
+   */
+
+  protected function generateUUID(array $data)
+  {
+    $data['data']['id'] = Uuid::uuid4()->toString();
+    return $data;
+  }
 
   /**
    * Get the display name of a user by username.
@@ -19,10 +36,11 @@ class UserModel extends Model
   public function getDisplayName()
   {
     $userModel = new UserModel();
-    if (session()->get('username') == null) {
+    $userId = session()->get('user_id');
+    if (!$userId) {
       return null;
     }
-    $user = $userModel->where('username', session()->get('username'))->first();
+    $user = $userModel->where('id', $userId)->first();
     if ($user) {
       return $user['nama'] ?? $user['username'];
     }
@@ -37,20 +55,38 @@ class UserModel extends Model
   public function getAvatar()
   {
     $userModel = new UserModel();
-    if (!session()->get('username')) {
+    $userId = session()->get('user_id');
+    if (!$userId) {
       return null;
     }
-    if (session()->get('foto')) {
-      $encoded_image = base64_encode(session()->get('foto'));
-      return "data:image/*;base64,$encoded_image";
+    if (session()->get('user_avatar')) {
+      $image = session()->get('user_avatar');
+      $mimeType = $this->getMimeType($image);
+      $encodedImage = base64_encode($image);
+      return "data:$mimeType;base64,$encodedImage";
     }
-    $user = $userModel->where('username', session()->get('username'))->first();
+    $user = $userModel->where('id', $userId)->first();
     if (!$user['foto']) {
       return null;
     }
     $image = pg_unescape_bytea($user['foto']);
-    $encoded_image = base64_encode($image);
-    session()->set('foto', $image);
-    return "data:image/*;base64,$encoded_image";
+    $mimeType = $this->getMimeType($image);
+    $encodedImage = base64_encode($image);
+    session()->set('user_avatar', $image);
+    return "data:$mimeType;base64,$encodedImage";
   }
+  /**
+   * Determine the MIME type of an image.
+   *
+   * @param string $image
+   * @return string
+   */
+  function getMimeType($image)
+  {
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_buffer($finfo, $image);
+    finfo_close($finfo);
+    return $mimeType;
+  }
+
 }
