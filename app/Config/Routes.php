@@ -1,8 +1,15 @@
 <?php
 
+use App\Controllers\Akreditasi;
+use App\Controllers\DashboardPeriode;
+use App\Controllers\DokumenPenetapan;
+use App\Controllers\InputDataPemutu;
+use App\Controllers\InstrumenPemutu;
+use App\Controllers\KriteriaAkreditasi;
 use App\Controllers\Login;
 use App\Controllers\Profile;
 use App\Controllers\Registrasi;
+use App\Controllers\SyaratUnggul;
 use CodeIgniter\Router\RouteCollection;
 
 use App\Controllers\Auth;
@@ -43,6 +50,16 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('pelaksanaan-audit', [PelaksanaanAudit::class, 'index']);
   $routes->get('input-pelaksanaan-audit', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('data-dukung', [DataDukung::class, 'index']);
+
+  $routes->get('/dashboard-periode', [DashboardPeriode::class, 'index']);
+  $routes->get('/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
+  $routes->get('/kriteria-akreditasi', [KriteriaAkreditasi::class, 'index']);
+  $routes->get('/syarat-unggul', [SyaratUnggul::class, 'index']);
+  $routes->get('/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
+  $routes->get('/akreditasi', [Akreditasi::class, 'index']);
+  $routes->get('/periode', [Periode::class, 'index']);
+  $routes->get('/input-datapemutu', [InputDataPemutu::class, 'index']);
 });
+
 $routes->setAutoRoute(true);
 ?>

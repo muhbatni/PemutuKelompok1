@@ -359,6 +359,87 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                 </ul>
               </div>
             </li>
+            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+              <a href="#" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-share"></i>
+                <span class="m-menu__link-text">
+                  Lembaga Akreditasi
+                </span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+              </a>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                  <a href="kriteria-akreditasi" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Kriteria Akreditasi
+                      </span>
+                    </a>
+                    <a href="syarat-unggul" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Syarat Unggul
+                      </span>
+                    </a>
+                    <a href="instrumen-pemutu" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Instrumen Pemutu
+                      </span>
+                    </a>
+                    <a href="dokumen-penetapan" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Dokumen Penetapan
+                      </span>
+                    </a>
+                    <a href="akreditasi" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Akreditasi
+                      </span>
+                    </a>
+                    <a href="periode" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Periode
+                      </span>
+                    </a>
+                    <a href="input-datapemutu" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Input Data Pemutu
+                      </span>
+                    </a>
+                    <a href="dashboard-periode" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Dashboard Pemutu
+                      </span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+            </li>
           </ul>
         </div>
         <!-- END: Aside Menu -->
