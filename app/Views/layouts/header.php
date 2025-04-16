@@ -371,7 +371,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                  <a href="kriteria-akreditasi" class="m-menu__link ">
+                    <a href="/pemutu/public/kriteria-akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -379,7 +379,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Kriteria Akreditasi
                       </span>
                     </a>
-                    <a href="syarat-unggul" class="m-menu__link ">
+                    <a href="/pemutu/public/syarat-unggul" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -387,7 +387,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Syarat Unggul
                       </span>
                     </a>
-                    <a href="instrumen-pemutu" class="m-menu__link ">
+                    <a href="/pemutu/public/instrumen-pemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -395,7 +395,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Instrumen Pemutu
                       </span>
                     </a>
-                    <a href="dokumen-penetapan" class="m-menu__link ">
+                    <a href="/pemutu/public/dokumen-penetapan" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -403,7 +403,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Dokumen Penetapan
                       </span>
                     </a>
-                    <a href="akreditasi" class="m-menu__link ">
+                    <a href="/pemutu/public/akreditasi" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -411,7 +411,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Akreditasi
                       </span>
                     </a>
-                    <a href="periode" class="m-menu__link ">
+                    <a href="/pemutu/public/periode" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -419,7 +419,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Periode
                       </span>
                     </a>
-                    <a href="input-datapemutu" class="m-menu__link ">
+                    <a href="/pemutu/public/input-datapemutu" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -427,7 +427,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                         Input Data Pemutu
                       </span>
                     </a>
-                    <a href="dashboard-periode" class="m-menu__link ">
+                    <a href="/pemutu/public/dashboard-periode" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
