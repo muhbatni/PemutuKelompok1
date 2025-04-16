@@ -8,7 +8,7 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              FORM INPUT STANDAR 
+              Base Form Controls
             </h3>
           </div>
         </div>
@@ -16,17 +16,22 @@
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right">
         <div class="m-portlet__body">
-          <div class="form-group m-form__group">
-            <label for="JudulStandar">
-             Judul Standar
-            </label>
-            <input type="text" class="form-control m-input" id="JudulStandar" aria-describedby="emailHelp"
-              placeholder="Judul Standar">
-            <!-- <span class="m-form__help">
-              We'll never share your email with anyone else.
-            </span> -->
+          <div class="form-group m-form__group m--margin-top-10">
+            <div class="alert m-alert m-alert--default" role="alert">
+              Hallo
+            </div>
           </div>
-          <!-- <div class="form-group m-form__group">
+          <div class="form-group m-form__group">
+            <label for="exampleInputEmail1">
+              Email address
+            </label>
+            <input type="email" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter email">
+            <span class="m-form__help">
+              We'll never share your email with anyone else.
+            </span>
+          </div>
+          <div class="form-group m-form__group">
             <label for="exampleInputPassword1">
               Password
             </label>
@@ -39,12 +44,12 @@
             <p class="form-control-static">
               email@example.com
             </p>
-          </div> -->
+          </div>
           <div class="form-group m-form__group">
-            <label for="parent">
-             Parent
+            <label for="exampleSelect1">
+              Example select
             </label>
-            <select class="form-control m-input" id="parent">
+            <select class="form-control m-input" id="exampleSelect1">
               <option>
                 1
               </option>
@@ -62,7 +67,7 @@
               </option>
             </select>
           </div>
-          <!-- <div class="form-group m-form__group">
+          <div class="form-group m-form__group">
             <label for="exampleSelect2">
               Example multiple select
             </label>
@@ -83,13 +88,12 @@
                 5
               </option>
             </select>
-          </div> -->
+          </div>
           <div class="form-group m-form__group">
-            <label for="DeskripsiStandar">
-              Deskripsi Standar
+            <label for="exampleTextarea">
+              Example textarea
             </label>
-            
-            <textarea class="form-control m-input" id="DeskripsiStandar" rows="3" placeholder="Deskripsi Standar"></textarea>
+            <textarea class="form-control m-input" id="exampleTextarea" rows="3"></textarea>
           </div>
         </div>
         <div class="m-portlet__foot m-portlet__foot--fit">
@@ -98,7 +102,7 @@
               Submit
             </button>
             <button type="reset" class="btn btn-secondary">
-              Reset
+              Cancel
             </button>
           </div>
         </div>

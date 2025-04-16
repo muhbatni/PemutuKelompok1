@@ -42,15 +42,15 @@
           <div class="m-stack__item m-brand  m-brand--skin-dark ">
             <div class="m-stack m-stack--ver m-stack--general">
               <div class="m-stack__item m-stack__item--middle m-brand__logo">
-                <a href="index.html" class="m-brand__logo-wrapper">
+                <a href="dashboard" class="m-brand__logo-wrapper">
                   <img alt=""
                     src="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/logo_default_dark.png" />
                 </a>
               </div>
               <div class="m-stack__item m-stack__item--middle m-brand__tools">
                 <!-- BEGIN: Left Aside Minimize Toggle -->
-                <a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block 
-           ">
+                <a href="javascript:;" id="m_aside_left_minimize_toggle"
+                  class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block">
                   <span></span>
                 </a>
                 <!-- END -->
@@ -239,7 +239,7 @@
           data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
             <li class="m-menu__item  m-menu__item--active" aria-haspopup="true">
-              <a href="index.html" class="m-menu__link ">
+              <a href="dashboard" class="m-menu__link ">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-title">
                   <span class="m-menu__link-wrap">

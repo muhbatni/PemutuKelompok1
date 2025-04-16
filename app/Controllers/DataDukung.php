@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Controllers;
 
-class Dashboard extends BaseController
+class DataDukung extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Dashboard";
+    $data["title"] = "Data Dukung";
     echo view('layouts/header.php', $data);
-    echo view('layouts/tables.php');
+    echo view('data_dukung/form.php');
     echo view('layouts/footer.php');
   }
 

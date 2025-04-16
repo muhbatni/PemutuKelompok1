@@ -9,6 +9,9 @@ class Auth extends BaseController
 
   public function register()
   {
+    if ($this->request->getMethod() !== 'POST') {
+      return;
+    }
     $validation = service('validation');
     $userModel = new UserModel();
     $data = [
@@ -16,7 +19,7 @@ class Auth extends BaseController
       'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
       'tipe' => $this->request->getPost('tipe')
     ];
-    if (!$validation->run($this->request->getPost(), "signup")) {
+    if (!$this->validate('signup')) {
       return view(
         'registrasi/index',
         [
@@ -33,6 +36,9 @@ class Auth extends BaseController
 
   public function login()
   {
+    if ($this->request->getMethod() !== 'POST') {
+      return;
+    }
     $userModel = new UserModel();
     $data = [
       'username' => $this->request->getPost('username'),
@@ -44,9 +50,9 @@ class Auth extends BaseController
     }
     if (password_verify($data['password'], $user['password'])) {
       session()->set([
-        'username' => $user['username'],
-        'tipe' => $user['tipe'],
-        'logged_in' => true,
+        'user_id' => $user['id'],
+        'user_type' => $user['tipe'],
+        'user_avatar' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
       ]);
       return redirect()->to(base_url('public/dashboard'))->with('success', 'Login berhasil!');
     }
@@ -55,22 +61,14 @@ class Auth extends BaseController
 
   public function logout()
   {
-    session()->remove('username');
-    session()->remove('tipe');
-    session()->remove('logged_in');
+    if (!session()->get('user_id')) {
+      return redirect()->to(base_url('public/login'))->with('error', 'Anda belum login!');
+    }
+    session()->remove('user_id');
+    session()->remove('user_type');
+    if (session()->get('user_avatar')) {
+      session()->remove('user_avatar');
+    }
     return redirect()->to(base_url('public/login'))->with('success', 'Logout berhasil!');
-  }
-
-  public function getDisplayName()
-  {
-    $userModel = new UserModel();
-    if (session()->get('username') == null) {
-      return null;
-    }
-    $user = $userModel->where('username', session()->get('username'))->first();
-    if ($user) {
-      return $user['nama'] ?? $user['username'];
-    }
-    return 'User not found';
   }
 }

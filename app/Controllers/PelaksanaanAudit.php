@@ -7,7 +7,7 @@ class PelaksanaanAudit extends BaseController
   {
     $data["title"] = "Pelaksanaan Audit";
     echo view('layouts/header.php', $data);
-    echo view('pelaksanaan_audit/form.php');
+    echo view('pelaksanaan_audit/tables.php');
     echo view('layouts/footer.php');
   }
 
