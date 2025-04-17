@@ -54,24 +54,25 @@
 </head>
 <!-- end::Head -->
 <?php
-use App\Models\UserModel;
-$user = new UserModel();
-$default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
+$user = new App\Models\UserModel();
+$displayName = $user->getDisplayName() ?? 'Guest';
+$defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
+$avatar = $user->getAvatar() ?? $defaultAvatar;
 ?>
 
 <body
-  class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+  class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
   <!-- begin:: Page -->
   <div class="m-grid m-grid--hor m-grid--root m-page">
     <!-- BEGIN: Header -->
-    <header class="m-grid__item    m-header " data-minimize-offset="200" data-minimize-mobile-offset="200">
+    <header class="m-grid__item m-header" data-minimize-offset="200" data-minimize-mobile-offset="200">
       <div class="m-container m-container--fluid m-container--full-height">
         <div class="m-stack m-stack--ver m-stack--desktop">
           <!-- BEGIN: Logo -->
           <div class="m-stack__item m-brand  m-brand--skin-dark ">
             <div class="m-stack m-stack--ver m-stack--general">
               <div class="m-stack__item m-stack__item--middle m-brand__logo">
-                <a href="dashboard" class="m-brand__logo-wrapper">
+                <a href="/pemutu/public/dashboard" class="m-brand__logo-wrapper">
                   <img alt=""
                     src="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/logo_default_dark.png" />
                 </a>
@@ -105,7 +106,6 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
             </div>
           </div>
           <!-- END: Logo -->
-
           <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
             <!-- BEGIN: Horizontal Menu -->
             <button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark "
@@ -114,7 +114,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
             </button>
             <div id="m_header_menu"
               class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
-              <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
+              <ul class="m-menu__nav m-menu__nav--submenu-arrow">
                 <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" data-menu-submenu-toggle="click"
                   data-redirect="true" aria-haspopup="true">
                   <a href="#" class="m-menu__link m-menu__toggle">
@@ -136,7 +136,6 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                           </span>
                         </a>
                       </li>
-
                     </ul>
                   </div>
                 </li>
@@ -146,26 +145,15 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
             <div id="m_header_topbar" class="m-topbar">
               <div class="m-stack__item m-topbar__nav-wrapper">
                 <ul class="m-topbar__nav m-nav m-nav--inline">
-                  <?php
-                  $display_name = $user->getDisplayName() ?? 'Guest';
-                  ?>
                   <li class="m-nav__item">
-                    <?php if (session()->get('user_id')): ?>
-                      <span>Welcome, <?= esc($display_name); ?>!</>
-                      <?php else: ?>
-                        <span>You are not logged in.</span>
-                      <?php endif; ?>
+                    <span>Welcome, <?= esc($displayName); ?>!</>
                   </li>
                   <li
                     class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                     data-dropdown-toggle="click">
-                    <a href="profile" class="m-nav__link m-dropdown__toggle">
+                    <a href="/pemutu/public/profile" class="m-nav__link m-dropdown__toggle">
                       <div class="profile-picture-nav">
-                        <?php if ($user->getAvatar()): ?>
-                          <img src="<?= $user->getAvatar(); ?>" class="profile-picture" alt="user-profile" />
-                        <?php else: ?>
-                          <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
-                        <?php endif; ?>
+                        <img src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                       </div>
                     </a>
                     <div class="m-dropdown__wrapper">
@@ -176,24 +164,15 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
                               <div class="profile-picture-dropdown">
-                                <?php if ($user->getAvatar()): ?>
-                                  <img id="profileImagePreview" src="<?= $user->getAvatar(); ?>" class="profile-picture"
-                                    alt="user-profile" />
-                                <?php else: ?>
-                                  <img src="<?= $default_avatar ?>" class="profile-picture" alt="user-profile" />
-                                <?php endif; ?>
+                                <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture"
+                                  alt="user-profile" />
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
-                                  <?= esc($display_name); ?>
+                                  <?= esc($displayName); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
-                                  <?= match (session()->get('user_type')) {
-                                    "1" => "Dosen",
-                                    "2" => "Laboran",
-                                    "3" => "Mahasiswa",
-                                    default => "Undefined",
-                                  }; ?>
+                                  <?= getUserType() ?>
                                 </span>
                               </div>
                             </div>
@@ -207,7 +186,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                                   </span>
                                 </li>
                                 <li class="m-nav__item">
-                                  <a href="profile" class="m-nav__link">
+                                  <a href="/pemutu/public/profile" class="m-nav__link">
                                     <i class="m-nav__link-icon flaticon-profile-1"></i>
                                     <span class="m-nav__link-title">
                                       <span class="m-nav__link-wrap">
@@ -248,16 +227,33 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
       <!-- BEGIN: Left Aside -->
-      <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+      <button class="m-aside-left-close  m-aside-left-close--skin-dark" id="m_aside_left_close_btn">
         <i class="la la-close"></i>
       </button>
-      <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark ">
+      <div id="m_aside_left" class="m-grid__item	m-aside-left m-aside-left--skin-dark">
         <!-- BEGIN: Aside Menu -->
         <div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark "
           data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
-          <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
-            <li class="m-menu__item  m-menu__item--active" aria-haspopup="true">
-              <a href="survey-kepuasan" class="m-menu__link ">
+          <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow ">
+            <li class="m-menu__item m-menu__item--active" aria-haspopup="true">
+              <a href="/pemutu/public/dashboard" class="m-menu__link ">
+                <i class="m-menu__link-icon flaticon-line-graph"></i>
+                <span class="m-menu__link-title">
+                  <span class="m-menu__link-wrap">
+                    <span class="m-menu__link-text">
+                      Dashboard
+                    </span>
+                    <!-- <span class="m-menu__link-badge">
+                      <span class="m-badge m-badge--danger">
+                        3
+                      </span>
+                    </span> -->
+                  </span>
+                </span>
+              </a>
+            </li>
+            <!-- <li class="m-menu__item  m-menu__item--active" aria-haspopup="true">
+              <a href="/pemutu/public/survey-kepuasan" class="m-menu__link ">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-title">
                   <span class="m-menu__link-wrap">
@@ -272,39 +268,15 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                   </span>
                 </span>
               </a>
-            </li>
+            </li> -->
             <li class="m-menu__section">
               <h4 class="m-menu__section-text">
                 Group Menu
               </h4>
               <i class="m-menu__section-icon flaticon-more-v3"></i>
             </li>
-            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
-              <a href="#" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon flaticon-share"></i>
-                <span class="m-menu__link-text">
-                  Menu
-                </span>
-                <i class="m-menu__ver-arrow la la-angle-right"></i>
-              </a>
-              <div class="m-menu__submenu">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="components/icons/flaticon.html" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Sub Menu
-                      </span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
-              <a href="#" class="m-menu__link m-menu__toggle">
+            <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+              <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon flaticon-share"></i>
                 <span class="m-menu__link-text">
                   Audit
@@ -315,7 +287,7 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="input-auditor" class="m-menu__link ">
+                    <a href="/pemutu/public/audit/input-auditor" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -324,14 +296,8 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                       </span>
                     </a>
                   </li>
-
-                </ul>
-              </div>
-              <div class="m-menu__submenu">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="standar-audit" class="m-menu__link ">
+                    <a href="/pemutu/public/audit/standar" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -340,14 +306,8 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                       </span>
                     </a>
                   </li>
-                </ul>
-                
-              </div>
-              <div class="m-menu__submenu">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="pelaksanaan-audit" class="m-menu__link ">
+                    <a href="/pemutu/public/audit/pelaksanaan" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
@@ -356,18 +316,137 @@ $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
                       </span>
                     </a>
                   </li>
-                </ul>
-              </div>
-              <div class="m-menu__submenu">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
                   <li class="m-menu__item " aria-haspopup="true">
-                    <a href="data-dukung" class="m-menu__link ">
+                    <a href="/pemutu/public/audit/data-dukung" class="m-menu__link ">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                         <span></span>
                       </i>
                       <span class="m-menu__link-text">
                         Data Dukung
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+              <a href="#" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-share"></i>
+                <span class="m-menu__link-text">
+                  Lembaga Akreditasi
+                </span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+              </a>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="/pemutu/public/akreditasi/kriteria" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Kriteria Akreditasi
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/syarat-unggul" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Syarat Unggul
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/instrumen-pemutu" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Instrumen Pemutu
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/dokumen-penetapan" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Dokumen Penetapan
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Akreditasi
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/periode" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Periode
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/input-data-pemutu" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Input Data Pemutu
+                      </span>
+                    </a>
+                    <a href="/pemutu/public/akreditasi/dashboard-periode" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Dashboard Pemutu
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+              <a href="#" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-share"></i>
+                <span class="m-menu__link-text">
+                  Survey Kepuasan
+                </span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+              </a>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="/pemutu/public/survey/buat-survey" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Buat Survey
+                      </span>
+                    </a>
+                  </li>
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="/pemutu/public/survey/isi-survey" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Isi Survey
+                      </span>
+                    </a>
+                  </li>
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="/pemutu/public/survey" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Hasil Survey
                       </span>
                     </a>
                   </li>

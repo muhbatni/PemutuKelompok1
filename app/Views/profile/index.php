@@ -1,3 +1,9 @@
+<?php
+$user = new App\Models\UserModel();
+$displayName = $user->getDisplayName() ?? 'Guest';
+$defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
+$avatar = $user->getAvatar() ?? $defaultAvatar;
+?>
 <div class="row">
   <div class="col-md-12">
     <div class="m-portlet m-portlet--tab">
@@ -13,10 +19,6 @@
           </div>
         </div>
       </div>
-      <?php
-      $user = new App\Models\UserModel();
-      $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
-      ?>
       <form class="m-form m-form--fit m-form--label-align-right" action="/pemutu/public/profile/edit" method="post"
         enctype="multipart/form-data">
         <div class="m-portlet__body">
@@ -24,8 +26,7 @@
             <div class="m-card-user m-card-user--skin-dark w-full">
               <div class="profile">
                 <div class="profile-picture-wrapper">
-                  <img id="profileImagePreview" src="<?= $user->getAvatar() ?: $default_avatar ?>"
-                    class="profile-picture" alt="user-profile" />
+                  <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                   <input type="file" name="avatar" accept="image/jpeg, image/png" class="profile-img-input"
                     onchange="getPreviewImage(this)" />
                   <i class="flaticon-edit-1"></i>
@@ -38,7 +39,7 @@
                     <small class="text-danger"><?= esc($errors['nama']) ?></small>
                   <?php endif; ?>
                   <p class="form-control-static">
-                    <?= $user->getDisplayName(); ?>
+                    <?= $displayName ?>
                   </p>
                   <label for="exampleInputEmail1">
                     Nama (Optional)
@@ -59,7 +60,6 @@
           </div>
         </div>
       </form>
-
     </div>
     <div class="m-portlet m-portlet--tab">
       <div class="m-portlet__head">

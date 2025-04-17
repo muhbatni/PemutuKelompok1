@@ -7,9 +7,9 @@ class InputStandarAudit extends BaseController
   {
     $data["title"] = "Input Standar Audit";
     echo view('layouts/header.php', $data);
-    echo view('standar_audit/form.php');
+    echo view('audit/standar_audit/form.php');
     echo view('layouts/footer.php');
-    
+
   }
 
 }
