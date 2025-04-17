@@ -53,7 +53,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('data-dukung', [DataDukung::class, 'index']);
 
   $routes->get('dashboard-periode', [DashboardPeriode::class, 'index']);
-  $routes->match(['get', 'post'], 'dokumen-penetapan', 'DokumenPenetapan::index');
+  $routes->match(['get', 'post'], 'dokumen-penetapan', [DokumenPenetapan::class, 'index']);
   $routes->get('kriteria-akreditasi', [KriteriaAkreditasi::class, 'index']);
   $routes->get('syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->get('instrumen-pemutu', [InstrumenPemutu::class, 'index']);
