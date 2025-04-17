@@ -1,7 +1,7 @@
 <?php
 $user = new App\Models\UserModel();
 $displayName = $user->getDisplayName() ?? 'Guest';
-$defaultAvatar = base_url() . '/public/assets/app/media/img/users/300_14.jpg';
+$defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
 $avatar = $user->getAvatar() ?? $defaultAvatar;
 ?>
 <div class="row">
