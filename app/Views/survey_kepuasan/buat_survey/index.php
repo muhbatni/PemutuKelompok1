@@ -1,5 +1,5 @@
 <!-- BEGIN: Subheader -->
-<div class="m-subheader ">
+<!-- <div class="m-subheader ">
   <div class="d-flex align-items-center">
     <div class="mr-auto">
       <h3 class="m-subheader__title m-subheader__title--separator">Actions</h3>
@@ -77,7 +77,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- END: Subheader -->
 <div class="m-content">
   <!--begin::Portlet-->
