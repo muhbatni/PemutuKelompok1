@@ -27,7 +27,6 @@
         reader.onload = function (e) {
           const image = document.querySelector('#profileImagePreview');
           document.querySelector('#profileImagePreview').src = e.target.result;
-          console.log('Image element:', image);
         };
         reader.readAsDataURL(file);
       }
@@ -69,7 +68,7 @@ $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPa
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
-$surveyPages = ['buat-survey', 'isi-survey', ''];
+$surveyPages = ['manajemen-survey', 'isi-survey', ''];
 $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surveyPages);
 ?>
 
@@ -357,7 +356,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 <ul class="m-menu__subnav">
                   <?php
                   $surveyMenu = [
-                    'buat-survey' => 'Buat Survey',
+                    'manajemen-survey' => 'Manajemen Survey',
                     'isi-survey' => 'Isi Survey',
                     '' => 'Hasil Survey'
                   ];
