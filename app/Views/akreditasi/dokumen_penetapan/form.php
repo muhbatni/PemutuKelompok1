@@ -15,7 +15,7 @@
       </div>
 
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" action="<?= base_url('dokumen-penetapan/save') ?>" method="post" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" action="dokumen-penetapan" method="post" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
           <!-- Nomor Dokumen -->
@@ -45,7 +45,7 @@
           <!-- Upload File Dokumen -->
           <div class="form-group m-form__group">
             <label for="dokumen">Upload File Dokumen</label>
-            <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx" required>
+            <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx">
             <span class="m-form__help">File yang diperbolehkan: PDF, DOC, DOCX</span>
           </div>
         </div>
@@ -59,7 +59,12 @@
         </div>
       </form>
       <!--end::Form-->
-
     </div>
   </div>
 </div>
+
+<?php if (session()->getFlashdata('success')): ?>
+  <div class="alert alert-success">
+    <?= session()->getFlashdata('success') ?>
+  </div>
+<?php endif; ?>
