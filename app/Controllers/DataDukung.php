@@ -7,7 +7,7 @@ class DataDukung extends BaseController
   {
     $data["title"] = "Data Dukung";
     echo view('layouts/header.php', $data);
-    echo view('data_dukung/form.php');
+    echo view('audit/data_dukung/form.php');
     echo view('layouts/footer.php');
   }
 

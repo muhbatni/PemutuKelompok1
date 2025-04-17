@@ -7,7 +7,7 @@ class InputDataPemutu extends BaseController
   {
     $data["title"] = "Input Data Pemutu";
     echo view('layouts/header.php', $data);
-    echo view('input-datapemutu/form.php');
+    echo view('akreditasi/input_data_pemutu/form.php');
     echo view('layouts/footer.php');
   }
 
