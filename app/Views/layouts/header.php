@@ -72,24 +72,6 @@ $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2
 $surveyPages = ['buat-survey', 'isi-survey', ''];
 $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surveyPages);
 ?>
-<?php
-$uri = service('uri');
-
-// Untuk Audit
-$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung'];
-$isAuditActive = $uri->getSegment(2) === 'audit' && in_array($uri->getSegment(3), $auditPages);
-
-// Untuk Akreditasi
-$akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
-$isAkreditasiActive = $uri->getSegment(2) === 'akreditasi' && in_array($uri->getSegment(3), $akreditasiPages);
-
-// Untuk Survey
-$surveyPages = ['buat-survey', 'isi-survey', ''];
-$isSurveyActive = $uri->getSegment(2) === 'survey' && in_array($uri->getSegment(3), $surveyPages);
-?>
-
-
-
 
 <body
   class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
@@ -265,9 +247,12 @@ $isSurveyActive = $uri->getSegment(2) === 'survey' && in_array($uri->getSegment(
         <!-- BEGIN: Aside Menu -->
         <div id="m_ver_menu" class="m-aside-menu m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark"
           data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
-          <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow ">
-            <li class="m-menu__item m-menu__item--active" aria-haspopup="true">
-              <a href="/pemutu/public/dashboard" class="m-menu__link ">
+          <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
+
+            <!-- Dashboard -->
+            <li class="m-menu__item <?= $uri->getSegment(1) === 'dashboard' ? 'm-menu__item--active' : '' ?>"
+              aria-haspopup="true">
+              <a href="/pemutu/public/dashboard" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-text">Dashboard</span>
               </a>
@@ -291,50 +276,41 @@ $isSurveyActive = $uri->getSegment(2) === 'survey' && in_array($uri->getSegment(
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/audit/input-auditor" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Input Auditor
-                      </span>
+                  <li class="m-menu__item <?= $segment2 === 'input-auditor' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="/pemutu/public/audit/input-auditor" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Input Auditor</span>
                     </a>
                   </li>
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/audit/standar" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Standar Audit
-                      </span>
+                  <li class="m-menu__item <?= $segment2 === 'standar' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="/pemutu/public/audit/standar" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Standar Audit</span>
                     </a>
                   </li>
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/audit/pelaksanaan" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Pelaksanaan Audit
-                      </span>
+                  <li class="m-menu__item <?= $segment2 === 'pelaksanaan' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="/pemutu/public/audit/pelaksanaan" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Pelaksanaan Audit</span>
                     </a>
                   </li>
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/audit/data-dukung" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Data Dukung
-                      </span>
+                  <li class="m-menu__item <?= $segment2 === 'data-dukung' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="/pemutu/public/audit/data-dukung" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Data Dukung</span>
                     </a>
                   </li>
                 </ul>
               </div>
             </li>
-            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+            <!-- Akreditasi -->
+            <li
+              class="m-menu__item m-menu__item--submenu <?= $isAkreditasiActive ? 'm-menu__item--open m-menu__item--expanded' : '' ?>"
+              aria-haspopup="true" data-menu-submenu-toggle="hover">
               <a href="#" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon flaticon-share"></i>
                 <span class="m-menu__link-text">Lembaga Akreditasi</span>
@@ -343,72 +319,26 @@ $isSurveyActive = $uri->getSegment(2) === 'survey' && in_array($uri->getSegment(
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/akreditasi/kriteria" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Kriteria Akreditasi
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/syarat-unggul" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Syarat Unggul
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/instrumen-pemutu" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Instrumen Pemutu
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/dokumen-penetapan" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Dokumen Penetapan
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Akreditasi
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/periode" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Periode
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/input-data-pemutu" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Input Data Pemutu
-                      </span>
-                    </a>
-                    <a href="/pemutu/public/akreditasi/dashboard-periode" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Dashboard Pemutu
-                      </span>
-                    </a>
-                  </li>
+                  <?php
+                  $akreditasiMenu = [
+                    'kriteria' => 'Kriteria Akreditasi',
+                    'syarat-unggul' => 'Syarat Unggul',
+                    'instrumen-pemutu' => 'Instrumen Pemutu',
+                    'dokumen-penetapan' => 'Dokumen Penetapan',
+                    '' => 'Akreditasi',
+                    'periode' => 'Periode',
+                    'input-data-pemutu' => 'Input Data Pemutu',
+                    'dashboard-periode' => 'Dashboard Pemutu'
+                  ];
+                  foreach ($akreditasiMenu as $slug => $label): ?>
+                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
+                      aria-haspopup="true">
+                      <a href="/pemutu/public/akreditasi/<?= $slug ?>" class="m-menu__link">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                        <span class="m-menu__link-text"><?= $label ?></span>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
                 </ul>
               </div>
             </li>
@@ -425,36 +355,21 @@ $isSurveyActive = $uri->getSegment(2) === 'survey' && in_array($uri->getSegment(
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/survey/buat-survey" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Buat Survey
-                      </span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/survey/isi-survey" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Isi Survey
-                      </span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item " aria-haspopup="true">
-                    <a href="/pemutu/public/survey" class="m-menu__link ">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                      </i>
-                      <span class="m-menu__link-text">
-                        Hasil Survey
-                      </span>
-                    </a>
-                  </li>
+                  <?php
+                  $surveyMenu = [
+                    'buat-survey' => 'Buat Survey',
+                    'isi-survey' => 'Isi Survey',
+                    '' => 'Hasil Survey'
+                  ];
+                  foreach ($surveyMenu as $slug => $label): ?>
+                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
+                      aria-haspopup="true">
+                      <a href="/pemutu/public/survey/<?= $slug ?>" class="m-menu__link">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                        <span class="m-menu__link-text"><?= $label ?></span>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
                 </ul>
               </div>
             </li>
