@@ -63,15 +63,12 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-// Untuk Audit
 $auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung'];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
-// Untuk Akreditasi
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
-// Untuk Survey
 $surveyPages = ['buat-survey', 'isi-survey', ''];
 $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surveyPages);
 ?>
