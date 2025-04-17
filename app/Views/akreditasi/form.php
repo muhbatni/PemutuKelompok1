@@ -19,8 +19,9 @@
             <label for="id_unit">Unit</label>
             <select class="form-control m-input" id="id_unit" name="id_unit">
               <option value="">-- Pilih Unit --</option>
-              <option value="1">Teknik Informatika</option>
-              <option value="2">Sistem Informasi</option>
+              <?php foreach ($units as $unit): ?>
+              <option value="<?= $unit['id']; ?>"><?= $unit['nama']; ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
 
