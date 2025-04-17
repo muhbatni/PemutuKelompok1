@@ -34,7 +34,6 @@
     }
 
   </script>
-
   <!--end::Web font -->
   <!--begin::Base Styles -->
   <link href="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
@@ -52,7 +51,6 @@
       justify-content: center;
     }
   </style>
-
 </head>
 <!-- end::Head -->
 <?php
@@ -60,12 +58,6 @@ use App\Models\UserModel;
 $user = new UserModel();
 $default_avatar = base_url() . '/public/assets/app/media/img/users/user1.jpg';
 ?>
-<?php
-$uri = service('uri');
-$auditPages = ['input-auditor', 'standar-audit', 'pelaksanaan-audit', 'data-dukung'];
-$isAuditActive = in_array($uri->getSegment(1), $auditPages);
-?>
-
 
 <body
   class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
@@ -234,7 +226,7 @@ $isAuditActive = in_array($uri->getSegment(1), $auditPages);
                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                 <li class="m-nav__item">
                                   <a href="auth/logout"
-                                    class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bol~der">
+                                    class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                     Logout
                                   </a>
                                 </li>
@@ -311,48 +303,77 @@ $isAuditActive = in_array($uri->getSegment(1), $auditPages);
                 </ul>
               </div>
             </li>
-            <li class="m-menu__item m-menu__item--submenu <?= $isAuditActive ? 'm-menu__item--open m-menu__item--expanded' : '' ?>" aria-haspopup="true" data-menu-submenu-toggle="hover">
-  <a href="#" class="m-menu__link m-menu__toggle">
-    <i class="m-menu__link-icon flaticon-share"></i>
-    <span class="m-menu__link-text">Audit</span>
-    <i class="m-menu__ver-arrow la la-angle-right"></i>
-  </a>
-  <div class="m-menu__submenu">
-    <span class="m-menu__arrow"></span>
-    <ul class="m-menu__subnav">
+            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover">
+              <a href="#" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-share"></i>
+                <span class="m-menu__link-text">
+                  Audit
+                </span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+              </a>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="input-auditor" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Input Auditor
+                      </span>
+                    </a>
+                  </li>
 
-      <li class="m-menu__item <?= $uri->getSegment(1) === 'input-auditor' ? 'm-menu__item--active' : '' ?>">
-        <a href="input-auditor" class="m-menu__link">
-          <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-          <span class="m-menu__link-text">Input Auditor</span>
-        </a>
-      </li>
-
-      <li class="m-menu__item <?= $uri->getSegment(1) === 'standar-audit' ? 'm-menu__item--active' : '' ?>">
-        <a href="standar-audit" class="m-menu__link">
-          <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-          <span class="m-menu__link-text">Standar Audit</span>
-        </a>
-      </li>
-
-      <li class="m-menu__item <?= $uri->getSegment(1) === 'pelaksanaan-audit' ? 'm-menu__item--active' : '' ?>">
-        <a href="pelaksanaan-audit" class="m-menu__link">
-          <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-          <span class="m-menu__link-text">Pelaksanaan Audit</span>
-        </a>
-      </li>
-
-      <li class="m-menu__item <?= $uri->getSegment(1) === 'data-dukung' ? 'm-menu__item--active' : '' ?>">
-        <a href="data-dukung" class="m-menu__link">
-          <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-          <span class="m-menu__link-text">Data Dukung</span>
-        </a>
-      </li>
-
-    </ul>
-  </div>
-</li>
-
+                </ul>
+              </div>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="standar-audit" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Standar Audit
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+                
+              </div>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="pelaksanaan-audit" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Pelaksanaan Audit
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="m-menu__submenu">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                  <li class="m-menu__item " aria-haspopup="true">
+                    <a href="data-dukung" class="m-menu__link ">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                        <span></span>
+                      </i>
+                      <span class="m-menu__link-text">
+                        Data Dukung
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
           </ul>
         </div>
         <!-- END: Aside Menu -->
