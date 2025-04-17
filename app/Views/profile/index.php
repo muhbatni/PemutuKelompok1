@@ -60,7 +60,6 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
           </div>
         </div>
       </form>
-
     </div>
     <div class="m-portlet m-portlet--tab">
       <div class="m-portlet__head">
