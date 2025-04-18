@@ -10,4 +10,5 @@ class SurveyModel extends Model
   protected $primaryKey = 'id';
   protected $useAutoIncrement = true;
   protected $allowedFields = ['id_kriteria', 'kode', 'nama', 'dokumen_pendukung', 'status'];
+  protected $returnType = 'array';
 }
