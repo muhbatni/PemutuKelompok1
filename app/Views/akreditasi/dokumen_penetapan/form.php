@@ -8,7 +8,7 @@
               <i class="la la-file"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Form Input Dokumen Penetapan
+              Formulir Dokumen Penetapan
             </h3>
           </div>
         </div>
