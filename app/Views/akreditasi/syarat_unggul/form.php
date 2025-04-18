@@ -8,7 +8,7 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Form Syarat Unggul
+              Formulir Syarat Unggul
             </h3>
           </div>
         </div>
