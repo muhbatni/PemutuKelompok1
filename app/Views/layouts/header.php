@@ -63,7 +63,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung'];
+$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung', "temuan", "input-temuan"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -302,6 +302,13 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                     <a href="/pemutu/public/audit/data-dukung" class="m-menu__link">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
                       <span class="m-menu__link-text">Data Dukung</span>
+                    </a>
+                  </li>
+                  <li class="m-menu__item <?= $segment2 === 'temuan' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="/pemutu/public/audit/temuan" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Temuan</span>
                     </a>
                   </li>
                 </ul>

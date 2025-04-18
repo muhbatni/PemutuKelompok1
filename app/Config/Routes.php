@@ -24,6 +24,8 @@ use App\Controllers\InputStandarAudit;
 use App\Controllers\InputPelaksanaanAudit;
 use App\Controllers\DataDukung;
 use App\Controllers\Periode;
+use App\Controllers\Temuan;
+use App\Controllers\InputTemuan;
 
 /**
  * @var RouteCollection $routes
@@ -55,6 +57,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
   $routes->get('audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
+  $routes->get('audit/temuan', [Temuan::class, 'index']);
+  $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
 
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
