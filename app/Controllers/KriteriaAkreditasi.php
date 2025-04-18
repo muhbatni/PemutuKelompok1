@@ -7,7 +7,7 @@ class KriteriaAkreditasi extends BaseController
   {
     $data["title"] = "Kriteria Akreditasi";
     echo view('layouts/header.php', $data);
-    echo view('kriteria-akreditasi/form.php');
+    echo view('akreditasi/kriteria_akreditasi/form.php');
     echo view('layouts/footer.php');
   }
 

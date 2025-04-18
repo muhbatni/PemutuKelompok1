@@ -1,10 +1,12 @@
 <?php
 
 use App\Controllers\Akreditasi;
+use App\Controllers\BuatSurvey;
 use App\Controllers\DashboardPeriode;
 use App\Controllers\DokumenPenetapan;
 use App\Controllers\InputDataPemutu;
 use App\Controllers\InstrumenPemutu;
+use App\Controllers\IsiSurvey;
 use App\Controllers\KriteriaAkreditasi;
 use App\Controllers\Login;
 use App\Controllers\Profile;
@@ -43,23 +45,25 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
 
-  $routes->get('survey-kepuasan', [SurveyKepuasan::class, 'index']);
+  $routes->get('survey', [SurveyKepuasan::class, 'index']);
+  $routes->get('survey/buat-survey', [BuatSurvey::class, 'index']);
+  $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
 
-  $routes->get('input-auditor', [InputAuditor::class, 'index']);
-  $routes->get('standar-audit', [StandarAudit::class, 'index']);
-  $routes->get('input-standar-audit', [InputStandarAudit::class, 'index']);
-  $routes->get('pelaksanaan-audit', [PelaksanaanAudit::class, 'index']);
-  $routes->get('input-pelaksanaan-audit', [InputPelaksanaanAudit::class, 'index']);
-  $routes->get('data-dukung', [DataDukung::class, 'index']);
+  $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
+  $routes->get('audit/standar', [StandarAudit::class, 'index']);
+  $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
+  $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
+  $routes->get('audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
+  $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
 
-  $routes->get('dashboard-periode', [DashboardPeriode::class, 'index']);
-  $routes->match(['get', 'post'], 'dokumen-penetapan', [DokumenPenetapan::class, 'index']);
-  $routes->get('kriteria-akreditasi', [KriteriaAkreditasi::class, 'index']);
-  $routes->get('syarat-unggul', [SyaratUnggul::class, 'index']);
-  $routes->get('instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
-  $routes->get('periode', [Periode::class, 'index']);
-  $routes->get('input-datapemutu', [InputDataPemutu::class, 'index']);
+  $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
+  $routes->get('akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
+  $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
+  $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
+  $routes->get('akreditasi/periode', [Periode::class, 'index']);
+  $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
 });
 
 $routes->setAutoRoute(true);

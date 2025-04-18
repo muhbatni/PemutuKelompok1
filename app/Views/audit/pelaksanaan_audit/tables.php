@@ -15,12 +15,13 @@
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
-        <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="input-standar-audit" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+          <div class="col-xl-4 order-1 order-xl-1 m--align-left">
+            <a href="/pemutu/public/audit/input-pelaksanaan"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
-                  Tambah Standar
+                  Tambah Audit
                 </span>
               </span>
             </a>

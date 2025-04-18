@@ -7,7 +7,7 @@ class Periode extends BaseController
   {
     $data["title"] = "Periode";
     echo view('layouts/header.php', $data);
-    echo view('periode/form.php');
+    echo view('akreditasi/periode/form.php');
     echo view('layouts/footer.php');
   }
 

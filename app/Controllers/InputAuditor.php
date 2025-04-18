@@ -7,7 +7,7 @@ class InputAuditor extends BaseController
   {
     $data["title"] = "Auditor";
     echo view('layouts/header.php', $data);
-    echo view('input_auditor/form.php');
+    echo view('audit/input_auditor/form.php');
     echo view('layouts/footer.php');
   }
 
