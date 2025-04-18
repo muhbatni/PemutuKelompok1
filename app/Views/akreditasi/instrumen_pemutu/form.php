@@ -19,31 +19,31 @@
           <!-- id_lembaga Field -->
           <div class="form-group m-form__group">
             <label for="id_lembaga">ID Lembaga</label>
-            <input type="number" name="id_lembaga" id="id_lembaga" required placeholder="Enter ID Lembaga" class="form-control m-input">
+            <input type="number" name="id_lembaga" id="id_lembaga" required placeholder="Masukkan ID Lembaga" class="form-control m-input">
           </div>
 
           <!-- Jenjang Field -->
           <div class="form-group m-form__group">
             <label for="jenjang">Jenjang</label>
-            <input type="number" name="jenjang" id="jenjang" required placeholder="Enter Jenjang" class="form-control m-input">
+            <input type="number" name="jenjang" id="jenjang" required placeholder="Masukkan Jenjang" class="form-control m-input">
           </div>
 
           <!-- Indikator Field -->
           <div class="form-group m-form__group">
             <label for="indikator">Indikator</label>
-            <input type="text" name="indikator" id="indikator" maxlength="255" required placeholder="Enter Indikator" class="form-control m-input">
+            <input type="text" name="indikator" id="indikator" maxlength="255" required placeholder="Masukkan Indikator" class="form-control m-input">
           </div>
 
           <!-- Kondisi Field -->
           <div class="form-group m-form__group">
             <label for="kondisi">Kondisi</label>
-            <input type="text" name="kondisi" id="kondisi" placeholder="Enter Kondisi" class="form-control m-input">
+            <input type="text" name="kondisi" id="kondisi" placeholder="Masukkan Kondisi" class="form-control m-input">
           </div>
 
           <!-- Batas Field -->
           <div class="form-group m-form__group">
             <label for="batas">Batas</label>
-            <input type="number" name="batas" id="batas" placeholder="Enter Batas" class="form-control m-input">
+            <input type="number" name="batas" id="batas" placeholder="Masukkan Batas" class="form-control m-input">
           </div>
 
         </div>
@@ -51,8 +51,8 @@
         <!-- Submit and Cancel Buttons -->
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="reset" class="btn btn-secondary">Batal</button>
           </div>
         </div>
 

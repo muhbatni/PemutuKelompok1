@@ -75,7 +75,7 @@
 
           <!-- File Upload -->
           <div class="form-group m-form__group">
-            <label for="file_upload">File Upload</label>
+            <label for="file_upload">Unggah Dokumen</label>
             <input type="file" class="form-control m-input" id="file_upload" name="file_upload">
           </div>
         </div>

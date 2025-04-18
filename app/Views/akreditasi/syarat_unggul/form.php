@@ -41,10 +41,10 @@
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
             <button type="reset" class="btn btn-primary">
-              Submit
+              Simpan
             </button>
             <button type="reset" class="btn btn-secondary">
-              Cancel
+              Batal
             </button>
           </div>
         </div>
