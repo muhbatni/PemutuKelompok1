@@ -5,7 +5,7 @@
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
             <h3 class="m-portlet__head-text">
-              Form Akreditasi
+              Formulir Akreditasi
             </h3>
           </div>
         </div>
@@ -29,9 +29,10 @@
           <div class="form-group m-form__group">
             <label for="id_lembaga">Lembaga Akreditasi</label>
             <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
-              <option value="">-- Pilih Lembaga --</option>
-              <option value="1">BAN-PT</option>
-              <option value="2">LAM-Infokom</option>
+            <option value="">-- Pilih Lembaga --</option>
+              <?php foreach ($lembagas as $lembaga): ?>
+              <option value="<?= $lembaga['id']; ?>"><?= $lembaga['nama']; ?></option>
+              <?php endforeach; ?>
             </select>
           </div>
 
@@ -39,17 +40,8 @@
           <div class="form-group m-form__group">
             <label for="nilai_akreditasi">Nilai Akreditasi</label>
             <select class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi">
-              <option value="">-- Pilih Nilai --</option>
-              <option value="1">Aktif</option>
+            <option value="1">Aktif</option>
               <option value="0">Tidak Aktif</option>
-            </select>
-          </div>
-
-          <!-- Status -->
-          <div class="form-group m-form__group">
-            <label for="status">Status</label>
-            <select class="form-control m-input" id="status" name="status">
-              <option value="">-- Pilih Status --</option>
               <option value="1">Unggul</option>
               <option value="2">Baik Sekali</option>
               <option value="3">Baik</option>
@@ -58,6 +50,15 @@
               <option value="6">C</option>
               <option value="7">Minimum</option>
               <option value="3">Tidak Ada</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group m-form__group">
+            <label for="status">Status</label>
+            <select class="form-control m-input" id="status" name="status">
+              <option value="">-- Pilih Status --</option>
+              <option value="">-- Pilih Nilai --</option>
             </select>
           </div>
 
