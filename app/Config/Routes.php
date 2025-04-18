@@ -24,6 +24,7 @@ use App\Controllers\InputStandarAudit;
 use App\Controllers\InputPelaksanaanAudit;
 use App\Controllers\DataDukung;
 use App\Controllers\Periode;
+use App\Controllers\Unit;
 
 /**
  * @var RouteCollection $routes
@@ -63,6 +64,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->get('akreditasi/periode', [Periode::class, 'index']);
+  $routes->get('akreditasi/unit', [Unit::class, 'index']);
   $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
 });
 
