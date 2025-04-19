@@ -36,13 +36,13 @@
           </div>
           <div class="form-group m-form__group">
             <label for="exampleInputPassword1">
-              Nama 
+              Nama
             </label>
             <input type="nama" class="form-control m-input" id="isinama" placeholder="Masukan Nama Anda">
           </div>
           <div class="form-group m-form__group">
             <label for="exampleInputPassword1">
-              Alamat 
+              Alamat
             </label>
             <input type="alamat" class="form-control m-input" id="exampleInputPassword1" placeholder="Masukan Alamat">
           </div>
@@ -77,7 +77,8 @@
             </p>
           </div> -->
           <div class="form-group m-form__group">
-            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai
+              kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai</label>
             <div style=" margin-top: 8px;">
@@ -99,7 +100,8 @@
             </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai
+              kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai</label>
             <div style=" margin-top: 8px;">
@@ -121,7 +123,8 @@
             </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai
+              kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai</label>
             <div style=" margin-top: 8px;">
@@ -143,7 +146,8 @@
             </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai
+              kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai</label>
             <div style=" margin-top: 8px;">
@@ -165,7 +169,8 @@
             </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertanyaan" style="text-align: left; display: block;">Bagaimana tanggapan anda mengenai
+              kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai</label>
             <div style=" margin-top: 8px;">
@@ -187,16 +192,16 @@
             </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertnyaan2"style="text-align: left; display: block;">
-            Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertnyaan2" style="text-align: left; display: block;">
+              Bagaimana tanggapan anda mengenai kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai
             </label>
             <textarea class="form-control m-input" id="exampleTextarea" rows="3"></textarea>
           </div>
           <div class="form-group m-form__group">
-            <label for="pertnyaan3"style="text-align: left; display: block;">
-            Bagaimana tanggapan anda mengenai kurangnya
+            <label for="pertnyaan3" style="text-align: left; display: block;">
+              Bagaimana tanggapan anda mengenai kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai
             </label>
@@ -204,7 +209,7 @@
           </div>
           <div class="form-group m-form__group">
             <label for="inputshortanswer" style="text-align: left; display: block;">
-            Bagaimana tanggapan anda mengenai kurangnya
+              Bagaimana tanggapan anda mengenai kurangnya
               fitur Pada Apple Music Seperti; Tombol Shuffle, Repeat, Playback,
               Like/Follow pada artist terkait, Like pada musik/album yang disukai
             </label>
