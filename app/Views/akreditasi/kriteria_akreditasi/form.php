@@ -14,7 +14,7 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right">
+      <form class="m-form m-form--fit m-form--label-align-right" action="kriteria" method="post" enctype="multipart/form-data">
         <div class="m-portlet__body">
           <div class="form-group m-form__group m--margin-top-10">
           </div>
@@ -50,7 +50,7 @@
 
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="reset" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary">
               Submit
             </button>
             <button type="reset" class="btn btn-secondary">
@@ -62,3 +62,9 @@
     </div>
     <!--end::Portlet-->
   </div>
+
+  <?php if (session()->getFlashdata('success')): ?>
+  <div class="alert alert-success">
+    <?= session()->getFlashdata('success') ?>
+  </div>
+<?php endif; ?>
