@@ -10,7 +10,8 @@
       </div>
 
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" action="instrumen-pemutu" method="post" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" action="instrumen-pemutu" method="post"
+        enctype="multipart/form-data">
         <div class="m-portlet__body">
 
           <!-- ID Field (Auto-generated) -->
@@ -21,7 +22,6 @@
             <label for="id_lembaga">ID Lembaga</label>
             <input type="number" name="id_lembaga" id="id_lembaga" required placeholder="Enter ID Lembaga"
               class="form-control m-input">
-            <input type="number" name="id_lembaga" id="id_lembaga" required placeholder="Masukkan ID Lembaga" class="form-control m-input">
           </div>
 
           <!-- Jenjang Field -->
@@ -37,7 +37,6 @@
               <option value="6" <?= old('jenjang') == 6 ? 'selected' : '' ?>>D2</option>
               <option value="7" <?= old('jenjang') == 7 ? 'selected' : '' ?>>D1</option>
             </select>
-            <input type="number" name="jenjang" id="jenjang" required placeholder="Masukkan Jenjang" class="form-control m-input">
           </div>
 
 
@@ -46,7 +45,6 @@
             <label for="indikator">Indikator</label>
             <input type="text" name="indikator" id="indikator" maxlength="255" required placeholder="Enter Indikator"
               class="form-control m-input">
-            <input type="text" name="indikator" id="indikator" maxlength="255" required placeholder="Masukkan Indikator" class="form-control m-input">
           </div>
 
           <!-- Kondisi Field -->
@@ -58,16 +56,13 @@
               <option value="=" <?= old('kondisi') == '=' ? 'selected' : '' ?>>Sama dengan (=)</option>
               <option value=">" <?= old('kondisi') == '>' ? 'selected' : '' ?>>Lebih dari (&gt;)</option>
             </select>
-            <input type="text" name="kondisi" id="kondisi" placeholder="Masukkan Kondisi" class="form-control m-input">
           </div>
-
 
           <!-- Batas Field -->
           <div class="form-group m-form__group">
             <label for="batas">Batas</label>
             <input type="number" name="batas" id="batas" placeholder="Enter Batas" class="form-control m-input"
               required>
-            <input type="number" name="batas" id="batas" placeholder="Masukkan Batas" class="form-control m-input">
           </div>
 
         </div>
