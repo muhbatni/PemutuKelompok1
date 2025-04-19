@@ -1,7 +1,7 @@
 <?php
 
 use App\Controllers\Akreditasi;
-use App\Controllers\BuatSurvey;
+use App\Controllers\ManajemenSurvey;
 use App\Controllers\DashboardPeriode;
 use App\Controllers\DokumenPenetapan;
 use App\Controllers\InputDataPemutu;
@@ -48,7 +48,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
 
   $routes->get('survey', [SurveyKepuasan::class, 'index']);
-  $routes->get('survey/buat-survey', [BuatSurvey::class, 'index']);
+  $routes->get('survey/manajemen-survey', [ManajemenSurvey::class, 'index']);
+  $routes->match(['get', 'post'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
+  $routes->match(['get', 'post'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
 
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
