@@ -245,7 +245,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
       <div id="m_aside_left" class="m-grid__item	m-aside-left m-aside-left--skin-dark">
         <!-- BEGIN: Aside Menu -->
         <div id="m_ver_menu" class="m-aside-menu m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark"
-          data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
+          data-menu-vertical="true" data-menu-scrollable="true" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
 
             <!-- Dashboard -->
