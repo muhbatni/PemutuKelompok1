@@ -19,7 +19,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
           </div>
         </div>
       </div>
-      <form class="m-form m-form--fit m-form--label-align-right" action="/pemutu/public/profile/edit" method="post"
+      <form class="m-form m-form--fit m-form--label-align-right" action="/pemutu/public/profile/edit" method="POST"
         enctype="multipart/form-data">
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
