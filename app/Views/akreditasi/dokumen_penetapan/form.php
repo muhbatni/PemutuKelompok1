@@ -8,7 +8,7 @@
               <i class="la la-file"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Form Input Dokumen Penetapan
+              Formulir Dokumen Penetapan
             </h3>
           </div>
         </div>
@@ -44,7 +44,7 @@
 
           <!-- Upload File Dokumen -->
           <div class="form-group m-form__group">
-            <label for="dokumen">Upload File Dokumen</label>
+            <label for="dokumen">Unggah Dokumen</label>
             <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx">
             <span class="m-form__help">File yang diperbolehkan: PDF, DOC, DOCX</span>
           </div>

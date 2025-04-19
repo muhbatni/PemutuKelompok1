@@ -8,7 +8,7 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Form Kriteria Akreditasi
+              Formulir Kriteria Akreditasi
             </h3>
           </div>
         </div>
@@ -50,11 +50,12 @@
 
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="submit" class="btn btn-primary">
-              Submit
+
+          <button type="submit" class="btn btn-primary">
+              Simpan
             </button>
             <button type="reset" class="btn btn-secondary">
-              Cancel
+              Batal
             </button>
           </div>
         </div>
