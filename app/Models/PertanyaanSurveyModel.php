@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PertanyaanSurvey extends Model
+class PertanyaanSurveyModel extends Model
 {
     protected $table = 's_pertanyaan';
     protected $primaryKey = 'id';
