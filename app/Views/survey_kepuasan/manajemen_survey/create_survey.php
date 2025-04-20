@@ -84,13 +84,13 @@
                   </div>
                 </div>
                 <div class="m-portlet__body">
-                  <!-- <div class="d-flex align-items-center justify-content-center">
+                  <div class="d-flex align-items-center justify-content-center">
                     <input type="text" class="form-control m-input" id="exampleInputTitle1" aria-describedby="emailHelp"
                       placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
-                  </div> -->
-                  <div class="md-editor" id="1745128214339"></div>
+                  </div>
+                  <!-- <div class="md-editor" id="1745128214339"></div>
                   <textarea name="markdown" class="form-control md-input" data-provide="markdown" rows="5"
-                    style="resize: none;" aria-describedby="markdown-error" aria-invalid="true"></textarea>
+                    style="resize: none;" aria-describedby="markdown-error" aria-invalid="true"></textarea> -->
                   <br>
                   <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
                     <span>
