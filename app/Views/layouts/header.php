@@ -275,34 +275,22 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <li class="m-menu__item <?= $segment2 === 'input-auditor' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/input-auditor") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Input Auditor</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'standar' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/standar") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Standar Audit</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'pelaksanaan' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/pelaksanaan") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Pelaksanaan Audit</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'data-dukung' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/data-dukung") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Data Dukung</span>
-                    </a>
-                  </li>
+                  <?php
+                  $akreditasiMenu = [
+                    'input-auditor' => 'Input Auditor',
+                    'standar' => 'Syarat Unggul',
+                    'pelaksanaan' => 'Pelaksanaan Audit',
+                    'data-dukung' => 'Data Dukung',
+                  ];
+                  foreach ($akreditasiMenu as $slug => $label): ?>
+                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
+                      aria-haspopup="true">
+                      <a href="<?= base_url("public/audit/$slug") ?>" class="m-menu__link">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                        <span class="m-menu__link-text"><?= $label ?></span>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
                 </ul>
               </div>
             </li>
