@@ -70,6 +70,9 @@ class ManajemenSurvey extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
           ];
         }
+        if (empty($pertanyaanData)) {
+          return redirect()->to(base_url('public/survey/manajemen-survey'))->with('error', 'Tidak ada pertanyaan yang valid!');
+        }
         $this->pertanyaanSurveyModel->insertBatch($pertanyaanData);
       }
       return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dibuat!');
@@ -102,6 +105,17 @@ class ManajemenSurvey extends BaseController
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');
+  }
+
+  public function deleteSurvey($id_survey)
+  {
+    if (!$id_survey) {
+      return;
+    }
+    if (!$this->surveyModel->delete($id_survey)) {
+      return;
+    }
+    return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dihapus!');
   }
 }
 ?>

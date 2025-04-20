@@ -101,9 +101,12 @@
                     <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item"
                         href="<?= base_url('public/survey/manajemen-survey/edit/' . $survey['id']) ?>"><i
-                          class="la la-edit"></i> Edit Details</a>
-                      <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Update Status</a>
+                          class="la la-edit"></i> Edit Detail</a>
+                      <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Edit Status</a>
                       <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
+                      <a class="dropdown-item"
+                        href="<?= base_url("public/survey/manajemen-survey/delete/" . $survey['id']) ?>">
+                        <i class="la la-trash"></i>Hapus Survey</a>
                     </div>
                   </span>
                   <span>
