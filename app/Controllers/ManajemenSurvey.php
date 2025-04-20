@@ -2,14 +2,16 @@
 namespace App\Controllers;
 
 use App\Models\SurveyModel;
-use App\Models\PertanyaanSurvey;
+use App\Models\PertanyaanSurveyModel;
 class ManajemenSurvey extends BaseController
 {
   protected $surveyModel;
+  protected $pertanyaanSurveyModel;
 
   public function __construct()
   {
     $this->surveyModel = new SurveyModel();
+    $this->pertanyaanSurveyModel = new PertanyaanSurveyModel();
   }
 
   public function index()
@@ -51,8 +53,10 @@ class ManajemenSurvey extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
           ];
         }
-        $pertanyaanSurveyModel = new \App\Models\PertanyaanSurvey();
-        $pertanyaanSurveyModel->insertBatch($pertanyaanData);
+        if (empty($pertanyaanData)) {
+          return redirect()->to(base_url('public/survey/manajemen-survey'))->with('error', 'Tidak ada pertanyaan yang valid!');
+        }
+        $this->pertanyaanSurveyModel->insertBatch($pertanyaanData);
       }
       return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dibuat!');
     }
@@ -84,12 +88,13 @@ class ManajemenSurvey extends BaseController
 
   public function deleteSurvey($id_survey)
   {
-    $survey = $this->surveyModel->find($id_survey);
-    if ($survey) {
-      $this->surveyModel->delete($id_survey);
-      return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dihapus!');
+    if (!$id_survey) {
+      return;
     }
-    return redirect()->to(base_url('public/survey/manajemen-survey'))->with('error', 'Survey tidak ditemukan!');
+    if (!$this->surveyModel->delete($id_survey)) {
+      return;
+    }
+    return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dihapus!');
   }
 }
 ?>

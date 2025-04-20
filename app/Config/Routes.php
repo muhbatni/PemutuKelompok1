@@ -47,6 +47,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
   $routes->get('survey', [SurveyKepuasan::class, 'index']);
   $routes->get('survey/manajemen-survey', [ManajemenSurvey::class, 'index']);
+  $routes->get('survey/manajemen-survey/delete/(:num)', [ManajemenSurvey::class, 'deleteSurvey/$1']);
   $routes->match(['get', 'post'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
   $routes->match(['get', 'post'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
