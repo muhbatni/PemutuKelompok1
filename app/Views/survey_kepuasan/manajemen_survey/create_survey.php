@@ -85,8 +85,9 @@
                 </div>
                 <div class="m-portlet__body">
                   <div class="d-flex align-items-center justify-content-center">
-                    <input type="text" class="form-control m-input" id="exampleInputTitle1" aria-describedby="emailHelp"
-                      placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
+                    <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
+                      aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
+                    <input type="hidden" name="jenis[]" value="1">
                   </div>
                   <!-- <div class="md-editor" id="1745128214339"></div>
                   <textarea name="markdown" class="form-control md-input" data-provide="markdown" rows="5"
@@ -135,10 +136,47 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const sortable = new Sortable(document.getElementById('m_sortable_portlets'), {
-      animation: 150, // Animasi saat elemen dipindahkan
-      handle: '.m-portlet__head', // Hanya bagian header yang bisa digunakan untuk drag
-      ghostClass: 'sortable-ghost', // Tambahkan kelas saat elemen sedang di-drag
+    const container = document.getElementById('m_sortable_portlets');
+
+    // Inisialisasi SortableJS
+    const sortable = new Sortable(container, {
+      animation: 150,
+      handle: '.m-portlet__head',
+      ghostClass: 'sortable-ghost',
+      onEnd: function () {
+        updateOrder();
+      }
+    });
+
+    // Fungsi untuk memperbarui urutan portlet
+    function updateOrder() {
+      const portlets = container.querySelectorAll('.portlet-template');
+      portlets.forEach((portlet, index) => {
+        const orderInput = portlet.querySelector('.portlet-order');
+        if (orderInput) {
+          orderInput.value = index + 1; // Urutan dimulai dari 1
+        }
+      });
+    }
+
+    // Panggil updateOrder saat halaman dimuat
+    updateOrder();
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('m_sortable_portlets');
+
+    // Tambahkan event listener untuk tab jenis pertanyaan
+    container.addEventListener('click', function (event) {
+      if (event.target.matches('.nav-link')) {
+        const portlet = event.target.closest('.portlet-template');
+        const jenisInput = portlet.querySelector('input[name="jenis[]"]');
+        if (event.target.textContent.trim() === 'Opsian') {
+          jenisInput.value = 1; // Set jenis ke 1 untuk opsi
+        } else if (event.target.textContent.trim() === 'Isian') {
+          jenisInput.value = 2; // Set jenis ke 2 untuk isian
+        }
+      }
     });
   });
 
