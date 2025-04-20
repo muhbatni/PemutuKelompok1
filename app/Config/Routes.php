@@ -71,6 +71,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi/unit', [Unit::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
   $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
+  //manajemen-akreditasi
+  $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
 });
 
 $routes->setAutoRoute(true);

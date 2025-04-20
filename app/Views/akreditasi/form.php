@@ -11,7 +11,7 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="simpan_data.php">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="akreditasi" enctype="multipart/form-data">
         <div class="m-portlet__body">
           
           <!-- ID Unit -->
@@ -40,8 +40,7 @@
           <div class="form-group m-form__group">
             <label for="nilai_akreditasi">Nilai Akreditasi</label>
             <select class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi">
-            <option value="1">Aktif</option>
-              <option value="0">Tidak Aktif</option>
+              <option value="">-- Pilih Nilai --</option>
               <option value="1">Unggul</option>
               <option value="2">Baik Sekali</option>
               <option value="3">Baik</option>
@@ -49,7 +48,7 @@
               <option value="5">B</option>
               <option value="6">C</option>
               <option value="7">Minimum</option>
-              <option value="3">Tidak Ada</option>
+              <option value="8">Tidak Ada</option>
             </select>
           </div>
 
@@ -58,7 +57,8 @@
             <label for="status">Status</label>
             <select class="form-control m-input" id="status" name="status">
               <option value="">-- Pilih Status --</option>
-              <option value="">-- Pilih Nilai --</option>
+              <option value="1">Aktif</option>
+              <option value="0">Tidak AKtif</option>
             </select>
           </div>
 
