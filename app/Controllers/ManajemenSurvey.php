@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\SurveyModel;
-use App\Models\PertanyaanSurvey;
+use App\Models\PertanyaanSurveyModel;
 class ManajemenSurvey extends BaseController
 {
   protected $surveyModel;
@@ -51,7 +51,7 @@ class ManajemenSurvey extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
           ];
         }
-        $pertanyaanSurveyModel = new \App\Models\PertanyaanSurvey();
+        $pertanyaanSurveyModel = new \App\Models\PertanyaanSurveyModel();
         $pertanyaanSurveyModel->insertBatch($pertanyaanData);
       }
       return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dibuat!');
