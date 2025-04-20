@@ -58,5 +58,15 @@ class ManajemenSurvey extends BaseController
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');
   }
+
+  public function deleteSurvey($id_survey)
+  {
+    $survey = $this->surveyModel->find($id_survey);
+    if ($survey) {
+      $this->surveyModel->delete($id_survey);
+      return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dihapus!');
+    }
+    return redirect()->to(base_url('public/survey/manajemen-survey'))->with('error', 'Survey tidak ditemukan!');
+  }
 }
 ?>
