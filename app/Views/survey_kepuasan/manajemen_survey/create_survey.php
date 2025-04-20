@@ -51,6 +51,36 @@
           </div>
         </div>
         <div class="form-group m-form__group row">
+          <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
+          <div class="col-lg-7 col-md-7 col-sm-12">
+          <select class="form-control" id="id_periode" name="id_periode" required>
+              <option value="">-- Pilih Periode --</option>
+              <?php foreach ($periode as $p): ?>
+                  <option name="id_periode" value="<?= $p['id']; ?>"><?= $p['tahun']; ?></option>
+              <?php endforeach; ?>
+          </select>
+          </div>
+        </div>
+          <div class="m-portlet__body">
+          <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-12">
+            <input type="date" class="form-control" name="tanggal_mulai" required>
+            </div>
+          </div>
+          <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-12">
+            <input type="date" class="form-control" name="tanggal_selesai" required>
+            </div>
+          </div>
+          <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-12">
+            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+            </div>
+          </div>
+        <div class="form-group m-form__group row">
           <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan</label>
           <div class="col-lg-7 col-md-7 col-sm-12">
             <div class="row ui-sortable" id="m_sortable_portlets">
