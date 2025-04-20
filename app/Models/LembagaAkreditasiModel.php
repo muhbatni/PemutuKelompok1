@@ -10,8 +10,9 @@ class LembagaAkreditasiModel extends Model
     protected $primaryKey       = 'id';
     protected $allowedFields    = ['id', 'nama', 'deskripsi'];
 
-    public function getLembaga(){
+    public function getLembagas(){
         return $this->findAll();
     }
 }
+
 ?>
