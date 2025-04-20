@@ -31,7 +31,6 @@
         reader.readAsDataURL(file);
       }
     }
-
   </script>
   <!--end::Web font -->
   <!--begin::Base Styles -->
@@ -40,6 +39,7 @@
   <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
+  <script src="<?= base_url(); ?>/public/assets/app/js/survey-utils.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
