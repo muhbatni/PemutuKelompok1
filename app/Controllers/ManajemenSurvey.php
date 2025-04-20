@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\SurveyModel;
+use App\Models\PertanyaanSurvey;
 class ManajemenSurvey extends BaseController
 {
   protected $surveyModel;
@@ -30,7 +31,29 @@ class ManajemenSurvey extends BaseController
         'dokumen_pendukung' => $this->request->getPost('dokumen_pendukung_survey'),
         'status' => $this->request->getPost('status_survey') === "true" ? true : false
       ];
-      $this->surveyModel->insert($data);
+      $id_survey = $this->surveyModel->insert($data);
+
+      $pertanyaan = $this->request->getPost('pertanyaan');
+      $jenis = $this->request->getPost('jenis');
+
+      if ($pertanyaan && $jenis) {
+        $pertanyaanData = [];
+        foreach ($pertanyaan as $index => $teks) {
+          $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : null;
+          if ($jenisValue === null || empty($teks)) {
+            continue;
+          }
+          $pertanyaanData[] = [
+            'id_survey' => $id_survey,
+            'teks' => $teks,
+            'jenis' => $jenis[$index],
+            'is_aktif' => true,
+            'updated_at' => date('Y-m-d H:i:s'),
+          ];
+        }
+        $pertanyaanSurveyModel = new \App\Models\PertanyaanSurvey();
+        $pertanyaanSurveyModel->insertBatch($pertanyaanData);
+      }
       return redirect()->to(base_url('public/survey/manajemen-survey'))->with('success', 'Survey berhasil dibuat!');
     }
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);

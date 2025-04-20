@@ -41,6 +41,7 @@
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/survey-utils.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
   <style>
@@ -245,7 +246,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
       <div id="m_aside_left" class="m-grid__item	m-aside-left m-aside-left--skin-dark">
         <!-- BEGIN: Aside Menu -->
         <div id="m_ver_menu" class="m-aside-menu m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark"
-          data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
+          data-menu-vertical="true" data-menu-scrollable="true" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
 
             <!-- Dashboard -->
