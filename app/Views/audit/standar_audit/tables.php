@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Tabel Standar Audit
+            Data Standar Audit
           </h3>
         </div>
       </div>
@@ -49,18 +49,18 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Order ID
+           Judul
             </th>
             <th title="Field #2">
-              Owner
+              Parent
             </th>
             <th title="Field #3">
-              Contact
+            Deskripsi
             </th>
             <th title="Field #4">
-              Car Make
+              Aksi
             </th>
-            <th title="Field #5">
+            <!-- <th title="Field #5">
               Car Model
             </th>
             <th title="Field #6">
@@ -71,11 +71,11 @@
             </th>
             <th title="Field #8">
               Order Date
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr>
             <td>
               16590-107
             </td>
@@ -152,7 +152,7 @@
             <td>
               2017-11-17
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
       <!--end: Datatable -->
