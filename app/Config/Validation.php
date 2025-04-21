@@ -84,4 +84,27 @@ class Validation extends BaseConfig
       'ext_in' => 'Ekstensi foto harus jpg, jpeg, atau png.'
     ]
   ];
+
+  public array $surveys = [
+    'kode_survey' => 'required|is_unique[s_survey.kode]|max_length[10]',
+    'nama_survey' => 'required|min_length[5]|max_length[30]',
+    'dokumen_pendukung_survey' => 'permit_empty',
+    'status_survey' => 'required',
+  ];
+
+  public array $surveys_errors = [
+    'kode_survey' => [
+      'required' => 'Kode survey harus diisi.',
+      'is_unique' => 'Kode survey sudah ada.',
+      'max_length' => 'Kode survey maksimal 10 karakter.'
+    ],
+    'nama_survey' => [
+      'required' => 'Nama survey harus diisi.',
+      'min_length' => 'Nama survey minimal 5 karakter.',
+      'max_length' => 'Nama survey maksimal 30 karakter.'
+    ],
+    'status_survey' => [
+      'required' => 'Status survey harus diisi.',
+    ],
+  ];
 }
