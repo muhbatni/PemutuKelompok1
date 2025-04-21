@@ -18,14 +18,6 @@
           <input type="hidden" name="id" value="<?= esc($edit['id']) ?>">
         <?php endif ?>
 
-        <div class="m-portlet__body">
-          <?php if ($isEdit): ?>
-            <div class="alert alert-warning">
-              <strong>Mode Edit Aktif:</strong> Anda sedang mengedit dokumen <em><?= esc($edit['nama']) ?></em>.
-              Klik tombol <strong>Batal</strong> untuk membatalkan dan kembali ke mode tambah data baru.
-            </div>
-          <?php endif ?>
-
           <div class="form-group m-form__group">
             <label for="nomor">Nomor Dokumen</label>
             <input type="text" class="form-control m-input" name="nomor" id="nomor"
