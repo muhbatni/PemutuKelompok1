@@ -67,7 +67,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   // $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
-  $routes->get('akreditasi/periode', [Periode::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/periode', [Periode::class, 'index']);
   $routes->get('akreditasi/unit', [Unit::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
   $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);

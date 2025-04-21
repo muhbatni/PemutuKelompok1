@@ -18,14 +18,6 @@
       <form action="lembaga" method="post" class="m-form m-form--fit m-form--label-align-right" id="formLembaga">
         <input type="hidden" name="id" value="<?= $isEdit ? $editData['id'] : '' ?>">
 
-        <div class="m-portlet__body">
-          <?php if ($isEdit): ?>
-            <div class="alert alert-warning">
-              Anda sedang dalam mode edit data lembaga <strong><?= esc($editData['nama']) ?></strong>.
-              Klik tombol <strong>Batal</strong> jika ingin kembali ke mode tambah data.
-            </div>
-          <?php endif; ?>
-
           <div class="form-group m-form__group">
             <label for="nama">Nama Lembaga</label>
             <input type="text" name="nama" class="form-control m-input" id="nama"
