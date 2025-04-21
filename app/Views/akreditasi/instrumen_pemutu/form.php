@@ -19,9 +19,13 @@
 
           <!-- id_lembaga Field -->
           <div class="form-group m-form__group">
-            <label for="id_lembaga">ID Lembaga</label>
-            <input type="number" name="id_lembaga" id="id_lembaga" required placeholder="Enter ID Lembaga"
-              class="form-control m-input">
+            <label for="id_lembaga">Lembaga Akreditasi</label>
+            <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
+            <option value="">-- Pilih Lembaga --</option>
+              <?php foreach ($lembagas as $lembaga): ?>
+              <option value="<?= $lembaga['id']; ?>"><?= $lembaga['nama']; ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
 
           <!-- Jenjang Field -->

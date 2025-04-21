@@ -20,14 +20,13 @@
           </div>
           </div>
           <div class="form-group m-form__group">
-            <label for="InputIdLembaga">
-              ID Lembaga
-            </label>
-            <input type="id-lembaga" class="form-control m-input" id="InputIdLembaga" aria-describedby="emailHelp"
-              placeholder="Masukkan ID Lembaga">
-            <span class="m-form__help">
-             isikan id lembaga sesuai dengan lembaga yang terdaftar
-            </span>
+            <label for="id_lembaga">Lembaga Akreditasi</label>
+            <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
+            <option value="">-- Pilih Lembaga --</option>
+              <?php foreach ($lembagas as $lembaga): ?>
+              <option value="<?= $lembaga['id']; ?>"><?= $lembaga['nama']; ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
           <div class="form-group m-form__group">
             <label for="InputKode">

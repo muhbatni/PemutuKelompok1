@@ -7,6 +7,9 @@ class KriteriaAkreditasi extends BaseController
 {
   public function index()
   {
+
+    $lembagaModel = new \App\Models\LembagaAkreditasiModel();
+    $data['lembagas'] = $lembagaModel->getLembagas();
     // Jika form disubmit (metode POST)
     if ($this->request->getMethod() == 'POST') {
       // Ambil data dari form
