@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Datatable initilized from HTML table
+            Jadwal Audit
           </h3>
         </div>
       </div>
@@ -46,32 +46,27 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
+      
       <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
             <th title="Field #1">
-              Order ID
+              ID Audit
             </th>
             <th title="Field #2">
-              Owner
+              Periode
             </th>
             <th title="Field #3">
-              Contact
+              Kode Audit
             </th>
             <th title="Field #4">
-              Car Make
+              Tanggal Mulai
             </th>
             <th title="Field #5">
-              Car Model
+              Tanggal Selesai
             </th>
             <th title="Field #6">
-              Color
-            </th>
-            <th title="Field #7">
-              Deposit Paid
-            </th>
-            <th title="Field #8">
-              Order Date
+              Action
             </th>
           </tr>
         </thead>
