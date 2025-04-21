@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Datatable initilized from HTML table
+            Tabel Standar Audit
           </h3>
         </div>
       </div>
