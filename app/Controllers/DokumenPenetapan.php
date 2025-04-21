@@ -32,8 +32,7 @@ class DokumenPenetapan extends BaseController
       $model->save($data);
 
       // Set flashdata untuk pemberitahuan sukses
-      session()->setFlashdata('success', 'Dokumen berhasil disimpan!');
-      return redirect()->to(base_url('public/akreditasi/dokumen-penetapan')); // Kembali ke halaman yang sama
+      return alert('akreditasi/dokumen-penetapan', 'success', 'Dokumen berhasil disimpan!');
     }
 
     // Jika metode GET, tampilkan form

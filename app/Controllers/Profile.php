@@ -50,9 +50,9 @@ class Profile extends BaseController
         $image = pg_unescape_bytea($data['foto']);
         session()->set('user_avatar', $image);
       }
-      return redirect()->to(base_url('public/profile'))->with('success', 'Profile updated successfully!');
+      return alert('profile', 'success', 'Profile updated successfully!');
     }
-    return redirect()->to(base_url('public/profile'))->with('error', 'Failed to update the profile!');
+    return alert('profile', 'error', 'Failed to update the profile!');
   }
 
   public function reset_password()

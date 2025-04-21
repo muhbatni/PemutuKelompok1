@@ -12,26 +12,25 @@ class Auth extends BaseController
     if ($this->request->getMethod() !== 'POST') {
       return;
     }
+    $postData = $this->request->getPost();
     $validation = service('validation');
     $userModel = new UserModel();
+    $hashedPassword = password_hash($postData['password'], PASSWORD_DEFAULT);
     $data = [
-      'username' => $this->request->getPost('username'),
-      'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-      'tipe' => $this->request->getPost('tipe')
+      'username' => $postData['username'],
+      'password' => $hashedPassword,
+      'tipe' => $postData['tipe']
     ];
     if (!$this->validate('signup')) {
       return view(
         'registrasi/index',
-        [
-          'errors' => $validation->getErrors(),
-          'old' => $this->request->getPost()
-        ]
+        ['errors' => $validation->getErrors(), 'old' => $postData]
       );
     }
     if ($userModel->insert($data)) {
-      return redirect()->to(base_url('public/login'))->with('success', 'Registrasi berhasil, silahkan login!');
+      return alert('login', 'success', 'Registrasi berhasil, silahkan login!');
     }
-    return redirect()->to(base_url('public/registrasi'))->with('error', 'Registrasi gagal, silahkan coba lagi!');
+    return alert('registrasi', 'error', 'Registrasi gagal, silahkan coba lagi!');
   }
 
   public function login()
@@ -39,36 +38,35 @@ class Auth extends BaseController
     if ($this->request->getMethod() !== 'POST') {
       return;
     }
+    $postData = $this->request->getPost();
     $userModel = new UserModel();
-    $data = [
-      'username' => $this->request->getPost('username'),
-      'password' => $this->request->getPost('password'),
-    ];
+    $data = ['username' => $postData['username'], 'password' => $postData['password']];
     $user = $userModel->where('username', $data['username'])->first();
     if (!$user) {
-      return redirect()->to(base_url('public/login'))->with('error', 'Username atau password salah!');
+      return alert('login', 'error', 'Username atau password salah!');
     }
-    if (password_verify($data['password'], $user['password'])) {
+    $hashedPassword = $user['password'];
+    if (password_verify($data['password'], $hashedPassword)) {
       session()->set([
         'user_id' => $user['id'],
         'user_type' => $user['tipe'],
         'user_avatar' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
       ]);
-      return redirect()->to(base_url('public/dashboard'))->with('success', 'Login berhasil!');
+      return alert('dashboard', 'success', 'Login berhasil!');
     }
-    return redirect()->to(base_url('public/login'))->with('error', 'Username atau password salah!');
+    return alert('login', 'error', 'Username atau password salah!');
   }
 
   public function logout()
   {
     if (!session()->get('user_id')) {
-      return redirect()->to(base_url('public/login'))->with('error', 'Anda belum login!');
+      return alert('login', 'error', 'Anda belum login!');
     }
     session()->remove('user_id');
     session()->remove('user_type');
     if (session()->get('user_avatar')) {
       session()->remove('user_avatar');
     }
-    return redirect()->to(base_url('public/login'))->with('success', 'Logout berhasil!');
+    return alert('login', 'success', 'Logout berhasil!');
   }
 }

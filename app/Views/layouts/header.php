@@ -157,10 +157,11 @@
 <!-- end::Head -->
 <?php
 $user = new App\Models\UserModel();
-$displayName = $user->getDisplayName() ?? 'Guest';
+$displayName = $user->getDisplayName() ?: 'Guest';
 $defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
-$avatar = $user->getAvatar() ?? $defaultAvatar;
+$avatar = $user->getAvatar() ?: $defaultAvatar;
 ?>
+
 <?php
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
@@ -319,7 +320,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                                 </li>
                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                 <li class="m-nav__item">
-                                  <a href="auth/logout"
+                                  <a href="<?= base_url("public/auth/logout") ?>"
                                     class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                     Logout
                                   </a>
