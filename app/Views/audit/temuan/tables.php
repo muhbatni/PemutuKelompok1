@@ -1,4 +1,5 @@
 <div class="m-content">
+
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -9,6 +10,7 @@
         </div>
       </div>
     </div>
+
     <div class="m-portlet__body">
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -29,7 +31,7 @@
             </div>
           </div>
           <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-            <a href="#" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="/pemutu/public/audit/input-temuan" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="la la-cart-plus"></i>
                 <span>
@@ -47,16 +49,16 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Judul
+              Order ID
             </th>
             <th title="Field #2">
-              Parent
+              Owner
             </th>
             <th title="Field #3">
-              Deskripsi
+              Contact
             </th>
             <th title="Field #4">
-              Aksi
+              Car Make
             </th>
             <th title="Field #5">
               Car Model
@@ -157,5 +159,6 @@
     </div>
   </div>
 </div>
+
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>

@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Datatable initilized from HTML table
+            Data Standar Audit
           </h3>
         </div>
       </div>
@@ -16,7 +16,7 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="audit/input-standar" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="/pemutu/public/audit/input-standar" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
@@ -49,18 +49,18 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Order ID
+           Judul
             </th>
             <th title="Field #2">
-              Owner
+              Parent
             </th>
             <th title="Field #3">
-              Contact
+            Deskripsi
             </th>
             <th title="Field #4">
-              Car Make
+              Aksi
             </th>
-            <th title="Field #5">
+            <!-- <th title="Field #5">
               Car Model
             </th>
             <th title="Field #6">
@@ -71,11 +71,11 @@
             </th>
             <th title="Field #8">
               Order Date
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr>
             <td>
               16590-107
             </td>
@@ -152,7 +152,7 @@
             <td>
               2017-11-17
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
       <!--end: Datatable -->
