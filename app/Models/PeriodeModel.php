@@ -8,4 +8,8 @@ class PeriodeModel extends Model
     protected $table = 'm_periode';
     protected $primaryKey = 'id';
     protected $allowedFields = ['tahun', 'ts'];
+
+    public function getPeriodes(){
+        return $this->findAll();
+    }
 }

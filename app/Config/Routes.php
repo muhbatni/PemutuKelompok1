@@ -59,7 +59,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
-  $routes->get('audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
+  $routes->match(['get','post'],'audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);

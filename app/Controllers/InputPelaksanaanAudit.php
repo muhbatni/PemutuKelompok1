@@ -9,6 +9,9 @@ class InputPelaksanaanAudit extends BaseController
     $periodeModel = new \App\Models\PeriodeModel();
     $data['periodes'] = $periodeModel->getPeriodes();
 
+    $standarModel = new \App\Models\StandarModel();
+    $data['standars'] = $standarModel->getStandars();
+
     if ($this->request->getMethod() == 'POST'){
       $data = [
         'id_periode' => $this ->request->getPost('id_periode'),
@@ -25,12 +28,12 @@ class InputPelaksanaanAudit extends BaseController
       } else{
         session()->setFlashdata('Error', 'Terjadi kesalahan saat menyimpan data.');
       }
-      return redirect()->to(base_url('audit/input-pelaksanaan'));
+      return redirect()->to(base_url('public/audit/pelaksanaan'));
     }
 
     $data["title"] = "Input Pelaksanaan Audit";
     echo view('layouts/header.php', $data);
-    echo view('audit/pelaksanaan_audit/form.php');
+    echo view('audit/pelaksanaan_audit/form.php', $data);
     echo view('layouts/footer.php');
   }
 
