@@ -85,3 +85,56 @@
     </div>
   </div>
 </div>
+
+
+<!-- TABEL DATA -->
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="m-portlet">
+      <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+          <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">Daftar Instrumen Pemutu</h3>
+          </div>
+        </div>
+      </div>
+      <div class="m-portlet__body">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Lembaga</th>
+              <th>Jenjang</th>
+              <th>Indikator</th>
+              <th>Kondisi</th>
+              <th>Batas</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (!empty($instrumen_pemutu)) : ?>
+              <?php $no = 1; foreach ($instrumen_pemutu as $row) : ?>
+                <tr>
+                  <td><?= $no++ ?></td>
+                  <td><?= esc($row['nama_lembaga']) ?></td>
+                  <td><?= esc($row['jenjang']) ?></td>
+                  <td><?= esc($row['indikator']) ?></td>
+                  <td><?= esc($row['kondisi']) ?></td>
+                  <td><?= esc($row['batas']) ?></td>
+                  <td>
+                    <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['jenjang']) ?>')">Hapus</button>
+                  </td>
+                </tr>
+              <?php endforeach ?>
+            <?php else : ?>
+              <tr>
+                <td colspan="7" class="text-center">Belum ada data instrumen.</td>
+              </tr>
+            <?php endif ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
