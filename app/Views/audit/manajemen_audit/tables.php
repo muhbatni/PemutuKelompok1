@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Jadwal Audit
+            Tabel Manajemen Audit
           </h3>
         </div>
       </div>
@@ -16,7 +16,7 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="input-pelaksanaan"
+            <a href="input-manajemen-audit"
               class=" btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
@@ -46,18 +46,18 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
-      
+
       <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
             <th title="Field #1">
-              ID Audit
+              Kode Audit
             </th>
             <th title="Field #2">
-              Periode
+              Standar
             </th>
             <th title="Field #3">
-              Kode Audit
+              Periode
             </th>
             <th title="Field #4">
               Tanggal Mulai
@@ -65,91 +65,27 @@
             <th title="Field #5">
               Tanggal Selesai
             </th>
+            <th title="Field #5">
+              Status
+            </th>
             <th title="Field #6">
               Action
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              16590-107
-            </td>
-            <td>
-              Zandra Fisbburne
-            </td>
-            <td>
-              (916) 6137523
-            </td>
-            <td>
-              Pontiac
-            </td>
-            <td>
-              Grand Am
-            </td>
-            <td>
-              Puce
-            </td>
-            <td>
-              $75343.80
-            </td>
-            <td>
-              2016-09-08
-            </td>
-          </tr>
-          <tr>
-            <td>
-              58232-0517
-            </td>
-            <td>
-              Mela Ord
-            </td>
-            <td>
-              (331) 6613809
-            </td>
-            <td>
-              Lamborghini
-            </td>
-            <td>
-              Gallardo
-            </td>
-            <td>
-              Aquamarine
-            </td>
-            <td>
-              $46031.10
-            </td>
-            <td>
-              2016-08-21
-            </td>
-          </tr>
-          <tr>
-            <td>
-              67296-0590
-            </td>
-            <td>
-              Benyamin Boerderman
-            </td>
-            <td>
-              (248) 3715044
-            </td>
-            <td>
-              Lexus
-            </td>
-            <td>
-              LX
-            </td>
-            <td>
-              Green
-            </td>
-            <td>
-              $86721.38
-            </td>
-            <td>
-              2017-11-17
-            </td>
-          </tr>
+          <?php foreach ($audit_standar as $audit): ?>
+            <tr>
+              <td><?= $audit->kode_audit; ?></td>
+              <td><?= $audit->nama_standar; ?></td>
+              <td><?= $audit->tahun_periode; ?></td>
+              <td><?= $audit->tanggal_mulai; ?></td>
+              <td><?= $audit->tanggal_selesai; ?></td>
+              <td><?= $audit->is_aktif; ?></td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
+
       </table>
       <!--end: Datatable -->
     </div>

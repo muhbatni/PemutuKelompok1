@@ -1,6 +1,8 @@
 <?php
 
 use App\Controllers\Akreditasi;
+use App\Controllers\InputManajemenAudit;
+use App\Controllers\ManajemenAudit;
 use App\Controllers\ManajemenSurvey;
 use App\Controllers\DashboardPeriode;
 use App\Controllers\DokumenPenetapan;
@@ -19,9 +21,7 @@ use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
 use App\Controllers\InputAuditor;
 use App\Controllers\StandarAudit;
-use App\Controllers\PelaksanaanAudit;
 use App\Controllers\InputStandarAudit;
-use App\Controllers\InputPelaksanaanAudit;
 use App\Controllers\DataDukung;
 use App\Controllers\Periode;
 use App\Controllers\Temuan;
@@ -58,8 +58,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
-  $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
-  $routes->match(['get','post'],'audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
+  $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
+  $routes->match(['get','post'],'audit/input-manajemen-audit', [InputManajemenAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);

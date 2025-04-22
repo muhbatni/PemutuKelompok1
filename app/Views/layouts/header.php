@@ -62,7 +62,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung', "temuan", "input-temuan"];
+$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -289,11 +289,11 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                       <span class="m-menu__link-text">Standar Audit</span>
                     </a>
                   </li>
-                  <li class="m-menu__item <?= $segment2 === 'pelaksanaan' ? 'm-menu__item--active' : '' ?>"
+                  <li class="m-menu__item <?= $segment2 === 'manajemen-audit' ? 'm-menu__item--active' : '' ?>"
                     aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/pelaksanaan") ?>" class="m-menu__link">
+                    <a href="<?= base_url("public/audit/manajemen-audit") ?>" class="m-menu__link">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Pelaksanaan Audit</span>
+                      <span class="m-menu__link-text">Manajemen Audit</span>
                     </a>
                   </li>
                   <li class="m-menu__item <?= $segment2 === 'data-dukung' ? 'm-menu__item--active' : '' ?>"

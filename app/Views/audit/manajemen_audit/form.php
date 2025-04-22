@@ -14,7 +14,7 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="input-pelaksanaan">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="input-manajemen-audit">
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
             <label for="kode">
