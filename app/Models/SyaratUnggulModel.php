@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 namespace App\Models;
 
@@ -11,4 +11,4 @@ class SyaratUnggulModel extends Model
     protected $useAutoIncrement = true;
     protected $allowedFields    = ['id_lembaga', 'nama'];
 }
-?>  -->
+?> 
