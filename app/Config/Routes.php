@@ -26,6 +26,7 @@ use App\Controllers\DataDukung;
 use App\Controllers\Periode;
 use App\Controllers\Unit;
 use App\Controllers\Lembaga;
+use App\Controllers\IsianPemutu;
 
 /**
  * @var RouteCollection $routes
@@ -73,6 +74,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'akreditasi/unit', [Unit::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
   $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/isian-pemutu', [IsianPemutu::class, 'index']);
 });
 
 $routes->setAutoRoute(true);
