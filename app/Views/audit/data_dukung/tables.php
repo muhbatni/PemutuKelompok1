@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Data Standar Audit
+            Data Dokumen
           </h3>
         </div>
       </div>
@@ -16,12 +16,12 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/audit/input-standar"
-              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="input-data-dukung"
+              class=" btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
-                  Tambah Standar
+                  Tambah Data Dukung
                 </span>
               </span>
             </a>
@@ -46,51 +46,29 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
+      
       <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
             <th title="Field #1">
-           Judul
+              Nomor
             </th>
             <th title="Field #2">
-            Parent
+              Pelaksanaan
             </th>
             <th title="Field #3">
-            Deskripsi Standar
+              Pernyataan
             </th>
             <th title="Field #4">
-              Status Aktif
+              Deskripsi
             </th>
             <th title="Field #5">
-              Aksi
-            </th>
-
-            
-            <!-- <th title="Field #5">
-              Car Model
+              Dokumen
             </th>
             <th title="Field #6">
-              Color
+              Aksi
             </th>
-            <th title="Field #7">
-              Deposit Paid
-            </th>
-            <th title="Field #8">
-              Order Date
-            </th> -->
           </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($standar as $s): ?>
-<tr>
-  <td><?= $s['nama']; ?></td>
-  <td><?= $s['id_parent']; ?></td>
-  <td><?= $s['dokumen']; ?></td>
-  <td><?= $s['is_aktif']; ?></td>
-</tr>
-<?php endforeach; ?>
-
-</tbody>
       </table>
       <!--end: Datatable -->
     </div>

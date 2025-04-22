@@ -1,14 +1,15 @@
 <?php
 namespace App\Controllers;
 
-class DataDukung extends BaseController
+class Auditor extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Data Dukung";
+    $data["title"] = "Auditor";
     echo view('layouts/header.php', $data);
-    echo view('audit/data_dukung/tables.php');
+    echo view('audit/input_auditor/tables.php');
     echo view('layouts/footer.php');
+
   }
 
 }
