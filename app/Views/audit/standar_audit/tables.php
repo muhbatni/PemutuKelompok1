@@ -52,14 +52,19 @@
            Judul
             </th>
             <th title="Field #2">
-              Parent
+            Parent
             </th>
             <th title="Field #3">
-            Deskripsi
+            Deskripsi Standar
             </th>
             <th title="Field #4">
+              Status Aktif
+            </th>
+            <th title="Field #5">
               Aksi
             </th>
+
+            
             <!-- <th title="Field #5">
               Car Model
             </th>
@@ -75,85 +80,16 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-            <td>
-              16590-107
-            </td>
-            <td>
-              Zandra Fisbburne
-            </td>
-            <td>
-              (916) 6137523
-            </td>
-            <td>
-              Pontiac
-            </td>
-            <td>
-              Grand Am
-            </td>
-            <td>
-              Puce
-            </td>
-            <td>
-              $75343.80
-            </td>
-            <td>
-              2016-09-08
-            </td>
-          </tr>
-          <tr>
-            <td>
-              58232-0517
-            </td>
-            <td>
-              Mela Ord
-            </td>
-            <td>
-              (331) 6613809
-            </td>
-            <td>
-              Lamborghini
-            </td>
-            <td>
-              Gallardo
-            </td>
-            <td>
-              Aquamarine
-            </td>
-            <td>
-              $46031.10
-            </td>
-            <td>
-              2016-08-21
-            </td>
-          </tr>
-          <tr>
-            <td>
-              67296-0590
-            </td>
-            <td>
-              Benyamin Boerderman
-            </td>
-            <td>
-              (248) 3715044
-            </td>
-            <td>
-              Lexus
-            </td>
-            <td>
-              LX
-            </td>
-            <td>
-              Green
-            </td>
-            <td>
-              $86721.38
-            </td>
-            <td>
-              2017-11-17
-            </td>
-          </tr> -->
-        </tbody>
+        <?php foreach ($standar as $s): ?>
+<tr>
+  <td><?= $s['nama']; ?></td>
+  <td><?= $s['id_parent']; ?></td>
+  <td><?= $s['dokumen']; ?></td>
+  <td><?= $s['is_aktif']; ?></td>
+</tr>
+<?php endforeach; ?>
+
+</tbody>
       </table>
       <!--end: Datatable -->
     </div>

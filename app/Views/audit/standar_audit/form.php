@@ -14,87 +14,50 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right">
+      <form class="m-form m-form--fit m-form--label-align-right" method="post" action= "input-standar">
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
             <label for="JudulStandar">
              Judul Standar
             </label>
-            <input type="text" class="form-control m-input" id="JudulStandar" aria-describedby="emailHelp"
-              placeholder="Judul Standar">
-            <!-- <span class="m-form__help">
-              We'll never share your email with anyone else.
-            </span> -->
+            <input type="text" class="form-control m-input" id="JudulStandar" name="judul" required placeholder="Judul Standar">
           </div>
-          <!-- <div class="form-group m-form__group">
-            <label for="exampleInputPassword1">
-              Password
-            </label>
-            <input type="password" class="form-control m-input" id="exampleInputPassword1" placeholder="Password">
-          </div>
-          <div class="form-group m-form__group">
-            <label>
-              Static:
-            </label>
-            <p class="form-control-static">
-              email@example.com
-            </p>
-          </div> -->
+          
           <div class="form-group m-form__group">
             <label for="parent">
              Parent
             </label>
-            <select class="form-control m-input" id="parent">
-              <option>
-                1
-              </option>
-              <option>
-                2
-              </option>
-              <option>
-                3
-              </option>
-              <option>
-                4
-              </option>
-              <option>
-                5
-              </option>
-            </select>
+            <select class="form-control m-input" id="parent" name="parent">
+            <option value="">-- Pilih Parent --</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
           </div>
-          <!-- <div class="form-group m-form__group">
-            <label for="exampleSelect2">
-              Example multiple select
-            </label>
-            <select multiple="" class="form-control m-input" id="exampleSelect2">
-              <option>
-                1
-              </option>
-              <option>
-                2
-              </option>
-              <option>
-                3
-              </option>
-              <option>
-                4
-              </option>
-              <option>
-                5
-              </option>
-            </select>
-          </div> -->
+          
           <div class="form-group m-form__group">
             <label for="DeskripsiStandar">
               Deskripsi Standar
             </label>
-            
-            <textarea class="form-control m-input" id="DeskripsiStandar" rows="3" placeholder="Deskripsi Standar"></textarea>
+            <textarea class="form-control m-input" id="DeskripsiStandar" name="deskripsi" rows="3" placeholder="Deskripsi Standar"></textarea>
           </div>
+
+          <div class="form-group m-form__group">
+          <label for="is_aktif">
+            Status Aktif
+          </label>
+          <select class="form-control m-input" name="is_aktif" id="is_aktif" required>
+          <option value="1" selected>Aktif</option>
+          <option value="0">Tidak Aktif</option>
+          </select>
         </div>
+        </div>
+
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="reset" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary">
               Submit
             </button>
             <button type="reset" class="btn btn-secondary">
