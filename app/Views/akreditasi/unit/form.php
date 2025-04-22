@@ -1,3 +1,15 @@
+<?php if (session()->getFlashdata('success')): ?>
+    <div class="alert alert-success">
+        <?= session()->getFlashdata('success'); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('error')): ?>
+    <div class="alert alert-danger">
+        <?= session()->getFlashdata('error'); ?>
+    </div>
+<?php endif; ?>
+
 <div class="row">
   <div class="col-md-12">
     <div class="m-portlet m-portlet--tab">
@@ -11,7 +23,7 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="unit.php">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="unit">
         <div class="m-portlet__body">
 
           <!-- Nama Unit -->
