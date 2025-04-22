@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Konfigurasi koneksi database
   $host = "localhost";
   $dbname = "pemutu";     // Ganti dengan nama database kamu
-  $user = "nama_user";           // Ganti dengan username PostgreSQL kamu
+  $user = "postgres";           // Ganti dengan username PostgreSQL kamu
   $password = "adeerhans";        // Ganti dengan password PostgreSQL kamu
 
   // Koneksi ke PostgreSQL

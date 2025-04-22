@@ -11,8 +11,7 @@ class InputDataPemutu extends BaseController
     $data['units'] = $unitModel->getUnits();
     $lembagaModel = new LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
-    $data["title"] = "In
-    put Data Pemutu";
+    $data["title"] = "Input Data Pemutu";
     echo view('layouts/header.php', $data);
     echo view('akreditasi/input_data_pemutu/form.php');
     echo view('layouts/footer.php');
