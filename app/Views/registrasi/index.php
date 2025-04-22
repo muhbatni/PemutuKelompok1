@@ -52,7 +52,7 @@
                   <h3 class="m-login__title">Pendaftaran Akun</h3>
                   <div class="m-login__desc">Masukkan detail Anda untuk membuat akun</div>
                 </div>
-                <form class="m-login__form m-form" action="registrasi" method="post">
+                <form class="m-login__form m-form" action="/pemutu/public/registrasi" method="post">
                   <div class="form-group m-form__group">
                     <input class="form-control m-input" type="text" placeholder="Username" name="username"
                       value="<?= isset($old['username']) ? esc($old['username']) : '' ?>" autocomplete="off">

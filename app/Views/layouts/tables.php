@@ -1,5 +1,4 @@
 <div class="m-content">
-
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -10,7 +9,6 @@
         </div>
       </div>
     </div>
-
     <div class="m-portlet__body">
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -49,16 +47,16 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Order ID
+              Judul
             </th>
             <th title="Field #2">
-              Owner
+              Parent
             </th>
             <th title="Field #3">
-              Contact
+              Deskripsi
             </th>
             <th title="Field #4">
-              Car Make
+              Aksi
             </th>
             <th title="Field #5">
               Car Model
@@ -159,6 +157,5 @@
     </div>
   </div>
 </div>
-
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>
