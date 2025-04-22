@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Data Standar Audit
+            Data Auditor
           </h3>
         </div>
       </div>
@@ -16,12 +16,11 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/audit/input-standar"
-              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="/pemutu/public/audit/input-auditor" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
-                  Tambah Standar
+                  Tambah Data Auditor
                 </span>
               </span>
             </a>
@@ -31,8 +30,7 @@
             <div class="form-group m-form__group row align-items-center">
               <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
-                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
-                    id="generalSearch">
+                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
                   <span class="m-input-icon__icon m-input-icon__icon--left">
                     <span>
                       <i class="la la-search"></i>
@@ -45,57 +43,38 @@
         </div>
       </div>
       <!--end: Search Form -->
+
       <!--begin: Datatable -->
       <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
-            <th title="Field #1">
-           Judul
-            </th>
-            <th title="Field #2">
-            Parent
-            </th>
-            <th title="Field #3">
-            Deskripsi Standar
-            </th>
-            <th title="Field #4">
-              Status Aktif
-            </th>
-            <th title="Field #5">
-              Aksi
-            </th>
-
-            
-            <!-- <th title="Field #5">
-              Car Model
-            </th>
-            <th title="Field #6">
-              Color
-            </th>
-            <th title="Field #7">
-              Deposit Paid
-            </th>
-            <th title="Field #8">
-              Order Date
-            </th> -->
+            <th>ID Auditor</th>
+            <th>File Dokumen</th>
+            <th>ID User</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-        <?php foreach ($standar as $s): ?>
-<tr>
-  <td><?= $s['nama']; ?></td>
-  <td><?= $s['id_parent']; ?></td>
-  <td><?= $s['dokumen']; ?></td>
-  <td><?= $s['is_aktif']; ?></td>
-</tr>
-<?php endforeach; ?>
-
-</tbody>
+          <tr>
+            <td></td>
+            <td><a ></a></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><a></a></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><a></a></td>
+            <td></td>
+          </tr>
+        </tbody>
       </table>
       <!--end: Datatable -->
     </div>
   </div>
 </div>
 
-<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
-  type="text/javascript"></script>
+<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>

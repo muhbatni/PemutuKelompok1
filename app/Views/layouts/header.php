@@ -277,7 +277,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 <ul class="m-menu__subnav">
                   <li class="m-menu__item <?= $segment2 === 'input-auditor' ? 'm-menu__item--active' : '' ?>"
                     aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/input-auditor") ?>" class="m-menu__link">
+                    <a href="<?= base_url("public/audit/auditor") ?>" class="m-menu__link">
                       <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
                       <span class="m-menu__link-text">Input Auditor</span>
                     </a>
