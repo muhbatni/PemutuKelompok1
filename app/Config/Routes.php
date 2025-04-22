@@ -26,6 +26,8 @@ use App\Controllers\DataDukung;
 use App\Controllers\Periode;
 use App\Controllers\Temuan;
 use App\Controllers\InputTemuan;
+use App\Controllers\Unit;
+use App\Controllers\Lembaga;
 
 /**
  * @var RouteCollection $routes
@@ -58,7 +60,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
-  $routes->get('audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
+  $routes->match(['get','post'],'audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
@@ -66,11 +68,16 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
-  $routes->get('akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
-  $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
-  $routes->get('akreditasi/periode', [Periode::class, 'index']);
+  // $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/periode', [Periode::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/unit', [Unit::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
   $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
+  //manajemen-akreditasi
+  $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
 });
 
 $routes->setAutoRoute(true);
