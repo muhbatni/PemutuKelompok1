@@ -1,14 +1,14 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\StandarAuditModel; 
+use App\Models\StandarModel; 
 
 class StandarAudit extends BaseController
 {
   public function index()
   {
 
-  $model = new StandarAuditModel();
+  $model = new StandarModel();
   $data["title"] = "Standar Audit";
   $data["standar"] = $model->findAll(); // ambil data dari DB
 

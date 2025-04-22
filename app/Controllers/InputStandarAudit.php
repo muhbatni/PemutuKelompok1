@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\StandarAuditModel;
+use App\Models\StandarModel;
 
 class InputStandarAudit extends BaseController
 {
@@ -9,7 +9,7 @@ class InputStandarAudit extends BaseController
   {
     // Jika form disubmit (POST)
     if ($this->request->getMethod() === 'POST') {
-      $model = new StandarAuditModel();
+      $model = new StandarModel();
 
     // Ambil data dari form
     $data = [
