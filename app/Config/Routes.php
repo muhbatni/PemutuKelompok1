@@ -28,6 +28,7 @@ use App\Controllers\Temuan;
 use App\Controllers\InputTemuan;
 use App\Controllers\Unit;
 use App\Controllers\Lembaga;
+use App\Controllers\InputDataDukung;
 
 /**
  * @var RouteCollection $routes
@@ -61,6 +62,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
   $routes->match(['get','post'],'audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
+  $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
 
