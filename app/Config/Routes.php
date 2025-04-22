@@ -19,6 +19,7 @@ use App\Controllers\Dashboard;
 use App\Controllers\SurveyKepuasan;
 use App\Controllers\InputAuditor;
 use App\Controllers\StandarAudit;
+use App\Controllers\Auditor;
 use App\Controllers\PelaksanaanAudit;
 use App\Controllers\InputStandarAudit;
 use App\Controllers\InputPelaksanaanAudit;
@@ -26,7 +27,6 @@ use App\Controllers\DataDukung;
 use App\Controllers\Periode;
 use App\Controllers\Temuan;
 use App\Controllers\InputTemuan;
-
 /**
  * @var RouteCollection $routes
  */
@@ -53,6 +53,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
 
+  $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
