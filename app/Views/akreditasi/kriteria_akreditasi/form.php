@@ -32,7 +32,7 @@
             <label for="InputKode">
               Kode
             </label>
-            <input type="kode" class="form-control m-input" id="InputKode" aria-describedby="emailHelp"
+            <input type="kode" class="form-control m-input" name="kode" id="kode" aria-describedby="emailHelp"
               placeholder="Masukkan kode">
             <span class="m-form__help">
             </span>
@@ -41,7 +41,7 @@
             <label for="InputNama">
               Nama
             </label>
-            <input type="nama" class="form-control m-input" id="InputNama" aria-describedby="emailHelp"
+            <input type="nama" class="form-control m-input" name="nama" id="nama" aria-describedby="emailHelp"
               placeholder="Masukkan Nama">
             <span class="m-form__help">
             </span>

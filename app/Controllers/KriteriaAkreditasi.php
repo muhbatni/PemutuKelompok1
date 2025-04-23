@@ -20,8 +20,8 @@ class KriteriaAkreditasi extends BaseController
       // Simpan data ke database
       $model = new KriteriaAkreditasiModel();
       $data = [
-        'nomor' => $InputIdLembaga,
-        'tanggal' => $InputKode,
+        'id_lembaga' => $InputIdLembaga,
+        'kode' => $InputKode,
         'nama' => $InputNama,
       ];
       $model->save($data);
