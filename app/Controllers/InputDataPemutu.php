@@ -2,20 +2,35 @@
 namespace App\Controllers;
 use App\Models\UnitModel;
 use App\Models\LembagaAkreditasiModel;
+use App\Models\PeriodeModel;
 
 class InputDataPemutu extends BaseController
 {
-  public function index()
+  protected $unitModel;
+  protected $lembagaModel;
+  protected $periodeModel;
+
+  public function __construct()
   {
-    $unitModel = new UnitModel();
-    $data['units'] = $unitModel->getUnits();
-    $lembagaModel = new LembagaAkreditasiModel();
-    $data['lembagas'] = $lembagaModel->getLembagas();
-    $data["title"] = "Input Data Pemutu";
-    echo view('layouts/header.php', $data);
-    echo view('akreditasi/input_data_pemutu/form.php');
-    echo view('layouts/footer.php');
+    $this->unitModel = new UnitModel();
+    $this->lembagaModel = new LembagaAkreditasiModel();
+    $this->periodeModel = new PeriodeModel();
   }
 
+  public function index()
+  {
+    $data = [
+      'title' => 'Input Data Pemutu',
+      'units' => $this->unitModel->getUnits(),
+      'lembagas' => $this->lembagaModel->getLembagas(),
+      'periodes' => $this->periodeModel->getPeriodes(), // Pastikan method ini ada di PeriodeModel
+      'validation' => \Config\Services::validation()
+    ];
+
+    return view('layouts/header', $data)
+      . view('akreditasi/input_data_pemutu/form')
+      . view('layouts/footer');
+  }
+
+  // ... (method save dan lainnya tetap sama)
 }
-?>
