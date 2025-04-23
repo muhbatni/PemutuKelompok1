@@ -65,7 +65,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
   $routes->match(['get','post'],'audit/input-manajemen-audit', [InputManajemenAudit::class, 'index']);
-  $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
+
   $routes->get('audit/pelaksanaan', [PelaksanaanAudit::class, 'index']);
   $routes->match(['get','post'],'audit/input-pelaksanaan', [InputPelaksanaanAudit::class, 'index']);
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);

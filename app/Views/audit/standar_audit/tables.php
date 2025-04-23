@@ -64,20 +64,8 @@
             <th title="Field #5">
               Aksi
             </th>
+  
 
-            
-            <!-- <th title="Field #5">
-              Car Model
-            </th>
-            <th title="Field #6">
-              Color
-            </th>
-            <th title="Field #7">
-              Deposit Paid
-            </th>
-            <th title="Field #8">
-              Order Date
-            </th> -->
           </tr>
         </thead>
         <tbody>
@@ -87,10 +75,48 @@
   <td><?= $s['id_parent']; ?></td>
   <td><?= $s['dokumen']; ?></td>
   <td><?= $s['is_aktif']; ?></td>
-</tr>
-<?php endforeach; ?>
 
+  <td>
+      <a href="?edit=<?= $s['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+      <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button>
+    </td>
+  </tr>
+  <?php endforeach; ?>
 </tbody>
+
+<!-- Modal Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form method="get">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="delete" id="deleteId">
+          <p id="deleteMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showDeleteModal(id, nama) {
+    document.getElementById('deleteId').value = id;
+    document.getElementById('deleteMessage').innerHTML =
+      `Apakah Anda yakin ingin menghapus standar <strong>${nama}</strong>?`;
+    $('#deleteModal').modal('show');
+  }
+</script>
+
       </table>
       <!--end: Datatable -->
     </div>
