@@ -14,16 +14,19 @@ class IsianPemutu extends BaseController
         $unitPemutuModel = new UnitPemutuModel();
 
         // Ambil semua data dari tabel p_isian_pemutu dan join dengan m_unit
-        $data['unitpemutus'] = $unitPemutuModel->select('p.id, m.nama AS nama_unit')
-                                                ->from('p_isian_pemutu p') // Specify the table 'p_isian_pemutu' with alias 'p'
-                                                ->join('m_unit m', 'p.id_unitpemutu = m.id')
-                                                ->findAll();
+        $data['unitpemutus'] = $unitPemutuModel->select('p.id, m.nama')
+                                       ->from('p_unit_pemutu p')
+                                       ->join('m_unit m', 'p.id_unit = m.id')
+                                       ->groupBy('p.id, m.nama')
+                                       ->findAll();
 
-        // Ambil data lembaga
-        $data['isianlembaga'] = $unitPemutuModel->select('p.id, m.nama AS nama_lembaga')
-                                                ->from('p_isian_pemutu p') // Specify the table 'p_isian_pemutu' with alias 'p'
-                                                ->join('m_lembaga_akreditasi m', 'p.id_unitpemutu = m.id')
-                                                ->findAll();
+        // Get Lembaga data
+        $data['isianlembaga'] = $unitPemutuModel->select('p.id, m.nama')
+                                          ->from('p_isian_pemutu p')
+                                          ->join('m_lembaga_akreditasi m', 'p.id_unitpemutu = m.id')
+                                          ->groupBy('p.id, m.nama')
+                                          ->findAll();
+                                          
 
         // Use UnitModel to get units
         $unitModel = new UnitModel();

@@ -15,25 +15,26 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right">
-          <div class="form-group m-form__group">
-              <label for="id_unitpemutu">Pilih Unit Pemutu</label>
-              <select class="form-control m-input" id="id_unitpemutu" name="id_unitpemutu">
-                  <option value="">-- Pilih Unit Pemutu--</option>
-                  <?php foreach ($unitpemutus as $unitpemutu): ?>
-                      <option value="<?= $unitpemutu['id'] ?>"><?= $unitpemutu['id'] ?> - <?= $unitpemutu['nama_unit'] ?></option>
-                  <?php endforeach; ?>
-              </select>
-          </div>
+      <div class="form-group m-form__group">
+    <label for="id_unitpemutu">Pilih Unit Pemutu</label>
+    <select class="form-control m-input" id="id_unitpemutu" name="id_unitpemutu">
+        <option value="">-- Pilih Unit Pemutu --</option>
+        <?php foreach ($unitpemutus as $unitpemutu): ?>
+            <option value="<?= $unitpemutu['id'] ?>"><?= $unitpemutu['id'] ?> - <?= $unitpemutu['nama'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 
-          <div class="form-group m-form__group">
-            <label for="id_unitpemutu">Pilih Instrumen</label>
-            <select class="form-control m-input" id="id_unitpemutu" name="id_unitpemutu">
-                <option value="">-- Pilih Unit Pemutu--</option>
-                <?php foreach ($isianlembaga as $unitpemutu): ?>
-                    <option value="<?= $unitpemutu['id'] ?>"><?= $unitpemutu['id'] ?> - <?= $unitpemutu['nama_lembaga'] ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+      <div class="form-group m-form__group">
+          <label for="id_instrumen">Pilih Lembaga Instrumen</label>
+          <select class="form-control m-input" id="id_instrumen" name="id_instrumen">
+              <option value="">-- Pilih Lembaga Instrumen--</option>
+              <?php foreach ($isianlembaga as $unitpemutu): ?>
+                  <option value="<?= $unitpemutu['id'] ?>"><?= $unitpemutu['id'] ?> - <?= $unitpemutu['nama'] ?></option>
+              <?php endforeach; ?>
+          </select> 
+      </div>
+
 
           <div class="form-group m-form__group">
             <label for="isian">Isian</label>
