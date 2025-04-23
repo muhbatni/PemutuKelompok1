@@ -92,6 +92,5 @@ class Autoload extends AutoloadConfig
    */
   public $helpers = [
     'main',
-    'users',
   ];
 }
