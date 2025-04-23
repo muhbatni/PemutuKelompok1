@@ -34,7 +34,9 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       const container = document.getElementById('m_sortable_portlets');
-
+      if (!container) {
+        return null;
+      }
       // Inisialisasi SortableJS
       const sortable = new Sortable(container, {
         animation: 150,
@@ -62,7 +64,9 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       const container = document.getElementById('m_sortable_portlets');
-
+      if (!container) {
+        return null;
+      }
       // Tambahkan event listener untuk tab jenis pertanyaan
       container.addEventListener('click', function (event) {
         if (event.target.matches('.nav-link')) {
@@ -81,7 +85,9 @@
       const addButton = document.querySelector('[data-repeater-create]');
       const container = document.getElementById('m_sortable_portlets');
       const template = document.querySelector('.portlet-template');
-
+      if (!addButton || !container) {
+        return null;
+      }
       // Fungsi untuk menambahkan portlet baru
       addButton.addEventListener('click', function () {
         // Clone the template
@@ -141,8 +147,6 @@
   <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
-  <script src="<?= base_url(); ?>/public/assets/app/js/survey-utils.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
@@ -288,7 +292,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                                   <?= esc($displayName); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
-                                  <?= getUserType() ?>
+                                  <?= $user->getUserType() ?>
                                 </span>
                               </div>
                             </div>
@@ -489,11 +493,11 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 $segments = "";
                 ?>
                 <?php foreach ($uri->getSegments() as $segment) {
-                  $segments .= $segment . "/";
+                  $segments .= "$segment/";
                   ?>
                   <li class="m-nav__separator">/</li>
                   <li class="m-nav__item">
-                    <a href="<?= base_url("public/" . $segments) ?>" class="m-nav__link">
+                    <a href="<?= base_url("public/$segments") ?>" class="m-nav__link">
                       <span class="m-nav__link-text"><?= esc($segment); ?></span>
                     </a>
                   </li>
