@@ -50,6 +50,60 @@
                 id="exampleInputSurveyDocument1" aria-describedby="surveyDocumentsHelp">
             </div>
           </div>
+          <div class="form-group m-form__group row">
+            <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan</label>
+            <div class="col-lg-7 col-md-7 col-sm-12">
+              <div class="row ui-sortable" id="m_sortable_portlets">
+                <?php foreach ($pertanyaan as $p): ?>
+                  <div class="col-lg-12 portlet-template">
+                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered">
+                      <div class="m-portlet__head ui-sortable-handle">
+                        <div class="m-portlet__head-caption">
+                          <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                              Jenis Pertanyaan
+                            </h3>
+                          </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                          <ul
+                            class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
+                            role="tablist">
+                            <li class="nav-item m-tabs__item">
+                              <a class="nav-link m-tabs__link <?= $p['jenis'] == 1 ? 'active' : '' ?>" data-toggle="tab"
+                                href="#m_portlet_base_demo_1_tab_content" role="tab" onclick="setJenis(this, 1)">
+                                <i class="la la-star"></i> Opsian
+                              </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                              <a class="nav-link m-tabs__link <?= $p['jenis'] == 2 ? 'active' : '' ?>" data-toggle="tab"
+                                href="#m_portlet_base_demo_1_tab_content" role="tab" onclick="setJenis(this, 2)">
+                                <i class="la la-pencil-square"></i> Isian
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="m-portlet__body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <input type="text" name="pertanyaan[]" class="form-control m-input" placeholder="Isi Pertanyaan"
+                            value="<?= $p['teks'] ?>">
+                          <input type="hidden" name="jenis[]" value="<?= $p['jenis'] ?>">
+                        </div>
+                        <br>
+                        <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                          <span>
+                            <i class="la la-trash-o"></i>
+                            <span>Delete</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions m-form__actions">

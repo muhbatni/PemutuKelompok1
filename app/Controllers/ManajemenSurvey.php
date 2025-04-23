@@ -101,10 +101,14 @@ class ManajemenSurvey extends BaseController
       ]);
       return alert('survey/manajemen-survey', 'success', 'Survey berhasil diedit!');
     }
+
     $data['survey'] = $this->surveyModel->find($id_survey);
     if (!$data['survey']) {
       return alert('survey/manajemen-survey', 'error', 'Survey tidak ditemukan!');
     }
+
+    $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->findAll();
+
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');

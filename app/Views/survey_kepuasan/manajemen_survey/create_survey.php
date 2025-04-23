@@ -122,7 +122,8 @@
                           <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link active" data-toggle="tab"
                               href="#m_portlet_base_demo_1_tab_content" role="tab">
-                              <i class="la la-star"></i> Opsian
+                              <i class="la la-star"></i>
+                              Opsian
                             </a>
                           </li>
                           <li class="nav-item m-tabs__item">
