@@ -60,6 +60,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
+  $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
