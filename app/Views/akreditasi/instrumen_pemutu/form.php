@@ -104,59 +104,65 @@
 </div>
 
 <!-- TABEL DATA -->
-<div class="row mt-5">
-  <div class="col-md-12">
-    <div class="m-portlet">
-      <div class="m-portlet__head">
-        <div class="m-portlet__head-caption">
-          <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Daftar Instrumen Pemutu</h3>
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="m-portlet">
+        <div class="m-portlet__head">
+          <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+              <h3 class="m-portlet__head-text">Daftar Instrumen Pemutu</h3>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="m-portlet__body">
-        <form method="post" action="instrumen-pemutu">
-          <?= csrf_field() ?>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Lembaga</th>
-                <th>Jenjang</th>
-                <th>Indikator</th>
-                <th>Kondisi</th>
-                <th>Batas</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if (!empty($instrumen_pemutu)): ?>
-                <?php $no = 1;
-                foreach ($instrumen_pemutu as $row): ?>
+
+        <div class="m-portlet__body p-0">
+          <form method="post" action="instrumen-pemutu" class="mb-0">
+            <?= csrf_field() ?>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped mb-0 w-100">
+                <thead>
                   <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= esc($row['nama_lembaga']) ?></td>
-                    <td><?= esc($row['jenjang']) ?></td>
-                    <td><?= esc($row['indikator']) ?></td>
-                    <td><?= esc($row['kondisi']) ?></td>
-                    <td><?= esc($row['batas']) ?></td>
-                    <td class="d-flex gap-2">
-                      <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning mr-1">Edit</a>
-                      <button type="submit" name="id_delete" value="<?= $row['id'] ?>" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Yakin ingin menghapus data ini?')">
-                        Hapus
-                      </button>
-                    </td>
+                    <th>No</th>
+                    <th>Lembaga</th>
+                    <th>Jenjang</th>
+                    <th>Indikator</th>
+                    <th>Kondisi</th>
+                    <th>Batas</th>
+                    <th>Aksi</th>
                   </tr>
-                <?php endforeach ?>
-              <?php else: ?>
-                <tr>
-                  <td colspan="7" class="text-center">Belum ada data instrumen.</td>
-                </tr>
-              <?php endif ?>
-            </tbody>
-          </table>
-        </form>
+                </thead>
+                <tbody>
+                  <?php if (!empty($instrumen_pemutu)): ?>
+                    <?php $no = 1;
+                    foreach ($instrumen_pemutu as $row): ?>
+                      <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= esc($row['nama_lembaga']) ?></td>
+                        <td><?= esc($row['jenjang_text']) ?></td>
+                        <td><?= esc($row['indikator']) ?></td>
+                        <td><?= esc($row['kondisi']) ?></td>
+                        <td><?= esc($row['batas']) ?></td>
+                        <td class="d-flex gap-2">
+                          <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning mr-1">Edit</a>
+                          <button type="submit" name="id_delete" value="<?= $row['id'] ?>" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Yakin ingin menghapus data ini?')">
+                            Hapus
+                          </button>
+                        </td>
+                      </tr>
+                    <?php endforeach ?>
+                  <?php else: ?>
+                    <tr>
+                      <td colspan="7" class="text-center">Belum ada data instrumen.</td>
+                    </tr>
+                  <?php endif ?>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+
       </div>
     </div>
   </div>

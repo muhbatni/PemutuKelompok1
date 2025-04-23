@@ -22,7 +22,20 @@ public function delete_by_id($id) {
     return $this->where('p_instrumen_pemutu', ['id' => $id]);
 }
 
-
+public function getJenjangText($jenjang)
+{
+    $jenjangOptions = [
+        1 => 'S3',
+        2 => 'S2',
+        3 => 'S1',
+        4 => 'D4',
+        5 => 'D3',
+        6 => 'D2',
+        7 => 'D1',
+    ];
+    
+    return $jenjangOptions[$jenjang] ?? 'Unknown';
+}
 
 }
 ?>

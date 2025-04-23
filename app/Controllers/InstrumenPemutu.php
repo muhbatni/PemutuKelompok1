@@ -14,6 +14,12 @@ class InstrumenPemutu extends BaseController
         $data['lembagas'] = $lembagaModel->getLembagas();
         $data['instrumen_pemutu'] = $instrumenModel->getInstrumenWithLembaga();
 
+        foreach ($data['instrumen_pemutu'] as &$row) {
+          $row['jenjang_text'] = $instrumenModel->getJenjangText($row['jenjang']);
+      }
+      
+      echo view('akreditasi/instrumen_pemutu/index', $data);
+      
         // Proses hapus
         if ($this->request->getPost('id_delete')) {
             $idDelete = $this->request->getPost('id_delete');
