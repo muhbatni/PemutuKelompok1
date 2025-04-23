@@ -27,8 +27,8 @@ class InputStandarAudit extends BaseController
     // Simpan ke DB
     $model->insert($data);
 
-    // Redirect dengan flashdata sukses
-    return redirect()->to(base_url('public/audit/input-standar'))->with('success', 'Data berhasil ditambahkan!');
+    // Redirect langsung ke halaman tables setelah berhasil disimpan
+      return redirect()->to(base_url('public/audit/standar'))->with('success', 'Data berhasil ditambahkan!');
   }
 
   // Tampilkan form (GET)
@@ -38,6 +38,7 @@ class InputStandarAudit extends BaseController
     echo view('layouts/footer.php');
 
   }
+
 
 }
 ?>

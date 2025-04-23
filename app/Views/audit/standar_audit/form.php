@@ -63,14 +63,12 @@
 
         </div>
 
+        <!-- Tombol aksi -->
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="submit" class="btn btn-primary">
-              Submit
-            </button>
-            <button type="reset" class="btn btn-secondary">
-              Reset
-            </button>
+            <a href="standar" class="btn btn-light">Kembali</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="reset" class="btn btn-metal">Reset</button>
           </div>
         </div>
       </form>
