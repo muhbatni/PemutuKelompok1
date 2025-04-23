@@ -13,6 +13,22 @@ class ManajemenSurvey extends BaseController
   protected $pertanyaanSurveyModel;
   protected $helpers = ['surveys'];
 
+  private $surveyPlaceholder = [
+    'kode' => null,
+    'nama' => null,
+    'dokumen_pendukung' => null,
+    'status' => true,
+  ];
+
+  private $pertanyaanSurveyPlaceholder = [
+    'id' => null,
+    'id_periode' => null,
+    'tanggal_mulai' => null,
+    'tanggal_selesai' => null,
+    'deskripsi' => null,
+    'created_at' => null,
+  ];
+
   public function __construct()
   {
     $this->surveyModel = new SurveyModel();
@@ -46,25 +62,13 @@ class ManajemenSurvey extends BaseController
       }
       $database = Database::connect();
       $database->transStart();
-      $data['id_survey'] = createSurveyData($database, 's_survey', [
-        'kode' => $data['kode_survey'] ?: null,
-        'nama' => $data['nama_survey'] ?: null,
-        'dokumen_pendukung' => $data['dokumen_pendukung_survey'] ?: null,
-        'status' => $data['status_survey'] === "true" ? true : false,
-      ]);
+      $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder);
       if (!$data['id_survey']) {
         $database->transRollback();
         $database->close();
         return;
       }
-      $result = createSurveyData($database, 's_pelaksanaan_survey', [
-        'id' => $data['id_survey'] ?: null,
-        'id_periode' => $data['id_periode'] ?: null,
-        'tanggal_mulai' => $data['tanggal_mulai'] ?: null,
-        'tanggal_selesai' => $data['tanggal_selesai'] ?: null,
-        'deskripsi' => $data['deskripsi_survey'] ?: null,
-        'created_at' => date('Y-m-d H:i:s'),
-      ]);
+      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder);
       if (!$result) {
         $database->transRollback();
         $database->close();
