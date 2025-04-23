@@ -93,6 +93,19 @@ class Akreditasi extends BaseController
         return redirect()->to(base_url('public/akreditasi'));
     }
 
+    if ($this->request->getGet('action') == 'delete' && $this->request->getGet('id')) {
+        $id = $this->request->getGet('id');
+        $deleteResult = $akreditasiModel->delete($id);
+
+        if ($deleteResult) {
+            session()->setFlashdata('success', 'Data berhasil dihapus!');
+        } else {
+            session()->setFlashdata('error', 'Terjadi kesalahan saat menghapus data!');
+        }
+
+        return redirect()->to(base_url('public/akreditasi'));
+    }
+
     $data["title"] = "Akreditasi";
     echo view('layouts/header.php', $data);
     echo view('akreditasi/form.php', $data);

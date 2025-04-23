@@ -116,7 +116,7 @@
         <!-- Submit Button -->
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="submit" class="btn btn-primary"><?= isset($editData) ? 'Perbarui' : 'Tambah' ?></button>
+            <button type="submit" value="add" class="btn btn-primary"><?= isset($editData) ? 'Perbarui' : 'Tambah' ?></button>
             <button type="button" class="btn btn-secondary" onclick="handleCancel()">Batal</button>
           </div>
         </div>
@@ -153,22 +153,26 @@
               <?php foreach ($dataAkreditasi as $akreditasi): ?>
                 <tr>
                   <td><?php
-                  // Pastikan $unit['id'] dan $akreditasi['id_unit'] adalah angka yang valid
-                  if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
-                      echo $unit['nama'];
-                  } else {
-                      echo "Unit Tidak Ditemukan"; // Optional, jika data tidak cocok
+                  foreach ($units as $unit) {
+                      if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
+                          echo $unit['nama'];
+                          break;  // keluar dari loop setelah menemukan yang cocok
+                      } else {
+                          echo "Unit Tidak Ditemukan";
+                          break;
+                      }
                   }
                   ?></td>
                   <td><?php
-                    $lembagaName = '';
-                    foreach ($lembagas as $lembaga) {
+                  foreach ($lembagas as $lembaga) {
                       if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
-                        echo $lembaga['nama'];
+                          echo $lembaga['nama'];
+                          break;  // keluar dari loop setelah menemukan yang cocok
                       } else {
-                        echo "Lembaga Tidak Ditemukan"; // Optional, jika data tidak cocok
-                    }
-                    }
+                          echo "Lembaga Tidak Ditemukan";
+                          break;
+                      }
+                  }
                   ?></td>
                   <td><?php
                     $status = '';
@@ -232,16 +236,15 @@
                   <td>
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" class="btn btn-sm btn-warning">
+                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" value="edit" class="btn btn-sm btn-warning">
                         <i class="fa fa-pencil-alt"></i>
                       </a>
                     <?php endif; ?>
 
                     <!-- Tombol Delete -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= base_url('delete?id=' . $akreditasi['id']); ?>" class="btn btn-sm btn-danger" 
-                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                        <i class="fa fa-trash-alt"></i>
+                      <a href="<?= 'akreditasi?id=' . $akreditasi['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                          <i class="fa fa-trash-alt"></i>
                       </a>
                     <?php endif; ?>
                   </td>
