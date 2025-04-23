@@ -153,18 +153,25 @@
               <?php foreach ($dataAkreditasi as $akreditasi): ?>
                 <tr>
                   <td><?php
-                  // Pastikan $unit['id'] dan $akreditasi['id_unit'] adalah angka yang valid
-                  if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
-                      echo $unit['nama'];
-                  } else {
-                      echo "Unit Tidak Ditemukan"; // Optional, jika data tidak cocok
+                  foreach ($units as $unit) {
+                      if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
+                          echo $unit['nama'];
+                          break;  // keluar dari loop setelah menemukan yang cocok
+                      } else {
+                          echo "Unit Tidak Ditemukan";
+                          break;
+                      }
                   }
                   ?></td>
                   <td><?php
-                    if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
-                      echo $lembaga['nama'];
-                  } else {
-                      echo "Lembaga Tidak Ditemukan"; // Optional, jika data tidak cocok
+                  foreach ($lembagas as $lembaga) {
+                      if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
+                          echo $lembaga['nama'];
+                          break;  // keluar dari loop setelah menemukan yang cocok
+                      } else {
+                          echo "Lembaga Tidak Ditemukan";
+                          break;
+                      }
                   }
                   ?></td>
                   <td><?php
