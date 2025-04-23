@@ -18,6 +18,11 @@ class InstrumenPemutuModel extends Model
                 ->findAll();
                 
 }
+public function delete_by_id($id) {
+    return $this->where('p_instrumen_pemutu', ['id' => $id]);
+}
+
+
 
 }
 ?>
