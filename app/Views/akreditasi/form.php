@@ -116,7 +116,7 @@
         <!-- Submit Button -->
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <button type="submit" class="btn btn-primary"><?= isset($editData) ? 'Perbarui' : 'Tambah' ?></button>
+            <button type="submit" value="add" class="btn btn-primary"><?= isset($editData) ? 'Perbarui' : 'Tambah' ?></button>
             <button type="button" class="btn btn-secondary" onclick="handleCancel()">Batal</button>
           </div>
         </div>
@@ -161,14 +161,11 @@
                   }
                   ?></td>
                   <td><?php
-                    $lembagaName = '';
-                    foreach ($lembagas as $lembaga) {
-                      if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
-                        echo $lembaga['nama'];
-                      } else {
-                        echo "Lembaga Tidak Ditemukan"; // Optional, jika data tidak cocok
-                    }
-                    }
+                    if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
+                      echo $lembaga['nama'];
+                  } else {
+                      echo "Lembaga Tidak Ditemukan"; // Optional, jika data tidak cocok
+                  }
                   ?></td>
                   <td><?php
                     $status = '';
@@ -232,16 +229,15 @@
                   <td>
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" class="btn btn-sm btn-warning">
+                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" value="edit" class="btn btn-sm btn-warning">
                         <i class="fa fa-pencil-alt"></i>
                       </a>
                     <?php endif; ?>
 
                     <!-- Tombol Delete -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= base_url('delete?id=' . $akreditasi['id']); ?>" class="btn btn-sm btn-danger" 
-                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                        <i class="fa fa-trash-alt"></i>
+                      <a href="<?= 'akreditasi?id=' . $akreditasi['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                          <i class="fa fa-trash-alt"></i>
                       </a>
                     <?php endif; ?>
                   </td>
