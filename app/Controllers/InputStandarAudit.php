@@ -11,10 +11,15 @@ class InputStandarAudit extends BaseController
     if ($this->request->getMethod() === 'POST') {
       $model = new StandarModel();
 
+      // Ambil input parent dan konversi jika kosong
+    $parent = $this->request->getPost('parent');
+    $parent = ($parent === null || $parent === '') ? null : $parent;
+
+
     // Ambil data dari form
     $data = [
       'nama' => $this->request->getPost('judul'),
-      'id_parent' => $this->request->getPost('parent'),
+      'id_parent' => $parent,
       'dokumen' => $this->request->getPost('deskripsi'),
       'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
     ];

@@ -45,14 +45,22 @@
           </div>
 
           <div class="form-group m-form__group">
-          <label for="is_aktif">
-            Status Aktif
-          </label>
-          <select class="form-control m-input" name="is_aktif" id="is_aktif" required>
-          <option value="1" selected>Aktif</option>
-          <option value="0">Tidak Aktif</option>
-          </select>
-        </div>
+  <label for="is_aktif" class="font-weight-bold">Status Aktif</label>
+  <div class="d-flex align-items-center mt-2">
+    <label class="radio">
+      <input type="radio" name="is_aktif" value="1" checked />
+      <span></span>
+      Aktif
+    </label>
+    <label class="radio ml-4">
+      <input type="radio" name="is_aktif" value="0" />
+      <span></span>
+      Tidak Aktif
+    </label>
+  </div>
+</div>
+
+
         </div>
 
         <div class="m-portlet__foot m-portlet__foot--fit">
