@@ -10,7 +10,8 @@ class SyaratUnggulModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $allowedFields    = ['id_lembaga', 'nama'];
-    public function getAkreditasiData()
+
+    public function getSyaratData()
     {
         return $this->findAll(); 
     }

@@ -15,19 +15,14 @@
       <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="syarat-unggul" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
-          <!-- Hidden ID Field for Editing -->
-        <?php if (isset($editData)): ?>
-          <input type="hidden" name="id" value="<?= $editData['id']; ?>">
-        <?php endif; ?>
-
-        <!-- ID Lembaga -->
+        <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
-          <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
+          <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
-              <option value="<?= $lembaga['id']; ?>"
-                <?= isset($editData) && $editData['id_lembaga'] == $lembaga['id'] ? 'selected' : ''; ?>>
+              <option value="<?= $lembaga['id']; ?>" 
+                <?= isset($editData['id_lembaga']) && $editData['id_lembaga'] == $lembaga['id'] ? 'selected' : ''; ?>>
                 <?= $lembaga['nama']; ?>
               </option>
             <?php endforeach; ?>
@@ -63,19 +58,18 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($syaratUnggul as $syarat): ?>
+            <?php foreach ($dataSyarat as $syarat): ?>
               <tr>
               <td><?php
-                  foreach ($lembagas as $lembaga) {
-                      if (isset($lembaga['id']) && isset($syarat['id_lembaga']) && $lembaga['id'] == $syarat['id_lembaga']) {
-                          echo $lembaga['nama'];
-                          break;  // keluar dari loop setelah menemukan yang cocok
-                      } else {
-                          echo "Lembaga Tidak Ditemukan";
-                          break;
-                      }
-                  }
-                  ?></td>
+                $lembaga = null;
+                foreach ($lembagas as $l) {
+                    if ($l['id'] == $syarat['id_lembaga']) {
+                        $lembaga = $l['nama'];
+                        break;
+                    }
+                }
+                echo $lembaga ? $lembaga : 'Lembaga Tidak Ditemukan';
+                ?></td>
                 <td><?= $syarat['nama']; ?></td>
                 <td>
                   <!-- Tombol Edit -->

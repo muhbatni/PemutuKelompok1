@@ -11,9 +11,9 @@ class SyaratUnggul extends BaseController
     $lembagaModel = new LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
 
-    // Ambil data akreditasi
+    // Ambil data p_syarat_unggul
     $syaratUnggulModel = new SyaratUnggulModel();
-    $data['syaratUnggul'] = $syaratUnggulModel->getAkreditasiData();
+    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
 
     $editData = null;
     if ($this->request->getGet('id')) {
