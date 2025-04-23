@@ -422,7 +422,10 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                     'dokumen-penetapan' => 'Dokumen Penetapan',
                     '' => 'Akreditasi',
                     'periode' => 'Periode',
+                    'lembaga' => 'Input Lembaga',
+                    'unit' => 'Input Unit',
                     'input-data-pemutu' => 'Input Data Pemutu',
+                    'isian-pemutu' => 'Isian Pemutu',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>

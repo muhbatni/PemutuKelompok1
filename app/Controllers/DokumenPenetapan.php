@@ -7,39 +7,81 @@ class DokumenPenetapan extends BaseController
 {
   public function index()
   {
-    // Jika form disubmit (metode POST)
-    if ($this->request->getMethod() == 'POST') {
-      // Ambil data dari form
-      $nomor = $this->request->getPost('nomor');
-      $tanggal = $this->request->getPost('tanggal');
-      $nama = $this->request->getPost('nama');
-      $deskripsi = $this->request->getPost('deskripsi');
-      $dokumen = $this->request->getFile('dokumen');
+    $model = new DokumenPenetapanModel();
 
-      // Simpan file dokumen
-      $fileDokumen = $dokumen->getName();
-      $dokumen->move(WRITEPATH . 'uploads/dokumen/', $fileDokumen);
-
-      // Simpan data ke database
-      $model = new DokumenPenetapanModel();
-      $data = [
-        'nomor' => $nomor,
-        'tanggal' => $tanggal,
-        'nama' => $nama,
-        'deskripsi' => $deskripsi,
-        'dokumen' => $fileDokumen,
-      ];
-      $model->save($data);
-
-      // Set flashdata untuk pemberitahuan sukses
-      return alert('akreditasi/dokumen-penetapan', 'success', 'Dokumen berhasil disimpan!');
+    // Hapus data
+    if ($this->request->getGet('delete')) {
+      $id = $this->request->getGet('delete');
+      $data = $model->where('id', $id)->first();
+      if ($data && !empty($data['dokumen'])) {
+        $filePath = WRITEPATH . 'uploads/dokumen/' . $data['dokumen'];
+        if (file_exists($filePath)) {
+          unlink($filePath); // hapus file fisik
+        }
+      }
+      $model->delete($id);
+      session()->setFlashdata('success', 'Dokumen berhasil dihapus!');
+      return redirect()->to(base_url('public/akreditasi/dokumen-penetapan'));
     }
 
-    // Jika metode GET, tampilkan form
-    $data["title"] = "Dokumen Penetapan";
+    // Edit data
+    $editData = null;
+    if ($this->request->getGet('edit')) {
+      $id = $this->request->getGet('edit');
+      $editData = $model->find($id);
+    }
+
+    // Simpan data (create/update)
+    if ($this->request->getMethod() == 'POST') {
+      $id = $this->request->getPost('id');
+      $data = [
+        'nomor' => $this->request->getPost('nomor'),
+        'tanggal' => $this->request->getPost('tanggal'),
+        'nama' => $this->request->getPost('nama'),
+        'deskripsi' => $this->request->getPost('deskripsi'),
+      ];
+
+      $dokumen = $this->request->getFile('dokumen');
+      if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+        $uploadPath = WRITEPATH . 'uploads/dokumen/';
+        if (!is_dir($uploadPath)) {
+          mkdir($uploadPath, 0777, true);
+        }
+
+        $fileName = $dokumen->getRandomName();
+        $dokumen->move($uploadPath, $fileName);
+        $data['dokumen'] = $fileName;
+
+        // Jika update, hapus file lama
+        if ($id) {
+          $oldData = $model->where('id', $id)->first();
+          if ($oldData && !empty($oldData['dokumen'])) {
+            $oldPath = $uploadPath . $oldData['dokumen'];
+            if (file_exists($oldPath)) {
+              unlink($oldPath);
+            }
+          }
+        }
+      }
+
+      if ($id) {
+        $model->update($id, $data);
+        session()->setFlashdata('success', 'Dokumen berhasil diperbarui!');
+      } else {
+        $model->save($data);
+        session()->setFlashdata('success', 'Dokumen berhasil disimpan!');
+      }
+
+      return redirect()->to(base_url('public/akreditasi/dokumen-penetapan'));
+    }
+
+    // Ambil semua data dokumen
+    $data['title'] = "Dokumen Penetapan";
+    $data['dokumen_penetapan'] = $model->findAll();
+    $data['edit'] = $editData;
+
     echo view('layouts/header.php', $data);
     echo view('akreditasi/dokumen_penetapan/form.php');
     echo view('layouts/footer.php');
   }
 }
-
