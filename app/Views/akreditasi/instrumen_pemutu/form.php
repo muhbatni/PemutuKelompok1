@@ -15,15 +15,15 @@
         <div class="m-portlet__body">
 
           <!-- ID Field (Auto-generated) -->
-          <input type="hidden" name="id" value="<?php echo 'auto-generated'; ?>">
+          <input type="hidden" name="delete" id="deleteId">
 
           <!-- id_lembaga Field -->
           <div class="form-group m-form__group">
             <label for="id_lembaga">Lembaga Akreditasi</label>
             <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
-            <option value="">-- Pilih Lembaga --</option>
+              <option value="">-- Pilih Lembaga --</option>
               <?php foreach ($lembagas as $lembaga): ?>
-              <option value="<?= $lembaga['id']; ?>"><?= $lembaga['nama']; ?></option>
+                <option value="<?= $lembaga['id']; ?>"><?= $lembaga['nama']; ?></option>
               <?php endforeach; ?>
             </select>
           </div>
@@ -112,8 +112,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php if (!empty($instrumen_pemutu)) : ?>
-              <?php $no = 1; foreach ($instrumen_pemutu as $row) : ?>
+            <?php if (!empty($instrumen_pemutu)): ?>
+              <?php $no = 1;
+              foreach ($instrumen_pemutu as $row): ?>
                 <tr>
                   <td><?= $no++ ?></td>
                   <td><?= esc($row['nama_lembaga']) ?></td>
@@ -123,11 +124,12 @@
                   <td><?= esc($row['batas']) ?></td>
                   <td>
                     <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['jenjang']) ?>')">Hapus</button>
+                    <button type="button" class="btn btn-sm btn-danger"
+                      onclick="showDeleteModal('<?= $row['id'] ?>')">Hapus</button>
                   </td>
                 </tr>
               <?php endforeach ?>
-            <?php else : ?>
+            <?php else: ?>
               <tr>
                 <td colspan="7" class="text-center">Belum ada data instrumen.</td>
               </tr>
@@ -138,3 +140,34 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form method="get">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">Konfirmasi Hapus</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="delete" id="deleteId">
+          <p id="deleteMessage">Apakah Anda yakin ingin menghapus data ini?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showDeleteModal(id) {
+    document.getElementById('deleteId').value = id;
+    $('#deleteModal').modal('show');
+  }
+</script>

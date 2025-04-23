@@ -13,7 +13,16 @@ class InstrumenPemutu extends BaseController
 
     $instrumenModel = new \App\Models\InstrumenPemutuModel();
     $data['instrumen_pemutu'] = $instrumenModel->getInstrumenWithLembaga();
-    
+
+
+    // Hapus data jika ada parameter 'delete' dari GET
+$id = $this->request->getGet('delete');
+if (!is_null($id) && $id !== '') {
+    $instrumenModel->delete($id);
+    session()->setFlashdata('success', 'Data berhasil dihapus!');
+    return redirect()->to(base_url('public/akreditasi/instrumen-pemutu'));
+}
+
 
     // Jika form disubmit (metode POST)
     if ($this->request->getMethod() == 'POST') {
