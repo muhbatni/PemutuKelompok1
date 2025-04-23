@@ -2,11 +2,18 @@
 
 namespace App\Controllers;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use App\Models\UserModel;
+use CodeIgniter\Cookie\CookieInterface;
 
 class Auth extends BaseController
 {
-
+  protected $userModel;
+  public function __construct()
+  {
+    $this->userModel = new UserModel();
+  }
   public function register()
   {
     if ($this->request->getMethod() !== 'POST') {
@@ -14,7 +21,6 @@ class Auth extends BaseController
     }
     $postData = $this->request->getPost();
     $validation = service('validation');
-    $userModel = new UserModel();
     $hashedPassword = password_hash($postData['password'], PASSWORD_DEFAULT);
     $data = [
       'username' => $postData['username'],
@@ -27,7 +33,7 @@ class Auth extends BaseController
         ['errors' => $validation->getErrors(), 'old' => $postData]
       );
     }
-    if ($userModel->insert($data)) {
+    if ($this->userModel->insert($data)) {
       return alert('login', 'success', 'Registrasi berhasil, silahkan login!');
     }
     return alert('registrasi', 'error', 'Registrasi gagal, silahkan coba lagi!');
@@ -39,34 +45,54 @@ class Auth extends BaseController
       return;
     }
     $postData = $this->request->getPost();
-    $userModel = new UserModel();
     $data = ['username' => $postData['username'], 'password' => $postData['password']];
-    $user = $userModel->where('username', $data['username'])->first();
+    $user = $this->userModel->where('username', $data['username'])->first();
     if (!$user) {
       return alert('login', 'error', 'Username atau password salah!');
     }
     $hashedPassword = $user['password'];
-    if (password_verify($data['password'], $hashedPassword)) {
-      session()->set([
-        'user_id' => $user['id'],
-        'user_type' => $user['tipe'],
-        'user_avatar' => $user['foto'] ? pg_unescape_bytea($user['foto']) : null,
-      ]);
-      return alert('dashboard', 'success', 'Login berhasil!');
+    if (!password_verify($data['password'], $hashedPassword)) {
+      return alert('login', 'error', 'Username atau password salah!');
     }
-    return alert('login', 'error', 'Username atau password salah!');
+    helper('cookie');
+    $issuedAt = time();
+    $accessTokenExp = $issuedAt + 3600; // 1 hour
+    $refreshTokenExp = $issuedAt + 604800; // 7 days
+
+    $accessPayload = [
+      'iat' => $issuedAt,
+      'exp' => $accessTokenExp,
+      'uid' => $user['id'],
+    ];
+
+    $refreshPayload = [
+      'iat' => $issuedAt,
+      'exp' => $refreshTokenExp,
+      'uid' => $user['id'],
+      'type' => 'refresh'
+    ];
+
+    $secretKey = getenv('JWT_SECRET');
+    $accessToken = JWT::encode($accessPayload, $secretKey, 'HS256');
+    $refreshToken = JWT::encode($refreshPayload, $secretKey, 'HS256');
+    $userAvatar = $user['foto'];
+    if ($userAvatar) {
+      if (cache()->get("avatar_{$user['id']}")) {
+        cache()->delete("avatar_{$user['id']}");
+      }
+      $image = pg_unescape_bytea($userAvatar);
+      cache()->save("avatar_{$user['id']}", $image, 3600);
+    }
+    set_cookie('access_token', $accessToken, $accessTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
+    set_cookie('refresh_token', $refreshToken, $refreshTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
+    return alert('dashboard', 'success', 'Login berhasil!')->withCookies();
   }
 
   public function logout()
   {
-    if (!session()->get('user_id')) {
-      return alert('login', 'error', 'Anda belum login!');
-    }
-    session()->remove('user_id');
-    session()->remove('user_type');
-    if (session()->get('user_avatar')) {
-      session()->remove('user_avatar');
-    }
-    return alert('login', 'success', 'Logout berhasil!');
+    helper('cookie');
+    delete_cookie('access_token');
+    delete_cookie('refresh_token');
+    return alert('login', 'success', 'Logout berhasil!')->withCookies();
   }
 }
