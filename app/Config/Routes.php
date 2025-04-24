@@ -59,6 +59,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
+  $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
@@ -66,7 +67,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-manajemen-audit/edit/(:num)', 'InputManajemenAudit::edit/$1');
   $routes->post('audit/input-manajemen-audit/update/(:num)', 'InputManajemenAudit::update/$1');
   $routes->get('audit/input-manajemen-audit/delete/(:num)', 'InputManajemenAudit::delete/$1');  
-  $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
+
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);

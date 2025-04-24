@@ -16,7 +16,8 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/audit/input-auditor" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="/pemutu/public/audit/input-auditor"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
@@ -30,7 +31,8 @@
             <div class="form-group m-form__group row align-items-center">
               <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
-                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
+                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
+                    id="generalSearch">
                   <span class="m-input-icon__icon m-input-icon__icon--left">
                     <span>
                       <i class="la la-search"></i>
@@ -46,35 +48,34 @@
 
       <!--begin: Datatable -->
       <table class="m-datatable" id="html_table" width="100%">
-        <thead>
-          <tr>
-            <th>ID Auditor</th>
-            <th>File Dokumen</th>
-            <th>ID User</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td><a ></a></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><a></a></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><a></a></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-      <!--end: Datatable -->
+        <table class="m-datatable" id="html_table" width="100%">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>File Dokumen</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($auditor as $row): ?>
+              <tr>
+                <td><?= esc($row['username']); ?></td>
+                <td><a href="<?= base_url('uploads/' . esc($row['dokumen'])); ?>"
+                    target="_blank"><?= esc($row['dokumen']); ?></a></td>
+                <td>
+                  <a href="<?= base_url('audit/input-auditor/edit/' . $row['id']); ?>"
+                    class="btn btn-primary btn-sm">Edit</a>
+                  <a href="<?= base_url('audit/input-auditor/delete/' . $row['id']); ?>" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Yakin ingin menghapus?')">Delete</a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <!--end: Datatable -->
     </div>
   </div>
 </div>
 
-<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
+<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
+  type="text/javascript"></script>

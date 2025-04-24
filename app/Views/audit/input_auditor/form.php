@@ -15,12 +15,16 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right">
+
         <div class="m-portlet__body">
-          <div class="form-group m-form__group">
-            <label for="inputId">
-              ID Auditor
-            </label>
-            <input type="text" class="form-control m-input" id="inputId" name="id" placeholder="Masukkan ID Auditor">
+        <div class="form-group m-form__group">
+            <label for="inputIdUser">Username</label>
+            <select class="form-control m-input" id="inputUsername" name="username">
+              <option value="">-- Pilih Username --</option>
+              <?php foreach ($users as $user): ?>
+                <option value="<?= $user['id'] ?>"><?= $user['username'] ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
           <div class="form-group m-form__group">
             <label for="inputDokumen">
@@ -29,14 +33,10 @@
             <input type="file" class="form-control m-input" id="inputDokumen" name="dokumen">
           </div>
           <div class="form-group m-form__group">
-            <label for="inputIdUser">
-              ID User
-            </label>
-            <input type="text" class="form-control m-input" id="inputIdUser" name="id_user"
-              placeholder="Masukkan ID User">
-          </div>
           <button type="submit" class="btn btn-primary" id="Simpan">Simpan</button>
           <button type="reset" class="btn btn-metal">Cancel</button>
+          </div>
+
       </form>
     </div>
   </div>
