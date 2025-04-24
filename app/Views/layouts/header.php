@@ -174,7 +174,7 @@ $avatar = $user->getAvatar() ?: $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung'];
+$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -390,9 +390,10 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                   <?php
                   $akreditasiMenu = [
                     'input-auditor' => 'Input Auditor',
-                    'standar' => 'Syarat Unggul',
-                    'pelaksanaan' => 'Pelaksanaan Audit',
+                    'standar' => 'Standar Audit',
+                    'manajemen-audit' => 'Manajemen Audit',
                     'data-dukung' => 'Data Dukung',
+                    'temuan' => 'Temuan',
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
                     <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"

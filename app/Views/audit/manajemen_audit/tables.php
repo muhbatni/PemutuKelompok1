@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Data Standar Audit
+            Tabel Manajemen Audit
           </h3>
         </div>
       </div>
@@ -16,12 +16,12 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/audit/input-standar"
-              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="input-manajemen-audit"
+              class=" btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
-                  Tambah Standar
+                  Tambah Audit
                 </span>
               </span>
             </a>
@@ -46,76 +46,51 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
+
       <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
             <th title="Field #1">
-           Judul
+              Kode Audit
             </th>
             <th title="Field #2">
-            Parent
+              Standar
             </th>
             <th title="Field #3">
-            Deskripsi Standar
+              Periode
             </th>
             <th title="Field #4">
-              Status Aktif
+              Tanggal Mulai
             </th>
             <th title="Field #5">
+              Tanggal Selesai
+            </th>
+            <th title="Field #6">
               Aksi
             </th>
-  
-
           </tr>
         </thead>
         <tbody>
-        <?php foreach ($standar as $s): ?>
-<tr>
-  <td><?= $s['nama']; ?></td>
-  <td><?= $s['id_parent']; ?></td>
-  <td><?= $s['dokumen']; ?></td>
-  <td><?= $s['is_aktif']; ?></td>
-
-  <td>
-      <a href="?edit=<?= $s['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-      <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button>
-    </td>
-  </tr>
-  <?php endforeach; ?>
-</tbody>
-
-<!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <form method="get">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="delete" id="deleteId">
-          <p id="deleteMessage"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script>
-  function showDeleteModal(id, nama) {
-    document.getElementById('deleteId').value = id;
-    document.getElementById('deleteMessage').innerHTML =
-      `Apakah Anda yakin ingin menghapus standar <strong>${nama}</strong>?`;
-    $('#deleteModal').modal('show');
-  }
-</script>
+          <?php foreach ($audit_standar as $audit): ?>
+            <tr>
+              <td><?= $audit->kode_audit; ?></td>
+              <td><?= nl2br($audit->nama_standar); ?></td>
+              <td><?= $audit->tahun_periode; ?></td>
+              <td><?= date('d-m-Y', strtotime($audit->tanggal_mulai)); ?></td>
+              <td><?= date('d-m-Y', strtotime($audit->tanggal_selesai)); ?></td>
+              <td>
+                <a href="<?= base_url('public/audit/input-manajemen-audit/edit/' . $audit->id_audit); ?>"
+                  class="btn btn-sm btn-warning" title="Edit">
+                  <i class="la la-edit"></i>
+                </a>
+                <a href="<?= base_url('public/audit/input-manajemen-audit/delete/' . $audit->id_audit); ?>"
+                  class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                  <i class="la la-trash"></i>
+                </a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
 
       </table>
       <!--end: Datatable -->
