@@ -1,184 +1,249 @@
-<?php $isEdit = isset($edit); ?>
-
 <div class="row">
   <div class="col-md-12">
     <div class="m-portlet m-portlet--tab">
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Formulir Isian Pemutu</h3>
+            <span class="m-portlet__head-icon m--hide">
+              <i class="la la-gear"></i>
+            </span>
+            <h3 class="m-portlet__head-text">
+              Base Form Controls
+            </h3>
           </div>
         </div>
       </div>
-
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
-        <?php if ($isEdit): ?>
-          <input type="hidden" name="id" value="<?= esc($edit['id']) ?>">
-        <?php endif ?>
-
-        <div class="form-group m-form__group">
-          <label for="id_unitpemutu">Pilih Unit Pemutu</label>
-          <select class="form-control m-input" id="id_unitpemutu" name="id_unitpemutu" required>
-            <option value="">-- Pilih --</option>
-            <?php foreach ($unitpemutus as $unit): ?>
-              <option value="<?= $unit['id'] ?>" <?= $isEdit && $edit['id_unitpemutu'] == $unit['id'] ? 'selected' : '' ?>>
-                <?= $unit['id'] ?> - <?= $unit['nama'] ?>
+      <form class="m-form m-form--fit m-form--label-align-right">
+        <div class="m-portlet__body">
+          <div class="form-group m-form__group m--margin-top-10">
+            <div class="alert m-alert m-alert--default" role="alert">
+              The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap
+              with additional classes.
+            </div>
+          </div>
+          <div class="form-group m-form__group">
+            <label for="exampleInputEmail1">
+              Email address
+            </label>
+            <input type="email" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter email">
+            <span class="m-form__help">
+              We'll never share your email with anyone else.
+            </span>
+          </div>
+          <div class="form-group m-form__group">
+            <label for="exampleInputPassword1">
+              Password
+            </label>
+            <input type="password" class="form-control m-input" id="exampleInputPassword1" placeholder="Password">
+          </div>
+          <div class="form-group m-form__group">
+            <label>
+              Static:
+            </label>
+            <p class="form-control-static">
+              email@example.com
+            </p>
+          </div>
+          <div class="form-group m-form__group">
+            <label for="exampleSelect1">
+              Example select
+            </label>
+            <select class="form-control m-input" id="exampleSelect1">
+              <option>
+                1
               </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-
-        <div class="form-group m-form__group">
-          <label for="id_instrumen">Pilih Instrumen</label>
-          <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
-            <option value="">-- Pilih --</option>
-            <?php foreach ($isianlembaga as $instrumen): ?>
-              <option value="<?= $instrumen['id'] ?>" <?= $isEdit && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
-                <?= $instrumen['id'] ?> - <?= $instrumen['nama'] ?>
+              <option>
+                2
               </option>
-            <?php endforeach; ?>
-          </select>
+              <option>
+                3
+              </option>
+              <option>
+                4
+              </option>
+              <option>
+                5
+              </option>
+            </select>
+          </div>
+          <div class="form-group m-form__group">
+            <label for="exampleSelect2">
+              Example multiple select
+            </label>
+            <select multiple="" class="form-control m-input" id="exampleSelect2">
+              <option>
+                1
+              </option>
+              <option>
+                2
+              </option>
+              <option>
+                3
+              </option>
+              <option>
+                4
+              </option>
+              <option>
+                5
+              </option>
+            </select>
+          </div>
+          <div class="form-group m-form__group">
+            <label for="exampleTextarea">
+              Example textarea
+            </label>
+            <textarea class="form-control m-input" id="exampleTextarea" rows="3"></textarea>
+          </div>
         </div>
-
-        <div class="form-group m-form__group">
-          <label for="isian">Isian</label>
-          <select class="form-control m-input" id="isian" name="isian" required>
-            <option value="">-- Pilih --</option>
-            <option value="0" <?= $isEdit && $edit['isian'] == '0' ? 'selected' : '' ?>>0 - Cek</option>
-            <option value="1" <?= $isEdit && $edit['isian'] == '1' ? 'selected' : '' ?>>1 - Lolos</option>
-            <option value="2" <?= $isEdit && $edit['isian'] == '2' ? 'selected' : '' ?>>2 - Peringatan (0-50%)</option>
-            <option value="3" <?= $isEdit && $edit['isian'] == '3' ? 'selected' : '' ?>>3 - Tidak Lolos (50%)</option>
-          </select>
-        </div>
-
-        <div class="form-group m-form__group">
-          <label for="status">Status</label>
-          <select class="form-control m-input" id="status" name="status" required>
-            <option value="">-- Pilih --</option>
-            <option value="0" <?= $isEdit && $edit['status'] == '0' ? 'selected' : '' ?>>Tidak Aktif</option>
-            <option value="1" <?= $isEdit && $edit['status'] == '1' ? 'selected' : '' ?>>Aktif</option>
-          </select>
-        </div>
-
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <?php if ($isEdit): ?>
-              <button type="button" class="btn btn-primary" onclick="showUpdateModal()">Perbarui</button>
-            <?php else: ?>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            <?php endif ?>
-            <a href="isian-pemutu" class="btn btn-secondary">Batal</a>
+            <button type="reset" class="btn btn-primary">
+              Submit
+            </button>
+            <button type="reset" class="btn btn-secondary">
+              Cancel
+            </button>
           </div>
         </div>
       </form>
-      <!--end::Form-->
     </div>
-  </div>
-</div>
+    <!--end::Portlet-->
 
-<?php if (session()->getFlashdata('success')): ?>
-  <div class="alert alert-success mt-3"><?= session()->getFlashdata('success') ?></div>
-<?php endif ?>
-
-<!-- TABEL DATA -->
-<div class="row mt-5">
-  <div class="col-md-12">
-    <div class="m-portlet">
+    <!--begin::Portlet-->
+    <div class="m-portlet m-portlet--tab">
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Daftar Isian Pemutu</h3>
+            <span class="m-portlet__head-icon m--hide">
+              <i class="la la-gear"></i>
+            </span>
+            <h3 class="m-portlet__head-text">
+              Textual HTML5 Inputs
+            </h3>
           </div>
         </div>
       </div>
-      <div class="m-portlet__body">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Unit Pemutu</th>
-              <th>Instrumen</th>
-              <th>Isian</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (!empty($isian_pemutu)) : ?>
-              <?php $no = 1; foreach ($isian_pemutu as $row): ?>
-                <tr>
-                  <td><?= $no++ ?></td>
-                  <td><?= esc($row['id_unitpemutu']) ?></td>
-                  <td><?= esc($row['id_instrumen']) ?></td>
-                  <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
-                  <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>
-                  <td>
-                    <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>')">Hapus</button>
-                  </td>
-                </tr>
-              <?php endforeach ?>
-            <?php else: ?>
-              <tr><td colspan="6" class="text-center">Belum ada data.</td></tr>
-            <?php endif ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+      <!--begin::Form-->
+      <form class="m-form m-form--fit m-form--label-align-right">
+        <div class="m-portlet__body">
+          <div class="form-group m-form__group m--margin-top-10">
+            <div class="alert m-alert m-alert--default" role="alert">
+              Here are examples of
+              <code>
+                            .form-control
+                        </code>
+              applied to each textual HTML5 input type:
+            </div>
 
-<!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <form method="get">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title">Konfirmasi Hapus</h5>
-          <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="delete" id="deleteId">
-          <p>Apakah Anda yakin ingin menghapus data ini?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        </div>
+            <div class="form-group m-form__group row">
+              <label for="example-text-input" class="col-2 col-form-label">
+                Text
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="text" value="Artisanal kale" id="example-text-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-search-input" class="col-2 col-form-label">
+                Search
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="search" value="How do I shoot web" id="example-search-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-email-input" class="col-2 col-form-label">
+                Email
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="email" value="bootstrap@example.com" id="example-email-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-url-input" class="col-2 col-form-label">
+                URL
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="url" value="https://getbootstrap.com" id="example-url-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-tel-input" class="col-2 col-form-label">
+                Telephone
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="tel" value="1-(555)-555-5555" id="example-tel-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-password-input" class="col-2 col-form-label">
+                Password
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="password" value="hunter2" id="example-password-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-number-input" class="col-2 col-form-label">
+                Number
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="number" value="42" id="example-number-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-datetime-local-input" class="col-2 col-form-label">
+                Date and time
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="datetime-local" value="2011-08-19T13:45:00"
+                  id="example-datetime-local-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-date-input" class="col-2 col-form-label">
+                Date
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="date" value="2011-08-19" id="example-date-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-month-input" class="col-2 col-form-label">
+                Month
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="month" value="2011-08" id="example-month-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-week-input" class="col-2 col-form-label">
+                Week
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="week" value="2011-W33" id="example-week-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-time-input" class="col-2 col-form-label">
+                Time
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="time" value="13:45:00" id="example-time-input">
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <label for="example-color-input" class="col-2 col-form-label">
+                Color
+              </label>
+              <div class="col-10">
+                <input class="form-control m-input" type="color" value="#563d7c" id="example-color-input">
+              </div>
+            </div>
+          </div>
       </form>
     </div>
   </div>
 </div>
-
-<!-- Modal Update -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-warning text-white">
-        <h5 class="modal-title">Konfirmasi Perbarui Data</h5>
-        <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-      </div>
-      <div class="modal-body">Apakah Anda yakin ingin memperbarui data ini?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" onclick="submitUpdate()">Ya, Perbarui</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  function showDeleteModal(id) {
-    document.getElementById('deleteId').value = id;
-    $('#deleteModal').modal('show');
-  }
-
-  function showUpdateModal() {
-    $('#updateModal').modal('show');
-  }
-
-  function submitUpdate() {
-    document.querySelector('form.m-form').submit();
-  }
-</script>
