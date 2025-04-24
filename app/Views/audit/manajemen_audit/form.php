@@ -14,52 +14,66 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="input-manajemen-audit">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST"
+        action="<?= isset($audit) ? base_url('public/audit/input-manajemen-audit/update/' . $audit['id']) : base_url('public/audit/input-manajemen-audit') ?>">
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
             <label for="kode">
               Kode Audit
             </label>
-            <input type="text" class="form-control m-input" id="kode" name="kode" placeholder="AU001">
+            <input type="text" class="form-control m-input" id="kode" name="kode" placeholder="AU001"
+              value="<?= isset($audit) ? $audit['kode'] : ''; ?>" required>
           </div>
+
           <div class="form-group m-form__group">
             <label for="id_standar">Standar</label>
-            <select class="form-control m-input" id="id_standar" name="id_standar">
-            <option value="">-- Pilih Standar --</option>
+            <select name="id_standar[]" id="id_standar" class="form-control js-example-basic-multiple" multiple>
               <?php foreach ($standars as $standar): ?>
-              <option value="<?= $standar['id']; ?>"><?= $standar['nama']; ?></option>
+                <option value="<?= $standar['id']; ?>" <?= in_array($standar['id'], $selectedStandars ?? []) ? 'selected' : '' ?>>
+                  <?= esc($standar['nama']); ?>
+                </option>
               <?php endforeach; ?>
             </select>
           </div>
+
           <div class="form-group m-form__group">
             <label for="id_periode">Periode</label>
-            <select class="form-control m-input" id="id_standar" name="id_periode">
-            <option value="">-- Pilih Periode --</option>
+            <select class="form-control m-input" id="id_periode" name="id_periode">
+              <option value="">-- Pilih Periode --</option>
               <?php foreach ($periodes as $periode): ?>
-              <option value="<?= $periode['id']; ?>"><?= $periode['tahun']; ?></option>
+                <option value="<?= $periode['id']; ?>" <?= isset($audit) && $audit['id_periode'] == $periode['id'] ? 'selected' : '' ?>>
+                  <?= $periode['tahun']; ?>
+                </option>
               <?php endforeach; ?>
             </select>
           </div>
+
           <div class="form-group m-form__group">
             <label for="tanggalMulai">
               Tanggal Mulai
             </label>
-            <input type="Date" class="form-control m-input" id="tanggalMulai" name="tanggal_mulai">
+            <input type="Date" class="form-control m-input" id="tanggalMulai" name="tanggal_mulai"
+              value="<?= isset($audit) ? esc($audit['tanggal_mulai']) : '' ?>">
           </div>
+
           <div class="form-group m-form__group">
             <label for="tanggalSelesai">
               Tanggal Selesai
             </label>
-            <input type="Date" class="form-control m-input" id="tanggalSelesai" name="tanggal_selesai">
+            <input type="Date" class="form-control m-input" id="tanggalSelesai" name="tanggal_selesai"
+              value="<?= isset($audit) ? esc($audit['tanggal_selesai']) : '' ?>">
           </div>
         </div>
+        <!--end::Form Body-->
+
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
             <button type="submit" class="btn btn-primary">
-              Submit
+              <?= isset($audit) ? 'Update' : 'Submit' ?>
             </button>
-            <button type="reset" class="btn btn-secondary">
-              Reset
+            <button type="button" class="btn btn-secondary"
+              onclick="window.location.href='<?= base_url('public/audit/manajemen-audit'); ?>'">
+              Back
             </button>
           </div>
         </div>
@@ -71,3 +85,12 @@
 </div>
 </div>
 </div>
+<script>
+  $(document).ready(function() {
+    $('#id_standar').select2({
+      placeholder: "Pilih standar audit",
+      tags: false,
+      width: '100%'
+    });
+  });
+</script>

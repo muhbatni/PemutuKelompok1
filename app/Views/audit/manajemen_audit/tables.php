@@ -65,11 +65,8 @@
             <th title="Field #5">
               Tanggal Selesai
             </th>
-            <th title="Field #5">
-              Status
-            </th>
             <th title="Field #6">
-              Action
+              Aksi
             </th>
           </tr>
         </thead>
@@ -77,11 +74,20 @@
           <?php foreach ($audit_standar as $audit): ?>
             <tr>
               <td><?= $audit->kode_audit; ?></td>
-              <td><?= $audit->nama_standar; ?></td>
+              <td><?= nl2br($audit->nama_standar); ?></td>
               <td><?= $audit->tahun_periode; ?></td>
-              <td><?= $audit->tanggal_mulai; ?></td>
-              <td><?= $audit->tanggal_selesai; ?></td>
-              <td><?= $audit->is_aktif; ?></td>
+              <td><?= date('d-m-Y', strtotime($audit->tanggal_mulai)); ?></td>
+              <td><?= date('d-m-Y', strtotime($audit->tanggal_selesai)); ?></td>
+              <td>
+                <a href="<?= base_url('public/audit/input-manajemen-audit/edit/' . $audit->id_audit); ?>"
+                  class="btn btn-sm btn-warning" title="Edit">
+                  <i class="la la-edit"></i>
+                </a>
+                <a href="<?= base_url('public/audit/input-manajemen-audit/delete/' . $audit->id_audit); ?>"
+                  class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                  <i class="la la-trash"></i>
+                </a>
+              </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
