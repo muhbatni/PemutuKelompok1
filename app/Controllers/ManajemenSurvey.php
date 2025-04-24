@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\SurveyModel;
 use App\Models\PertanyaanSurveyModel;
 use App\Models\PelaksanaanSurveyModel;
+use App\Models\PeriodeModel;
 use \Config\Database;
 
 class ManajemenSurvey extends BaseController
@@ -11,6 +12,7 @@ class ManajemenSurvey extends BaseController
   protected $surveyModel;
   protected $pelaksanaanSurveyModel;
   protected $pertanyaanSurveyModel;
+  protected $periodeModel;
   protected $helpers = ['surveys'];
 
   private $surveyPlaceholder = [
@@ -34,6 +36,7 @@ class ManajemenSurvey extends BaseController
     $this->surveyModel = new SurveyModel();
     $this->pelaksanaanSurveyModel = new PelaksanaanSurveyModel();
     $this->pertanyaanSurveyModel = new PertanyaanSurveyModel();
+    $this->periodeModel = new PeriodeModel();
   }
 
   public function index()
@@ -104,20 +107,65 @@ class ManajemenSurvey extends BaseController
   public function editSurvey($id_survey)
   {
     if ($this->request->getMethod() === "POST") {
+      $validation = service('validation');
       $data = $this->request->getPost();
-      $this->surveyModel->update($id_survey, [
-        'kode' => $data['kode_survey'] ?: null,
-        'nama' => $data['nama_survey'] ?: null,
-        'dokumen_pendukung' => $data['dokumen_pendukung_survey'] ?: null,
-        'status' => $data['status_survey'] === "true" ? true : false
-      ]);
-      return alert('survey/manajemen-survey', 'success', 'Survey berhasil diedit!');
-    }
+      $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
+      // if (!$validation->run($data, 'surveys')) {
+      //   echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
+      //   echo view(
+      //     "survey_kepuasan/manajemen_survey/create_survey.php",
+      //     ['errors' => $validation->getErrors(), 'old' => $data]
+      //   );
+      //   echo view("layouts/footer.php");
+      //   return null;
+      // }
+      $database = Database::connect();
+      $database->transStart();
+      $data['id_survey'] = $id_survey;
+      editSurveydata($database, 's_survey', $this->surveyPlaceholder, [
+        'kode' => $data['kode_survey'],
+        'nama' => $data['nama_survey'],
+        'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
+        'status' => $data['status_survey'],
+      ],$data['id_survey'] );
+
+      if (!$data['id_survey']) {
+        $database->transRollback();
+        $database->close();
+        return;
+      }
+      $result = editSurveydata($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
+        'id_periode' => $data['id_periode'],
+        'tanggal_mulai' => $data['tanggal_mulai'],
+        'tanggal_selesai' => $data['tanggal_selesai'],
+        'deskripsi' => $data['deskripsi_survey'],
+        'created_at' => date('Y-m-d H:i:s'),
+      ], $data['id_survey'] );
+      if (!$result) {
+        $database->transRollback();
+        $database->close();
+        return;
+      }
+      $result = createPertanyaanData($database, $data);
+      if (!$result) {
+        $database->transRollback();
+        $database->close();
+        return;
+      }
+      $database->transCommit();
+      $database->close();
+      return alert('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');    }
 
     $data['survey'] = $this->surveyModel->find($id_survey);
     if (!$data['survey']) {
       return alert('survey/manajemen-survey', 'error', 'Survey tidak ditemukan!');
     }
+    $data['pelaksanaan_survey'] = $this->pelaksanaanSurveyModel->where('id', $id_survey)->first();
+    if (!$data['pelaksanaan_survey']) {
+      return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
+    }
+    
+    $data['periode'] = $this->periodeModel->findAll();
 
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->findAll();
 
