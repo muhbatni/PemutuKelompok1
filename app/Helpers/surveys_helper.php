@@ -1,6 +1,6 @@
 <?php
 
-function createSurveyData($database, $tableName, $data)
+function createSurveyData($database, $tableName, $dataPlaceholder, $data)
 {
   $pQuery = $database->prepare(static fn($database) => $database->table($tableName)->insert($data));
   $pQuery->execute(...array_values($data));
@@ -26,6 +26,7 @@ function createPertanyaanData($database, $data)
       'teks' => $teks,
       'jenis' => $jenis[$index],
       'is_aktif' => true,
+      'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
     ];
   }

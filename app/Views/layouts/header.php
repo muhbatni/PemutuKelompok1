@@ -150,6 +150,10 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
+  <!-- <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/app/css/style.dashboard.css"> -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   <style>
     .m-nav__item {
       display: flex;
@@ -170,7 +174,7 @@ $avatar = $user->getAvatar() ?: $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'pelaksanaan', 'data-dukung'];
+$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -386,9 +390,10 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                   <?php
                   $akreditasiMenu = [
                     'input-auditor' => 'Input Auditor',
-                    'standar' => 'Syarat Unggul',
-                    'pelaksanaan' => 'Pelaksanaan Audit',
+                    'standar' => 'Standar Audit',
+                    'manajemen-audit' => 'Manajemen Audit',
                     'data-dukung' => 'Data Dukung',
+                    'temuan' => 'Temuan',
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
                     <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
@@ -494,8 +499,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 </li>
                 <?php
                 $segments = "";
-                ?>
-                <?php foreach ($uri->getSegments() as $segment) {
+                foreach ($uri->getSegments() as $segment) {
                   $segments .= "$segment/";
                   ?>
                   <li class="m-nav__separator">/</li>

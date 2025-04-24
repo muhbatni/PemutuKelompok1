@@ -47,16 +47,16 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Order ID
+              Judul
             </th>
             <th title="Field #2">
-              Owner
+              Parent
             </th>
             <th title="Field #3">
-              Contact
+              Deskripsi
             </th>
             <th title="Field #4">
-              Car Make
+              Aksi
             </th>
             <th title="Field #5">
               Car Model

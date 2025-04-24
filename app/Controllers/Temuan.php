@@ -1,13 +1,13 @@
 <?php
 namespace App\Controllers;
 
-class PelaksanaanAudit extends BaseController
+class Temuan extends BaseController
 {
   public function index()
   {
-    $data["title"] = "Pelaksanaan Audit";
+    $data["title"] = "Temuan";
     echo view('layouts/header.php', $data);
-    echo view('audit/pelaksanaan_audit/tables.php');
+    echo view('audit/temuan/tables.php');
     echo view('layouts/footer.php');
   }
 

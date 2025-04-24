@@ -62,13 +62,25 @@ class ManajemenSurvey extends BaseController
       }
       $database = Database::connect();
       $database->transStart();
-      $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder);
+      $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
+        'kode' => $data['kode_survey'],
+        'nama' => $data['nama_survey'],
+        'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
+        'status' => $data['status_survey'],
+      ]);
       if (!$data['id_survey']) {
         $database->transRollback();
         $database->close();
         return;
       }
-      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder);
+      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
+        'id' => $data['id_survey'],
+        'id_periode' => $data['id_periode'],
+        'tanggal_mulai' => $data['tanggal_mulai'],
+        'tanggal_selesai' => $data['tanggal_selesai'],
+        'deskripsi' => $data['deskripsi_survey'],
+        'created_at' => date('Y-m-d H:i:s'),
+      ]);
       if (!$result) {
         $database->transRollback();
         $database->close();
