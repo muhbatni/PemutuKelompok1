@@ -127,7 +127,7 @@ class ManajemenSurvey extends BaseController
         'nama' => $data['nama_survey'],
         'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
         'status' => $data['status_survey'],
-      ],$data['id_survey'] );
+      ], $data['id_survey']);
 
       if (!$data['id_survey']) {
         $database->transRollback();
@@ -140,13 +140,13 @@ class ManajemenSurvey extends BaseController
         'tanggal_selesai' => $data['tanggal_selesai'],
         'deskripsi' => $data['deskripsi_survey'],
         'created_at' => date('Y-m-d H:i:s'),
-      ], $data['id_survey'] );
+      ], $data['id_survey']);
       if (!$result) {
         $database->transRollback();
         $database->close();
         return;
       }
-      $result = createPertanyaanData($database, $data);
+      $result = editPertanyaanData($database, $data, $id_survey);
       if (!$result) {
         $database->transRollback();
         $database->close();
@@ -154,7 +154,8 @@ class ManajemenSurvey extends BaseController
       }
       $database->transCommit();
       $database->close();
-      return alert('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');    }
+      return alert('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');
+    }
 
     $data['survey'] = $this->surveyModel->find($id_survey);
     if (!$data['survey']) {
@@ -164,7 +165,7 @@ class ManajemenSurvey extends BaseController
     if (!$data['pelaksanaan_survey']) {
       return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
-    
+
     $data['periode'] = $this->periodeModel->findAll();
 
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->findAll();
