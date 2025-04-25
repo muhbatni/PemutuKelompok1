@@ -57,6 +57,7 @@ function editPertanyaanData($database, $data)
       'teks' => $teks,
       'jenis' => $jenisValue,
       'is_aktif' => true,
+      'urutan' => $index + 1,
       'updated_at' => date('Y-m-d H:i:s'),
     ];
   }

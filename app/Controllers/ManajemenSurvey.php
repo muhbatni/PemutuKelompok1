@@ -156,7 +156,7 @@ class ManajemenSurvey extends BaseController
       return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
     $data['periode'] = $this->periodeModel->findAll();
-    $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->findAll();
+    $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->orderBy('urutan', 'asc')->findAll();
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');
