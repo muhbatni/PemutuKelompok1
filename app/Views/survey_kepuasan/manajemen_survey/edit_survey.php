@@ -81,9 +81,8 @@
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-              <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3" required>
-                  <?= isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?>
-            </textarea>
+              <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
+                required><?= isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">
