@@ -8,8 +8,9 @@ class UnitPemutuModel extends Model
 {
     protected $table = 'p_unit_pemutu';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_unit', 'id_periode', 'id_lembaga', 'status'];
+    protected $allowedFields = ['id_unit', 'id_periode', 'id_lembaga', 'status', 'created_at', 'updated_at'];
     protected $useTimestamps = true;
+    protected $createdField = 'created_at';
 
     public function getPemutuData()
     {
@@ -30,4 +31,3 @@ class UnitPemutuModel extends Model
             ->getResultArray();
     }
 }
-?>

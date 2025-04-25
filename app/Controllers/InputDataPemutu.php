@@ -22,7 +22,6 @@ class InputDataPemutu extends BaseController
     $this->unitpemutumodel = new UnitPemutuModel();
   }
 
-  // Menampilkan form input
   public function index()
   {
     $data = [
@@ -30,8 +29,9 @@ class InputDataPemutu extends BaseController
       'units' => $this->unitModel->getUnits(),
       'lembagas' => $this->lembagaModel->getLembagas(),
       'periodes' => $this->periodeModel->getPeriodes(),
-      'validation' => \Config\Services::validation(), // Untuk validasi
-      'data_pemutu' => $this->unitpemutumodel->getPemutuData(), // Ambil data pemutu dari model
+      'validation' => \Config\Services::validation(),
+      'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
+      'editData' => null
     ];
 
     return view('layouts/header', $data)
@@ -39,10 +39,8 @@ class InputDataPemutu extends BaseController
       . view('layouts/footer');
   }
 
-  // Menyimpan data ke database
   public function save()
   {
-    // Validasi input
     if (
       !$this->validate([
         'id_unit' => 'required',
@@ -51,11 +49,9 @@ class InputDataPemutu extends BaseController
         'status' => 'required'
       ])
     ) {
-      // Jika validasi gagal, kembali ke form dengan input sebelumnya
-      return redirect()->back()->withInput()->with('validation', \Config\Services::validation());
+      return redirect()->back()->withInput()->with('validation', $this->validator);
     }
 
-    // Menyimpan data ke database
     $data = [
       'id_unit' => $this->request->getPost('id_unit'),
       'id_periode' => $this->request->getPost('id_periode'),
@@ -65,10 +61,57 @@ class InputDataPemutu extends BaseController
       'updated_at' => date('Y-m-d H:i:s')
     ];
 
-    // Panggil metode simpan di model Anda
-    $this->unitModel->insert($data); // Misalkan Anda menggunakan UnitModel untuk menyimpan data
+    $this->unitpemutumodel->insert($data);
 
-    // Redirect setelah berhasil menyimpan data
-    return redirect()->to('/input-data-pemutu')->with('success', 'Data berhasil disimpan.');
+    return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil disimpan.</div>');
+  }
+
+  public function edit($id)
+  {
+    $data = [
+      'title' => 'Edit Data Pemutu',
+      'units' => $this->unitModel->getUnits(),
+      'lembagas' => $this->lembagaModel->getLembagas(),
+      'periodes' => $this->periodeModel->getPeriodes(),
+      'validation' => \Config\Services::validation(),
+      'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
+      'editData' => null // Set null karena kita menggunakan modal
+    ];
+
+    return view('layouts/header', $data)
+      . view('akreditasi/input_data_pemutu/form', $data)
+      . view('layouts/footer');
+  }
+
+  public function update($id)
+  {
+    if (
+      !$this->validate([
+        'id_unit' => 'required',
+        'id_periode' => 'required',
+        'id_lembaga' => 'required',
+        'status' => 'required'
+      ])
+    ) {
+      return redirect()->back()->withInput()->with('validation', $this->validator);
+    }
+
+    $data = [
+      'id_unit' => $this->request->getPost('id_unit'),
+      'id_periode' => $this->request->getPost('id_periode'),
+      'id_lembaga' => $this->request->getPost('id_lembaga'),
+      'status' => $this->request->getPost('status'),
+      'updated_at' => date('Y-m-d H:i:s')
+    ];
+
+    $this->unitpemutumodel->update($id, $data);
+
+    return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil diperbarui.</div>');
+  }
+
+  public function delete($id)
+  {
+    $this->unitpemutumodel->delete($id);
+    return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil dihapus.</div>');
   }
 }
