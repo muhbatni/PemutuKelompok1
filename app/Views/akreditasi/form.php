@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12">
     <div class="m-portlet m-portlet--tab">
       <div class="m-portlet__head">
@@ -58,7 +58,7 @@
             <select class="form-control m-input" id="status" name="status">
               <option value="">-- Pilih Status --</option>
               <option value="1">Aktif</option>
-              <option value="0">Tidak AKtif</option>
+              <option value="0">Tidak Aktif</option>
             </select>
           </div>
 
@@ -91,4 +91,4 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->

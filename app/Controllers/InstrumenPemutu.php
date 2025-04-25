@@ -10,6 +10,11 @@ class InstrumenPemutu extends BaseController
 
     $lembagaModel = new \App\Models\LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
+
+    $instrumenModel = new \App\Models\InstrumenPemutuModel();
+    $data['instrumen_pemutu'] = $instrumenModel->getInstrumenWithLembaga();
+    
+
     // Jika form disubmit (metode POST)
     if ($this->request->getMethod() == 'POST') {
       // Ambil data dari form
@@ -27,7 +32,7 @@ class InstrumenPemutu extends BaseController
       // Simpan data ke database
       $model = new InstrumenPemutuModel();
       $data = [
-        'nomor' => $id_lembaga,
+        'id_lembaga' => $id_lembaga,
         'jenjang' => $jenjang,
         'indikator' => $indikator,
         'kondisi' => $kondisi,
