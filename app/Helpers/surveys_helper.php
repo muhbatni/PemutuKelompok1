@@ -33,4 +33,37 @@ function createPertanyaanData($database, $data)
   $database->table('s_pertanyaan')->insertBatch($pertanyaanData);
   return true;
 }
+function editSurveyData($database, $tableName, $dataPlaceholder, $data, $id)
+{
+
+  $database->table($tableName)->where('id', $id)->update($data);
+  return $database->affectedRows() > 0;
+}
+function editPertanyaanData($database, $data, $idSurvey)
+{
+  $pertanyaan = $data['pertanyaan'] ?: null;
+  $jenis = $data['jenis'] ?: null;
+  $id_pertanyaan = $data['id_pertanyaan'] ?: null;
+  if (!$idSurvey || !$pertanyaan || !$jenis) {
+    return null;
+  }
+  $pertanyaanData = [];
+  foreach ($pertanyaan as $index => $teks) {
+    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
+
+    $pertanyaanData[] = [
+      'id' => $id_pertanyaan[$index],
+      'id_survey' => $idSurvey,
+      'teks' => $teks,
+      'jenis' => $jenisValue,
+      'is_aktif' => true,
+      'updated_at' => date('Y-m-d H:i:s'),
+    ];
+  }
+  if (empty($pertanyaanData)) {
+    return null;
+  }
+  $database->table('s_pertanyaan')->updateBatch($pertanyaanData, 'id');
+  return $database->affectedRows() > 0;
+}
 ?>
