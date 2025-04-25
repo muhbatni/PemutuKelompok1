@@ -39,20 +39,20 @@ function editSurveyData($database, $tableName, $dataPlaceholder, $data, $id)
   $database->table($tableName)->where('id', $id)->update($data);
   return $database->affectedRows() > 0;
 }
-function editPertanyaanData($database, $data, $idSurvey)
+function editPertanyaanData($database, $data)
 {
+  $idSurvey = $data['id_survey'] ?: null;
+  $idPertanyaan = $data['id_pertanyaan'] ?: null;
   $pertanyaan = $data['pertanyaan'] ?: null;
   $jenis = $data['jenis'] ?: null;
-  $id_pertanyaan = $data['id_pertanyaan'] ?: null;
-  if (!$idSurvey || !$pertanyaan || !$jenis) {
+  if (!$idSurvey || !$idPertanyaan || !$pertanyaan || !$jenis) {
     return null;
   }
   $pertanyaanData = [];
   foreach ($pertanyaan as $index => $teks) {
     $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
-
     $pertanyaanData[] = [
-      'id' => $id_pertanyaan[$index],
+      'id' => $idPertanyaan[$index],
       'id_survey' => $idSurvey,
       'teks' => $teks,
       'jenis' => $jenisValue,

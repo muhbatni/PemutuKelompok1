@@ -107,18 +107,8 @@ class ManajemenSurvey extends BaseController
   public function editSurvey($id_survey)
   {
     if ($this->request->getMethod() === "POST") {
-      $validation = service('validation');
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
-      // if (!$validation->run($data, 'surveys')) {
-      //   echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
-      //   echo view(
-      //     "survey_kepuasan/manajemen_survey/create_survey.php",
-      //     ['errors' => $validation->getErrors(), 'old' => $data]
-      //   );
-      //   echo view("layouts/footer.php");
-      //   return null;
-      // }
       $database = Database::connect();
       $database->transStart();
       $data['id_survey'] = $id_survey;
@@ -146,7 +136,7 @@ class ManajemenSurvey extends BaseController
         $database->close();
         return;
       }
-      $result = editPertanyaanData($database, $data, $id_survey);
+      $result = editPertanyaanData($database, $data);
       if (!$result) {
         $database->transRollback();
         $database->close();
@@ -165,11 +155,8 @@ class ManajemenSurvey extends BaseController
     if (!$data['pelaksanaan_survey']) {
       return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
-
     $data['periode'] = $this->periodeModel->findAll();
-
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->findAll();
-
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');

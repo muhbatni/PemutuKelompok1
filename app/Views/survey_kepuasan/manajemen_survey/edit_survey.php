@@ -122,9 +122,9 @@
                       </div>
                       <div class="m-portlet__body">
                         <div class="d-flex align-items-center justify-content-center">
+                          <input type="hidden" name="id_pertanyaan[]" value="<?= $p['id'] ?>">
                           <input type="text" name="pertanyaan[]" class="form-control m-input" placeholder="Isi Pertanyaan"
                             value="<?= $p['teks'] ?>">
-                          <input type="hidden" name="id_pertanyaan[]" value="<?= $p['id'] ?>">
                           <input type="hidden" name="jenis[]" value="<?= $p['jenis'] ?>">
                         </div>
                         <br>
