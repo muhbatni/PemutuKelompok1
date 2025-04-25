@@ -30,7 +30,7 @@ class AuthFilter implements FilterInterface
       }
       $refreshDecoded = JWT::decode($refreshToken, new Key(getenv('JWT_SECRET'), 'HS256'));
       if ($refreshDecoded->type !== 'refresh') {
-        return alert('login', 'error', message: 'Invalid refresh token type');
+        return alert('login', 'error', 'Invalid refresh token type');
       }
       if (!isset($refreshDecoded->uid)) {
         return alert('login', 'error', 'Invalid refresh token data');
