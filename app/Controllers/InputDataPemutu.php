@@ -68,6 +68,13 @@ class InputDataPemutu extends BaseController
 
   public function edit($id)
   {
+    // Get the data to be edited
+    $editData = $this->unitpemutumodel->find($id);
+
+    if (!$editData) {
+      return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-danger">Data tidak ditemukan.</div>');
+    }
+
     $data = [
       'title' => 'Edit Data Pemutu',
       'units' => $this->unitModel->getUnits(),
@@ -75,8 +82,11 @@ class InputDataPemutu extends BaseController
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
-      'editData' => null // Set null karena kita menggunakan modal
+      'editData' => $editData // Pass the data to be edited
     ];
+
+    // Store edit data in flashdata so it persists through redirects
+    session()->setFlashdata('editData', $editData);
 
     return view('layouts/header', $data)
       . view('akreditasi/input_data_pemutu/form', $data)
@@ -85,6 +95,7 @@ class InputDataPemutu extends BaseController
 
   public function update($id)
   {
+    // Validate input
     if (
       !$this->validate([
         'id_unit' => 'required',
@@ -96,6 +107,7 @@ class InputDataPemutu extends BaseController
       return redirect()->back()->withInput()->with('validation', $this->validator);
     }
 
+    // Prepare data for update
     $data = [
       'id_unit' => $this->request->getPost('id_unit'),
       'id_periode' => $this->request->getPost('id_periode'),
@@ -104,9 +116,12 @@ class InputDataPemutu extends BaseController
       'updated_at' => date('Y-m-d H:i:s')
     ];
 
-    $this->unitpemutumodel->update($id, $data);
-
-    return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil diperbarui.</div>');
+    // Attempt to update
+    if ($this->unitpemutumodel->update($id, $data)) {
+      return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil diperbarui.</div>');
+    } else {
+      return redirect()->back()->with('pesan', '<div class="alert alert-danger">❌ Gagal memperbarui data.</div>');
+    }
   }
 
   public function delete($id)
