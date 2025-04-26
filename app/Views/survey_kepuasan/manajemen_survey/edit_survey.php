@@ -53,15 +53,14 @@
           <div class="form-group m-form__group row">
             <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-              <select class="form-control" id="id_periode" name="id_periode" required>
-                <option value="">-- Pilih Periode --</option>
-                <?php
-              $periodeModel = new App\Models\PeriodeModel();
-              $periode = $periodeModel->findAll();
-              foreach ($periode as $p): ?>
-                <option name="id_periode" value="<?= $p['id']; ?>"><?= $p['tahun']; ?></option>
-              <?php endforeach; ?>
-              </select>
+                <select class="form-control" id="id_periode" name="id_periode" required>
+                    <option value="">-- Pilih Periode --</option>
+                    <?php foreach ($periode as $p): ?>
+                        <option value="<?= $p['id']; ?>" <?= isset($pelaksanaan_survey['id_periode']) && $pelaksanaan_survey['id_periode'] == $p['id'] ? 'selected' : '' ?>>
+                            <?= $p['tahun']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
           </div>
           <div class="form-group m-form__group row">
