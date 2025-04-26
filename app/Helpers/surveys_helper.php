@@ -23,6 +23,7 @@ function createPertanyaanData($database, $data)
       'teks' => $teks,
       'jenis' => $jenisValue,
       'is_aktif' => true,
+      'urutan' => $index + 1,
       'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
     ];
@@ -33,38 +34,86 @@ function createPertanyaanData($database, $data)
   $database->table('s_pertanyaan')->insertBatch($pertanyaanData);
   return true;
 }
-function editSurveyData($database, $tableName, $dataPlaceholder, $data, $id)
-{
 
+function editSurveyData($database, $tableName, $data, $id)
+{
   $database->table($tableName)->where('id', $id)->update($data);
   return $database->affectedRows() > 0;
 }
+
 function editPertanyaanData($database, $data)
 {
-  $idSurvey = $data['id_survey'] ?: null;
-  $idPertanyaan = $data['id_pertanyaan'] ?: null;
-  $pertanyaan = $data['pertanyaan'] ?: null;
-  $jenis = $data['jenis'] ?: null;
-  if (!$idSurvey || !$idPertanyaan || !$pertanyaan || !$jenis) {
+  $builder = $database->table('s_pertanyaan');
+  $idSurvey = $data['id_survey'] ?? null;
+  $idPertanyaan = $data['id_pertanyaan'] ?? null;
+  $pertanyaan = $data['pertanyaan'] ?? null;
+  $jenis = $data['jenis'] ?? null;
+
+  if (!$idSurvey || !$pertanyaan || !$jenis) {
     return null;
   }
-  $pertanyaanData = [];
+
+  $existingIds = [];
+  $pertanyaanDataUpdate = [];
+  $pertanyaanDataInsert = [];
+
   foreach ($pertanyaan as $index => $teks) {
     $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
-    $pertanyaanData[] = [
-      'id' => $idPertanyaan[$index],
+    if (isset($idPertanyaan[$index]) && !empty($idPertanyaan[$index])) {
+      // Existing question - add to update array
+      $existingIds[] = $idPertanyaan[$index];
+      $pertanyaanDataUpdate[] = [
+        'id' => $idPertanyaan[$index],
+        'id_survey' => $idSurvey,
+        'teks' => $teks,
+        'jenis' => $jenisValue,
+        'is_aktif' => true,
+        'urutan' => $index + 1,
+        'updated_at' => date('Y-m-d H:i:s'),
+      ];
+      continue;
+    }
+    $pertanyaanDataInsert[] = [
       'id_survey' => $idSurvey,
       'teks' => $teks,
       'jenis' => $jenisValue,
       'is_aktif' => true,
       'urutan' => $index + 1,
+      'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
     ];
   }
-  if (empty($pertanyaanData)) {
-    return null;
+
+  // Delete questions that no longer exist
+  if (!empty($existingIds)) {
+    $builder->where('id_survey', $idSurvey)
+      ->whereNotIn('id', $existingIds)
+      ->delete();
+  } else if (!empty($idPertanyaan)) {
+    // If we have some IDs but none were valid, still delete as before
+    $builder->where('id_survey', $idSurvey)
+      ->whereNotIn('id', $idPertanyaan)
+      ->delete();
   }
-  $database->table('s_pertanyaan')->updateBatch($pertanyaanData, 'id');
-  return $database->affectedRows() > 0;
+
+  if (!empty($pertanyaanDataUpdate)) {
+    try {
+      $builder->updateBatch($pertanyaanDataUpdate, 'id');
+    } catch (\Exception $e) {
+      log_message('error', 'Update batch error: ' . $e->getMessage());
+      return false;
+    }
+  }
+
+  if (!empty($pertanyaanDataInsert)) {
+    try {
+      $builder->insertBatch($pertanyaanDataInsert);
+    } catch (\Exception $e) {
+      log_message('error', 'Insert batch error: ' . $e->getMessage());
+      return false;
+    }
+  }
+
+  return true;
 }
 ?>

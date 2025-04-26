@@ -54,7 +54,6 @@
             <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <select class="form-control" id="id_periode" name="id_periode" required>
-                <option value="">-- Pilih Periode --</option>
                 <?php
                 $periodeModel = new App\Models\PeriodeModel();
                 $periode = $periodeModel->findAll();
@@ -91,7 +90,7 @@
               <div class="row ui-sortable" id="m_sortable_portlets">
                 <?php foreach ($pertanyaan as $p): ?>
                   <div class="col-lg-12 portlet-template">
-                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered">
+                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                       <div class="m-portlet__head ui-sortable-handle">
                         <div class="m-portlet__head-caption">
                           <div class="m-portlet__head-title">
@@ -137,6 +136,17 @@
                     </div>
                   </div>
                 <?php endforeach; ?>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-4">
+                  <div data-repeater-create=""
+                    class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+                    <span>
+                      <i class="la la-plus"></i>
+                      <span>Add</span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
