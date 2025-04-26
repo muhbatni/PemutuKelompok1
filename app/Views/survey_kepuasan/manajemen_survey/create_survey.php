@@ -91,6 +91,9 @@
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_selesai" required
                 value="<?= isset($old['tanggal_selesai']) ? $old['tanggal_selesai'] : '' ?>">
+              <?php if (isset($errors['tanggal_selesai'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['tanggal_selesai']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">

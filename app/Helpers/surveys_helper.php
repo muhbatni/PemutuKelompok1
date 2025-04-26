@@ -2,7 +2,7 @@
 
 function createSurveyData($database, $tableName, $dataPlaceholder, $data)
 {
-  $pQuery = $database->prepare(static fn($database) => $database->table($tableName)->insert($data));
+  $pQuery = $database->prepare(static fn($database) => $database->table($tableName)->insert($dataPlaceholder));
   $pQuery->execute(...array_values($data));
   return $database->insertID();
 }
@@ -17,14 +17,11 @@ function createPertanyaanData($database, $data)
   }
   $pertanyaanData = [];
   foreach ($pertanyaan as $index => $teks) {
-    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : null;
-    if ($jenisValue === null || empty($teks)) {
-      continue;
-    }
+    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
     $pertanyaanData[] = [
       'id_survey' => $idSurvey,
       'teks' => $teks,
-      'jenis' => $jenis[$index],
+      'jenis' => $jenisValue,
       'is_aktif' => true,
       'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
@@ -34,7 +31,7 @@ function createPertanyaanData($database, $data)
     return null;
   }
   $database->table('s_pertanyaan')->insertBatch($pertanyaanData);
-  return $database->insertID();
+  return true;
 }
 function editSurveyData($database, $tableName, $dataPlaceholder, $data, $id)
 {
@@ -45,22 +42,22 @@ function editSurveyData($database, $tableName, $dataPlaceholder, $data, $id)
 function editPertanyaanData($database, $data)
 {
   $idSurvey = $data['id_survey'] ?: null;
+  $idPertanyaan = $data['id_pertanyaan'] ?: null;
   $pertanyaan = $data['pertanyaan'] ?: null;
-  $jenis = $data['jenis'] ?: null;  
-  if (!$idSurvey || !$pertanyaan || !$jenis) {
+  $jenis = $data['jenis'] ?: null;
+  if (!$idSurvey || !$idPertanyaan || !$pertanyaan || !$jenis) {
     return null;
   }
   $pertanyaanData = [];
   foreach ($pertanyaan as $index => $teks) {
-    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : null;
-    if ($jenisValue === null || empty($teks)) {
-      continue;
-    }
+    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
     $pertanyaanData[] = [
+      'id' => $idPertanyaan[$index],
       'id_survey' => $idSurvey,
       'teks' => $teks,
-      'jenis' => $jenis[$index],
+      'jenis' => $jenisValue,
       'is_aktif' => true,
+      'urutan' => $index + 1,
       'updated_at' => date('Y-m-d H:i:s'),
     ];
   }

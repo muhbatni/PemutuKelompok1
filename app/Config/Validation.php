@@ -7,6 +7,7 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
+use App\Rules\DateValidationRules;
 
 class Validation extends BaseConfig
 {
@@ -25,6 +26,7 @@ class Validation extends BaseConfig
     FormatRules::class,
     FileRules::class,
     CreditCardRules::class,
+    DateValidationRules::class
   ];
 
   /**
@@ -90,6 +92,8 @@ class Validation extends BaseConfig
     'nama_survey' => 'required|min_length[5]|max_length[30]',
     'dokumen_pendukung_survey' => 'permit_empty',
     'status_survey' => 'required',
+    'tanggal_mulai' => 'required',
+    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]'
   ];
 
   public array $surveys_errors = [
@@ -106,5 +110,12 @@ class Validation extends BaseConfig
     'status_survey' => [
       'required' => 'Status survey harus diisi.',
     ],
+    'tanggal_mulai' => [
+      'required' => 'Tanggal mulai harus diisi.'
+    ],
+    'tanggal_selesai' => [
+      'required_with' => 'Tanggal mulai juga harus diisi.',
+      'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
+    ]
   ];
 }

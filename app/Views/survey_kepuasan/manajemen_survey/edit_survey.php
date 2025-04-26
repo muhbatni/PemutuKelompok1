@@ -66,23 +66,22 @@
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-            <input type="date" class="form-control" name="tanggal_mulai" required
-            value="<?= isset($pelaksanaan_survey['tanggal_mulai']) ? $pelaksanaan_survey['tanggal_mulai'] : '' ?>">
+              <input type="date" class="form-control" name="tanggal_mulai" required
+                value="<?= isset($pelaksanaan_survey['tanggal_mulai']) ? $pelaksanaan_survey['tanggal_mulai'] : '' ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-            <input type="date" class="form-control" name="tanggal_selesai" required
-            value="<?= isset($pelaksanaan_survey['tanggal_selesai']) ? $pelaksanaan_survey['tanggal_selesai'] : '' ?>">
+              <input type="date" class="form-control" name="tanggal_selesai" required
+                value="<?= isset($pelaksanaan_survey['tanggal_selesai']) ? $pelaksanaan_survey['tanggal_selesai'] : '' ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-            <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3" required>
-                  <?=   isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?>
-            </textarea>
+              <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
+                required><?= isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -121,6 +120,7 @@
                       </div>
                       <div class="m-portlet__body">
                         <div class="d-flex align-items-center justify-content-center">
+                          <input type="hidden" name="id_pertanyaan[]" value="<?= $p['id'] ?>">
                           <input type="text" name="pertanyaan[]" class="form-control m-input" placeholder="Isi Pertanyaan"
                             value="<?= $p['teks'] ?>">
                           <input type="hidden" name="jenis[]" value="<?= $p['jenis'] ?>">
