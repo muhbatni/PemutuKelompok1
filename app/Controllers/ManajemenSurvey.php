@@ -74,7 +74,7 @@ class ManajemenSurvey extends BaseController
       if (!$data['id_survey']) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
         'id' => $data['id_survey'],
@@ -87,13 +87,13 @@ class ManajemenSurvey extends BaseController
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $result = createPertanyaanData($database, $data);
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $database->transCommit();
       $database->close();
@@ -104,59 +104,58 @@ class ManajemenSurvey extends BaseController
     echo view('layouts/footer.php');
   }
 
-  public function editSurvey($id_survey)
+  public function editSurvey($idSurvey)
   {
     if ($this->request->getMethod() === "POST") {
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
       $database = Database::connect();
       $database->transStart();
-      $data['id_survey'] = $id_survey;
-      editSurveydata($database, 's_survey', $this->surveyPlaceholder, [
+      $data['id_survey'] = $idSurvey;
+      editSurveydata($database, 's_survey', [
         'kode' => $data['kode_survey'],
         'nama' => $data['nama_survey'],
         'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
         'status' => $data['status_survey'],
-      ], $data['id_survey']);
-
-      if (!$data['id_survey']) {
+      ], $idSurvey);
+      if (!$idSurvey) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
-      $result = editSurveydata($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
+      $result = editSurveydata($database, 's_pelaksanaan_survey', [
         'id_periode' => $data['id_periode'],
         'tanggal_mulai' => $data['tanggal_mulai'],
         'tanggal_selesai' => $data['tanggal_selesai'],
         'deskripsi' => $data['deskripsi_survey'],
         'created_at' => date('Y-m-d H:i:s'),
-      ], $data['id_survey']);
+      ], $idSurvey);
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
       $result = editPertanyaanData($database, $data);
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return;
+        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
       $database->transCommit();
       $database->close();
       return alert('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');
     }
 
-    $data['survey'] = $this->surveyModel->find($id_survey);
+    $data['survey'] = $this->surveyModel->find($idSurvey);
     if (!$data['survey']) {
       return alert('survey/manajemen-survey', 'error', 'Survey tidak ditemukan!');
     }
-    $data['pelaksanaan_survey'] = $this->pelaksanaanSurveyModel->where('id', $id_survey)->first();
+    $data['pelaksanaan_survey'] = $this->pelaksanaanSurveyModel->where('id', $idSurvey)->first();
     if (!$data['pelaksanaan_survey']) {
       return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
     $data['periode'] = $this->periodeModel->findAll();
-    $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $id_survey)->orderBy('urutan', 'asc')->findAll();
+    $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $idSurvey)->orderBy('urutan', 'asc')->findAll();
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);
     echo view('layouts/footer.php');
