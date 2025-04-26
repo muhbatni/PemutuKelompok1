@@ -19,8 +19,7 @@
             <label class="col-form-label col-lg-3 col-sm-12">Kode<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="text" name="kode_survey" class="form-control m-input" id="exampleInputKode1"
-                aria-describedby="kodeHelp" placeholder="Isi kode survey"
-                value="<?= isset($old['kode_survey']) ? $old['kode_survey'] : '' ?>">
+                aria-describedby="kodeHelp" placeholder="Isi kode survey" value="<?= $old['kode_survey'] ?? '' ?>">
               <?php if (isset($errors['kode_survey'])): ?>
                 <span class="m-form__help text-danger"><?= esc($errors['kode_survey']) ?></span>
               <?php endif; ?>
@@ -30,8 +29,7 @@
             <label class="col-form-label col-lg-3 col-sm-12">Nama<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputTitle1"
-                aria-describedby="titleHelp" placeholder="Isi nama survey"
-                value="<?= isset($old['nama_survey']) ? $old['nama_survey'] : '' ?>">
+                aria-describedby="titleHelp" placeholder="Isi nama survey" value="<?= $old['nama_survey'] ?? '' ?>">
               <?php if (isset($errors['nama_survey'])): ?>
                 <span class="m-form__help text-danger"><?= esc($errors['nama_survey']) ?></span>
               <?php endif; ?>
@@ -41,11 +39,13 @@
             <label class="col-form-label col-lg-3 col-sm-12">Status<span style="color: red">*</span></label>
             <div class="m-radio-inline ml-3">
               <label class="m-radio m-radio--success">
-                <input type="radio" name="status_survey" value="true" checked> Aktif
+                <input type="radio" name="status_survey" value="true" <?= (isset($old['status_survey']) && $old['status_survey'] == 1) ? "checked" : '' ?>>
+                Aktif
                 <span></span>
               </label>
               <label class="m-radio m-radio--danger">
-                <input type="radio" name="status_survey" value="false"> Tidak aktif
+                <input type="radio" name="status_survey" value="false" <?= (isset($old['status_survey']) && $old['status_survey'] == 2) ? "checked" : '' ?>>
+                Tidak aktif
                 <span></span>
               </label>
               <?php if (isset($errors['status_survey'])): ?>
@@ -69,10 +69,7 @@
           <div class="col-lg-7 col-md-7 col-sm-12">
             <select class="form-control" id="id_periode" name="id_periode" required>
               <option value="">-- Pilih Periode --</option>
-              <?php
-              $periodeModel = new App\Models\PeriodeModel();
-              $periode = $periodeModel->findAll();
-              foreach ($periode as $p): ?>
+              <?php foreach ($periode as $p): ?>
                 <option name="id_periode" value="<?= $p['id']; ?>"><?= $p['tahun']; ?></option>
               <?php endforeach; ?>
             </select>
@@ -83,14 +80,14 @@
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_mulai" required
-                value="<?= isset($old['tanggal_mulai']) ? $old['tanggal_mulai'] : '' ?>">
+                value="<?= $old['tanggal_mulai'] ?? '' ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_selesai" required
-                value="<?= isset($old['tanggal_selesai']) ? $old['tanggal_selesai'] : '' ?>">
+                value="<?= $old['tanggal_selesai'] ?? '' ?>">
               <?php if (isset($errors['tanggal_selesai'])): ?>
                 <span class="m-form__help text-danger"><?= esc($errors['tanggal_selesai']) ?></span>
               <?php endif; ?>
@@ -99,8 +96,8 @@
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-              <textarea class="form-control" id="deskripsi" name="deskripsi_survey"
-                rows="3"><?= isset($old['deskripsi_survey']) ? $old['deskripsi_survey'] : '' ?></textarea>
+              <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
+                required><?= $old['deskripsi_survey'] ?? '' ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">

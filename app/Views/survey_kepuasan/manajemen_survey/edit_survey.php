@@ -54,7 +54,6 @@
             <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <select class="form-control" id="id_periode" name="id_periode" required>
-                <!-- <option value="">-- Pilih Periode --</option> -->
                 <?php foreach ($periode as $p): ?>
                   <option value="<?= $p['id']; ?>" <?= isset($pelaksanaan_survey['id_periode']) && $pelaksanaan_survey['id_periode'] == $p['id'] ? 'selected' : '' ?>>
                     <?= $p['tahun']; ?>
@@ -67,21 +66,21 @@
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_mulai" required
-                value="<?= isset($pelaksanaan_survey['tanggal_mulai']) ? $pelaksanaan_survey['tanggal_mulai'] : '' ?>">
+                value="<?= $pelaksanaan_survey['tanggal_mulai'] ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_selesai" required
-                value="<?= isset($pelaksanaan_survey['tanggal_selesai']) ? $pelaksanaan_survey['tanggal_selesai'] : '' ?>">
+                value="<?= $pelaksanaan_survey['tanggal_selesai'] ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
-                required><?= isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?></textarea>
+                required><?= $pelaksanaan_survey['deskripsi'] ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">

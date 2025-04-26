@@ -50,6 +50,8 @@ class ManajemenSurvey extends BaseController
 
   public function createSurvey()
   {
+    $periodeModel = new PeriodeModel();
+    $periode = $periodeModel->findAll();
     if ($this->request->getMethod() === "POST") {
       $validation = service('validation');
       $data = $this->request->getPost();
@@ -58,7 +60,7 @@ class ManajemenSurvey extends BaseController
         echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
         echo view(
           "survey_kepuasan/manajemen_survey/create_survey.php",
-          ['errors' => $validation->getErrors(), 'old' => $data]
+          ['errors' => $validation->getErrors(), 'old' => $data, 'periode' => $periode]
         );
         echo view("layouts/footer.php");
         return null;
@@ -100,7 +102,7 @@ class ManajemenSurvey extends BaseController
       return alert('survey/manajemen-survey', 'success', 'Survey berhasil dibuat!');
     }
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
-    echo view('survey_kepuasan/manajemen_survey/create_survey.php');
+    echo view('survey_kepuasan/manajemen_survey/create_survey.php', ['periode' => $periode]);
     echo view('layouts/footer.php');
   }
 
