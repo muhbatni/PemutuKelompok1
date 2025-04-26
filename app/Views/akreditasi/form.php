@@ -121,9 +121,12 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
 
-      <!-- Tabel Data Akreditasi -->
-      <?php if (!isset($editData)): ?>
+<!-- Tabel Data Akreditasi -->
+<?php if (!isset($editData)): ?>
       <div class="m-portlet m-portlet--tabs">
         <div class="m-portlet__head">
           <div class="m-portlet__head-caption">
@@ -237,14 +240,14 @@
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
                       <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" value="edit" class="btn btn-sm btn-warning">
-                        <i class="fa fa-pencil-alt"></i>
+                        Edit
                       </a>
                     <?php endif; ?>
 
                     <!-- Tombol Delete -->
                     <?php if (isset($akreditasi['id'])): ?>
                       <a href="<?= 'akreditasi?id=' . $akreditasi['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                          <i class="fa fa-trash-alt"></i>
+                          Hapus
                       </a>
                     <?php endif; ?>
                   </td>
@@ -255,10 +258,8 @@
         </div>
       </div>
     <?php endif; ?>
-    </div>
-  </div>
-</div>
 
+    
 <script>
     function handleCancel() {
         <?php if (isset($editData)): ?>
