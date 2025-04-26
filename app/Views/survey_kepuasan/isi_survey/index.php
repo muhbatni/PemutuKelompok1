@@ -8,7 +8,7 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Base Form Controls
+              Survey Yang Belum Diisi
             </h3>
           </div>
         </div>
@@ -16,12 +16,6 @@
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right">
         <div class="m-portlet__body">
-          <div class="form-group m-form__group m--margin-top-10">
-            <div class="alert m-alert m-alert--default" role="alert">
-              The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap
-              with additional classes.
-            </div>
-          </div>
           <div class="form-group m-form__group">
             <label for="exampleInputEmail1">
               Email address
