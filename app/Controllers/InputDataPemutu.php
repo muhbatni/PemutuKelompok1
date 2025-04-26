@@ -24,6 +24,8 @@ class InputDataPemutu extends BaseController
 
   public function index()
   {
+    session()->remove('editData');
+
     $data = [
       'title' => 'Input Data Pemutu',
       'units' => $this->unitModel->getUnits(),
@@ -31,13 +33,14 @@ class InputDataPemutu extends BaseController
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
-      'editData' => null
+      'editData' => null 
     ];
 
     return view('layouts/header', $data)
       . view('akreditasi/input_data_pemutu/form', $data)
       . view('layouts/footer');
   }
+
 
   public function save()
   {
@@ -68,7 +71,6 @@ class InputDataPemutu extends BaseController
 
   public function edit($id)
   {
-    // Get the data to be edited
     $editData = $this->unitpemutumodel->find($id);
 
     if (!$editData) {
@@ -82,16 +84,14 @@ class InputDataPemutu extends BaseController
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
-      'editData' => $editData // Pass the data to be edited
+      'editData' => $editData 
     ];
-
-    // Store edit data in flashdata so it persists through redirects
-    session()->setFlashdata('editData', $editData);
 
     return view('layouts/header', $data)
       . view('akreditasi/input_data_pemutu/form', $data)
       . view('layouts/footer');
   }
+
 
   public function update($id)
   {

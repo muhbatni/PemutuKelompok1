@@ -1,6 +1,7 @@
 <?php
 $pesan = session()->getFlashdata('pesan') ?? '';
-$editData = session()->getFlashdata('editData') ?? null;
+$editData = $editData ?? null;
+date_default_timezone_set('Asia/Jakarta');
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +12,12 @@ $editData = session()->getFlashdata('editData') ?? null;
   <title><?= isset($editData) ? 'Edit' : 'Input' ?> Data Pemutu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      color: #5e6278;
+    }
+
     .status-aktif {
       color: green;
       font-weight: bold;
@@ -19,6 +26,127 @@ $editData = session()->getFlashdata('editData') ?? null;
     .status-nonaktif {
       color: red;
       font-weight: bold;
+    }
+
+    table thead th {
+      background-color: #f9fafe;
+      font-weight: 600;
+      font-size: 14px;
+      color: #5e6278;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    table tbody td {
+      font-size: 14px;
+      color: #5e6278;
+      vertical-align: middle;
+      text-align: left;
+    }
+
+    table tbody tr:nth-child(even) {
+      background-color: #f9fafe;
+    }
+
+    table tbody tr:hover {
+      background-color: #f1f3f9;
+    }
+
+    .card-header {
+      background-color: #f9fafe;
+      border-bottom: none;
+    }
+
+    .card {
+      border: none;
+      border-radius: 0.475rem;
+      box-shadow: 0 0 20px rgba(76, 87, 125, 0.05);
+    }
+
+    /* Tombol Simpan */
+    .btn-primary-custom {
+      color: #fff;
+      background-color: #5867dd;
+      border: none;
+    }
+
+    .btn-primary-custom:hover {
+      color: #000 !important;
+      background-color: #4e5cc7 !important;
+      border-color: #4e5cc7 !important;
+    }
+
+    .btn-primary-custom:active {
+      color: #000 !important;
+      background-color: #3d4ba8 !important;
+      border-color: #3d4ba8 !important;
+    }
+
+    /* Tombol Edit */
+    .btn-warning {
+      color: #fff;
+      background-color: #ffc107;
+      border: none;
+    }
+
+    .btn-warning:hover {
+      color: #000 !important;
+      background-color: #e0a800 !important;
+      border-color: #e0a800 !important;
+    }
+
+    .btn-warning:active {
+      color: #000 !important;
+      background-color: #d39e00 !important;
+      border-color: #d39e00 !important;
+    }
+
+    /* Tombol Delete */
+    .btn-danger {
+      color: #fff;
+      background-color: #f64e60;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      color: #000 !important;
+      background-color: #e04b5b !important;
+      border-color: #e04b5b !important;
+    }
+
+    .btn-danger:active {
+      color: #000 !important;
+      background-color: #c53030 !important;
+      border-color: #c53030 !important;
+    }
+
+    /* Tombol Batal */
+    .btn-light-custom {
+      background-color: #f9fafe;
+      border: 1px solid #dcdfe6;
+      color: #5e6278;
+    }
+
+    .btn-light-custom:hover {
+      background-color: #e2e6ea;
+      color: #000;
+    }
+
+    /* Tombol Simpan */
+    .btn-primary-custom {
+      background-color: #5867dd;
+      border-color: #5867dd;
+      padding: 10px 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      height: 40px;
+      min-width: 100px;
+      color: white;
+    }
+
+    .btn-primary-custom:hover {
+      background-color: #4856c4;
+      border-color: #4856c4;
     }
   </style>
 </head>
@@ -81,21 +209,21 @@ $editData = session()->getFlashdata('editData') ?? null;
             <div class="mb-3">
               <label for="status" class="form-label">Status</label>
               <select name="status" class="form-select" required>
+                <option value="">-- Pilih Status --</option>
                 <option value="0" <?= (isset($editData) && $editData['status'] == 0) ? 'selected' : '' ?>>Aktif</option>
                 <option value="1" <?= (isset($editData) && $editData['status'] == 1) ? 'selected' : '' ?>>Nonaktif</option>
-
               </select>
             </div>
 
             <!-- Tombol Aksi -->
             <div class="d-flex justify-content-start mt-4">
-              <button type="submit" class="btn btn-sm text-white me-2"
-                style="background-color: #5867dd; border-color: #5867dd; padding: 6px 18px; font-size: 15px; line-height: 1.2; height: 32px; min-width: 80px;">
+              <button type="submit" class="btn btn-sm btn-primary-custom me-2">
                 <?= isset($editData) ? 'Perbarui Data' : 'Simpan' ?>
               </button>
               <?php if (isset($editData)): ?>
-                <a href="<?= base_url('public/akreditasi/input-data-pemutu') ?>" class="btn btn-sm btn-light"
-                  style="padding: 4px 12px; font-size: 0.8rem;">Batal</a>
+                <a href="<?= base_url('public/akreditasi/input-data-pemutu') ?>" class="btn btn-sm btn-light-custom">
+                  Batal
+                </a>
               <?php endif; ?>
             </div>
           </form>

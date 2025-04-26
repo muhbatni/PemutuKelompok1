@@ -12,6 +12,12 @@ class UnitPemutuModel extends Model
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
 
+    public function __construct()
+    {
+        parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
+    }
+
     public function getPemutuData()
     {
         return $this->db->table($this->table)
