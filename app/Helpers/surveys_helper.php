@@ -23,6 +23,7 @@ function createPertanyaanData($database, $data)
       'teks' => $teks,
       'jenis' => $jenisValue,
       'is_aktif' => true,
+      'urutan' => $index,
       'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
     ];
