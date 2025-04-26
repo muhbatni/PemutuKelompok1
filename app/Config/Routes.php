@@ -62,12 +62,14 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
+  $routes->get('audit/input-standar/edit/(:num)', [InputStandarAudit::class, 'edit/$1']);
+  $routes->post('audit/input-standar/update/(:num)', [InputStandarAudit::class, 'update/$1']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
   $routes->match(['get','post'],'audit/input-manajemen-audit', [InputManajemenAudit::class, 'index']);
   $routes->get('audit/input-manajemen-audit/edit/(:num)', 'InputManajemenAudit::edit/$1');
   $routes->post('audit/input-manajemen-audit/update/(:num)', 'InputManajemenAudit::update/$1');
   $routes->get('audit/input-manajemen-audit/delete/(:num)', 'InputManajemenAudit::delete/$1');  
-
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);

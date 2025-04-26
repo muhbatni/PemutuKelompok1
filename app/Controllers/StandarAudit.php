@@ -19,15 +19,10 @@ class StandarAudit extends BaseController
     session()->setFlashdata('success', 'Data input standar berhasil dihapus!');
     return redirect()->to(base_url('public/audit/standar'));
   }
-  
-  
-
-    // $data["title"] = "Standar Audit";
     echo view('layouts/header.php', $data);
     echo view('audit/standar_audit/tables.php', $data);
     echo view('layouts/footer.php');
 
   }
-
 }
 ?>
