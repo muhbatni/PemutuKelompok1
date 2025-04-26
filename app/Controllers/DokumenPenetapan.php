@@ -12,9 +12,9 @@ class DokumenPenetapan extends BaseController
     // Hapus data
     if ($this->request->getGet('delete')) {
       $id = $this->request->getGet('delete');
-      $data = $model->find($id);
+      $data = $model->where('id', $id)->first();
       if ($data && !empty($data['dokumen'])) {
-        $filePath = WRITEPATH . 'uploads/dokumen/' . $data['dokumen'];
+        $filePath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $data['dokumen'];
         if (file_exists($filePath)) {
           unlink($filePath); // hapus file fisik
         }
@@ -43,7 +43,7 @@ class DokumenPenetapan extends BaseController
 
       $dokumen = $this->request->getFile('dokumen');
       if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-        $uploadPath = WRITEPATH . 'uploads/dokumen/';
+        $uploadPath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/';
         if (!is_dir($uploadPath)) {
           mkdir($uploadPath, 0777, true);
         }
@@ -54,7 +54,7 @@ class DokumenPenetapan extends BaseController
 
         // Jika update, hapus file lama
         if ($id) {
-          $oldData = $model->find($id);
+          $oldData = $model->where('id', $id)->first();
           if ($oldData && !empty($oldData['dokumen'])) {
             $oldPath = $uploadPath . $oldData['dokumen'];
             if (file_exists($oldPath)) {

@@ -35,11 +35,12 @@ class UserModel extends Model
    */
   public function getDisplayName()
   {
-    $userModel = new UserModel();
-    $userId = session()->get('user_id');
-    if (!$userId) {
+    $token = getDatabyToken();
+    if (!$token) {
       return null;
     }
+    $userModel = new UserModel();
+    $userId = $token->uid;
     $user = $userModel->where('id', $userId)->first();
     if ($user) {
       return $user['nama'] ?? $user['username'];
@@ -54,27 +55,55 @@ class UserModel extends Model
    */
   public function getAvatar()
   {
-    $userModel = new UserModel();
-    $userId = session()->get('user_id');
-    if (!$userId) {
+    $token = getDatabyToken();
+    if (!$token) {
       return null;
     }
-    if (session()->get('user_avatar')) {
-      $image = session()->get('user_avatar');
+    $userId = $token->uid;
+    if (cache()->get("avatar_$userId")) {
+      $image = cache()->get("avatar_$userId");
       $mimeType = $this->getMimeType($image);
       $encodedImage = base64_encode($image);
       return "data:$mimeType;base64,$encodedImage";
     }
+    $userModel = new UserModel();
     $user = $userModel->where('id', $userId)->first();
     if (!$user['foto']) {
       return null;
     }
     $image = pg_unescape_bytea($user['foto']);
+    cache()->save("avatar_$userId", $image, 3600);
     $mimeType = $this->getMimeType($image);
     $encodedImage = base64_encode($image);
-    session()->set('user_avatar', $image);
     return "data:$mimeType;base64,$encodedImage";
   }
+
+  /**
+   * Get the user's type by it's id.
+   *
+   * @return string
+   */
+
+  public function getUserType()
+  {
+    $token = getDatabyToken();
+    if (!$token) {
+      return null;
+    }
+    $userModel = new UserModel();
+    $userId = $token->uid;
+    if (!$userId) {
+      return null;
+    }
+    $user = $userModel->where('id', $userId)->first();
+    return match ($user['tipe']) {
+      "1" => "Dosen",
+      "2" => "Laboran",
+      "3" => "Mahasiswa",
+      default => "Undefined"
+    };
+  }
+
   /**
    * Determine the MIME type of an image.
    *

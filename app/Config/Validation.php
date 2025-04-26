@@ -7,6 +7,7 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
+use App\Rules\DateValidationRules;
 
 class Validation extends BaseConfig
 {
@@ -25,6 +26,7 @@ class Validation extends BaseConfig
     FormatRules::class,
     FileRules::class,
     CreditCardRules::class,
+    DateValidationRules::class
   ];
 
   /**
@@ -82,6 +84,38 @@ class Validation extends BaseConfig
     'avatar' => [
       'max_size' => 'Ukuran foto tidak boleh lebih dari 2MB.',
       'ext_in' => 'Ekstensi foto harus jpg, jpeg, atau png.'
+    ]
+  ];
+
+  public array $surveys = [
+    'kode_survey' => 'required|is_unique[s_survey.kode]|max_length[10]',
+    'nama_survey' => 'required|min_length[5]|max_length[30]',
+    'dokumen_pendukung_survey' => 'permit_empty',
+    'status_survey' => 'required',
+    'tanggal_mulai' => 'required',
+    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]'
+  ];
+
+  public array $surveys_errors = [
+    'kode_survey' => [
+      'required' => 'Kode survey harus diisi.',
+      'is_unique' => 'Kode survey sudah ada.',
+      'max_length' => 'Kode survey maksimal 10 karakter.'
+    ],
+    'nama_survey' => [
+      'required' => 'Nama survey harus diisi.',
+      'min_length' => 'Nama survey minimal 5 karakter.',
+      'max_length' => 'Nama survey maksimal 30 karakter.'
+    ],
+    'status_survey' => [
+      'required' => 'Status survey harus diisi.',
+    ],
+    'tanggal_mulai' => [
+      'required' => 'Tanggal mulai harus diisi.'
+    ],
+    'tanggal_selesai' => [
+      'required_with' => 'Tanggal mulai juga harus diisi.',
+      'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
     ]
   ];
 }
