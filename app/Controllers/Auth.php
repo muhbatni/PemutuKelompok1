@@ -53,7 +53,6 @@ class Auth extends BaseController
     if (!password_verify($data['password'], $hashedPassword)) {
       return alert('login', 'error', 'Username atau password salah!');
     }
-    helper('cookie');
     $issuedAt = time();
     $accessTokenExp = $issuedAt + 3600; // 1 hour
     $refreshTokenExp = $issuedAt + 604800; // 7 days
@@ -89,7 +88,6 @@ class Auth extends BaseController
 
   public function logout()
   {
-    helper('cookie');
     delete_cookie('access_token');
     delete_cookie('refresh_token');
     return alert('login', 'success', 'Logout berhasil!')->withCookies();
