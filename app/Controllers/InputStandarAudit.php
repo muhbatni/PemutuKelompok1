@@ -5,86 +5,99 @@ use App\Models\StandarModel;
 
 class InputStandarAudit extends BaseController
 {
-  public function index()
-  {
-    // Jika form disubmit (POST)
-    if ($this->request->getMethod() === 'POST') {
-      $model = new StandarModel();
+    public function index()
+    {
+        if ($this->request->getMethod() === 'POST') {
+            $model = new StandarModel();
 
-      // Ambil input parent dan konversi jika kosong
-    $parent = $this->request->getPost('parent');
-    $parent = ($parent === null || $parent === '') ? null : $parent;
+            $parent = $this->request->getPost('parent');
+            $parent = ($parent === null || $parent === '') ? null : $parent;
 
+            $data = [
+                'nama' => $this->request->getPost('judul'),
+                'id_parent' => $parent,
+                'dokumen' => $this->request->getPost('dokumen'),
+                'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
+            ];
 
-    // Ambil data dari form
-    $data = [
-      'nama' => $this->request->getPost('judul'),
-      'id_parent' => $parent,
-      'dokumen' => $this->request->getPost('deskripsi'),
-      'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
-    ];
+            $dokumen = $this->request->getFile('dokumen');
+            if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+                $uploadPath = WRITEPATH . 'uploads/dokumen/';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
 
-    // Simpan ke DB
-    $model->insert($data);
+                $fileName = $dokumen->getRandomName();
+                $dokumen->move($uploadPath, $fileName);
+                $data['dokumen'] = $fileName;
+            }
 
-    // Redirect langsung ke halaman tables setelah berhasil disimpan
-      return redirect()->to(base_url('public/audit/standar'))->with('success', 'Data berhasil ditambahkan!');
-  }
+            $model->insert($data);
 
-  // Tampilkan form (GET)
-    $data["title"] = "Input Standar Audit";
-    echo view('layouts/header.php', $data);
-    echo view('audit/standar_audit/form.php');
-    echo view('layouts/footer.php');
+            return redirect()->to(base_url('public/audit/standar'))->with('success', 'Data berhasil ditambahkan!');
+        }
 
-  }
-
-  public function edit($id)
-{
-    $model = new StandarModel();
-    $data['standar'] = $model->find($id);
-
-    // Jika data tidak ditemukan, redirect ke halaman daftar standar
-    if (!$data['standar']) {
-      return redirect()->to(base_url('public/audit/input-standar'))->with('error', 'Standar tidak ditemukan!');
-  }
-
-    // Tampilkan form edit dengan data yang sudah ada
-    $data["title"] = "Edit Standar Audit";
-    echo view('layouts/header.php', $data);
-    echo view('audit/standar_audit/form.php', $data); // Form edit
-    echo view('layouts/footer.php');
-}
-
-public function update($id)
-{
-    $model = new StandarModel();
-
-    // Ambil data dari form untuk update
-    $parent = $this->request->getPost('parent');
-    $parent = ($parent === null || $parent === '') ? null : $parent;
-
-    // Data yang akan diupdate
-    $data = [
-        'nama' => $this->request->getPost('judul'),
-        'id_parent' => $parent,
-        'dokumen' => $this->request->getPost('deskripsi'),
-        'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
-    ];
-
-    // Update data berdasarkan ID
-    $updateStatus = $model->update($id, $data);
-
-    // Periksa apakah data berhasil diperbarui
-    if ($updateStatus === false) {
-        // Jika gagal, tampilkan error
-        session()->setFlashdata('error', 'Data gagal diperbarui.');
-        return redirect()->to(base_url('public/audit/input-standar/edit/' . $id));
+        // Jika GET
+        $data['title'] = "Input Standar Audit";
+        $data['isEdit'] = false;
+        $data['edit'] = null;
+        echo view('layouts/header.php', $data);
+        echo view('audit/standar_audit/form.php', $data);
+        echo view('layouts/footer.php');
     }
 
-    // Redirect setelah berhasil mengedit
-    session()->setFlashdata('success', 'Data berhasil diperbarui!');
-    return redirect()->to(base_url('public/audit/standar'));
-}
+    public function edit($id)
+    {
+        $model = new StandarModel();
+        $standar = $model->find($id);
+
+        if (!$standar) {
+            return redirect()->to(base_url('public/audit/input-standar'))->with('error', 'Standar tidak ditemukan!');
+        }
+
+        $data['title'] = "Edit Standar Audit";
+        $data['standar'] = $standar;
+        $data['isEdit'] = true;
+        $data['edit'] = $standar;
+        echo view('layouts/header.php', $data);
+        echo view('audit/standar_audit/form.php', $data);
+        echo view('layouts/footer.php');
+    }
+
+    public function update($id)
+    {
+        $model = new StandarModel();
+
+        $parent = $this->request->getPost('parent');
+        $parent = ($parent === null || $parent === '') ? null : $parent;
+
+        $data = [
+            'nama' => $this->request->getPost('judul'),
+            'id_parent' => $parent,
+            'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
+        ];
+
+        $dokumen = $this->request->getFile('dokumen');
+        if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+            $uploadPath = WRITEPATH . 'uploads/dokumen/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $fileName = $dokumen->getRandomName();
+            $dokumen->move($uploadPath, $fileName);
+            $data['dokumen'] = $fileName;
+        }
+
+        $updateStatus = $model->update($id, $data);
+
+        if ($updateStatus === false) {
+            session()->setFlashdata('error', 'Data gagal diperbarui.');
+            return redirect()->to(base_url('public/audit/input-standar/edit/' . $id));
+        }
+
+        session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        return redirect()->to(base_url('public/audit/standar'));
+    }
 }
 ?>

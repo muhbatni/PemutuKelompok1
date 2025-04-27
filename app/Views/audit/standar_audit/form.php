@@ -15,7 +15,8 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="post" 
-            action="<?= isset($standar) ? base_url('public/audit/input-standar/update/' . $standar['id']) : base_url('public/audit/input-standar') ?>">
+            action="<?= isset($standar) ? base_url('public/audit/input-standar/update/' . $standar['id']) : base_url('public/audit/input-standar') ?>"
+            enctype="multipart/form-data">
       <!-- <form class="m-form m-form--fit m-form--label-align-right" method="post" action= "input-standar"> -->
         <div class="m-portlet__body">
 
@@ -38,11 +39,20 @@
           </div>
           
           <!-- Field Deskripsi Standar -->
-          <div class="form-group m-form__group">
+          <!-- <div class="form-group m-form__group">
             <label for="DeskripsiStandar">Deskripsi Standar</label>
             <textarea class="form-control m-input" id="DeskripsiStandar" name="deskripsi" rows="3" 
                       placeholder="Deskripsi Standar"><?= isset($standar) ? esc($standar['dokumen']) : ''; ?></textarea>
+          </div> -->
+
+          <div class="form-group m-form__group">
+            <label for="dokumen">Unggah Dokumen</label>
+            <input type="file" class="form-control m-input" name="dokumen" id="DokumenStandar" accept=".pdf,.doc,.docx">
+            <span class="m-form__help">
+              File yang diperbolehkan: PDF, DOC, DOCX <?= $isEdit && !empty($edit['dokumen']) ? '(Abaikan jika tidak ingin mengganti)' : '' ?>
+            </span>
           </div>
+        </div>
 
           <!-- !-- Field Status Aktif --> 
           <div class="form-group m-form__group">

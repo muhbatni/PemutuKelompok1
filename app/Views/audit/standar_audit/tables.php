@@ -56,7 +56,7 @@
             Parent
             </th>
             <th title="Field #3">
-            Deskripsi Standar
+            Dokumen
             </th>
             <th title="Field #4">
               Status Aktif
@@ -120,6 +120,8 @@
     $('#deleteModal').modal('show');
   }
 </script>
+
+
 
       </table>
       <!--end: Datatable -->
