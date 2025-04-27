@@ -1,112 +1,152 @@
 .form-heading-3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #575962;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #575962;
 }
 
 .profile .profile-picture {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile {
-  position: relative;
-  display: flex;
-  width: 100%;
-  gap: 30px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    gap: 30px;
 }
 
 .profile-picture-wrapper {
-  position: relative;
-  border-radius: 50%;
-  width: 8rem;
-  height: 8rem;
-  box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+    box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .profile-details-wrapper {
-  width: 85%;
-  display: flex;
-  /* padding-top: 10px; */
-  flex-direction: column;
-  justify-content: end;
+    width: 85%;
+    display: flex;
+    /* padding-top: 10px; */
+    flex-direction: column;
+    justify-content: end;
 }
 
 .profile-picture {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .profile-img-input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
 }
 
 .profile-picture-wrapper:hover::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  z-index: 1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    z-index: 1;
 }
 
 .profile-picture-wrapper:hover .flaticon-edit-1 {
-  opacity: 1;
-  z-index: 2;
+    opacity: 1;
+    z-index: 2;
 }
 
 .flaticon-edit-1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 1.5rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .profile-picture-nav {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .profile-picture-dropdown {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 @media only screen and (max-width: 768px) {
-  .profile {
-    gap: 15px;
-  }
-  .profile-picture-nav {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-  .profile-picture-wrapper {
-    width: 6rem;
-    height: 6rem;
-  }
-  .profile-picture-dropdown {
-    width: 4rem;
-    height: 4rem;
-  }
+    .profile {
+        gap: 15px;
+    }
+    .profile-picture-nav {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    .profile-picture-wrapper {
+        width: 6rem;
+        height: 6rem;
+    }
+    .profile-picture-dropdown {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+
+/* Value 1: Merah */
+.m-radio--value-1 input[type="radio"]:checked + span {
+    background-color: #dc3545; /* Danger (Merah) */
+}
+
+/* Value 2: Oranye */
+.m-radio--value-2 input[type="radio"]:checked + span {
+    background-color: #fd7e14; /* Orange */
+}
+
+/* Value 3: Kuning */
+.m-radio--value-3 input[type="radio"]:checked + span {
+    background-color: #ffc107; /* Warning (Kuning) */
+}
+
+/* Value 4: Hijau */
+.m-radio--value-4 input[type="radio"]:checked + span {
+    background-color: #28a745; /* Success (Hijau) */
+}
+
+/* Value 5: Biru */
+.m-radio--value-5 input[type="radio"]:checked + span {
+    background-color: #007bff; /* Primary (Biru) */
+}
+
+/* Tambahkan gaya untuk memastikan lingkaran radio terlihat */
+.m-radio--solid span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    background-color: #e9ecef;
+}
+
+.black {
+    background-color: #00000;
 }

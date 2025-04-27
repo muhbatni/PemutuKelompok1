@@ -58,6 +58,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
   $routes->match(['get', 'post'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
+  $routes->get('survey/isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$2']);
+  $routes->post('survey/isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$2']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
