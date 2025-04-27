@@ -11,6 +11,9 @@ class AuthFilter implements FilterInterface
   public function before(RequestInterface $request, $arguments = null)
   {
     $accessToken = get_cookie('access_token');
+    if (!$accessToken) {
+      return alert('login', 'error', 'Silahkan login terlebih dahulu');
+    }
     if (!isValidToken($accessToken)) {
       $accessToken = refreshToken();
       if (!$accessToken) {
