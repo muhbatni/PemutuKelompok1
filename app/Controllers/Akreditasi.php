@@ -72,29 +72,21 @@ class Akreditasi extends BaseController
             'file' => $this->request->getPost('file_upload'),
         ];
 
+        $id = $this->request->getPost('id');
         if ($id) {
-            // Jika ada ID, maka update
-            $updateResult = $akreditasiModel->update($id, $dataForm);
-            if ($updateResult) {
-                session()->setFlashdata('success', 'Data berhasil diperbarui!');
-            } else {
-                session()->setFlashdata('error', 'Terjadi kesalahan saat memperbarui data!');
-            }
+            $akreditasiModel->update($id, $dataForm);
+            session()->setFlashdata('success', 'Data berhasil diperbarui!');
         } else {
-            // Jika tidak ada ID, maka insert
-            $insertResult = $akreditasiModel->insert($dataForm);
-            if ($insertResult) {
-                session()->setFlashdata('success', 'Data berhasil disimpan!');
-            } else {
-                session()->setFlashdata('error', 'Terjadi kesalahan saat menyimpan data!');
-            }
+            // Jika tidak ada ID, maka insert data baru
+            $akreditasiModel->insert($dataForm);
+            session()->setFlashdata('success', 'Data berhasil disimpan!');
         }
-        // Redirect ke halaman akreditasi
+
         return redirect()->to(base_url('public/akreditasi'));
     }
 
-    if ($this->request->getGet('action') == 'delete' && $this->request->getGet('id')) {
-        $id = $this->request->getGet('id');
+    if ($this->request->getGet('delete')) {
+        $id = $this->request->getGet('delete');
         $deleteResult = $akreditasiModel->delete($id);
 
         if ($deleteResult) {

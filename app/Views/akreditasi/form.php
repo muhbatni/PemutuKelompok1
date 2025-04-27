@@ -13,6 +13,9 @@
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="akreditasi" enctype="multipart/form-data">
         <div class="m-portlet__body">
+
+        <!-- ID input, hidden field -->
+        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
@@ -63,19 +66,20 @@
           </div>
 
           <!-- Is Active -->
-          <div class="form-group m-form__group">
-              <label>Is Active</label><br>
-              <label class="radio-inline">
-                  <input type="radio" name="is_active" value="1" 
-                  <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?>>
-                  Aktif
-              </label>
-              <label class="radio-inline">
-                  <input type="radio" name="is_active" value="0" 
-                  <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?>>
-                  Tidak Aktif
-              </label>
-          </div>
+        <div class="form-group m-form__group">
+            <label>Is Active</label><br>
+            <label class="radio-inline">
+                <input type="radio" name="is_active" value="0" 
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?>>
+                Tidak Aktif
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="is_active" value="1" 
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?>>
+                Aktif
+            </label>
+        </div>
+
 
           <!-- Status -->
           <div class="form-group m-form__group">
@@ -219,13 +223,14 @@
                   </td>
                   <td>
                   <?php
-                    $active = '';
+                    $aktif = '';
                     if (isset($akreditasi['is_active'])) {
-                        $active = 'Aktif';
+                        // Mengecek langsung nilai boolean
+                        $aktif = $akreditasi['is_active'] ? 'Aktif' : 'Tidak Aktif';
                     } else {
-                        $active = 'Tidak Aktif';
+                        $aktif = 'Tidak Ada';
                     }
-                    echo $active;
+                    echo $aktif;
                   ?>
                   </td>
                   <td>
@@ -244,12 +249,11 @@
                       </a>
                     <?php endif; ?>
 
-                    <!-- Tombol Delete -->
-                    <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                          Hapus
-                      </a>
-                    <?php endif; ?>
+                    <!-- Tombol Hapus -->
+                  <button class="btn btn-sm btn-danger" 
+                          onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($akreditasi['id_unit']) ?>')">
+                    Hapus
+                  </button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -270,4 +274,16 @@
             document.querySelector("form").reset();
         <?php endif; ?>
     }
+
+    function showDeleteModal(id, nama) {
+    // Mengatur ID data yang akan dihapus
+    document.getElementById('deleteId').value = id;
+    
+    // Menampilkan pesan konfirmasi penghapusan dengan nama data
+    document.getElementById('deleteMessage').innerHTML = 
+      `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
+
+    // Menampilkan modal
+    $('#deleteModal').modal('show');
+  }
 </script>

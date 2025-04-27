@@ -46,49 +46,89 @@
       </div>
       </form>
       <!--end::Form-->
+      </div>
+  </div>
 
       <?php if (!isset($editData)): ?>
-      <div class="m-portlet__body">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Nama Lembaga</th>
-              <th>Nama Syarat Unggul</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($dataSyarat as $syarat): ?>
+    <div class="col-md-12 mt-4">
+      <div class="m-portlet m-portlet--tabs">
+        <div class="m-portlet__head">
+          <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+              <h3 class="m-portlet__head-text">
+                Data Syarat Unggul
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="m-portlet__body">
+          <table class="table table-bordered">
+            <thead>
               <tr>
-              <td><?php
-                $lembaga = null;
-                foreach ($lembagas as $l) {
-                    if ($l['id'] == $syarat['id_lembaga']) {
-                        $lembaga = $l['nama'];
-                        break;
-                    }
-                }
-                echo $lembaga ? $lembaga : 'Lembaga Tidak Ditemukan';
-                ?></td>
-                <td><?= $syarat['nama']; ?></td>
-                <td>
-                  <!-- Tombol Edit -->
-                  <a href="<?= 'syarat-unggul?id=' . $syarat['id']; ?>" class="btn btn-sm btn-warning">
-                    <i class="fa fa-pencil-alt"></i> Edit
-                  </a>
-                  <!-- Tombol Delete -->
-                  <a href="<?= 'syarat-unggul?id=' . $syarat['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                    <i class="fa fa-trash-alt"></i> Hapus
-                  </a>
-                </td>
+                <th>Nama Lembaga</th>
+                <th>Nama Syarat Unggul</th>
+                <th>Aksi</th>
               </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach ($dataSyarat as $syarat): ?>
+                <tr>
+                  <td>
+                    <?php
+                      $lembaga = null;
+                      foreach ($lembagas as $l) {
+                        if ($l['id'] == $syarat['id_lembaga']) {
+                          $lembaga = $l['nama'];
+                          break;
+                        }
+                      }
+                      echo $lembaga ? $lembaga : 'Lembaga Tidak Ditemukan';
+                    ?>
+                  </td>
+                  <td><?= $syarat['nama']; ?></td>
+                  <td>
+                    <!-- Tombol Edit -->
+                    <a href="<?= 'syarat-unggul?id=' . $syarat['id']; ?>" class="btn btn-sm btn-warning">
+                      <i class="fa fa-pencil-alt"></i> Edit
+                    </a>
+                    <!-- Tombol Delete -->
+                    <button class="btn btn-sm btn-danger" 
+                          onclick="showDeleteModal('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')">
+                    Hapus
+                  </button>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <?php endif; ?>
     </div>
-  </div>
+  <?php endif; ?>
+  <!-- Modal Hapus -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <form method="get">
+              <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="delete" id="deleteId">
+                <p id="deleteMessage"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 </div>
 
 <script>
@@ -101,4 +141,16 @@
             document.querySelector("form").reset();
         <?php endif; ?>
     }
+
+    function showDeleteModal(id, nama) {
+    // Mengatur ID data yang akan dihapus
+    document.getElementById('deleteId').value = id;
+    
+    // Menampilkan pesan konfirmasi penghapusan dengan nama data
+    document.getElementById('deleteMessage').innerHTML = 
+      `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
+
+    // Menampilkan modal
+    $('#deleteModal').modal('show');
+  }
 </script>
