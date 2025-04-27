@@ -52,6 +52,7 @@ class ManajemenSurvey extends BaseController
   {
     $periodeModel = new PeriodeModel();
     $periode = $periodeModel->findAll();
+
     if ($this->request->getMethod() === "POST") {
       $validation = service('validation');
       $data = $this->request->getPost();
@@ -65,6 +66,13 @@ class ManajemenSurvey extends BaseController
         echo view("layouts/footer.php");
         return null;
       }
+
+      $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
+      $file = $data['dokumen_pendukung_survey'];
+      if ($file) {
+        $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
+      }
+
       $database = Database::connect();
       $database->transStart();
       $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
@@ -111,6 +119,10 @@ class ManajemenSurvey extends BaseController
     if ($this->request->getMethod() === "POST") {
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
+      $file = $data['dokumen_pendukung_survey'];
+      if ($file) {
+        $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
+      }
       $database = Database::connect();
       $database->transStart();
       $data['id_survey'] = $idSurvey;
