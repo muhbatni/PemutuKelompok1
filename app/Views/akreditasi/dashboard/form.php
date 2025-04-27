@@ -30,38 +30,28 @@
       background-color: #495057;
     }
 
-    /* Styling khusus untuk Dropdown */
     .custom-dropdown {
       background: #e9f2fd;
-      /* Biru pastel muda */
       color: #212529;
-      /* Text gelap */
       transition: background 0.4s ease, color 0.4s ease;
       border: 1px solid #ced4da;
       border-radius: 0 0.375rem 0.375rem 0;
     }
 
-    /* Hover saat mouse mengarah ke select */
     .custom-dropdown:hover {
       background: linear-gradient(135deg, #0d6efd 0%, #20c997 100%);
       color: #ffffff;
-      /* Saat hover text jadi putih */
     }
 
-    /* Tampilan semua pilihan dalam dropdown */
     .custom-dropdown option {
       color: #212529;
-      /* Warna teks tetap gelap */
       background: #ffffff;
-      /* Background pilihan tetap putih */
     }
 
-    /* Saat pilih salah satu option */
     .custom-dropdown:focus {
       border-color: #86b7fe;
       outline: 0;
       box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-    }
     }
   </style>
 </head>
@@ -97,7 +87,7 @@
       </div>
 
       <!-- Cards -->
-      <div class="row mb-4">
+      <!-- <div class="row mb-4">
         <div class="col-md-3">
           <div class="card text-white bg-primary mb-3 border-0 shadow-sm">
             <div class="card-body">
@@ -130,10 +120,55 @@
             </div>
           </div>
         </div>
+      </div> -->
+
+      <!-- Tabel Data Unit Pemutu -->
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0">
+              <h5 class="mb-0">Data Unit Pemutu</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Unit</th>
+                      <th>Kondisi</th>
+                      <th>Status Isian</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (!empty($unitPemutu)): ?>
+                      <?php $no = 1;
+                      foreach ($unitPemutu as $row): ?>
+                        <tr>
+                          <td><?= $no++; ?></td>
+                          <td><?= esc($row['nama_unit']); ?></td>
+                          <td><?= esc($row['kondisi']); ?></td>
+                          <td><?= esc($row['status_isian']); ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php else: ?>
+                      <tr>
+                        <td colspan="4" class="text-center">Tidak ada data</td>
+                      </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
