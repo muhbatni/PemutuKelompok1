@@ -77,9 +77,13 @@
   <td><?= $s['is_aktif']; ?></td>
 
   <td>
-      <a href="?edit=<?= $s['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-      <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button>
-    </td>
+  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" 
+     class="btn btn-sm btn-warning" title="Edit">
+    Edit
+    <i class="la la-edit"></i>
+  </a>
+    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button>
+  </td>
   </tr>
   <?php endforeach; ?>
 </tbody>
