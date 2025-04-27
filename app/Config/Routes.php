@@ -82,13 +82,18 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
-  // $routes->get('akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/periode', [Periode::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/unit', [Unit::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
-  $routes->get('akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/isian-pemutu', [IsianPemutu::class, 'index']);
+
+  $routes->match(['get', 'post'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
+  $routes->post('akreditasi/input-data-pemutu/save', [InputDataPemutu::class, 'save']);
+  $routes->get('akreditasi/input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);
+  $routes->post('akreditasi/input-data-pemutu/update/(:num)', [InputDataPemutu::class, 'update/$1']);
+  $routes->get('akreditasi/input-data-pemutu/delete/(:num)', [InputDataPemutu::class, 'delete/$1']);
 });
 
 $routes->setAutoRoute(true);

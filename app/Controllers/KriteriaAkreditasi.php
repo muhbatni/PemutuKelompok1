@@ -1,41 +1,59 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\InstrumenPemutuModel;
 use App\Models\KriteriaAkreditasiModel;
+use App\Models\LembagaAkreditasiModel;
 
 class KriteriaAkreditasi extends BaseController
 {
-  public function index()
-  {
+    public function index()
+    {      
 
-    $lembagaModel = new \App\Models\LembagaAkreditasiModel();
-    $data['lembagas'] = $lembagaModel->getLembagas();
-    // Jika form disubmit (metode POST)
-    if ($this->request->getMethod() == 'POST') {
-      // Ambil data dari form
-      $InputIdLembaga = $this->request->getPost('id_lembaga');
-      $InputKode = $this->request->getPost('kode');
-      $InputNama = $this->request->getPost('nama');
+        $kriteriaModel = new KriteriaAkreditasiModel();
+        $lembagaModel = new LembagaAkreditasiModel();
 
-      // Simpan data ke database
-      $model = new KriteriaAkreditasiModel();
-      $data = [
-        'id_lembaga' => $InputIdLembaga,
-        'kode' => $InputKode,
-        'nama' => $InputNama,
-      ];
-      $model->save($data);
+        $data['lembagas'] = $lembagaModel->getLembagas();
+        $data['kriteria'] = $kriteriaModel->getKriteriaWithLembaga();
+      
+        // Proses hapus
+        if ($this->request->getPost('id_delete')) {
+            $idDelete = $this->request->getPost('id_delete');
+            $kriteriaModel->delete($idDelete);
+            session()->setFlashdata('success', 'Data berhasil dihapus');
+            return redirect()->to(base_url('public/akreditasi/kriteria'));
+        }
 
-      // Set flashdata untuk pemberitahuan sukses
-      session()->setFlashdata('success', 'Berhasil disimpan!');
-      return redirect()->to(base_url('public/akreditasi/kriteria')); // Kembali ke halaman yang sama
+        // Proses edit / tambah
+        $data['isEdit'] = false;
+        $data['edit'] = [];
+        $data['title'] = 'Kriteria Akreditasi';
+
+        if ($this->request->getGet('edit')) {
+            $data['isEdit'] = true;
+            $data['edit'] = $kriteriaModel->find($this->request->getGet('edit'));
+        }
+
+        if ($this->request->getMethod() == 'POST' && !$this->request->getPost('id_delete')) {
+            $id = $this->request->getPost('id');
+            $saveData = [
+                'id_lembaga' => $this->request->getPost('id_lembaga'),
+                'kode' => $this->request->getPost('kode'),
+                'nama' => $this->request->getPost('nama'),
+            ];
+
+            if ($id) {
+                $saveData['id'] = $id;
+            }
+
+            $kriteriaModel->save($saveData);
+            session()->setFlashdata('success', $id ? 'Berhasil diperbarui!' : 'Berhasil disimpan!');
+            return redirect()->to(base_url('public/akreditasi/kriteria'));
+        }
+
+        
+        echo view('layouts/header.php', $data);
+        echo view('akreditasi/kriteria_akreditasi/form', $data);
+        echo view('layouts/footer.php');
     }
-
-    $data["title"] = "Kriteria Akreditasi";
-    echo view('layouts/header.php', $data);
-    echo view('akreditasi/kriteria_akreditasi/form.php');
-    echo view('layouts/footer.php');
-  }
-
 }
-?>

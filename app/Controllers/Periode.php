@@ -9,38 +9,54 @@ class Periode extends BaseController
     {
         $model = new PeriodeModel();
 
-        // Simpan data (create) jika form disubmit
+        // Hapus data
+        if ($this->request->getGet('delete')) {
+            $id = $this->request->getGet('delete');
+            $model->delete($id);
+            session()->setFlashdata('success', 'Data periode berhasil dihapus!');
+            return redirect()->to(base_url('public/akreditasi/periode'));
+        }
+
+        // Ambil data untuk edit
+        $editData = null;
+        if ($this->request->getGet('edit')) {
+            $id = $this->request->getGet('edit');
+            $editData = $model->find($id);
+        }
+
+        // Simpan (create / update)
         if ($this->request->getMethod() == 'POST') {
-            // Ambil data dari form
+            $id = $this->request->getPost('id');
             $tahun = $this->request->getPost('tahun');
-            $ts = $this->request->getPost('ts');
-            
-            // Validasi input
-            if (empty($tahun) || empty($ts)) {
-                session()->setFlashdata('error', 'Tahun dan Tahun Ajaran harus diisi.');
+            $tahunAjaran = $this->request->getPost('ts');
+
+            if (empty($tahun) || empty($tahunAjaran)) {
+                session()->setFlashdata('error', 'Tahun dan Tahun Ajaran wajib diisi!');
             } else {
-                // Siapkan data untuk dimasukkan
                 $data = [
-                    'tahun' => (int)$tahun,  // Pastikan tahun adalah integer
-                    'ts'    => $ts,          // Pastikan ts adalah string
+                    'tahun' => (int) $tahun,
+                    'ts' => $tahunAjaran,
                 ];
 
-                // Insert data ke database
-                if ($model->insert($data)) {
-                    session()->setFlashdata('success', 'Data periode berhasil disimpan.');
+                if ($id) {
+                    $model->update($id, $data);
+                    session()->setFlashdata('success', 'Data periode berhasil diperbarui!');
                 } else {
-                    session()->setFlashdata('error', 'Gagal menyimpan data periode.');
+                    $model->save($data);
+                    session()->setFlashdata('success', 'Data periode berhasil disimpan!');
                 }
+
+                return redirect()->to(base_url('public/akreditasi/periode'));
             }
         }
 
-        // Ambil data periode yang ada untuk ditampilkan
+        // Ambil semua data
         $data['title'] = 'Manajemen Periode';
-        $data['list'] = $model->findAll();
+        $data['periode'] = $model->findAll();
+        $data['edit'] = $editData;
 
-        // Tampilkan form dan data di view yang sama
-        echo view('layouts/header', $data);
-        echo view('akreditasi/periode/form', $data);
-        echo view('layouts/footer');
+        echo view('layouts/header.php', $data);
+        echo view('akreditasi/periode/form.php');
+        echo view('layouts/footer.php');
     }
 }
