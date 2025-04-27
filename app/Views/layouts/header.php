@@ -63,7 +63,7 @@ $avatar = $user->getAvatar() ?: $defaultAvatar;
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$auditPages = ['input-auditor', 'standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -281,6 +281,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                     'input-auditor' => 'Input Auditor',
                     'standar' => 'Standar Audit',
                     'manajemen-audit' => 'Manajemen Audit',
+                    'pelaksanaan-audit' => 'Pelaksanaan Audit',
                     'data-dukung' => 'Data Dukung',
                     'temuan' => 'Temuan',
                   ];

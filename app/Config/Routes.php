@@ -11,6 +11,7 @@ use App\Controllers\InstrumenPemutu;
 use App\Controllers\IsiSurvey;
 use App\Controllers\KriteriaAkreditasi;
 use App\Controllers\Login;
+use App\Controllers\PelaksanaanAudit;
 use App\Controllers\Profile;
 use App\Controllers\Registrasi;
 use App\Controllers\SyaratUnggul;
@@ -69,7 +70,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-manajemen-audit/edit/(:num)', 'InputManajemenAudit::edit/$1');
   $routes->post('audit/input-manajemen-audit/update/(:num)', 'InputManajemenAudit::update/$1');
   $routes->get('audit/input-manajemen-audit/delete/(:num)', 'InputManajemenAudit::delete/$1');
-
+  $routes->get('audit/pelaksanaan-audit', [PelaksanaanAudit::class, 'index']);
+  $routes->get('audit/pelaksanaan-audit/edit/(:num)', 'PelaksanaanAudit::edit/$1');
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);

@@ -29,6 +29,17 @@ class AuditStandarModel extends Model
             ->getResult();
     }
 
+    public function getStandarByAudit($id_audit)
+    {
+        return $this->db->table('a_standar_audit sa')
+            ->join('a_standar s', 's.id = sa.id_standar')
+            ->select('sa.id_standar, s.nama')
+            ->where('sa.id_audit', $id_audit)
+            ->get()
+            ->getResult();
+    }
+
+
 
 
 
