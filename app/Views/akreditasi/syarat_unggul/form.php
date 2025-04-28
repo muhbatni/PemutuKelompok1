@@ -15,6 +15,9 @@
       <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="syarat-unggul" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
+        <!-- ID untuk form edit, jika ada -->
+        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
+
         <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
@@ -32,7 +35,7 @@
         <!-- Nama Syarat -->
         <div class="form-group m-form__group">
           <label for="nama">Nama Syarat Unggul</label>
-          <input type="text" class="form-control m-input" id="nama" name="nama" placeholder="masukkan nama" maxlength="100" 
+          <input type="text" class="form-control m-input" id="nama" name="nama" placeholder="Masukkan Nama" maxlength="100" 
             value="<?= isset($editData) ? $editData['nama'] : ''; ?>" required>
         </div>
       </div>
