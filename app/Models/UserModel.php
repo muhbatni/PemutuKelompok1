@@ -28,7 +28,29 @@ class UserModel extends Model
   }
 
   /**
-   * Get the display name of a user by username.
+   * Get the username by its id.
+   *
+   * @param string $username
+   * @return string|null
+   */
+
+  public function getUsername()
+  {
+    $token = getDatabyToken();
+    if (!$token) {
+      return null;
+    }
+    $userModel = new UserModel();
+    $userId = $token->uid;
+    $user = $userModel->where('id', $userId)->first();
+    if ($user) {
+      return $user['username'];
+    }
+    return null;
+  }
+
+  /**
+   * Get the display name of the user by the user's id.
    *
    * @param string $username
    * @return string|null
@@ -49,7 +71,7 @@ class UserModel extends Model
   }
 
   /**
-   * Get the display name of a user by username.
+   * Get the display name of the user by the user's id.
    *
    * @return object|string
    */
@@ -79,7 +101,7 @@ class UserModel extends Model
   }
 
   /**
-   * Get the user's type by it's id.
+   * Get the user's type by its id.
    *
    * @return string
    */
