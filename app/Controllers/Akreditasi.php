@@ -74,7 +74,7 @@ class Akreditasi extends BaseController
 
         $file = $this->request->getFile('file_upload');
         if ($file && $file->isValid() && !$file->hasMoved()){
-            $uploadPath = WRITEPATH . '../public/uploads/akreditasi/';
+            $uploadPath = WRITEPATH . 'uploads/akreditasi/';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
             }

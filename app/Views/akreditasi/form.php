@@ -237,7 +237,7 @@
                     <?php if (isset($akreditasi['file']) && $akreditasi['file']): ?>
                       <a href="<?= base_url('public/akreditasi/download/' . esc($akreditasi['file'])) ?>" target="_blank">Download</a>
                     <?php else: ?>
-                      No File
+                      Tidak ada file
                     <?php endif; ?>
                   </td>
                   <td>
