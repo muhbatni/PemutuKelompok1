@@ -99,9 +99,9 @@
                       <i class="la la-ellipsis-h"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item"
+                      <!-- <a class="dropdown-item"
                         href="<?= base_url("public/survey/manajemen-survey/edit/$survey[id]") ?>"><i
-                          class="la la-edit"></i> Edit Detail</a>
+                          class="la la-edit"></i> Edit Detail</a> -->
                       <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Edit Status</a>
                       <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
                       <a class="dropdown-item"
