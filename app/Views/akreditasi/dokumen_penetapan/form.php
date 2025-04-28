@@ -106,7 +106,29 @@
                   <td><?= esc($row['tanggal']) ?></td>
                   <td><?= esc($row['nama']) ?></td>
                   <td><?= esc($row['deskripsi']) ?></td>
-                  <td><?= !empty($row['dokumen']) ? esc($row['dokumen']) : 'Tidak ada file' ?></td>
+                  <td>
+                      <?php if (!empty($row['dokumen'])): ?>
+                        <?php 
+                          $ext = pathinfo($row['dokumen'], PATHINFO_EXTENSION);
+                          $fileUrl = base_url('uploads/dokumen-penetapan/' . $row['dokumen']);
+                        ?>
+
+                        <div class="btn-group" role="group" aria-label="Dokumen Actions">
+                          <?php if (strtolower($ext) === 'pdf'): ?>
+                            <a href="<?= $fileUrl ?>" target="_blank" class="btn btn-sm btn-info" style="width: 100px; text-align: center;" title="Pratinjau">
+                              Pratinjau <!-- Teks "Pratinjau" untuk PDF -->
+                            </a>
+                          <?php endif; ?>
+                          
+                          <a href="<?= $fileUrl ?>" download class="btn btn-sm btn-success" style="width: 100px; text-align: center;" title="Download">
+                            <i class="la la-download"></i> <!-- ikon Download -->
+                          </a>
+                        </div>
+                      <?php else: ?>
+                        <span class="text-muted">Tidak ada file</span>
+                      <?php endif; ?>
+                  </td>
+
                   <td>
                     <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                     <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
