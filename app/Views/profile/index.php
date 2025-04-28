@@ -1,5 +1,6 @@
 <?php
 $user = new App\Models\UserModel();
+$username = $user->getUsername();
 $displayName = $user->getDisplayName() ?? 'Guest';
 $defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
 $avatar = $user->getAvatar() ?? $defaultAvatar;
@@ -39,7 +40,7 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
                     <small class="text-danger"><?= esc($errors['nama']) ?></small>
                   <?php endif; ?>
                   <p class="form-control-static">
-                    <?= $displayName ?>
+                    <?= "@$username" ?>
                   </p>
                   <label for="exampleInputEmail1">
                     Nama (Optional)
