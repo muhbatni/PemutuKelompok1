@@ -3,6 +3,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use CodeIgniter\Cookie\CookieInterface;
+
 function getDatabyToken()
 {
   $request = service('request');
@@ -20,11 +21,13 @@ function getDatabyToken()
 
 function isValidToken($token)
 {
+  if (!$token) {
+    return null;
+  }
   try {
-    JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-    return true;
+    return JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
   } catch (ExpiredException $exception) {
-    return false;
+    return null;
   }
 }
 
@@ -33,32 +36,30 @@ function refreshToken()
 {
   $refreshToken = get_cookie('refresh_token') ?? null;
   if (!$refreshToken) {
-    alert('login', 'error', 'Refresh token is required');
-    return false;
+    return null;
   }
-  $refreshDecoded = JWT::decode($refreshToken, new Key(getenv('JWT_SECRET'), 'HS256'));
-  if (!$refreshDecoded) {
-    alert('login', 'error', 'Your data is expired, please signin again!');
-    return false;
+  try {
+    $refreshDecoded = JWT::decode($refreshToken, new Key(getenv('JWT_SECRET'), 'HS256'));
+    if ($refreshDecoded->type !== 'refresh') {
+      return null;
+    }
+    if (!isset($refreshDecoded->uid)) {
+      return null;
+    }
+    // Issue new access token
+    $now = time();
+    $newAccessExp = $now + 3600;
+    $newAccessPayload = [
+      'iat' => $now,
+      'exp' => $newAccessExp, // 1 hour
+      'uid' => $refreshDecoded->uid
+    ];
+    $newAccessToken = JWT::encode($newAccessPayload, getenv('JWT_SECRET'), 'HS256');
+    set_cookie('access_token', $newAccessToken, $newAccessExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
+    return $newAccessToken;
+  } catch (Exception $exception) {
+    alert('login', 'error', 'Masa akun anda sudah habis, silahkan login terlebih lagi!');
+    return null;
   }
-  if ($refreshDecoded->type !== 'refresh') {
-    alert('login', 'error', 'Invalid refresh token type');
-    return false;
-  }
-  if (!isset($refreshDecoded->uid)) {
-    alert('login', 'error', 'Invalid refresh token data');
-    return false;
-  }
-  // Issue new access token
-  $now = time();
-  $newAccessExp = $now + 3600;
-  $newAccessPayload = [
-    'iat' => $now,
-    'exp' => $newAccessExp, // 1 hour
-    'uid' => $refreshDecoded->uid
-  ];
-  $newAccessToken = JWT::encode($newAccessPayload, getenv('JWT_SECRET'), 'HS256');
-  set_cookie('access_token', $newAccessToken, $newAccessExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
-  return $newAccessToken;
 }
 ?>
