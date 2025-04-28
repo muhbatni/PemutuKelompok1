@@ -7,9 +7,6 @@ function alert($redirectPath, $type, $message)
 
 function handleUpload($path, $file)
 {
-  if (!$file->isValid()) {
-    throw new \RuntimeException($file->getErrorString() . '(' . $file->getError() . ')');
-  }
   if ($file->hasMoved()) {
     return;
   }

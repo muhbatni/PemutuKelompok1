@@ -118,26 +118,13 @@
         </table>
         <!--end: Datatable -->
         <?php
-        $currentPage = $pager->getCurrentPage();
-        $startPage = max(1, $currentPage - 3);
-        $endPage = min($pager->getPageCount(), $currentPage + 3);
+        // $currentPage = $pager->getCurrentPage();
+        // $startPage = max(1, $currentPage - 3);
+        // $endPage = min($pager->getPageCount(), $currentPage + 3);
 
-        $previousURI = $pager->getPreviousPageURI();
-        $nextURI = $pager->getNextPageURI();
+        // $previousURI = $pager->getPreviousPageURI();
+        // $nextURI = $pager->getNextPageURI();
         ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="btn-group d-flex justify-content-center" role="group" aria-label="Default button group">
-              <a <?= $previousURI ? 'href="' . $previousURI . '"' : '' ?> class="btn btn-outline-primary" <?= $previousURI ?: "disabled='disabled'" ?>>Previous</a>
-              <?php
-              for ($i = $startPage; $i <= $endPage; $i++) { ?>
-                <a <?= $pager->getPageURI($i) ? 'href="' . $pager->getPageURI($i) . '"' : '' ?>
-                  class="btn btn-outline-primary <?= $i === $currentPage ? 'active' : '' ?>" <?= $pager->getPageURI($i) ?: "disabled='disabled'" ?>><?= $i ?></a>
-              <?php } ?>
-              <a <?= $nextURI ? 'href="' . $nextURI . '"' : '' ?> class="btn btn-outline-primary" <?= $nextURI ?: "disabled='disabled'" ?>>Next</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"

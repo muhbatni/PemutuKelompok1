@@ -69,7 +69,7 @@ class ManajemenSurvey extends BaseController
 
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
       $file = $data['dokumen_pendukung_survey'];
-      if ($file) {
+      if ($file->isValid()) {
         $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
       }
 
@@ -120,7 +120,7 @@ class ManajemenSurvey extends BaseController
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
       $file = $data['dokumen_pendukung_survey'];
-      if ($file) {
+      if ($file->isValid()) {
         $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
       }
       $database = Database::connect();
