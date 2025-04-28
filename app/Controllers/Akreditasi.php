@@ -72,6 +72,17 @@ class Akreditasi extends BaseController
             'file' => $this->request->getPost('file_upload'),
         ];
 
+        $file = $this->request->getFile('file_upload');
+        if ($file && $file->isValid() && !$file->hasMoved()){
+            $uploadPath = WRITEPATH . '../public/uploads/akreditasi/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            $fileName = $file->getRandomName();
+            $file->move($uploadPath, $fileName);
+            $dataForm['file'] = $fileName;
+        }
+
         $id = $this->request->getPost('id');
         if ($id) {
             $akreditasiModel->update($id, $dataForm);
@@ -104,5 +115,20 @@ class Akreditasi extends BaseController
     echo view('layouts/footer.php');
 }
 
+public function download($filename)
+{
+    // Tentukan path folder tempat file disimpan
+    $path = WRITEPATH . 'uploads/akreditasi/' . $filename;
+
+    // Periksa apakah file ada di server
+    if (file_exists($path)) {
+        // Atur header untuk mengunduh file
+        return $this->response->download($path, null)->setFileName($filename);
+    } else {
+        // Jika file tidak ditemukan
+        throw new \CodeIgniter\Exceptions\PageNotFoundException("File tidak ditemukan.");
+    }
 }
+}
+
 ?>

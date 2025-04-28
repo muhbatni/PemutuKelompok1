@@ -77,6 +77,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
+  $routes->get('akreditasi/download/(:segment)', [Akreditasi::class, 'download']);
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);

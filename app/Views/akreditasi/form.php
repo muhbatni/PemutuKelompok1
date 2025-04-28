@@ -234,13 +234,12 @@
                   ?>
                   </td>
                   <td>
-                  <?php 
-                  if (isset($akreditasi['file']) && $akreditasi['file']): ?>
-                        <a href="<?= $akreditasi['file']; ?>" target="_blank">Download</a>
-                <?php else: ?>
-                        No File
-                <?php endif; ?>
-                </td>
+                    <?php if (isset($akreditasi['file']) && $akreditasi['file']): ?>
+                      <a href="<?= base_url('public/akreditasi/download/' . esc($akreditasi['file'])) ?>" target="_blank">Download</a>
+                    <?php else: ?>
+                      No File
+                    <?php endif; ?>
+                  </td>
                   <td>
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
