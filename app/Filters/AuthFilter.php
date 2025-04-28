@@ -14,7 +14,7 @@ class AuthFilter implements FilterInterface
     if (!isValidToken($accessToken)) {
       $accessToken = refreshToken();
       if (!$accessToken) {
-        return;
+        return redirectWithMessage('login', 'error', 'Silahkan login terlebih dahulu!');
       }
       $_COOKIE['access_token'] = $accessToken;
     }

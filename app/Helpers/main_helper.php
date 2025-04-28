@@ -1,8 +1,13 @@
 <?php
 
-function alert($redirectPath, $type, $message)
+function redirectTo($redirectPath)
 {
-  return redirect()->to(base_url("public/$redirectPath"))->with($type, $message);
+  return redirect()->to(base_url("public/$redirectPath"));
+}
+
+function redirectWithMessage($redirectPath, $type, $message)
+{
+  return redirectTo($redirectPath)->with($type, $message);
 }
 
 function handleUpload($path, $file)

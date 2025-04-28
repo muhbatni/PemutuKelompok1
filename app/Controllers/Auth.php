@@ -33,9 +33,9 @@ class Auth extends BaseController
       );
     }
     if ($this->userModel->insert($data)) {
-      return alert('login', 'success', 'Registrasi berhasil, silahkan login!');
+      return redirectWithMessage('login', 'success', 'Registrasi berhasil, silahkan login!');
     }
-    return alert('registrasi', 'error', 'Registrasi gagal, silahkan coba lagi!');
+    return redirectWithMessage('registrasi', 'error', 'Registrasi gagal, silahkan coba lagi!');
   }
 
   public function login()
@@ -47,11 +47,11 @@ class Auth extends BaseController
     $data = ['username' => $postData['username'], 'password' => $postData['password']];
     $user = $this->userModel->where('username', $data['username'])->first();
     if (!$user) {
-      return alert('login', 'error', 'Username atau password salah!');
+      return redirectWithMessage('login', 'error', 'Username atau password salah!');
     }
     $hashedPassword = $user['password'];
     if (!password_verify($data['password'], $hashedPassword)) {
-      return alert('login', 'error', 'Username atau password salah!');
+      return redirectWithMessage('login', 'error', 'Username atau password salah!');
     }
     $issuedAt = time();
     $accessTokenExp = $issuedAt + 3600; // 1 hour
@@ -83,13 +83,13 @@ class Auth extends BaseController
     }
     set_cookie('access_token', $accessToken, $accessTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
     set_cookie('refresh_token', $refreshToken, $refreshTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
-    return alert('dashboard', 'success', 'Login berhasil!')->withCookies();
+    return redirectWithMessage('dashboard', 'success', 'Login berhasil!')->withCookies();
   }
 
   public function logout()
   {
     delete_cookie('access_token');
     delete_cookie('refresh_token');
-    return alert('login', 'success', 'Logout berhasil!')->withCookies();
+    return redirectWithMessage('login', 'success', 'Logout berhasil!')->withCookies();
   }
 }
