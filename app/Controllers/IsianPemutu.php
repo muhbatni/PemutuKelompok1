@@ -59,7 +59,8 @@ class IsianPemutu extends BaseController
     $data['isianlembaga'] = $lembagaAkreditasiModel->findAll();
 
     // Ambil semua data isian pemutu
-    $data['isian_pemutu'] = $model->findAll();
+    $data['isian_pemutu'] = $model->getJoin();
+    // $data['nama_lembaga'] = $model->getNamaLembaga();
     $data['edit'] = $editData;
     $data['title'] = "Isian Pemutu";
 
