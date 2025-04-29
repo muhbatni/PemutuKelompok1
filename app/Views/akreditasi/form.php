@@ -13,6 +13,9 @@
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="akreditasi" enctype="multipart/form-data">
         <div class="m-portlet__body">
+
+        <!-- ID input, hidden field -->
+        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
@@ -63,19 +66,20 @@
           </div>
 
           <!-- Is Active -->
-          <div class="form-group m-form__group">
-              <label>Is Active</label><br>
-              <label class="radio-inline">
-                  <input type="radio" name="is_active" value="1" 
-                  <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?>>
-                  Aktif
-              </label>
-              <label class="radio-inline">
-                  <input type="radio" name="is_active" value="0" 
-                  <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?>>
-                  Tidak Aktif
-              </label>
-          </div>
+        <div class="form-group m-form__group">
+            <label>Is Active</label><br>
+            <label class="radio-inline">
+                <input type="radio" name="is_active" value="0" 
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?>>
+                Tidak Aktif
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="is_active" value="1" 
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?>>
+                Aktif
+            </label>
+        </div>
+
 
           <!-- Status -->
           <div class="form-group m-form__group">
@@ -108,7 +112,7 @@
             <label for="file_upload">Unggah Dokumen</label>
             <input type="file" class="form-control m-input" id="file_upload" name="file_upload">
             <?php if (isset($dataAkreditasi['file']) && $dataAkreditasi['file']): ?>
-              <p>Dokumen Terupload: <a href="<?= 'uploads/'.$dataAkreditasi['file']; ?>" target="_blank">Lihat File</a></p>
+              <p>Dokumen Terupload: <a href="<?= base_url('writable/uploads/akreditasi/' . $dataAkreditasi['file']); ?>" target="_blank">Lihat File</a></p>
             <?php endif; ?>
           </div>
         </div>
@@ -219,37 +223,36 @@
                   </td>
                   <td>
                   <?php
-                    $active = '';
+                    $aktif = '';
                     if (isset($akreditasi['is_active'])) {
-                        $active = 'Aktif';
+                        // Mengecek langsung nilai boolean
+                        $aktif = $akreditasi['is_active'] ? 'Aktif' : 'Tidak Aktif';
                     } else {
-                        $active = 'Tidak Aktif';
+                        $aktif = 'Tidak Ada';
                     }
-                    echo $active;
+                    echo $aktif;
                   ?>
                   </td>
                   <td>
-                  <?php 
-                  if (isset($akreditasi['file']) && $akreditasi['file']): ?>
-                        <a href="<?= $akreditasi['file']; ?>" target="_blank">Download</a>
-                <?php else: ?>
-                        No File
-                <?php endif; ?>
-                </td>
+                    <?php if (isset($akreditasi['file']) && $akreditasi['file']): ?>
+                      <a href="<?= base_url('public/akreditasi/download/' . esc($akreditasi['file'])) ?>" target="_blank">Download</a>
+                    <?php else: ?>
+                      Tidak ada file
+                    <?php endif; ?>
+                  </td>
                   <td>
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" value="edit" class="btn btn-sm btn-warning">
+                      <button class="btn btn-sm btn-warning" 
+                              onclick="showEditModal('<?= $akreditasi['id'] ?>')">
                         Edit
-                      </a>
+                      </button>
                     <?php endif; ?>
-
-                    <!-- Tombol Delete -->
-                    <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id'] . '&action=delete'; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                          Hapus
-                      </a>
-                    <?php endif; ?>
+                    <!-- Tombol Hapus -->
+                  <button class="btn btn-sm btn-danger" 
+                          onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($akreditasi['id_unit']) ?>')">
+                    Hapus
+                  </button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -258,8 +261,52 @@
         </div>
       </div>
     <?php endif; ?>
+    <!-- Modal Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form method="get">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="delete" id="deleteId">
+              <p id="deleteMessage"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title" id="editModalLabel">Konfirmasi Edit</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editId">
+            <p>Apakah Anda yakin ingin mengedit data ini?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" onclick="confirmEdit()">Ya, Edit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    
+
 <script>
     function handleCancel() {
         <?php if (isset($editData)): ?>
@@ -270,4 +317,26 @@
             document.querySelector("form").reset();
         <?php endif; ?>
     }
+
+    function showDeleteModal(id, nama) {
+    // Mengatur ID data yang akan dihapus
+    document.getElementById('deleteId').value = id;
+    
+    // Menampilkan pesan konfirmasi penghapusan dengan nama data
+    document.getElementById('deleteMessage').innerHTML = 
+      `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
+
+    // Menampilkan modal
+    $('#deleteModal').modal('show');
+  }
+
+  function showEditModal(id) {
+      document.getElementById('editId').value = id;
+      $('#editModal').modal('show');
+  }
+
+  function confirmEdit() {
+      var id = document.getElementById('editId').value;
+      window.location.href = 'akreditasi?id=' + id;
+  }
 </script>

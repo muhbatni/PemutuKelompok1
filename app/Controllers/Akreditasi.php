@@ -72,29 +72,32 @@ class Akreditasi extends BaseController
             'file' => $this->request->getPost('file_upload'),
         ];
 
-        if ($id) {
-            // Jika ada ID, maka update
-            $updateResult = $akreditasiModel->update($id, $dataForm);
-            if ($updateResult) {
-                session()->setFlashdata('success', 'Data berhasil diperbarui!');
-            } else {
-                session()->setFlashdata('error', 'Terjadi kesalahan saat memperbarui data!');
+        $file = $this->request->getFile('file_upload');
+        if ($file && $file->isValid() && !$file->hasMoved()){
+            $uploadPath = WRITEPATH . 'uploads/akreditasi/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
             }
-        } else {
-            // Jika tidak ada ID, maka insert
-            $insertResult = $akreditasiModel->insert($dataForm);
-            if ($insertResult) {
-                session()->setFlashdata('success', 'Data berhasil disimpan!');
-            } else {
-                session()->setFlashdata('error', 'Terjadi kesalahan saat menyimpan data!');
-            }
+            $fileName = $file->getRandomName();
+            $file->move($uploadPath, $fileName);
+            $dataForm['file'] = $fileName;
         }
-        // Redirect ke halaman akreditasi
+
+        $id = $this->request->getPost('id');
+        if ($id) {
+            $akreditasiModel->update($id, $dataForm);
+            session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        } else {
+            // Jika tidak ada ID, maka insert data baru
+            $akreditasiModel->insert($dataForm);
+            session()->setFlashdata('success', 'Data berhasil disimpan!');
+        }
+
         return redirect()->to(base_url('public/akreditasi'));
     }
 
-    if ($this->request->getGet('action') == 'delete' && $this->request->getGet('id')) {
-        $id = $this->request->getGet('id');
+    if ($this->request->getGet('delete')) {
+        $id = $this->request->getGet('delete');
         $deleteResult = $akreditasiModel->delete($id);
 
         if ($deleteResult) {
@@ -112,5 +115,20 @@ class Akreditasi extends BaseController
     echo view('layouts/footer.php');
 }
 
+public function download($filename)
+{
+    // Tentukan path folder tempat file disimpan
+    $path = WRITEPATH . 'uploads/akreditasi/' . $filename;
+
+    // Periksa apakah file ada di server
+    if (file_exists($path)) {
+        // Atur header untuk mengunduh file
+        return $this->response->download($path, null)->setFileName($filename);
+    } else {
+        // Jika file tidak ditemukan
+        throw new \CodeIgniter\Exceptions\PageNotFoundException("File tidak ditemukan.");
+    }
 }
+}
+
 ?>

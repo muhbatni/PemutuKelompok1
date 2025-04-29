@@ -106,7 +106,16 @@
                   <td><?= esc($row['tanggal']) ?></td>
                   <td><?= esc($row['nama']) ?></td>
                   <td><?= esc($row['deskripsi']) ?></td>
-                  <td><?= !empty($row['dokumen']) ? esc($row['dokumen']) : 'Tidak ada file' ?></td>
+                  <td class="text-center">
+                    <?php if (!empty($row['dokumen'])): ?>
+                      <a href="<?= base_url('public/dokumen-penetapan/download/' . urlencode($row['dokumen'])) ?>" class="btn btn-sm btn-primary">
+                        <i class="fa fa-download"></i> Download
+                      </a>
+                    <?php else: ?>
+                      <span class="text-muted">Tidak ada file</span>
+                    <?php endif; ?>
+                  </td>
+
                   <td>
                     <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                     <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
