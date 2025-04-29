@@ -60,6 +60,12 @@ class Akreditasi extends BaseController
     // Jika form disubmit
     if ($this->request->getMethod() == 'POST') {
         $id = $this->request->getPost('id');
+
+        $existingData = null;
+        if ($id) {
+            $existingData = $akreditasiModel->find($id);
+        }
+
         // Mengambil data dari form
         $dataForm = [
             'id_unit' => $this->request->getPost('id_unit'),
@@ -81,6 +87,8 @@ class Akreditasi extends BaseController
             $fileName = $file->getRandomName();
             $file->move($uploadPath, $fileName);
             $dataForm['file'] = $fileName;
+        } else if($existingData){
+            $dataForm['file'] = $existingData['file'];
         }
 
         $id = $this->request->getPost('id');
@@ -113,6 +121,21 @@ class Akreditasi extends BaseController
     echo view('layouts/header.php', $data);
     echo view('akreditasi/form.php', $data);
     echo view('layouts/footer.php');
+}
+
+public function viewFile($filename)
+{
+    $filePath = WRITEPATH . 'uploads/akreditasi/' . $filename;
+
+    if (file_exists($filePath)) {
+        // Deteksi tipe file (contoh: application/pdf)
+        $mime = mime_content_type($filePath);
+        header('Content-Type: ' . $mime);
+        readfile($filePath);
+        exit;
+    } else {
+        throw new \CodeIgniter\Exceptions\PageNotFoundException("File tidak ditemukan.");
+    }
 }
 
 public function download($filename)

@@ -111,9 +111,6 @@
           <div class="form-group m-form__group">
             <label for="file_upload">Unggah Dokumen</label>
             <input type="file" class="form-control m-input" id="file_upload" name="file_upload">
-            <?php if (isset($dataAkreditasi['file']) && $dataAkreditasi['file']): ?>
-              <p>Dokumen Terupload: <a href="<?= base_url('writable/uploads/akreditasi/' . $dataAkreditasi['file']); ?>" target="_blank">Lihat File</a></p>
-            <?php endif; ?>
           </div>
         </div>
 
