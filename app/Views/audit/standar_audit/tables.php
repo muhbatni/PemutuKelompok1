@@ -79,7 +79,10 @@
           <tr class="main-row">
           <td class="text-center">
             <!-- Tombol untuk toggle pernyataan standar dan indikator -->
-            <button type="button" class="btn btn-primary btn-sm toggle-action" data-id="<?= $s['id']; ?>">+</button>
+            <!-- <button type="button" class="btn btn-primary btn-sm toggle-action" data-id="<?= $s['id']; ?>">+</button> -->
+            <a href="<?= base_url('public/audit/standar/edit/' . $s['id']); ?>" class="btn btn-primary btn-sm">
+                    +
+                  </a>
           </td>
   <td><?= $s['nama']; ?></td>
   <td><?= $s['id_parent']; ?></td>
@@ -87,19 +90,17 @@
   <td><?= $s['is_aktif']; ?></td>
 
   <td class="text-center">
-  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" 
-     class="btn btn-sm btn-warning" title="Edit">
+  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning" title="Edit">
     <i class="la la-edit"></i>
   </a>
-    <!-- <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button> -->
-          <!-- Hapus Button -->
   <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')" title="Hapus">
     <i class="la la-trash"></i> <!-- Icon hapus -->
   </button>
   </td>
   </tr>
-<!-- Baris untuk Pernyataan Standar dan Indikator, disembunyikan default -->
- 
+    
+  </td>
+</tr>
   <?php endforeach; ?>
 </tbody>
         </table>

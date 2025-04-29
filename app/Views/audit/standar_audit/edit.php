@@ -8,43 +8,49 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              FORM PERNYATAAN
+              FORM INPUT PERNYATAAN STANDAR 
             </h3>
           </div>
         </div>
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="post" 
-            action="<?= isset($standar) ? base_url('public/audit/input-standar/update/' . $standar['id']) : base_url('public/audit/input-standar') ?>"
-            enctype="multipart/form-data">
-      <!-- <form class="m-form m-form--fit m-form--label-align-right" method="post" action= "input-standar"> -->
-        <div class="m-portlet__body">
-
+       action="<?= base_url('public/audit/standar') ?>"
+      enctype="multipart/form-data">
+      <input type="hidden" name="id_standar" value="<?= $id_standar ?>">
+      <div class="m-portlet__body">
+          
         <!-- Field Judul Standar -->
         <div class="form-group m-form__group">
-            <label for="PernyataanStandar">Pernyataan Standar </label>
-            <input type="text" class="form-control m-input" id="JudulStandar" name="pernyataan" 
-                   required placeholder="Judul Standar" 
-                   value="<?= isset($standar) ? esc($standar['nama']) : ''; ?>">
+            <label for="PernyataanStandar">PERNYATAAN</label>
+            <input type="text" class="form-control m-input" id="PernyataanStandar" name="pernyataan" 
+                   required placeholder="Pernyataan Standar">
           </div>
-         
+
           <div class="form-group m-form__group">
-            <label for="IndikatorStandar">Indikator </label>
-            <input type="text area" class="form-control m-input" id="IndikatorStandar" name="indikator" 
-                   required placeholder="IndikatorStandar" 
-                   value="<?= isset($standar) ? esc($standar['nama']) : ''; ?>">
+            <label for="IndikatorStandar">INDIKATOR</label>
+            <input type="textarea" class="form-control m-input" id="IndikatorStandar" name="indikator" 
+                   required placeholder="Indikator Standar">
           </div>
-          
-          <!-- Field Deskripsi Standar -->
-          <!-- <div class="form-group m-form__group">
-            <label for="DeskripsiStandar">Deskripsi Standar</label>
-            <textarea class="form-control m-input" id="DeskripsiStandar" name="deskripsi" rows="3" 
-                      placeholder="Deskripsi Standar"><?= isset($standar) ? esc($standar['dokumen']) : ''; ?></textarea>
-          </div> -->
 
-        </div>
+          <!-- Kondisi Field -->
+          <div class="form-group m-form__group">
+            <label for="kondisi">Kondisi</label>
+            <select name="kondisi" id="kondisi" class="form-control m-input" required>
+              <option value="">-- Pilih Kondisi --</option>
+              <option value="<" <?= old('kondisi') == '<' ? 'selected' : '' ?>>Kurang dari (&lt;)</option>
+              <option value="=" <?= old('kondisi') == '=' ? 'selected' : '' ?>>Sama dengan (=)</option>
+              <option value=">" <?= old('kondisi') == '>' ? 'selected' : '' ?>>Lebih dari (&gt;)</option>
+            </select>
+          </div>
 
-    
+          <!-- Batas Field -->
+          <div class="form-group m-form__group">
+            <label for="batas">Batas</label>
+            <input type="number" name="batas" id="batas" placeholder="Enter Batas" class="form-control m-input"
+              required min="1" step="1">
+          </div>
+
         </div>
 
         <!-- Tombol aksi -->
@@ -52,13 +58,73 @@
           <div class="m-form__actions">
           <a href="<?= base_url('public/audit/standar') ?>" class="btn btn-light">Kembali</a>
             <button type="submit" class="btn btn-primary">
-            <?= isset($standar) ? 'Update' : 'Simpan' ?>
+            Submit
             </button>
             <button type="reset" class="btn btn-metal">Reset</button>
           </div>
         </div>
       </form>
     </div>
+    </div>
+  </div>
+</div>
+
+<!-- Table View setelah Form -->
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="m-portlet">
+      <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+          <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+              DAFTAR PERNYATAAN STANDAR
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="m-portlet__body">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Pernyataan</th>
+                <th>Indikator</th>
+                <th>Kondisi</th>
+                <th>Batas</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (!empty($data_standar)) : ?>
+                <?php $no = 1; foreach ($data_standar as $row) : ?>
+                  <tr>
+                    <td><?= $no++ ?></td>
+                    <td><?= ($row['pernyataan']) ?></td>
+                    <td><?= ($row['indikator']) ?></td>
+                    <td><?= ($row['kondisi']) ?></td>
+                    <td><?= ($row['batas']) ?></td>
+                    
+                    <td class="text-center">
+                      <a href="<?= base_url('public/audit/standar/edit/' . $row['id']) ?>" class="btn btn-sm btn-warning" title="Edit">
+                      <i class="la la-edit"></i>
+                      </a>
+                      <a href="<?= base_url('public/audit/standar/delete/' . $row['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
+                      <i class="la la-trash"></i>
+                      </a>
+                    </td>
+
+                  </tr>
+                <?php endforeach; ?>
+              <?php else : ?>
+                <tr>
+                  <td colspan="6" class="text-center">Belum ada data.</td>
+                </tr>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
