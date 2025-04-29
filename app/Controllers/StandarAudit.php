@@ -1,14 +1,14 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\StandarModel; 
+use App\Models\StandarModel;
 use App\Models\PernyataanModel;
 use App\Models\AuditStandarModel;
 
 class StandarAudit extends BaseController
 {
 
-  protected $AuditStandarModel;  // Menambahkan properti untuk model
+    protected $AuditStandarModel;  // Menambahkan properti untuk model
     protected $PernyataanModel;   // Pastikan model PernyataanModel juga ditambahkan
 
     public function __construct()
@@ -18,78 +18,76 @@ class StandarAudit extends BaseController
         $this->PernyataanModel = new PernyataanModel();  // Membuat instance model PernyataanModel
     }
 
-  public function index()
-  {
+    public function index()
+    {
 
-  $model = new StandarModel();
-  $data["title"] = "Standar Audit";
-  $data["standar"] = $model->findAll(); // ambil data dari DB
+        $model = new StandarModel();
+        $data["title"] = "Standar Audit";
+        $data["standar"] = $model->findAll(); // ambil data dari DB
 
-      // hapus data 
-  if ($this->request->getGet('delete')) {
-    $id = $this->request->getGet('delete');
-    $model->delete($id);
-    session()->setFlashdata('success', 'Data input standar berhasil dihapus!');
-    return redirect()->to(base_url('public/audit/standar'));
-  }
-    echo view('layouts/header.php', $data);
-    echo view('audit/standar_audit/tables.php', $data);
-    echo view('layouts/footer.php');
+        // hapus data 
+        if ($this->request->getGet('delete')) {
+            $id = $this->request->getGet('delete');
+            $model->delete($id);
+            session()->setFlashdata('success', 'Data input standar berhasil dihapus!');
+            return redirect()->to(base_url('public/audit/standar'));
+        }
+        echo view('layouts/header.php', $data);
+        echo view('audit/standar_audit/tables.php', $data);
+        echo view('layouts/footer.php');
 
-  }
-
-public function insert()
-{
-    $model = new PernyataanModel();
-    $pernyataanModel = new PernyataanModel(); // <-- Ini yang benar untuk ambil data
-
-    // $data["data_standar"] = $pernyataanModel->findAll();
-    $data['title'] = "Input Pernyataan Standar";
-
-    // Ambil id_standar dari GET
-    $data['id_standar'] = $this->request->getGet('id_standar');
-
-    if ($this->request->getMethod() === 'POST') {
-        $insertData = [
-            'id_standar' => $this->request->getPost('id_standar'),
-            'pernyataan' => $this->request->getPost('pernyataan'),
-            'indikator' => $this->request->getPost('indikator'),
-            'kondisi'    => $this->request->getPost('kondisi'),
-            'batas'      => $this->request->getPost('batas')
-        ];
-
-        $model->insert($insertData);
-
-       /// Simpan pesan sukses dan tetap pada halaman yang sama
-       session()->setFlashdata('success', 'Pernyataan berhasil ditambahkan!');
-       return redirect()->to(base_url('public/audit/standar/edit/'.$this->request->getPost('id_standar')))
-                        ->withInput(); // Pastikan input tetap ada
     }
 
-    echo view('layouts/header.php', $data);
-    echo view('audit/standar_audit/edit', $data); 
-    echo view('layouts/footer.php');
-}
+    public function insert()
+    {
+        $model = new PernyataanModel();
+        $pernyataanModel = new PernyataanModel(); // <-- Ini yang benar untuk ambil data
+
+        // $data["data_standar"] = $pernyataanModel->findAll();
+        $data['title'] = "Input Pernyataan Standar";
+
+        // Ambil id_standar dari GET
+        $data['id_standar'] = $this->request->getGet('id_standar');
+
+        if ($this->request->getMethod() === 'POST') {
+            $insertData = [
+                'id_standar' => $this->request->getPost('id_standar'),
+                'pernyataan' => $this->request->getPost('pernyataan'),
+                'indikator' => $this->request->getPost('indikator'),
+                'kondisi' => $this->request->getPost('kondisi'),
+                'batas' => $this->request->getPost('batas')
+            ];
+
+            $model->insert($insertData);
+
+            /// Simpan pesan sukses dan tetap pada halaman yang sama
+            session()->setFlashdata('success', 'Pernyataan berhasil ditambahkan!');
+            return redirect()->to(base_url('public/audit/standar/edit/' . $this->request->getPost('id_standar')))
+                ->withInput(); // Pastikan input tetap ada
+        }
+
+        echo view('layouts/header.php', $data);
+        echo view('audit/standar_audit/edit', $data);
+        echo view('layouts/footer.php');
+    }
 
 
-  public function edit($id_standar)
+    public function edit($id_standar, $id_pernyataan =null)
     {
         // Ambil data standar berdasarkan id_audit
         $standar = $this->AuditStandarModel->getStandarByAudit($id_standar);
 
-        // Debugging: log atau tampilkan data yang diambil
-    log_message('debug', 'Data Standar: ' . print_r($standar, true));
-
         // Tambahan: Ambil daftar pernyataan yang terkait id_standar
-    $pernyataanModel = new PernyataanModel();
-    $data_standar = $pernyataanModel->where('id_standar', $id_standar)->findAll();
-
-    $data = [
-        'title' => 'Pernyataan Standar',
-        'standar' => $standar,
-        'data_standar' => $data_standar, // kirim ini ke view
-        'id_standar' => $id_standar
-    ];
+        $pernyataanModel = new PernyataanModel();
+        $data_standar = $pernyataanModel->where('id_standar', $id_standar)->findAll();
+        $data['pernyataan'] = $pernyataanModel->find($id_pernyataan);
+        $data = [
+            'title' => 'Pernyataan Standar',
+            'standar' => $standar,
+            'data_standar' => $data_standar,
+            'id_standar' => $id_standar,
+            'pernyataan' => $data['pernyataan'],
+        ];
 
         echo view('layouts/header', $data);
         echo view('audit/standar_audit/edit', $data); // Mengirim data ke view
@@ -97,22 +95,51 @@ public function insert()
     }
 
     public function delete($id_pernyataan)
-{
-    $model = new \App\Models\PernyataanModel(); // Ganti modelnya ke PernyataanModel
+    {
+        $model = new PernyataanModel(); // Ganti modelnya ke PernyataanModel
 
-    $data = $model->find($id_pernyataan);
+        $data = $model->find($id_pernyataan);
 
-    if ($data) {
-        $id_standar = $data['id_standar']; // Ambil id_standar untuk redirect nanti
-        $model->delete($id_pernyataan);
+        if ($data) {
+            $id_standar = $data['id_standar']; // Ambil id_standar untuk redirect nanti
+            $model->delete($id_pernyataan);
 
-        return redirect()->to(base_url('public/audit/standar/edit/' . $id_standar))
-                         ->with('success', 'Pernyataan berhasil dihapus.');
+            return redirect()->to(base_url('public/audit/standar/edit/' . $id_standar))
+                ->with('success', 'Pernyataan berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 
-    return redirect()->back()->with('error', 'Data tidak ditemukan.');
-}
+    public function update($id_pernyataan)
+    {
+        // Validate input
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'pernyataan' => 'required',
+            'indikator' => 'required',
+            'kondisi' => 'required',
+            'batas' => 'required|integer',
+        ]);
 
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
 
+        // Get data from the form
+        $data = [
+            'pernyataan' => $this->request->getPost('pernyataan'),
+            'indikator' => $this->request->getPost('indikator'),
+            'kondisi' => $this->request->getPost('kondisi'),
+            'batas' => $this->request->getPost('batas'),
+        ];
+
+        // Update the data in the database
+        $this->PernyataanModel->update($id_pernyataan, $data);
+
+        // Redirect with a success message
+        session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        return redirect()->to(base_url('public/audit/standar/edit/' . $this->request->getPost('id_standar')));
+    }
 }
 ?>

@@ -100,5 +100,6 @@ class InputStandarAudit extends BaseController
         session()->setFlashdata('success', 'Data berhasil diperbarui!');
         return redirect()->to(base_url('public/audit/standar'));
     }
+    
 }
 ?>

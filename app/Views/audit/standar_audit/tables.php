@@ -154,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
   function showDeleteModal(id, nama) {
     document.getElementById('deleteId').value = id;
     document.getElementById('deleteMessage').innerHTML =
