@@ -112,7 +112,7 @@
             <label for="file_upload">Unggah Dokumen</label>
             <input type="file" class="form-control m-input" id="file_upload" name="file_upload">
             <?php if (isset($dataAkreditasi['file']) && $dataAkreditasi['file']): ?>
-              <p>Dokumen Terupload: <a href="<?= 'uploads/'.$dataAkreditasi['file']; ?>" target="_blank">Lihat File</a></p>
+              <p>Dokumen Terupload: <a href="<?= base_url('writable/uploads/akreditasi/' . $dataAkreditasi['file']); ?>" target="_blank">Lihat File</a></p>
             <?php endif; ?>
           </div>
         </div>
@@ -243,11 +243,11 @@
                   <td>
                     <!-- Tombol Edit -->
                     <?php if (isset($akreditasi['id'])): ?>
-                      <a href="<?= 'akreditasi?id=' . $akreditasi['id']; ?>" value="edit" class="btn btn-sm btn-warning">
+                      <button class="btn btn-sm btn-warning" 
+                              onclick="showEditModal('<?= $akreditasi['id'] ?>')">
                         Edit
-                      </a>
+                      </button>
                     <?php endif; ?>
-
                     <!-- Tombol Hapus -->
                   <button class="btn btn-sm btn-danger" 
                           onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($akreditasi['id_unit']) ?>')">
@@ -261,8 +261,52 @@
         </div>
       </div>
     <?php endif; ?>
+    <!-- Modal Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form method="get">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="delete" id="deleteId">
+              <p id="deleteMessage"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title" id="editModalLabel">Konfirmasi Edit</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editId">
+            <p>Apakah Anda yakin ingin mengedit data ini?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" onclick="confirmEdit()">Ya, Edit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    
+
 <script>
     function handleCancel() {
         <?php if (isset($editData)): ?>
@@ -284,5 +328,15 @@
 
     // Menampilkan modal
     $('#deleteModal').modal('show');
+  }
+
+  function showEditModal(id) {
+      document.getElementById('editId').value = id;
+      $('#editModal').modal('show');
+  }
+
+  function confirmEdit() {
+      var id = document.getElementById('editId').value;
+      window.location.href = 'akreditasi?id=' + id;
   }
 </script>
