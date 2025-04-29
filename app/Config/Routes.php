@@ -64,6 +64,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
   $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/standar', 'StandarAudit::insert');
+  $routes->get('audit/standar/edit/(:num)', 'StandarAudit::edit/$1');
+  $routes->get('audit/standar/delete/(:num)', 'StandarAudit::delete/$1');
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/input-standar/edit/(:num)', [InputStandarAudit::class, 'edit/$1']);
