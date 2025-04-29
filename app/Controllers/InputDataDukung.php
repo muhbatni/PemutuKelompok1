@@ -22,46 +22,55 @@ class InputDataDukung extends BaseController
     $data['pelaksanaans'] = $pelaksanaanModel->getPelaksanaanList();
 
     if ($this->request->getMethod() == 'POST') {
-      $model = new DataDukungModel();
-      
-      // Prepare data array
-      $data = [
-          'id_pelaksanaan' => $this->request->getPost('id_pelaksanaan'),
-          'id_pernyataan' => $this->request->getPost('id_pernyataan'),
-          'deskripsi' => $this->request->getPost('deskripsi')
-      ];
+        $model = new DataDukungModel();
+        
+        // Prepare data array
+        $data = [
+            'id_pelaksanaan' => $this->request->getPost('id_pelaksanaan'),
+            'id_pernyataan' => $this->request->getPost('id_pernyataan'),
+            'deskripsi' => $this->request->getPost('deskripsi')
+        ];
 
-      // Handle file upload
-      $dokumen = $this->request->getFile('dokumen');
-      if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-          $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
-          if (!is_dir($uploadPath)) {
-              mkdir($uploadPath, 0777, true);
-          }
+        // Handle multiple file uploads
+        $files = $this->request->getFiles();
+        $uploadedFiles = [];
+        
+        if(isset($files['dokumen'])) {
+            foreach($files['dokumen'] as $file) {
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
+                    if (!is_dir($uploadPath)) {
+                        mkdir($uploadPath, 0777, true);
+                    }
 
-          // Gunakan nama asli file
-          $fileName = $dokumen->getName();
-          
-          // Cek apakah file dengan nama yang sama sudah ada
-          if (file_exists($uploadPath . $fileName)) {
-              $fileInfo = pathinfo($fileName);
-              $fileName = $fileInfo['filename'] . '_' . time() . '.' . $fileInfo['extension'];
-          }
-          
-          $dokumen->move($uploadPath, $fileName);
-          $data['dokumen'] = $fileName;
-      }
+                    $fileName = $file->getName();
+                    
+                    // Handle duplicate filenames
+                    if (file_exists($uploadPath . $fileName)) {
+                        $fileInfo = pathinfo($fileName);
+                        $fileName = $fileInfo['filename'] . '_' . time() . '_' . rand(100, 999) . '.' . $fileInfo['extension'];
+                    }
+                    
+                    $file->move($uploadPath, $fileName);
+                    $uploadedFiles[] = $fileName;
+                }
+            }
+            
+            if (!empty($uploadedFiles)) {
+                $data['dokumen'] = implode('|', $uploadedFiles);
+            }
+        }
 
-      // Save to database
-      $saveResult = $model->insert($data);
+        // Save to database
+        $saveResult = $model->insert($data);
 
-      if ($saveResult) {
-          session()->setFlashdata('success', 'Data berhasil disimpan');
-          return redirect()->to(base_url('public/audit/data-dukung'));
-      } else {
-          session()->setFlashdata('error', 'Terjadi kesalahan saat menyimpan data');
-          return redirect()->to(base_url('public/audit/input-data-dukung'));
-      }
+        if ($saveResult) {
+            session()->setFlashdata('success', 'Data berhasil disimpan');
+            return redirect()->to(base_url('public/audit/data-dukung'));
+        } else {
+            session()->setFlashdata('error', 'Terjadi kesalahan saat menyimpan data');
+            return redirect()->to(base_url('public/audit/input-data-dukung'));
+        }
     }
 
     $data["title"] = "Tambah Data Dukung";
@@ -69,6 +78,7 @@ class InputDataDukung extends BaseController
     echo view('audit/data_dukung/form.php', $data);
     echo view('layouts/footer.php');
   }
+
   public function getPelaksanaanInfo($id)
   {
     $dataDukungModel = new \App\Models\DataDukungModel();
@@ -114,32 +124,50 @@ public function update($id)
         'deskripsi' => $this->request->getPost('deskripsi')
     ];
 
-    // Handle file upload if new file is selected
-    $dokumen = $this->request->getFile('dokumen');
-    if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-        $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
-        }
-
-        // Get old file name to delete
+    // Handle multiple file uploads if new files are selected
+    $files = $this->request->getFiles();
+    $uploadedFiles = [];
+    
+    if(isset($files['dokumen'])) {
+        // Get old data to delete existing files
         $oldData = $model->find($id);
         if ($oldData && !empty($oldData['dokumen'])) {
-            $oldFile = $uploadPath . $oldData['dokumen'];
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
+            $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
+            $oldFiles = explode('|', $oldData['dokumen']);
+            
+            // Delete old files
+            foreach($oldFiles as $oldFile) {
+                $filePath = $uploadPath . $oldFile;
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
         }
 
-        // Save new file
-        $fileName = $dokumen->getName();
-        if (file_exists($uploadPath . $fileName)) {
-            $fileInfo = pathinfo($fileName);
-            $fileName = $fileInfo['filename'] . '_' . time() . '.' . $fileInfo['extension'];
+        // Upload new files
+        foreach($files['dokumen'] as $file) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                $fileName = $file->getName();
+                
+                // Handle duplicate filenames
+                if (file_exists($uploadPath . $fileName)) {
+                    $fileInfo = pathinfo($fileName);
+                    $fileName = $fileInfo['filename'] . '_' . time() . '_' . rand(100, 999) . '.' . $fileInfo['extension'];
+                }
+                
+                $file->move($uploadPath, $fileName);
+                $uploadedFiles[] = $fileName;
+            }
         }
         
-        $dokumen->move($uploadPath, $fileName);
-        $data['dokumen'] = $fileName;
+        if (!empty($uploadedFiles)) {
+            $data['dokumen'] = implode('|', $uploadedFiles);
+        }
     }
 
     // Update database
@@ -153,5 +181,34 @@ public function update($id)
         return redirect()->to(base_url('public/audit/input-data-dukung/edit/' . $id));
     }
 }
+public function delete($id)
+  {
+      $model = new DataDukungModel();
+      
+      // Get data first to check if file exists
+      $dataDukung = $model->find($id);
+      
+      if ($dataDukung) {
+          // Delete file if exists
+          if (!empty($dataDukung['dokumen'])) {
+              $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
+              $filePath = $uploadPath . $dataDukung['dokumen'];
+              if (file_exists($filePath)) {
+                  unlink($filePath);
+              }
+          }
+          
+          // Delete from database
+          if ($model->delete($id)) {
+              session()->setFlashdata('success', 'Data berhasil dihapus');
+          } else {
+              session()->setFlashdata('error', 'Gagal menghapus data');
+          }
+      } else {
+          session()->setFlashdata('error', 'Data tidak ditemukan');
+      }
+      
+      return redirect()->to(base_url('public/audit/data-dukung'));
+  }
 }
 ?>

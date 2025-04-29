@@ -24,6 +24,6 @@ class DataDukung extends BaseController
     echo view('audit/data_dukung/tables.php', $data);
     echo view('layouts/footer.php');
   }
-
+  
 }
 ?>

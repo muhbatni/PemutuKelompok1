@@ -50,33 +50,40 @@
             <table class="m-datatable" id="html_table" width="100%">
                 <thead>
                     <tr>
-                        <th title="Field #2">Id Pelaksanaan</th>
-                        <th title="Field #3">Pernyataan</th>
-                        <th title="Field #4">Deskripsi</th>
-                        <th title="Field #5">Dokumen</th>
-                        <th title="Field #6">Aksi</th>
+                        <th title="field #2">Unit</th>
+                        <th title="field #3">Auditor</th>
+                        <th title="Field #4">Pernyataan</th>
+                        <th title="Field #5">Deskripsi</th>
+                        <th title="Field #6">Dokumen</th>
+                        <th title="Field #7">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($dataDukung as $row) : ?>
                     <tr>
                         <td><?= $row['nama_unit']; ?></td>
+                        <td><?= $row['auditor_name']; ?></td>
                         <td><?= $row['pernyataan']; ?></td>
                         <td><?= $row['deskripsi']; ?></td>
                         <td>
-                            <<a href="<?= base_url('writable/uploads/audit/data_dukung/' . $row['dokumen']); ?>"
-                                target="_blank">
-                                <?= $row['dokumen']; ?>
+                            <?php 
+                            $files = explode('|', $row['dokumen']);
+                            foreach($files as $file): ?>
+                            <div>
+                                <a href="<?= base_url('writable/uploads/audit/data_dukung/' . $file); ?>"
+                                    target="_blank">
+                                    <?= $file ?>
                                 </a>
+                            </div>
+                            <?php endforeach; ?>
                         </td>
                         <td>
                             <a href="<?= base_url('public/audit/input-data-dukung/edit/' . $row['id']); ?>"
                                 class="btn btn-sm btn-info" title="Edit">
                                 <i class="la la-edit"></i>
                             </a>
-                            <a href="<?= base_url('public/audit/data-dukung/delete/' . $row['id']); ?>"
-                                class="btn btn-sm btn-danger"
-                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" title="Delete">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Delete"
+                                onclick="confirmDelete('<?= base_url('public/audit/data-dukung/delete/' . $row['id']); ?>')">
                                 <i class="la la-trash"></i>
                             </a>
                         </td>
@@ -88,6 +95,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDeleteLabel">Hapus Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a href="" class="btn btn-danger" id="modalDeleteLink">Hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(deleteUrl) {
+    document.getElementById('modalDeleteLink').href = deleteUrl;
+    $('#modalDelete').modal('show');
+}
+</script>
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
     type="text/javascript"></script>
