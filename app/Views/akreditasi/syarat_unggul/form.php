@@ -91,10 +91,10 @@
                   </td>
                   <td><?= $syarat['nama']; ?></td>
                   <td>
-                    <!-- Tombol Edit -->
-                    <a href="<?= 'syarat-unggul?id=' . $syarat['id']; ?>" class="btn btn-sm btn-warning">
-                      <i class="fa fa-pencil-alt"></i> Edit
-                    </a>
+                  <button class="btn btn-sm btn-warning" 
+                          onclick="showUpdateModal(<?= $syarat['id'] ?>, '<?= esc($syarat['nama']) ?>')">
+                    <i class="fa fa-pencil-alt"></i> Edit
+                  </button>
                     <!-- Tombol Delete -->
                     <button class="btn btn-sm btn-danger" 
                           onclick="showDeleteModal('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')">
@@ -109,30 +109,50 @@
       </div>
     </div>
   <?php endif; ?>
-  <!-- Modal Hapus -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <form method="get">
-              <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      <!-- Modal Hapus -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <form method="get">
+                  <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="delete" id="deleteId">
+                    <p id="deleteMessage"></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                  </div>
+                </form>
               </div>
-              <div class="modal-body">
-                <input type="hidden" name="delete" id="deleteId">
-                <p id="deleteMessage"></p>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-              </div>
-            </form>
+            </div>
+          </div>
+    </div>
+    <!-- Modal Update -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title" id="updateModalLabel">Konfirmasi Edit</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Apakah Anda yakin ingin mengedit dokumen <strong><span id="docName"></span></strong>?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" onclick="submitUpdate()">Ya, Edit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
           </div>
         </div>
       </div>
-</div>
+    </div>
 
 <script>
     function handleCancel() {
@@ -155,5 +175,17 @@
 
     // Menampilkan modal
     $('#deleteModal').modal('show');
+  }
+
+  function showUpdateModal(id, nama) {
+    document.getElementById('updateModalLabel').innerHTML = `Apakah Anda yakin ingin memperbarui dokumen <strong>${nama}</strong>?`;
+    document.getElementById('updateModal').setAttribute('data-id', id);
+    $('#updateModal').modal('show');
+  }
+
+  function submitUpdate() {
+    var id = document.getElementById('updateModal').getAttribute('data-id');
+      window.location.href = 'akreditasi?id=' + id;
+      window.location.href = 'dokumen-penetapan?id=' + id;
   }
 </script>
