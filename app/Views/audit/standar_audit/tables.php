@@ -100,17 +100,6 @@
   </tr>
 <!-- Baris untuk Pernyataan Standar dan Indikator, disembunyikan default -->
  
-<tr class="action-row" id="action-<?= $s['id']; ?>" style="display:none;">
-  <td colspan="6">
-    <div>
-      <strong>Pernyataan Standar:</strong> 
-      <?= isset($s['pernyataan_standar']) ? $s['pernyataan_standar'] : 'Tidak tersedia'; ?>
-    </div>
-    <div>
-      <strong>Indikator:</strong> <?= isset($s['indikator']) ? $s['indikator'] : 'Tidak tersedia'; ?>
-    </div>
-  </td>
-</tr>
   <?php endforeach; ?>
 </tbody>
         </table>
@@ -161,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
-
 
 
 
