@@ -12,14 +12,24 @@ class IsianPemutuModel extends Model
     protected $useTimestamps    = false;
 
     // Fungsi untuk mengambil data dengan relasi
+    // public function getJoin()
+    // {
+    //     return $this->db->table('p_isian_pemutu as isian')
+    //         ->select('isian.id, unit.nama AS nama_unit, instrumen.jenjang AS jenjang, isian.isian, isian.status') // Ubah nama_lembaga menjadi jenjang
+    //         ->join('p_unit_pemutu as punit', 'punit.id = isian.id_unitpemutu')
+    //         ->join('m_unit as unit', 'unit.id = punit.id_unit')
+    //         ->join('p_instrumen_pemutu as instrumen', 'instrumen.id = isian.id_instrumen')
+    //         ->join('m_lembaga_akreditasi as lembaga', 'lembaga.id = instrumen.id_lembaga')
+    //         ->get()
+    //         ->getResultArray();
+    // }
     public function getJoin()
     {
         return $this->db->table('p_isian_pemutu as isian')
-            ->select('isian.id, unit.nama AS nama_unit, lembaga.nama AS nama_lembaga, isian.isian, isian.status')
+            ->select('isian.id, unit.nama AS nama_unit, instrumen.jenjang AS jenjang, isian.isian, isian.status')
             ->join('p_unit_pemutu as punit', 'punit.id = isian.id_unitpemutu')
             ->join('m_unit as unit', 'unit.id = punit.id_unit')
             ->join('p_instrumen_pemutu as instrumen', 'instrumen.id = isian.id_instrumen')
-            ->join('m_lembaga_akreditasi as lembaga', 'lembaga.id = instrumen.id_lembaga')
             ->get()
             ->getResultArray();
     }
