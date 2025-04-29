@@ -64,7 +64,7 @@
                         <td><?= $row['pernyataan']; ?></td>
                         <td><?= $row['deskripsi']; ?></td>
                         <td>
-                            <<a href="<?= base_url('writable/uploads/data_dukung/' . $row['dokumen']); ?>"
+                            <<a href="<?= base_url('writable/uploads/audit/data_dukung/' . $row['dokumen']); ?>"
                                 target="_blank">
                                 <?= $row['dokumen']; ?>
                                 </a>

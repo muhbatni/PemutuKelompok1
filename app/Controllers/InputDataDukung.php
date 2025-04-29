@@ -34,7 +34,7 @@ class InputDataDukung extends BaseController
       // Handle file upload
       $dokumen = $this->request->getFile('dokumen');
       if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-          $uploadPath = WRITEPATH . 'uploads/data_dukung/';
+          $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
           if (!is_dir($uploadPath)) {
               mkdir($uploadPath, 0777, true);
           }
@@ -117,7 +117,7 @@ public function update($id)
     // Handle file upload if new file is selected
     $dokumen = $this->request->getFile('dokumen');
     if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-        $uploadPath = WRITEPATH . 'uploads/data_dukung/';
+        $uploadPath = WRITEPATH . 'uploads/audit/data_dukung/';
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
