@@ -37,17 +37,11 @@
             <option value="">-- Pilih Parent --</option>
           </select>
           </div>
-          
-          <!-- Field Deskripsi Standar -->
-          <!-- <div class="form-group m-form__group">
-            <label for="DeskripsiStandar">Deskripsi Standar</label>
-            <textarea class="form-control m-input" id="DeskripsiStandar" name="deskripsi" rows="3" 
-                      placeholder="Deskripsi Standar"><?= isset($standar) ? esc($standar['dokumen']) : ''; ?></textarea>
-          </div> -->
 
           <div class="form-group m-form__group">
             <label for="dokumen">Unggah Dokumen</label>
-            <input type="file" class="form-control m-input" name="dokumen" id="DokumenStandar" accept=".pdf,.doc,.docx">
+            <input type="file" class="form-control m-input" name="dokumen" id="DokumenStandar" accept=".pdf,.doc,.docx"
+            value="<?= isset($standar) ? esc($standar['dokumen']) : ''; ?>">
             <span class="m-form__help">
               File yang diperbolehkan: PDF, DOC, DOCX <?= $isEdit && !empty($edit['dokumen']) ? '(Abaikan jika tidak ingin mengganti)' : '' ?>
             </span>
