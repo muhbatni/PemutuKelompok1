@@ -31,7 +31,6 @@
         reader.readAsDataURL(file);
       }
     }
-
   </script>
   <!--end::Web font -->
   <!--begin::Base Styles -->
@@ -40,7 +39,8 @@
   <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="<?= base_url(); ?>/public/assets/app/js/survey-util.js"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
   <style>
@@ -54,15 +54,16 @@
 <!-- end::Head -->
 <?php
 $user = new App\Models\UserModel();
-$displayName = $user->getDisplayName() ?? 'Guest';
+$displayName = $user->getDisplayName() ?: 'Guest';
 $defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
-$avatar = $user->getAvatar() ?? $defaultAvatar;
+$avatar = $user->getAvatar() ?: $defaultAvatar;
 ?>
+
 <?php
 $uri = service('uri');
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$auditPages = ['input-auditor', 'standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
@@ -184,7 +185,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                                   <?= esc($displayName); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
-                                  <?= getUserType() ?>
+                                  <?= $user->getUserType() ?>
                                 </span>
                               </div>
                             </div>
@@ -216,7 +217,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                                 </li>
                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                 <li class="m-nav__item">
-                                  <a href="auth/logout"
+                                  <a href="<?= base_url("public/auth/logout") ?>"
                                     class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                     Logout
                                   </a>
@@ -245,7 +246,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
       <div id="m_aside_left" class="m-grid__item	m-aside-left m-aside-left--skin-dark">
         <!-- BEGIN: Aside Menu -->
         <div id="m_ver_menu" class="m-aside-menu m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark"
-          data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500">
+          data-menu-vertical="true" data-menu-scrollable="true" data-menu-dropdown-timeout="500">
           <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
 
             <!-- Dashboard -->
@@ -275,41 +276,24 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <li class="m-menu__item <?= $segment2 === 'input-auditor' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/auditor") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Auditor</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'standar' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/standar") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Standar Audit</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'manajemen-audit' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/manajemen-audit") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Manajemen Audit</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'data-dukung' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="<?= base_url("public/audit/data-dukung") ?>" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Data Dukung</span>
-                    </a>
-                  </li>
-                  <li class="m-menu__item <?= $segment2 === 'temuan' ? 'm-menu__item--active' : '' ?>"
-                    aria-haspopup="true">
-                    <a href="/pemutu/public/audit/temuan" class="m-menu__link">
-                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                      <span class="m-menu__link-text">Temuan</span>
-                    </a>
-                  </li>
+                  <?php
+                  $akreditasiMenu = [
+                    'auditor' => 'Auditor',
+                    'standar' => 'Standar Audit',
+                    'manajemen-audit' => 'Manajemen Audit',
+                    'pelaksanaan-audit' => 'Pelaksanaan Audit',
+                    'data-dukung' => 'Data Dukung',
+                    'temuan' => 'Temuan',
+                  ];
+                  foreach ($akreditasiMenu as $slug => $label): ?>
+                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
+                      aria-haspopup="true">
+                      <a href="<?= base_url("public/audit/$slug") ?>" class="m-menu__link">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                        <span class="m-menu__link-text"><?= $label ?></span>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
                 </ul>
               </div>
             </li>
@@ -336,6 +320,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                     'lembaga' => 'Input Lembaga',
                     'unit' => 'Input Unit',
                     'input-data-pemutu' => 'Input Data Pemutu',
+                    'isian-pemutu' => 'Isian Pemutu',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
@@ -404,13 +389,12 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 </li>
                 <?php
                 $segments = "";
-                ?>
-                <?php foreach ($uri->getSegments() as $segment) {
-                  $segments .= $segment . "/";
+                foreach ($uri->getSegments() as $segment) {
+                  $segments .= "$segment/";
                   ?>
                   <li class="m-nav__separator">/</li>
                   <li class="m-nav__item">
-                    <a href="<?= base_url("public/" . $segments) ?>" class="m-nav__link">
+                    <a href="<?= base_url("public/$segments") ?>" class="m-nav__link">
                       <span class="m-nav__link-text"><?= esc($segment); ?></span>
                     </a>
                   </li>

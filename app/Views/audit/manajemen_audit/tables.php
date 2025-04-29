@@ -1,5 +1,13 @@
-<div class="m-content">
+<?php if (session()->getFlashdata('Success')): ?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?= session()->getFlashdata('Success'); ?>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<?php endif; ?>
 
+<div class="m-content">
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">

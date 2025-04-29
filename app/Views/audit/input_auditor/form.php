@@ -64,8 +64,7 @@
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
               <a href="<?= base_url('public/audit/auditor') ?>" class="btn btn-light">Kembali</a>
-              <input type="submit" class="btn btn-primary">
-                  <?= isset($auditor) ? 'Update' : 'Simpan' ?>
+              <input type="submit" class="btn btn-primary" value="<?= isset($auditor) ? 'Update' : 'Simpan' ?>">
               </input>
               <button type="reset" class="btn btn-metal">Reset</button>
           </div>

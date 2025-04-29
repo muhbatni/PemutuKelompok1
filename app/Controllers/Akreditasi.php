@@ -1,5 +1,8 @@
 <?php
 namespace App\Controllers;
+use App\Models\UnitModel;
+use App\Models\LembagaAkreditasiModel;
+use App\Models\AkreditasiModel;
 
 class Akreditasi extends BaseController
 {
@@ -7,11 +10,11 @@ class Akreditasi extends BaseController
   {
 
     //ambil data m_unit
-    $unitModel = new \App\Models\UnitModel();
+    $unitModel = new UnitModel();
     $data['units'] = $unitModel->getUnits();
 
     //ambil data m_lembaga_akreditasi
-    $lembagaModel = new \App\Models\LembagaAkreditasiModel();
+    $lembagaModel = new LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
 
     if ($this->request->getMethod() == 'POST') {
@@ -25,7 +28,7 @@ class Akreditasi extends BaseController
       ];
   
       // Simpan data ke database
-      $model = new \App\Models\AkreditasiModel();
+      $model = new AkreditasiModel();
       $saveResult = $model->insert($data);
 
     if ($saveResult) {

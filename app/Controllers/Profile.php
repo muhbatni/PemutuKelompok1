@@ -21,7 +21,11 @@ class Profile extends BaseController
     }
     $validation = service('validation');
     $userModel = new UserModel();
-    $userId = session()->get('user_id');
+    $token = getDatabyToken();
+    if (!$token) {
+      return null;
+    }
+    $userId = $token->uid;
     $user = $userModel->where('id', $userId)->first();
     $data = ['nama' => $this->request->getPost('nama')];
     $foto = $this->request->getFile('avatar');
@@ -45,14 +49,18 @@ class Profile extends BaseController
     if (empty($data)) {
       return redirect()->back()->with('error', 'No data to update.');
     }
-    if ($userModel->update($user['id'], $data)) {
-      if (isset($data['foto'])) {
-        $image = pg_unescape_bytea($data['foto']);
-        session()->set('user_avatar', $image);
+    if (isset($data['foto'])) {
+      $image = pg_unescape_bytea($data['foto']);
+      if (cache()->get("avatar_{$user['id']}")) {
+        cache()->delete("avatar_{$user['id']}");
       }
-      return redirect()->to(base_url('public/profile'))->with('success', 'Profile updated successfully!');
+      cache()->save("avatar_{$user['id']}", $image, 3600);
     }
-    return redirect()->to(base_url('public/profile'))->with('error', 'Failed to update the profile!');
+    $isUpdate = $userModel->update($user['id'], $data);
+    if (!$isUpdate) {
+      return alert('profile', 'error', 'Failed to update the profile!');
+    }
+    return alert('profile', 'success', 'Profile updated successfully!');
   }
 
   public function reset_password()

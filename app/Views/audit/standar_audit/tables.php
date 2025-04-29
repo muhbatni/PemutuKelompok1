@@ -46,9 +46,15 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
-      <table class="m-datatable" id="html_table" width="100%">
+      <div class="table-responsive">
+        <table class="table table-striped m-table" id="html_table">
+          <thead class="thead-light">
+            <tr>
+              <th width="5%"></th>
+      <!-- <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
+            <th width="5%"></th> -->
             <th title="Field #1">
            Judul
             </th>
@@ -56,7 +62,7 @@
             Parent
             </th>
             <th title="Field #3">
-            Deskripsi Standar
+            Dokumen
             </th>
             <th title="Field #4">
               Status Aktif
@@ -70,23 +76,35 @@
         </thead>
         <tbody>
         <?php foreach ($standar as $s): ?>
-<tr>
+          <tr class="main-row">
+          <td class="text-center">
+            <!-- Tombol untuk toggle pernyataan standar dan indikator -->
+            <!-- <button type="button" class="btn btn-primary btn-sm toggle-action" data-id="<?= $s['id']; ?>">+</button> -->
+            <a href="<?= base_url('public/audit/standar/edit/' . $s['id']); ?>" class="btn btn-primary btn-sm">
+                    +
+                  </a>
+          </td>
   <td><?= $s['nama']; ?></td>
   <td><?= $s['id_parent']; ?></td>
   <td><?= $s['dokumen']; ?></td>
   <td><?= $s['is_aktif']; ?></td>
 
-  <td>
-  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" 
-     class="btn btn-sm btn-warning" title="Edit">
-    Edit
+  <td class="text-center">
+  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning" title="Edit">
     <i class="la la-edit"></i>
   </a>
-    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')">Hapus</button>
+  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')" title="Hapus">
+    <i class="la la-trash"></i> <!-- Icon hapus -->
+  </button>
   </td>
   </tr>
+    
+  </td>
+</tr>
   <?php endforeach; ?>
 </tbody>
+        </table>
+        </div>
 
 <!-- Modal Hapus -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -113,6 +131,29 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Menambahkan event listener ke tombol toggle (+)
+  var toggleButtons = document.querySelectorAll('.toggle-action');
+
+  toggleButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var id = this.getAttribute('data-id'); // Mengambil ID dari tombol yang diklik
+      var actionRow = document.getElementById('action-' + id); // Menargetkan baris aksi yang sesuai dengan ID
+
+      // Memeriksa apakah baris aksi saat ini disembunyikan atau tidak
+      if (actionRow.style.display === 'none' || actionRow.style.display === '') {
+        actionRow.style.display = 'table-row'; // Menampilkan baris aksi
+        this.textContent = '-'; // Mengubah teks tombol menjadi '-'
+      } else {
+        actionRow.style.display = 'none'; // Menyembunyikan baris aksi
+        this.textContent = '+'; // Mengubah teks tombol kembali menjadi '+'
+      }
+    });
+  });
+});
+
+
+
   function showDeleteModal(id, nama) {
     document.getElementById('deleteId').value = id;
     document.getElementById('deleteMessage').innerHTML =
@@ -121,7 +162,6 @@
   }
 </script>
 
-      </table>
       <!--end: Datatable -->
     </div>
   </div>
@@ -129,3 +169,31 @@
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>
+
+  <style>
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .action-row {
+    background-color: #f5f5f5;
+  }
+
+  .table th,
+  .table td {
+    vertical-align: middle;
+  }
+
+  .thead-light th {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff;
+  }
+</style>
