@@ -58,9 +58,9 @@ class Profile extends BaseController
     }
     $isUpdate = $userModel->update($user['id'], $data);
     if (!$isUpdate) {
-      return alert('profile', 'error', 'Failed to update the profile!');
+      return redirectWithMessage('profile', 'error', 'Failed to update the profile!');
     }
-    return alert('profile', 'success', 'Profile updated successfully!');
+    return redirectWithMessage('profile', 'success', 'Profile updated successfully!');
   }
 
   public function reset_password()

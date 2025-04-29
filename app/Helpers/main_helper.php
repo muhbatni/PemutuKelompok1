@@ -1,37 +1,27 @@
 <?php
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Firebase\JWT\ExpiredException;
 
-function getDatabyToken()
+function redirectTo($redirectPath)
 {
-  helper('cookie');
-  $token = get_cookie('access_token');
-  try {
-    return JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-  } catch (ExpiredException $e) {
-    return null;
-  }
+  return redirect()->to(base_url("public/$redirectPath"));
 }
 
-function isValidRefreshToken($model, $id)
+function redirectWithMessage($redirectPath, $type, $message)
 {
-  helper('cookie');
-  $token = get_cookie('refresh_token');
-  if ($token === null) {
-    return false;
-  }
-  try {
-    JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-    return true;
-  } catch (ExpiredException $e) {
-    return false;
-  }
+  return redirectTo($redirectPath)->with($type, $message);
 }
 
-function alert($redirectPath, $type, $message)
+function handleUpload($path, $file)
 {
-  return redirect()->to(base_url('public/' . $redirectPath))->with($type, $message);
+  if ($file->hasMoved()) {
+    return;
+  }
+  $filePath = WRITEPATH . 'uploads/' . $path;
+  if (!is_dir($filePath)) {
+    mkdir($filePath, 0777, true);
+  }
+  $fileName = $file->getRandomName();
+  $file->move($filePath, $fileName);
+  return $fileName;
 }
 
 ?>

@@ -52,6 +52,7 @@ class ManajemenSurvey extends BaseController
   {
     $periodeModel = new PeriodeModel();
     $periode = $periodeModel->findAll();
+
     if ($this->request->getMethod() === "POST") {
       $validation = service('validation');
       $data = $this->request->getPost();
@@ -65,6 +66,13 @@ class ManajemenSurvey extends BaseController
         echo view("layouts/footer.php");
         return null;
       }
+
+      $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
+      $file = $data['dokumen_pendukung_survey'];
+      if ($file->isValid()) {
+        $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
+      }
+
       $database = Database::connect();
       $database->transStart();
       $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
@@ -76,7 +84,7 @@ class ManajemenSurvey extends BaseController
       if (!$data['id_survey']) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
         'id' => $data['id_survey'],
@@ -89,17 +97,17 @@ class ManajemenSurvey extends BaseController
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $result = createPertanyaanData($database, $data);
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
       }
       $database->transCommit();
       $database->close();
-      return alert('survey/manajemen-survey', 'success', 'Survey berhasil dibuat!');
+      return redirectWithMessage('survey/manajemen-survey', 'success', 'Survey berhasil dibuat!');
     }
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/create_survey.php', ['periode' => $periode]);
@@ -111,6 +119,10 @@ class ManajemenSurvey extends BaseController
     if ($this->request->getMethod() === "POST") {
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
+      $file = $data['dokumen_pendukung_survey'];
+      if ($file->isValid()) {
+        $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
+      }
       $database = Database::connect();
       $database->transStart();
       $data['id_survey'] = $idSurvey;
@@ -123,7 +135,7 @@ class ManajemenSurvey extends BaseController
       if (!$idSurvey) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
       $result = editSurveydata($database, 's_pelaksanaan_survey', [
         'id_periode' => $data['id_periode'],
@@ -135,26 +147,26 @@ class ManajemenSurvey extends BaseController
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
       $result = editPertanyaanData($database, $data);
       if (!$result) {
         $database->transRollback();
         $database->close();
-        return alert('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal mengupdate pertanyaan survey!');
       }
       $database->transCommit();
       $database->close();
-      return alert('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');
+      return redirectWithMessage('survey/manajemen-survey', 'success', 'Survey berhasil diupdate!');
     }
 
     $data['survey'] = $this->surveyModel->find($idSurvey);
     if (!$data['survey']) {
-      return alert('survey/manajemen-survey', 'error', 'Survey tidak ditemukan!');
+      return redirectWithMessage('survey/manajemen-survey', 'error', 'Survey tidak ditemukan!');
     }
     $data['pelaksanaan_survey'] = $this->pelaksanaanSurveyModel->where('id', $idSurvey)->first();
     if (!$data['pelaksanaan_survey']) {
-      return alert('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
+      return redirectWithMessage('survey/manajemen-survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
     $data['periode'] = $this->periodeModel->findAll();
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $idSurvey)->orderBy('urutan', 'asc')->findAll();
