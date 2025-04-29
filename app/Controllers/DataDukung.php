@@ -10,13 +10,13 @@ class DataDukung extends BaseController
         $model = new DataDukungModel();
         $data = [
             "title" => "Data Dukung",
-            "dataDukung" => $model->getdata()
+            "dataDukung" => $model->getDataDukung()
         ];
 
         if ($this->request->getGet('delete')) {
           $id = $this->request->getGet('delete');
           $model->delete($id);
-          session()->setFlashdata('success', 'Data dukung berhasil dihapus!');
+          session()->setFlashdata('success', 'Data berhasil dihapus!');
           return redirect()->to(base_url('public/audit/data-dukung'));
       }
         
