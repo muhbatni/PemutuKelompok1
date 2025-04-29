@@ -30,27 +30,26 @@ class SyaratUnggul extends BaseController
         ];
 
         // Cek jika ada ID di POST, berarti edit data
-        if ($this->request->getPost('id')) {
-          $id = $this->request->getPost('id');
-          // Update data jika ada ID
-          $syaratUnggulModel->update($id, $dataForm);
-          session()->setFlashdata('success', 'Data berhasil diperbarui!');
-      } else {
-          // Insert data jika tidak ada ID
-          $syaratUnggulModel->insert($dataForm);
-          session()->setFlashdata('success', 'Data berhasil disimpan!');
-      }
+        $id = $this->request->getPost('id');
+        if ($id) {
+            $syaratUnggulModel->update($id, $dataForm);
+            session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        } else {
+            // Jika tidak ada ID, maka insert data baru
+            $syaratUnggulModel->insert($dataForm);
+            session()->setFlashdata('success', 'Data berhasil disimpan!');
+        }
 
         return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
     }
 
     // Check for 'GET' method for deleting a syarat unggul
-    if ($this->request->getGet('action') == 'delete' && $this->request->getGet('id')) {
-        $id = $this->request->getGet('id');
+    if ($this->request->getGet('delete')) {
+        $id = $this->request->getGet('delete');
         $deleteResult = $syaratUnggulModel->delete($id);
 
         if ($deleteResult) {
-            session()->setFlashdata('success', 'Syarat Unggul berhasil dihapus!');
+            session()->setFlashdata('success', 'Data berhasil dihapus!');
         } else {
             session()->setFlashdata('error', 'Terjadi kesalahan saat menghapus data!');
         }

@@ -5,6 +5,17 @@ use App\Models\DokumenPenetapanModel;
 
 class DokumenPenetapan extends BaseController
 {
+
+  public function download($filename)
+  {
+      $path = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $filename; 
+      if (!file_exists($path)) {
+          throw new \CodeIgniter\Exceptions\PageNotFoundException('File tidak ditemukan.');
+      }
+  
+      return $this->response->download($path, null);
+  }  
+
   public function index()
   {
     $model = new DokumenPenetapanModel();

@@ -99,7 +99,7 @@
                   <td><?= esc($row['parent']) ?></td>
                   <td>
                     <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['parent']) ?>')">Hapus</button>
+                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
                   </td>
                 </tr>
               <?php endforeach ?>

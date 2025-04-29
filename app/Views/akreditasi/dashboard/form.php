@@ -7,7 +7,6 @@
   <title>Dashboard Penjaminan Mutu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -30,11 +29,35 @@
     .sidebar a:hover {
       background-color: #495057;
     }
+
+    .custom-dropdown {
+      background: #e9f2fd;
+      color: #212529;
+      transition: background 0.4s ease, color 0.4s ease;
+      border: 1px solid #ced4da;
+      border-radius: 0 0.375rem 0.375rem 0;
+    }
+
+    .custom-dropdown:hover {
+      background: linear-gradient(135deg, #0d6efd 0%, #20c997 100%);
+      color: #ffffff;
+    }
+
+    .custom-dropdown option {
+      color: #212529;
+      background: #ffffff;
+    }
+
+    .custom-dropdown:focus {
+      border-color: #86b7fe;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
   </style>
 </head>
 
 <body>
-  <div class="col-md-10">
+  <div class="col-md-10 mx-auto">
     <div class="p-4">
       <!-- Judul -->
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -44,22 +67,27 @@
       <!-- Dropdown Filter Tahun Periode -->
       <div class="mb-4">
         <label for="filterTahun" class="form-label fw-semibold text-dark">Filter Tahun Periode</label>
-        <select id="filterTahun" class="form-select w-auto">
-          <option value="">-- Semua Tahun --</option>
-          <?php if (!empty($periodeList)): ?>
-            <?php foreach ($periodeList as $periode): ?>
-              <option value="<?= esc($periode['tahun']) ?>">
-                <?= esc($periode['tahun']) ?> (<?= esc($periode['ts']) ?>)
-              </option>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <option value="">Tidak ada data periode</option>
-          <?php endif; ?>
-        </select>
+        <div class="input-group w-auto">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="fas fa-calendar-alt text-primary"></i>
+          </span>
+          <select id="filterTahun" class="form-select border-start-0 custom-dropdown rounded-end">
+            <option value="">-- Semua Tahun --</option>
+            <?php if (!empty($periodeList)): ?>
+              <?php foreach ($periodeList as $periode): ?>
+                <option value="<?= esc($periode['tahun']) ?>">
+                  <?= esc($periode['tahun']) ?> (<?= esc($periode['ts']) ?>)
+                </option>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <option value="">Tidak ada data periode</option>
+            <?php endif; ?>
+          </select>
+        </div>
       </div>
 
       <!-- Cards -->
-      <div class="row mb-4">
+      <!-- <div class="row mb-4">
         <div class="col-md-3">
           <div class="card text-white bg-primary mb-3 border-0 shadow-sm">
             <div class="card-body">
@@ -92,72 +120,55 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <!-- Chart -->
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title text-dark fw-bold"><i class="fas fa-chart-bar me-2"></i>Rekap Evaluasi per Unit</h5>
-          <canvas id="chartEvaluasi"></canvas>
+      <!-- Tabel Data Unit Pemutu -->
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0">
+              <h5 class="mb-0">Data Unit Pemutu</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Unit</th>
+                      <th>Kondisi</th>
+                      <th>Status Isian</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (!empty($unitPemutu)): ?>
+                      <?php $no = 1;
+                      foreach ($unitPemutu as $row): ?>
+                        <tr>
+                          <td><?= $no++; ?></td>
+                          <td><?= esc($row['nama_unit']); ?></td>
+                          <td><?= esc($row['kondisi']); ?></td>
+                          <td><?= esc($row['status_isian']); ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php else: ?>
+                      <tr>
+                        <td colspan="4" class="text-center">Tidak ada data</td>
+                      </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <script>
-    // Contoh data chart
-    const data = {
-      labels: ['Unit A', 'Unit B', 'Unit C', 'Unit D', 'Unit E', 'Unit F'],
-      data: [15, 22, 10, 12, 8, 5],
-      colors: ['#6a11cb', '#2575fc', '#4facfe', '#00f2fe', '#a6c1ee', '#fbc2eb']
-    };
-
-    const ctx = document.getElementById('chartEvaluasi').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: data.labels,
-        datasets: [{
-          label: 'Jumlah Evaluasi',
-          data: data.data,
-          backgroundColor: data.colors,
-          borderColor: 'rgba(255, 255, 255, 0.8)',
-          borderWidth: 1,
-          borderRadius: 8,
-          hoverBackgroundColor: data.colors.map(color => `${color}CC`),
-          hoverBorderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            titleFont: { size: 14, weight: 'bold' },
-            bodyFont: { size: 12 },
-            padding: 12,
-            cornerRadius: 10,
-            displayColors: true,
-            boxPadding: 5
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-            ticks: { font: { weight: 'bold' } }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { font: { weight: 'bold' } }
-          }
-        }
-      }
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
