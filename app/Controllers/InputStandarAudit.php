@@ -9,6 +9,7 @@ class InputStandarAudit extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $model = new StandarModel();
+            $data['standar'] = $model->orderBy('id', 'ASC')->findAll();
 
             $parent = $this->request->getPost('parent');
             $parent = ($parent === null || $parent === '') ? null : $parent;
