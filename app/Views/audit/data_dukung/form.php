@@ -8,14 +8,14 @@
               <i class="la la-gear"></i>
             </span>
             <h3 class="m-portlet__head-text">
-              Input Data Dukung
+              <?= isset($dataDukung) ? 'Edit' : 'Input' ?> Data Dukung
             </h3>
           </div>
         </div>
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" 
-      action="<?= base_url('public/audit/input-data-dukung') ?>" 
+      action="<?= isset($dataDukung) ? base_url('public/audit/input-data-dukung/update/'.$dataDukung['id']) : base_url('public/audit/input-data-dukung') ?>" 
       method="post" 
       enctype="multipart/form-data">
         <div class="m-portlet__body">
@@ -25,7 +25,10 @@
             <select class="form-control m-input" name="id_pelaksanaan" id="id_pelaksanaan" required>
                 <option value="">Pilih ID Pelaksanaan</option>
                 <?php foreach ($pelaksanaans as $pelaksanaan): ?>
-                    <option value="<?= $pelaksanaan['id'] ?>"><?= $pelaksanaan['id'] ?></option>
+                    <option value="<?= $pelaksanaan['id'] ?>" 
+                            <?= (isset($dataDukung) && $dataDukung['id_pelaksanaan'] == $pelaksanaan['id']) ? 'selected' : '' ?>>
+                        <?= $pelaksanaan['id'] ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -44,25 +47,43 @@
 
         <div class="form-group m-form__group">
             <label for="id_pernyataan">Pernyataan</label>
-            <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan" required>
+            <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan">
                 <option value="">Pilih Pernyataan</option>
                 <?php foreach ($pernyataans as $pernyataan): ?>
-                    <option value="<?= $pernyataan['id'] ?>"><?= $pernyataan['pernyataan'] ?></option>
+                    <option value="<?= $pernyataan['id'] ?>"
+                            <?= (isset($dataDukung) && $dataDukung['id_pernyataan'] == $pernyataan['id']) ? 'selected' : '' ?>>
+                        <?= $pernyataan['pernyataan'] ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <!-- Deskripsi -->
-          <div class="form-group m-form__group">
+        <div class="form-group m-form__group">
             <label for="deskripsi">Deskripsi</label>
-            <textarea class="form-control m-input" name="deskripsi" id="deskripsi" rows="3" placeholder="Deskripsi Data Dukung" required></textarea>
-          </div>
+            <textarea class="form-control m-input" 
+                      name="deskripsi" 
+                      id="deskripsi" 
+                      rows="3" 
+                      placeholder="Deskripsi Data Dukung" 
+                      required><?= isset($dataDukung) ? $dataDukung['deskripsi'] : '' ?></textarea>
+        </div>
 
           <!-- Upload File Dokumen -->
           <div class="form-group m-form__group">
             <label for="dokumen">Upload Data Dukung</label>
-            <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx,.jpg,.png" required>
+            <input type="file" 
+                   class="form-control m-input" 
+                   name="dokumen" 
+                   id="dokumen" 
+                   accept=".pdf,.doc,.docx,.jpg,.png"
+                   <?= !isset($dataDukung) ? 'required' : '' ?>>
             <span class="m-form__help">File yang diperbolehkan: PDF, DOC, DOCX, JPG, PNG</span>
+            <?php if(isset($dataDukung) && $dataDukung['dokumen']): ?>
+                <div class="mt-2">
+                    <p>File saat ini: <?= $dataDukung['dokumen'] ?></p>
+                </div>
+            <?php endif; ?>
           </div>
         </div>
         
@@ -70,10 +91,13 @@
         <div class="m-portlet__foot m-portlet__foot--fit">
             <div class="m-form__actions">
                 <a href="<?= base_url('public/audit/data-dukung') ?>" class="btn btn-light">Kembali</a>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">
+                    <?= isset($dataDukung) ? 'Update' : 'Simpan' ?>
+                </button>
                 <button type="reset" class="btn btn-metal">Reset</button>
             </div>
         </div>
+
         <script>
           document.getElementById('id_pelaksanaan').addEventListener('change', function() {
             const pelaksanaanId = this.value;
@@ -101,6 +125,13 @@
               document.getElementById('pelaksanaan-info').style.display = 'none';
             }
           });
+
+          // Trigger change event if editing
+          <?php if(isset($dataDukung)): ?>
+          document.addEventListener('DOMContentLoaded', function() {
+              document.getElementById('id_pelaksanaan').dispatchEvent(new Event('change'));
+          });
+          <?php endif; ?>
         </script>
 
       </form>
