@@ -7,7 +7,8 @@ class AuditorModel extends Model
 {
     protected $table = 'a_auditor'; // Tabel utama
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'dokumen']; // Kolom yang diizinkan untuk diisi
+    protected $useAutoIncrement = false; 
+    protected $allowedFields = ['id','dokumen']; // Kolom yang diizinkan untuk diisi
 
     public function getAll()
     {
@@ -17,8 +18,8 @@ class AuditorModel extends Model
                     ->findAll();
     }
 
-    public function simpanAuditor($data)
-    {
-        return $this->insert($data);
-    }
+    // public function simpanAuditor($data)
+    // {
+    //     return $this->insert($data);
+    // }
 }
