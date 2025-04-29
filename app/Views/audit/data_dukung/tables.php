@@ -50,8 +50,7 @@
       <table class="m-datatable" id="html_table" width="100%">
       <thead>
           <tr>
-            <th title="Field #1">Kode Data Dukung</th>
-            <th title="Field #2">Pelaksanaan</th>
+            <th title="Field #2">Id Pelaksanaan</th>
             <th title="Field #3">Pernyataan</th>
             <th title="Field #4">Deskripsi</th>
             <th title="Field #5">Dokumen</th>
@@ -61,21 +60,20 @@
         <tbody>
             <?php foreach ($dataDukung as $row) : ?>
                 <tr>
-                    <td><?= $row['id']; ?></td>
                     <td><?= $row['nama_unit']; ?></td>
                     <td><?= $row['pernyataan']; ?></td>
                     <td><?= $row['deskripsi']; ?></td>
                     <td>
-                        <a href="<?= base_url('uploads/data_dukung/' . $row['dokumen']); ?>" target="_blank">
-                            <?= $row['dokumen']; ?>
+                        <<a href="<?= base_url('writable/uploads/data_dukung/' . $row['dokumen']); ?>" target="_blank">
+                          <?= $row['dokumen']; ?>
                         </a>
                     </td>
                     <td>
-                        <a href="<?= base_url('audit/data-dukung/edit/' . $row['id']); ?>" 
+                        <a href="<?= base_url('public/audit/input-data-dukung/edit/' . $row['id']); ?>" 
                           class="btn btn-sm btn-info" title="Edit">
                             <i class="la la-edit"></i>
                         </a>
-                        <a href="<?= base_url('audit/data-dukung/delete/' . $row['id']); ?>" 
+                        <a href="<?= base_url('public/audit/data-dukung/delete/' . $row['id']); ?>" 
                           class="btn btn-sm btn-danger" 
                           onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
                           title="Delete">

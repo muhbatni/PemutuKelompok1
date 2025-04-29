@@ -14,45 +14,94 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" action="data-dukung" method="post" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" 
+      action="<?= base_url('public/audit/input-data-dukung') ?>" 
+      method="post" 
+      enctype="multipart/form-data">
         <div class="m-portlet__body">
 
         <div class="form-group m-form__group">
-            <label for="pelaksanaan">
-              Pelaksanaan
-            </label>
-            <input type="text" class="form-control m-input" id="pelaksanaan" name="pelaksanaan" placeholder="Pilih Pelaksanaan Audit">
-          </div>
+            <label for="id_pelaksanaan">ID Pelaksanaan</label>
+            <select class="form-control m-input" name="id_pelaksanaan" id="id_pelaksanaan" required>
+                <option value="">Pilih ID Pelaksanaan</option>
+                <?php foreach ($pelaksanaans as $pelaksanaan): ?>
+                    <option value="<?= $pelaksanaan['id'] ?>"><?= $pelaksanaan['id'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-          <div class="form-group m-form__group">
-            <label for="pernyataan">
-              Pernyataan
-            </label>
-            <input type="text" class="form-control m-input" id="pernyataan" name="pernyataan" placeholder="Pilih Pernyataan">
-          </div>
+        <!-- Info Pelaksanaan akan muncul di bawah dropdown -->
+        <div id="pelaksanaan-info" style="display: none;">
+            <div class="form-group m-form__group">
+                <label>Unit</label>
+                <input type="text" class="form-control m-input" id="unit-name" readonly>
+            </div>
+            <div class="form-group m-form__group">
+                <label>Auditor</label>
+                <input type="text" class="form-control m-input" id="auditor-name" readonly>
+            </div>
+        </div>
+
+        <div class="form-group m-form__group">
+            <label for="id_pernyataan">Pernyataan</label>
+            <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan" required>
+                <option value="">Pilih Pernyataan</option>
+                <?php foreach ($pernyataans as $pernyataan): ?>
+                    <option value="<?= $pernyataan['id'] ?>"><?= $pernyataan['pernyataan'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
         <!-- Deskripsi -->
           <div class="form-group m-form__group">
             <label for="deskripsi">Deskripsi</label>
-            <textarea class="form-control m-input" name="deskripsi" id="deskripsi" rows="3" placeholder="Deskripsi Data Dukung"></textarea>
+            <textarea class="form-control m-input" name="deskripsi" id="deskripsi" rows="3" placeholder="Deskripsi Data Dukung" required></textarea>
           </div>
 
           <!-- Upload File Dokumen -->
           <div class="form-group m-form__group">
             <label for="dokumen">Upload Data Dukung</label>
-            <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx,.jpg,.png">
+            <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx,.jpg,.png" required>
             <span class="m-form__help">File yang diperbolehkan: PDF, DOC, DOCX, JPG, PNG</span>
           </div>
         </div>
         
         <!-- Tombol Aksi -->
         <div class="m-portlet__foot m-portlet__foot--fit">
-          <div class="m-form__actions">
-            <a href="data-dukung" class="btn btn-light">Kembali</a>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-            <button type="reset" class="btn btn-metal">Reset</button>
-          </div>
+            <div class="m-form__actions">
+                <a href="<?= base_url('public/audit/data-dukung') ?>" class="btn btn-light">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="reset" class="btn btn-metal">Reset</button>
+            </div>
         </div>
+        <script>
+          document.getElementById('id_pelaksanaan').addEventListener('change', function() {
+            const pelaksanaanId = this.value;
+            if (pelaksanaanId) {
+              fetch('<?= site_url('audit/get-pelaksanaan-info') ?>/' + pelaksanaanId)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  if (data) {
+                    document.getElementById('unit-name').value = data.unit_name || '';
+                    document.getElementById('auditor-name').value = data.auditor_name || '';
+                    document.getElementById('pelaksanaan-info').style.display = 'block';
+                  }
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  alert('Gagal mengambil data: ' + error.message);
+                  document.getElementById('pelaksanaan-info').style.display = 'none';
+                });
+            } else {
+              document.getElementById('pelaksanaan-info').style.display = 'none';
+            }
+          });
+        </script>
 
       </form>
     </div>
