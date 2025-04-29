@@ -10,16 +10,17 @@ function redirectWithMessage($redirectPath, $type, $message)
   return redirectTo($redirectPath)->with($type, $message);
 }
 
-function handleUpload($path, $file)
+function handleUpload($path, $file, $prefix = null)
 {
   if ($file->hasMoved()) {
-    return;
+    return null;
   }
   $filePath = WRITEPATH . 'uploads/' . $path;
   if (!is_dir($filePath)) {
     mkdir($filePath, 0777, true);
   }
-  $fileName = $file->getRandomName();
+  $prefix = $prefix ? "$prefix-" : '';
+  $fileName = $prefix . $file->getRandomName();
   $file->move($filePath, $fileName);
   return $fileName;
 }
