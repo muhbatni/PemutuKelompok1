@@ -1,20 +1,27 @@
 <?php
-
 namespace App\Controllers;
 
-use App\Models\PeriodeModel;
+use App\Models\DashboardModel;
 
 class DashboardPeriode extends BaseController
 {
+  protected $dashboardModel;
+
+  public function __construct()
+  {
+    $this->dashboardModel = new DashboardModel();
+  }
+
   public function index()
   {
-    $periodeModel = new PeriodeModel();
-    $periodeList = $periodeModel->findAll();
+    $tahun = $this->request->getGet('tahun');
 
     $data = [
       "user_type" => "Mahasiswa",
       "title" => "Dashboard",
-      "periodeList" => $periodeList,
+      "periodeList" => $this->dashboardModel->getAllPeriode(),
+      "unitPemutu" => $this->dashboardModel->getUnitPemutu($tahun),
+      "selectedTahun" => $tahun ?? ''
     ];
 
     echo view('layouts/header.php', $data);
@@ -22,4 +29,3 @@ class DashboardPeriode extends BaseController
     echo view('layouts/footer.php', $data);
   }
 }
-?>
