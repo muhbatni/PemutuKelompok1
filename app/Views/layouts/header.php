@@ -278,7 +278,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 <ul class="m-menu__subnav">
                   <?php
                   $akreditasiMenu = [
-                    'input-auditor' => 'Input Auditor',
+                    'auditor' => 'Auditor',
                     'standar' => 'Standar Audit',
                     'manajemen-audit' => 'Manajemen Audit',
                     'pelaksanaan-audit' => 'Pelaksanaan Audit',

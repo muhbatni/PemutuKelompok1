@@ -61,8 +61,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
-  $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
-  $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
+  $routes->match(['get', 'post'], 'audit/auditor/input-auditor', [InputAuditor::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/auditor/input-auditor/(:segment)', [InputAuditor::class, 'edit/$1']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/standar', 'StandarAudit::insert');
   $routes->get('audit/standar/edit/(:num)', 'StandarAudit::edit/$1');
