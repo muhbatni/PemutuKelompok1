@@ -15,7 +15,7 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="post"
-      action="<?= isset($pernyataan['id']) ? base_url('public/audit/standar/update/' . $pernyataan['id']) : base_url('public/audit/standar/insert') ?>" 
+      action="<?= isset($pernyataan['id']) ? base_url('public/audit/standar/update/' . $pernyataan['id']) : base_url('public/audit/standar') ?>" 
       enctype="multipart/form-data">
         <input type="hidden" name="id_standar" value="<?= $id_standar ?>">
         <div class="m-portlet__body">
