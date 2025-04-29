@@ -111,12 +111,22 @@ class StandarAudit extends BaseController
         return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 
-    public function update()
+    public function update($id_pernyataan)
     {
-        $model = new PernyataanModel();
+        // Validate input
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'pernyataan' => 'required',
+            'indikator' => 'required',
+            'kondisi' => 'required',
+            'batas' => 'required|integer',
+        ]);
 
-        $id_pernyataan = $this->request->getPost('id_pernyataan');
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
 
+        // Get data from the form
         $data = [
             'pernyataan' => $this->request->getPost('pernyataan'),
             'indikator' => $this->request->getPost('indikator'),
@@ -124,14 +134,12 @@ class StandarAudit extends BaseController
             'batas' => $this->request->getPost('batas'),
         ];
 
-        if ($id_pernyataan) {
-            $model->update($id_pernyataan, $data);
+        // Update the data in the database
+        $this->PernyataanModel->update($id_pernyataan, $data);
 
-            session()->setFlashdata('success', 'Pernyataan berhasil diperbarui!');
-            return redirect()->to(base_url('public/audit/standar/edit/' . $this->request->getPost('id_standar')));
-        } else {
-            return redirect()->back()->with('error', 'ID Pernyataan tidak ditemukan.');
-        }
+        // Redirect with a success message
+        session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        return redirect()->to(base_url('public/audit/standar/edit/' . $this->request->getPost('id_standar')));
     }
 }
 ?>
