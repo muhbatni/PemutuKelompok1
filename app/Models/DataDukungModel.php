@@ -16,18 +16,23 @@ class DataDukungModel extends Model
             ->select('
                 da.id, 
                 da.id_pernyataan,
+                da.id_pelaksanaan,
                 mu.nama AS nama_unit, 
                 p.pernyataan, 
                 da.deskripsi, 
-                da.dokumen
+                da.dokumen,
+                u.username AS auditor_name
             ')
             ->join('a_pelaksanaan_audit pa', 'da.id_pelaksanaan = pa.id', 'LEFT')
             ->join('m_unit mu', 'pa.id_unit = mu.id', 'LEFT')
             ->join('a_pernyataan p', 'da.id_pernyataan = p.id', 'LEFT')
+            ->join('a_auditor a', 'a.id = pa.id_auditor', 'LEFT')
+            ->join('m_user u', 'u.id = a.id', 'LEFT')
             ->orderBy('da.id_pernyataan', 'ASC')
             ->get()
             ->getResultArray();
     }
+
 
     public function getPelaksanaanList()
     {
