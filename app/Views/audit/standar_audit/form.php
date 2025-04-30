@@ -53,12 +53,12 @@
             <label for="is_aktif" class="font-weight-bold">Status Aktif</label>
             <div class="d-flex align-items-center mt-2">
               <label class="radio">
-                <input type="radio" name="is_aktif" value="1" <?= isset($standar) && $standar['is_aktif'] == 1 ? 'checked' : '' ?> />
+                <input type="radio" name="is_aktif" value="1" <?= isset($standar) && $standar['is_aktif'] == true ? 'checked' : '' ?> />
                 <span></span>
                 Aktif
               </label>
               <label class="radio ml-4">
-                <input type="radio" name="is_aktif" value="0" <?= isset($standar) && $standar['is_aktif'] == 0 ? 'checked' : '' ?> />
+                <input type="radio" name="is_aktif" value="0" <?= isset($standar) && $standar['is_aktif'] == false ? 'checked' : '' ?> />
                 <span></span>
                 Tidak Aktif
               </label>

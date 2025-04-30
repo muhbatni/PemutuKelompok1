@@ -87,7 +87,16 @@
   <td><?= $s['nama']; ?></td>
   <td><?= $s['id_parent']; ?></td>
   <td><?= $s['dokumen']; ?></td>
-  <td><?= $s['is_aktif']; ?></td>
+   <td>
+    <?php 
+    if(isset($s['is_aktif'])) {
+      $aktif = ($s['is_aktif'] === 't') ? 'Aktif' : 'Tidak Aktif';
+
+    } else {
+      $aktif = 'Tidak Aktif';
+    } echo $aktif
+    ?>
+   </td>
 
   <td class="text-center">
   <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning" title="Edit">
