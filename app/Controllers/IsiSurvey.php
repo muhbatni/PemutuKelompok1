@@ -35,7 +35,7 @@ class IsiSurvey extends BaseController
       throw new PageNotFoundException("Survey tidak ditemukan.");
     }
 
-    $id_user = getDatabyToken()->uid;
+    $id_user = getDecodedToken()->uid;
     if (!$id_user) {
       return redirectWithMessage('survey/isi-survey', 'error', 'Anda tidak bisa mengisi survey!');
     }

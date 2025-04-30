@@ -36,7 +36,7 @@ class UserModel extends Model
 
   public function getUsername()
   {
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
@@ -57,7 +57,7 @@ class UserModel extends Model
    */
   public function getDisplayName()
   {
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
@@ -77,7 +77,7 @@ class UserModel extends Model
    */
   public function getAvatar()
   {
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
@@ -108,7 +108,7 @@ class UserModel extends Model
 
   public function getUserType()
   {
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
