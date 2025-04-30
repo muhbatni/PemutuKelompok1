@@ -57,12 +57,18 @@
               Nama
             </th>
             <th title="Field #4">
-              Dokumen Pendukung
+              Tanggal Mulai
             </th>
             <th title="Field #5">
-              Status
+              Tanggal Selesai
             </th>
             <th title="Field #6">
+              Dokumen Pendukung
+            </th>
+            <th title="Field #7">
+              Status
+            </th>
+            <th title="Field #8">
               Aksi
             </th>
           </tr>
@@ -78,6 +84,12 @@
               </td>
               <td>
                 <?php echo esc($survey['nama']); ?>
+              </td>
+              <td>
+                <?php echo esc($survey['tanggal_mulai']); ?>
+              </td>
+              <td>
+                <?php echo esc($survey['tanggal_selesai']); ?>
               </td>
               <td>
                 <?php echo esc($survey['dokumen_pendukung']) ?: "null"; ?>
