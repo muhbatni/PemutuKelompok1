@@ -92,8 +92,8 @@
                   <td><?= $syarat['nama']; ?></td>
                   <td>
                   <button class="btn btn-sm btn-warning" 
-                          onclick="showUpdateModal(<?= $syarat['id'] ?>, '<?= esc($syarat['nama']) ?>')">
-                    <i class="fa fa-pencil-alt"></i> Edit
+                    onclick="showEditConfirmation('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')"> 
+                    Edit
                   </button>
                     <!-- Tombol Delete -->
                     <button class="btn btn-sm btn-danger" 
@@ -133,25 +133,25 @@
             </div>
           </div>
     </div>
-    <!-- Modal Update -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-warning text-white">
-            <h5 class="modal-title" id="updateModalLabel">Konfirmasi Edit</h5>
-            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Apakah Anda yakin ingin mengedit dokumen <strong><span id="docName"></span></strong>?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" onclick="submitUpdate()">Ya, Edit</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title" id="editModalLabel">Konfirmasi Edit</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin mengedit data syarat unggul ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" onclick="confirmEdit()">Ya, Edit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
 <script>
@@ -177,15 +177,20 @@
     $('#deleteModal').modal('show');
   }
 
-  function showUpdateModal(id, nama) {
-    document.getElementById('updateModalLabel').innerHTML = `Apakah Anda yakin ingin memperbarui dokumen <strong>${nama}</strong>?`;
-    document.getElementById('updateModal').setAttribute('data-id', id);
-    $('#updateModal').modal('show');
-  }
+  function showEditConfirmation(id, nama) {
+    // Menyesuaikan pesan yang akan ditampilkan pada modal
+    document.getElementById('editModalLabel').innerText = "Konfirmasi Edit";
+    document.getElementById('editModal').querySelector('.modal-body').innerHTML = `Apakah Anda yakin ingin mengedit data syarat unggul: <strong>${nama}</strong>?`;
+    
+    // Menyimpan ID yang akan diedit di data-id
+    document.getElementById('editModal').setAttribute('data-id', id);
+    
+    // Menampilkan modal
+    $('#editModal').modal('show');
+}
 
-  function submitUpdate() {
-    var id = document.getElementById('updateModal').getAttribute('data-id');
-      window.location.href = 'akreditasi?id=' + id;
-      window.location.href = 'dokumen-penetapan?id=' + id;
-  }
+function confirmEdit() {
+    var id = document.getElementById('editModal').getAttribute('data-id');
+    window.location.href = 'syarat-unggul?id=' + id; // Arahkan ke form edit dengan ID yang sesuai
+}
 </script>
