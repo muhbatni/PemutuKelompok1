@@ -28,13 +28,13 @@ $avatar = $user->getAvatar() ?? $defaultAvatar;
               <div class="profile">
                 <div class="profile-picture-wrapper">
                   <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
-                  <input type="file" name="avatar" accept="image/jpeg, image/png" class="profile-img-input"
+                  <input type="file" name="foto" accept="image/jpeg, image/png" class="profile-img-input"
                     onchange="getPreviewImage(this)" />
                   <i class="flaticon-edit-1"></i>
                 </div>
                 <div class="profile-details-wrapper">
-                  <?php if (isset($errors['avatar'])): ?>
-                    <small class="text-danger"><?= esc($errors['avatar']) ?></small>
+                  <?php if (isset($errors['foto'])): ?>
+                    <small class="text-danger"><?= esc($errors['foto']) ?></small>
                   <?php endif; ?>
                   <?php if (isset($errors['nama'])): ?>
                     <small class="text-danger"><?= esc($errors['nama']) ?></small>

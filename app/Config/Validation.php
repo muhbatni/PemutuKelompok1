@@ -74,14 +74,14 @@ class Validation extends BaseConfig
 
   public array $profile = [
     'nama' => 'max_length[50]',
-    'avatar' => 'is_image[avatar]|max_size[avatar,2048]|ext_in[avatar,jpg,jpeg,png]',
+    'foto' => 'is_image[foto]|max_size[foto,2048]|ext_in[foto,jpg,jpeg,png]',
   ];
 
   public array $profile_errors = [
     'nama' => [
       'max_length' => 'Nama tidak bisa melebihi 50 karakter.'
     ],
-    'avatar' => [
+    'foto' => [
       'max_size' => 'Ukuran foto tidak boleh lebih dari 2MB.',
       'ext_in' => 'Ekstensi foto harus jpg, jpeg, atau png.'
     ]

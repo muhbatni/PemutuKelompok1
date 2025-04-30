@@ -94,7 +94,7 @@ class UserModel extends Model
       return null;
     }
     $image = pg_unescape_bytea($user['foto']);
-    cache()->save("avatar_$userId", $image, 3600);
+    handleCache('avatar', $image);
     $mimeType = $this->getMimeType($image);
     $encodedImage = base64_encode($image);
     return "data:$mimeType;base64,$encodedImage";

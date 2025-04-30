@@ -19,29 +19,9 @@ class Profile extends BaseController
     echo view("profile/index.php");
     echo view("layouts/footer.php");
   }
-
-  private function handleCacheImage($imageData, $userId)
-  {
-    if (isset($imageData)) {
-      $image = pg_unescape_bytea($imageData);
-      if (cache()->get("avatar_$userId")) {
-        cache()->delete("avatar_$userId");
-      }
-      cache()->save("avatar_$userId", $image, 3600);
-    }
-  }
-
-  private function isDataValid($data, $file)
+  private function isDataValid($data)
   {
     $validation = service('validation');
-    if (empty($data)) {
-      return redirect()->back()->with('error', 'Tidak ada data untuk diperbarui!');
-    }
-
-    if ($file && $file->isValid()) {
-      $data['foto'] = pg_escape_bytea(file_get_contents($file->getTempName()));
-    }
-
     if (!$validation->run($data, "profile")) {
       echo view('layouts/header', ['title' => 'Profile']);
       echo view(
@@ -52,8 +32,9 @@ class Profile extends BaseController
         ]
       );
       echo view('layouts/footer');
-      return;
+      return false;
     }
+    return true;
   }
 
   public function edit()
@@ -61,25 +42,28 @@ class Profile extends BaseController
     if ($this->request->getMethod() !== 'POST') {
       return;
     }
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
     $userId = $token->uid;
-    $user = $this->userModel->where('id', $userId)->first();
-    $postData = $this->request->getPost();
-    $data = ['nama' => $postData['nama']];
-    $file = $this->request->getFile('avatar');
+    $data = [
+      "nama" => $this->request->getPost('nama'),
+      "foto" => $this->request->getFile('foto')
+    ];
 
-    $data = array_filter($data, fn($value) => !$value && $value !== '');
+    $file = $data['foto'];
+    if ($file && $file->isValid()) {
+      $file_contents = file_get_contents($file->getTempName());
+      handleCache('avatar', $file_contents);
+      $data['foto'] = pg_escape_bytea($file_contents);
+    }
 
-    if (!$this->isDataValid($data, $file)) {
+    if (!$this->isDataValid($data)) {
       return;
     }
 
-    $this->handleCacheImage($data['foto'], $userId);
-
-    $isUpdate = $this->userModel->update($user['id'], $data);
+    $isUpdate = $this->userModel->update($userId, $data);
     if (!$isUpdate) {
       return redirectWithMessage('profile', 'error', 'Gagal memperbarui profil!');
     }

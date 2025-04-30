@@ -84,7 +84,7 @@ class ManajemenSurvey extends BaseController
         ]);
 
         if (!$data['id_survey']) {
-          throw new \Exception('Failed to create survey data');
+          throw new \Exception('Gagal membuat data survey!');
         }
 
         $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pelaksanaanSurveyPlaceholder, [
@@ -97,12 +97,12 @@ class ManajemenSurvey extends BaseController
         ]);
 
         if (!$result) {
-          throw new \Exception('Failed to create pelaksanaan survey data');
+          throw new \Exception('Gagal membuat data pelaksanaan survey!');
         }
 
         $result = createPertanyaanData($database, $data);
         if (!$result) {
-          throw new \Exception('Failed to create pertanyaan data');
+          throw new \Exception('Gagal membuat data pertanyaan survey!');
         }
 
         $database->transCommit();
