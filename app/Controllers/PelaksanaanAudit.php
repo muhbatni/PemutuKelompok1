@@ -5,14 +5,22 @@ use App\Models\PelaksanaanAuditModel;
 use App\Models\AuditStandarModel;
 use App\Models\PernyataanModel;
 
-
 class PelaksanaanAudit extends BaseController
 {
+  protected $pelaksanaanAuditModel;
+  protected $auditStandarModel;
+  protected $pernyataanModel;
+
+  public function __construct()
+  {
+    $this->pelaksanaanAuditModel = new PelaksanaanAuditModel();
+    $this->auditStandarModel = new AuditStandarModel();
+    $this->pernyataanModel = new PernyataanModel();
+  }
+
   public function index()
   {
-
-    $model = new PelaksanaanAuditModel();
-    $data['pelaksanaan_audit'] = $model->getPelaksanaanAudit();
+    $data['pelaksanaan_audit'] = $this->pelaksanaanAuditModel->getPelaksanaanAudit();
     $data["title"] = "Pelaksanaan Audit";
 
     echo view('layouts/header.php', $data);
@@ -22,27 +30,41 @@ class PelaksanaanAudit extends BaseController
 
   public function edit($id_audit)
   {
-    // Load Model yang dibutuhkan
-    $auditStandarModel = new AuditStandarModel();
-    $pernyataanModel = new PernyataanModel(); // ini contoh nama model indikator
-
-    // Ambil semua standar yang terkait dengan audit ini
-    $standar = $auditStandarModel->getStandarByAudit($id_audit);
-
-    // Ambil semua indikator yang terkait dengan standar-standar itu
-    $pernyataan = $pernyataanModel->getPernyataanByAudit($id_audit);
+    $standar = $this->auditStandarModel->getStandarByAudit($id_audit);
+    $pernyataan = $this->pelaksanaanAuditModel->getPernyataanByStandar($id_audit);
+    $auditor_list = $this->pelaksanaanAuditModel->getAuditorList(); // <--- TAMBAHKAN INI
+    $unit_list = $this->pelaksanaanAuditModel->getUnitList(); // kalau butuh list unit juga
 
     $data = [
       'title' => 'Pelaksanaan Audit',
       'standar' => $standar,
-      'indikator' => $pernyataan,
+      'pernyataan' => $pernyataan,
+      'auditor_list' => $auditor_list, // <-- KIRIM KE VIEW
+      'unit_list' => $unit_list,   // <-- optional kalau ada dropdown unit
       'id_audit' => $id_audit
     ];
+
+
 
     echo view('layouts/header', $data);
     echo view('audit/pelaksanaan_audit/edit', $data);
     echo view('layouts/footer');
   }
+
+  public function getPernyataanByStandar($id_standar)
+  {
+    $data = $this->pernyataanModel->getPernyataanByStandarId($id_standar);
+    return $this->response->setJSON($data);
+  }
+
+  public function getDetailPernyataan($id)
+  {
+    $data = $this->pernyataanModel->getDetailPernyataan($id);
+    return $this->response->setJSON($data);
+  }
+
+
+
 
 
 }

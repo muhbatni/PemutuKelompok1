@@ -28,7 +28,6 @@ class AuditStandarModel extends Model
             ->get()
             ->getResult();
     }
-
     public function getStandarByAudit($id_audit)
     {
         return $this->db->table('a_standar_audit sa')
@@ -38,9 +37,5 @@ class AuditStandarModel extends Model
             ->get()
             ->getResult();
     }
-
-
-
-
 
 }
