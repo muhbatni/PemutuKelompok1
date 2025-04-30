@@ -61,9 +61,15 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
-  $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
-  $routes->post('audit/input-auditor/simpan', [InputAuditor::class, 'simpan']);
+  $routes->match(['get', 'post'], 'audit/auditor/input-auditor', [InputAuditor::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/auditor/input-auditor/(:segment)', [InputAuditor::class, 'edit/$1']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/standar', 'StandarAudit::insert');
+  $routes->get('audit/standar/edit/(:num)', 'StandarAudit::edit/$1');
+  $routes->get('audit/standar/edit/(:num)/(:num)?', 'StandarAudit::edit/$1/$2');
+  $routes->post('audit/standar', 'StandarAudit::update');
+  $routes->post('audit/standar/update/(:num)', 'StandarAudit::update/$1');
+  $routes->get('audit/standar/delete/(:num)', 'StandarAudit::delete/$1');
   $routes->get('audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/input-standar/edit/(:num)', [InputStandarAudit::class, 'edit/$1']);
@@ -78,7 +84,11 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/pelaksanaan-audit/getPernyataanByStandar/(:num)', 'PelaksanaanAudit::getPernyataanByStandar/$1');
   $routes->get('audit/pelaksanaan-audit/getDetailPernyataan/(:num)', 'PelaksanaanAudit::getDetailPernyataan/$1');
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
-  $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
+  $routes->match(['get','post'],'audit/input-data-dukung', [InputDataDukung::class, 'index']);
+  $routes->get('audit/input-data-dukung/edit/(:num)', [InputDataDukung::class, 'edit/$1']);
+  $routes->post('audit/input-data-dukung/update/(:num)', [InputDataDukung::class, 'update/$1']);
+  $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
+  $routes->get('audit/get-pelaksanaan-info/(:num)', [InputDataDukung::class, 'getPelaksanaanInfo/$1']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
