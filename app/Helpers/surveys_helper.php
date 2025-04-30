@@ -12,27 +12,36 @@ function createPertanyaanData($database, $data)
   $idSurvey = $data['id_survey'] ?: null;
   $pertanyaan = $data['pertanyaan'] ?: null;
   $jenis = $data['jenis'] ?: null;
+
   if (!$idSurvey || !$pertanyaan || !$jenis) {
     return null;
   }
+
   $pertanyaanData = [];
   foreach ($pertanyaan as $index => $teks) {
+    if (empty($teks)) {
+      continue;
+    }
     $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
+    $urutan = $index + 1;
     $pertanyaanData[] = [
       'id_survey' => $idSurvey,
       'teks' => $teks,
       'jenis' => $jenisValue,
       'is_aktif' => true,
-      'urutan' => $index + 1,
+      'urutan' => $urutan,
       'created_at' => date('Y-m-d H:i:s'),
       'updated_at' => date('Y-m-d H:i:s'),
     ];
+    log_message('info', 'Pertanyaan data: ' . json_encode($pertanyaanData));
   }
+
   if (empty($pertanyaanData)) {
     return null;
   }
+
   $database->table('s_pertanyaan')->insertBatch($pertanyaanData);
-  return true;
+  return $database->affectedRows() > 0;
 }
 
 function editSurveyData($database, $tableName, $data, $id)
@@ -60,7 +69,6 @@ function editPertanyaanData($database, $data)
   foreach ($pertanyaan as $index => $teks) {
     $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
     if (isset($idPertanyaan[$index]) && !empty($idPertanyaan[$index])) {
-      // Existing question - add to update array
       $existingIds[] = $idPertanyaan[$index];
       $pertanyaanDataUpdate[] = [
         'id' => $idPertanyaan[$index],
@@ -84,13 +92,11 @@ function editPertanyaanData($database, $data)
     ];
   }
 
-  // Delete questions that no longer exist
   if (!empty($existingIds)) {
     $builder->where('id_survey', $idSurvey)
       ->whereNotIn('id', $existingIds)
       ->delete();
   } else if (!empty($idPertanyaan)) {
-    // If we have some IDs but none were valid, still delete as before
     $builder->where('id_survey', $idSurvey)
       ->whereNotIn('id', $idPertanyaan)
       ->delete();
