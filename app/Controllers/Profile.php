@@ -6,6 +6,12 @@ use App\Models\UserModel;
 
 class Profile extends BaseController
 {
+  protected $userModel;
+  public function __construct()
+  {
+    $this->userModel = new UserModel();
+  }
+
   public function index()
   {
     $data = ['title' => 'Profile'];
@@ -20,13 +26,12 @@ class Profile extends BaseController
       return;
     }
     $validation = service('validation');
-    $userModel = new UserModel();
     $token = getDatabyToken();
     if (!$token) {
       return null;
     }
     $userId = $token->uid;
-    $user = $userModel->where('id', $userId)->first();
+    $user = $this->userModel->where('id', $userId)->first();
     $data = ['nama' => $this->request->getPost('nama')];
     $foto = $this->request->getFile('avatar');
     if ($foto && $foto->isValid()) {
@@ -45,7 +50,7 @@ class Profile extends BaseController
       return;
     }
     // Remove empty fields
-    $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
+    $data = array_filter($data, fn($value) => !$value && $value !== '');
     if (empty($data)) {
       return redirect()->back()->with('error', 'No data to update.');
     }
@@ -56,7 +61,7 @@ class Profile extends BaseController
       }
       cache()->save("avatar_{$user['id']}", $image, 3600);
     }
-    $isUpdate = $userModel->update($user['id'], $data);
+    $isUpdate = $this->userModel->update($user['id'], $data);
     if (!$isUpdate) {
       return redirectWithMessage('profile', 'error', 'Failed to update the profile!');
     }
