@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\SurveyModel;
 use \Config\Database;
 use App\Models\PertanyaanSurveyModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 class IsiSurvey extends BaseController
 {
   protected $surveyModel;
@@ -15,10 +16,7 @@ class IsiSurvey extends BaseController
   }
   public function index()
   {
-    // $data['pager'] = $this->surveyModel->pager;
     $data['surveys'] = $this->surveyModel->getActiveSurveys();
-    // $data['surveys'] = $this->surveyModel->paginate(10);
-
     echo view('layouts/header.php', ["title" => "Isi Survey"]);
     echo view('survey_kepuasan/isi_survey/index.php', $data);
     echo view('layouts/footer.php');
@@ -26,18 +24,16 @@ class IsiSurvey extends BaseController
 
   public function isiSurvey($id)
   {
-    // Ambil data survey berdasarkan ID
     $survey = $this->surveyModel->find($id);
 
     if (!$survey) {
-      throw new \CodeIgniter\Exceptions\PageNotFoundException("Survey dengan ID $id tidak ditemukan.");
+      throw new PageNotFoundException("Survey tidak ditemukan.");
     }
 
-    // Ambil pertanyaan terkait survey dari tabel s_pertanyaan
     $pertanyaanModel = new PertanyaanSurveyModel();
     $questions = $pertanyaanModel->where('id_survey', $id)
-      ->where('is_aktif', true) // Hanya pertanyaan aktif
-      ->orderBy('urutan', 'ASC') // Urutkan berdasarkan kolom urutan
+      ->where('is_aktif', true)
+      ->orderBy('urutan', 'ASC')
       ->findAll();
 
     $data['survey'] = $survey;
