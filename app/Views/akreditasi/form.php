@@ -20,7 +20,7 @@
           <!-- ID Unit -->
           <div class="form-group m-form__group">
             <label for="id_unit">Unit</label>
-            <select class="form-control m-input" id="id_unit" name="id_unit">
+            <select class="form-control m-input" id="id_unit" name="id_unit" required>
               <option value="">-- Pilih Unit --</option>
               <?php foreach ($units as $unit): ?>
                 <option value="<?= $unit['id']; ?>" 
@@ -34,7 +34,7 @@
           <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
-          <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
+          <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
               <option value="<?= $lembaga['id']; ?>" 
@@ -48,7 +48,7 @@
           <!-- Nilai Akreditasi -->
           <div class="form-group m-form__group">
             <label for="nilai_akreditasi">Nilai Akreditasi</label>
-            <select class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi">
+            <select class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi" required>
               <option value="">-- Pilih Nilai --</option>
               <?php
                 $nilaiOptions = [
@@ -70,12 +70,12 @@
             <label>Is Active</label><br>
             <label class="radio-inline">
                 <input type="radio" name="is_active" value="0" 
-                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?>>
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?> required>
                 Tidak Aktif
             </label>
             <label class="radio-inline">
                 <input type="radio" name="is_active" value="1" 
-                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?>>
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?> required>
                 Aktif
             </label>
         </div>
@@ -85,34 +85,40 @@
           <div class="form-group m-form__group">
             <label>Status</label><br>
             <label class="radio-inline">
-              <input type="radio" name="status" value="0" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 0 ? 'checked' : ''; ?>> Pengajuan
+              <input type="radio" name="status" value="0" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 0 ? 'checked' : ''; ?> required> Pengajuan
             </label>
             <label class="radio-inline">
-              <input type="radio" name="status" value="1" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 1 ? 'checked' : ''; ?>> Diterima
+              <input type="radio" name="status" value="1" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 1 ? 'checked' : ''; ?> required> Diterima
             </label>
             <label class="radio-inline">
-              <input type="radio" name="status" value="2" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 2 ? 'checked' : ''; ?>> Ditolak
+              <input type="radio" name="status" value="2" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 2 ? 'checked' : ''; ?> required> Ditolak
             </label>
           </div>
 
           <!-- Tanggal Berlaku -->
           <div class="form-group m-form__group">
             <label for="tanggal_berlaku">Tanggal Berlaku</label>
-            <input type="date" class="form-control m-input" id="tanggal_berlaku" name="tanggal_berlaku" value="<?= isset($dataAkreditasi['tanggal_berlaku']) ? $dataAkreditasi['tanggal_berlaku'] : ''; ?>">
+            <input type="date" class="form-control m-input" id="tanggal_berlaku" name="tanggal_berlaku" value="<?= isset($dataAkreditasi['tanggal_berlaku']) ? $dataAkreditasi['tanggal_berlaku'] : ''; ?>" required>
           </div>
 
           <!-- Tanggal Habis -->
           <div class="form-group m-form__group">
             <label for="tanggal_habis">Tanggal Habis</label>
-            <input type="date" class="form-control m-input" id="tanggal_habis" name="tanggal_habis" value="<?= isset($dataAkreditasi['tanggal_habis']) ? $dataAkreditasi['tanggal_habis'] : ''; ?>">
+            <input type="date" class="form-control m-input" id="tanggal_habis" name="tanggal_habis" value="<?= isset($dataAkreditasi['tanggal_habis']) ? $dataAkreditasi['tanggal_habis'] : ''; ?>" required>
           </div>
 
           <!-- File Upload -->
           <div class="form-group m-form__group">
             <label for="file_upload">Unggah Dokumen</label>
-            <input type="file" class="form-control m-input" id="file_upload" name="file_upload">
+            <input type="file" class="form-control m-input" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx">
+            <span class="m-form__help">
+              File yang diperbolehkan: PDF, DOC, DOCX 
+              <?php if (isset($editData['file']) && !empty($editData['file'])): ?>
+                (Abaikan jika tidak ingin mengganti)
+              <?php endif; ?>
+            </span>
           </div>
-        </div>
+          </div>
 
         <!-- Submit Button -->
         <div class="m-portlet_foot m-portlet_foot--fit">

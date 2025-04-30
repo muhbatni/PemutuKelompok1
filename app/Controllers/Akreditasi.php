@@ -123,21 +123,6 @@ class Akreditasi extends BaseController
     echo view('layouts/footer.php');
 }
 
-public function viewFile($filename)
-{
-    $filePath = WRITEPATH . 'uploads/akreditasi/' . $filename;
-
-    if (file_exists($filePath)) {
-        // Deteksi tipe file (contoh: application/pdf)
-        $mime = mime_content_type($filePath);
-        header('Content-Type: ' . $mime);
-        readfile($filePath);
-        exit;
-    } else {
-        throw new \CodeIgniter\Exceptions\PageNotFoundException("File tidak ditemukan.");
-    }
-}
-
 public function download($filename)
 {
     // Tentukan path folder tempat file disimpan
