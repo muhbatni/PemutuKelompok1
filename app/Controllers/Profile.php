@@ -32,7 +32,8 @@ class Profile extends BaseController
     }
     $userId = $token->uid;
     $user = $this->userModel->where('id', $userId)->first();
-    $data = ['nama' => $this->request->getPost('nama')];
+    $postData = $this->request->getPost();
+    $data = ['nama' => $postData['nama']];
     $foto = $this->request->getFile('avatar');
     if ($foto && $foto->isValid()) {
       $data['foto'] = pg_escape_bytea(file_get_contents($foto->getTempName()));
@@ -43,7 +44,7 @@ class Profile extends BaseController
         'profile/index',
         [
           'errors' => $validation->getErrors(),
-          'old' => $this->request->getPost()
+          'old' => $postData
         ]
       );
       echo view('layouts/footer');
