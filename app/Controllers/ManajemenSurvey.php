@@ -22,7 +22,7 @@ class ManajemenSurvey extends BaseController
     'status' => true,
   ];
 
-  private $pertanyaanSurveyPlaceholder = [
+  private $pelaksanaanSurveyPlaceholder = [
     'id' => null,
     'id_periode' => null,
     'tanggal_mulai' => null,
@@ -41,8 +41,7 @@ class ManajemenSurvey extends BaseController
 
   public function index()
   {
-    $data['surveys'] = $this->surveyModel->paginate(10);
-    $data['pager'] = $this->surveyModel->pager;
+    $data = $this->surveyModel->getPaginatedSurveys(10);
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/index.php', $data);
     echo view('layouts/footer.php');
@@ -58,6 +57,7 @@ class ManajemenSurvey extends BaseController
       $data = $this->request->getPost();
       $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
       if (!$validation->run($data, 'surveys')) {
+        log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
         echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
         echo view(
           "survey_kepuasan/manajemen_survey/create_survey.php",
@@ -67,48 +67,56 @@ class ManajemenSurvey extends BaseController
         return null;
       }
 
-      $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
       $file = $data['dokumen_pendukung_survey'];
       if ($file->isValid()) {
-        $data['dokumen_pendukung_survey'] = handleUpload('survey/dokumen-pendukung', $file) ?? null;
+        $data['dokumen_pendukung_survey'] = handleUpload("survey/dokumen_pendukung", $file);
       }
 
       $database = Database::connect();
       $database->transStart();
-      $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
-        'kode' => $data['kode_survey'],
-        'nama' => $data['nama_survey'],
-        'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
-        'status' => $data['status_survey'],
-      ]);
-      if (!$data['id_survey']) {
+
+      try {
+        $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
+          'kode' => $data['kode_survey'],
+          'nama' => $data['nama_survey'],
+          'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
+          'status' => $data['status_survey'],
+        ]);
+
+        if (!$data['id_survey']) {
+          throw new \Exception('Failed to create survey data');
+        }
+
+        $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pelaksanaanSurveyPlaceholder, [
+          'id' => $data['id_survey'],
+          'id_periode' => $data['id_periode'],
+          'tanggal_mulai' => $data['tanggal_mulai'],
+          'tanggal_selesai' => $data['tanggal_selesai'],
+          'deskripsi' => $data['deskripsi_survey'],
+          'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        if (!$result) {
+          throw new \Exception('Failed to create pelaksanaan survey data');
+        }
+
+        $result = createPertanyaanData($database, $data);
+        if (!$result) {
+          throw new \Exception('Failed to create pertanyaan data');
+        }
+
+        $database->transCommit();
+        $database->close();
+        return redirectWithMessage('survey/manajemen-survey', 'success', 'Survey berhasil dibuat!');
+
+      } catch (\Exception $exception) {
         $database->transRollback();
         $database->close();
-        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
+        log_message('error', 'Database error: ' . $exception->getMessage());
+        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey: ' . $exception->getMessage());
       }
-      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pertanyaanSurveyPlaceholder, [
-        'id' => $data['id_survey'],
-        'id_periode' => $data['id_periode'],
-        'tanggal_mulai' => $data['tanggal_mulai'],
-        'tanggal_selesai' => $data['tanggal_selesai'],
-        'deskripsi' => $data['deskripsi_survey'],
-        'created_at' => date('Y-m-d H:i:s'),
-      ]);
-      if (!$result) {
-        $database->transRollback();
-        $database->close();
-        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
-      }
-      $result = createPertanyaanData($database, $data);
-      if (!$result) {
-        $database->transRollback();
-        $database->close();
-        return redirectWithMessage('survey/manajemen-survey', 'error', 'Gagal membuat survey!');
-      }
-      $database->transCommit();
-      $database->close();
-      return redirectWithMessage('survey/manajemen-survey', 'success', 'Survey berhasil dibuat!');
     }
+
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/create_survey.php', ['periode' => $periode]);
     echo view('layouts/footer.php');
