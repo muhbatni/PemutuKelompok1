@@ -20,6 +20,17 @@ class Profile extends BaseController
     echo view("layouts/footer.php");
   }
 
+  private function handleCacheImage($imageData, $userId)
+  {
+    if (isset($imageData)) {
+      $image = pg_unescape_bytea($imageData);
+      if (cache()->get("avatar_$userId")) {
+        cache()->delete("avatar_$userId");
+      }
+      cache()->save("avatar_$userId", $image, 3600);
+    }
+  }
+
   public function edit()
   {
     if ($this->request->getMethod() !== 'POST') {
@@ -34,9 +45,9 @@ class Profile extends BaseController
     $user = $this->userModel->where('id', $userId)->first();
     $postData = $this->request->getPost();
     $data = ['nama' => $postData['nama']];
-    $foto = $this->request->getFile('avatar');
-    if ($foto && $foto->isValid()) {
-      $data['foto'] = pg_escape_bytea(file_get_contents($foto->getTempName()));
+    $file = $this->request->getFile('avatar');
+    if ($file && $file->isValid()) {
+      $data['foto'] = pg_escape_bytea(file_get_contents($file->getTempName()));
     }
     if (!$this->validate("profile")) {
       echo view('layouts/header', ['title' => 'Profile']);
@@ -50,18 +61,14 @@ class Profile extends BaseController
       echo view('layouts/footer');
       return;
     }
-    // Remove empty fields
+
     $data = array_filter($data, fn($value) => !$value && $value !== '');
     if (empty($data)) {
       return redirect()->back()->with('error', 'No data to update.');
     }
-    if (isset($data['foto'])) {
-      $image = pg_unescape_bytea($data['foto']);
-      if (cache()->get("avatar_{$user['id']}")) {
-        cache()->delete("avatar_{$user['id']}");
-      }
-      cache()->save("avatar_{$user['id']}", $image, 3600);
-    }
+
+    $this->handleCacheImage($data['foto'], $userId);
+
     $isUpdate = $this->userModel->update($user['id'], $data);
     if (!$isUpdate) {
       return redirectWithMessage('profile', 'error', 'Failed to update the profile!');
