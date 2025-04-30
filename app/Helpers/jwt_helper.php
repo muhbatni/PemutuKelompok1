@@ -58,7 +58,7 @@ function refreshToken()
     set_cookie('access_token', $newAccessToken, $newAccessExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
     return $newAccessToken;
   } catch (Exception $exception) {
-    alert('login', 'error', 'Masa akun anda sudah habis, silahkan login terlebih lagi!');
+    redirectWithMessage('login', 'error', 'Masa akun anda sudah habis, silahkan login terlebih lagi!');
     return null;
   }
 }
