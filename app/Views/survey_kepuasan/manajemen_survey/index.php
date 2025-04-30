@@ -104,11 +104,32 @@
                           class="la la-edit"></i> Edit Detail</a> -->
                       <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Edit Status</a>
                       <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
-                      <a class="dropdown-item"
-                        href="<?= base_url("public/survey/manajemen-survey/delete/$survey[id]") ?>">
+                      <a class="dropdown-item" href="<?= base_url("public/survey/manajemen-survey/delete/$survey[id]") ?>"
+                        data-toggle="modal" data-target="#deleteModal-<?= $survey['id']; ?>" fdprocessedid="yus45">
                         <i class="la la-trash"></i>Hapus Survey</a>
                     </div>
                   </span>
+                  <div class="modal fade" id="deleteModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteModalLabel-<?= $survey['id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel-<?= $survey['id']; ?>">Hapus Survey</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Apakah kamu yakin ingin menghapus Survey ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                          <a href="<?= base_url("public/survey/manajemen-survey/delete/$survey[id]") ?>"
+                            class="btn btn-danger">Hapus</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <span>
                     <a href="<?= base_url("public/survey/manajemen-survey/edit/$survey[id]") ?>"
                       class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
