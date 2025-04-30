@@ -31,4 +31,23 @@ class PernyataanModel extends Model
                 s.nama, p.id
         ", [$id_audit])->getResult();
     }
+
+    public function getByStandarId($id_standar)
+    {
+        return $this->where('id_standar', $id_standar)->findAll();
+    }
+
+    public function getPernyataanByStandarId($id_standar)
+    {
+        return $this->where('id_standar', $id_standar)->findAll();
+    }
+    
+    public function getDetailPernyataan($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
+
+
+
 }

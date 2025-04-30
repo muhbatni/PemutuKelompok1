@@ -75,11 +75,12 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/input-manajemen-audit/delete/(:num)', 'InputManajemenAudit::delete/$1');
   $routes->get('audit/pelaksanaan-audit', [PelaksanaanAudit::class, 'index']);
   $routes->get('audit/pelaksanaan-audit/edit/(:num)', 'PelaksanaanAudit::edit/$1');
+  $routes->get('audit/pelaksanaan-audit/getPernyataanByStandar/(:num)', 'PelaksanaanAudit::getPernyataanByStandar/$1');
+  $routes->get('audit/pelaksanaan-audit/getDetailPernyataan/(:num)', 'PelaksanaanAudit::getDetailPernyataan/$1');
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
   $routes->get('audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
-
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
