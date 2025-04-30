@@ -65,11 +65,11 @@ class InputAuditor extends BaseController
             $validation->setRules([
                 'dokumen' => 'permit_empty|uploaded[dokumen]|max_size[dokumen,2048]|ext_in[dokumen,pdf,doc,docx]'
             ]);
-    
+
             if (!$this->validate($validation->getRules())) {
                 return redirect()->back()->withInput()->with('errors', $validation->getErrors());
             }
-    
+
             // Proses file dokumen
             $file = $this->request->getFile('dokumen');
             $newName = null;
@@ -82,14 +82,14 @@ class InputAuditor extends BaseController
                 $newName = $file->getRandomName();
                 $file->move(WRITEPATH . 'uploads/audit/dokumen_auditor', $newName);
             }
-    
+
             // Data yang akan diperbarui
             $data = [
                 'dokumen' => $newName,
             ];
-    
+
             $auditorModel->update($id, $data);
-    
+
             // Redirect dengan pesan sukses
             return redirect()->to(base_url('public/audit/auditor'))->with('success', 'Data auditor berhasil diperbarui.');
         }
@@ -113,5 +113,30 @@ class InputAuditor extends BaseController
         echo view('layouts/header.php', $data);
         echo view('audit/input_auditor/form.php', $data);
         echo view('layouts/footer.php');
+    }
+    public function delete($id)
+    {
+        $auditorModel = new AuditorModel();
+
+        // Cari data auditor berdasarkan ID
+        $auditor = $auditorModel->find($id);
+
+        if (!$auditor) {
+            return redirect()->to(base_url('public/audit/auditor'))->with('errors', 'Data auditor tidak ditemukan.');
+        }
+
+        // Hapus file dokumen jika ada
+        if (!empty($auditor['dokumen'])) {
+            $filePath = WRITEPATH . 'uploads/audit/dokumen_auditor/' . $auditor['dokumen'];
+            if (file_exists($filePath)) {
+                unlink($filePath); // Hapus file dari server
+            }
+        }
+
+        // Hapus data dari database
+        $auditorModel->delete($id);
+
+        // Redirect dengan pesan sukses
+        return redirect()->to(base_url('public/audit/auditor'))->with('success', 'Data auditor berhasil dihapus.');
     }
 }
