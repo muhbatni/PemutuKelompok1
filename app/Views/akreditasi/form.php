@@ -189,7 +189,7 @@
                     if (isset($akreditasi['status'])) {
                         switch ($akreditasi['status']) {
                             case 0: $status = 'Pengajuan'; break;
-                            case 1: $status = 'Ditereima'; break;
+                            case 1: $status = 'Diterima'; break;
                             case 2: $status = 'Ditolak'; break;
                         }
                     } else {
@@ -229,7 +229,7 @@
                     $aktif = '';
                     if (isset($akreditasi['is_active'])) {
                         // Mengecek langsung nilai boolean
-                        $aktif = $akreditasi['is_active'] ? 'Aktif' : 'Tidak Aktif';
+                        $aktif = ($akreditasi['is_active'] === 't') ? 'Aktif' : 'Tidak Aktif';
                     } else {
                         $aktif = 'Tidak Ada';
                     }
