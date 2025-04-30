@@ -2,17 +2,21 @@
 namespace App\Controllers;
 
 use App\Models\SurveyModel;
-use \Config\Database;
 use App\Models\PertanyaanSurveyModel;
+use App\Models\IsiSurveyModel;
+use Exception;
 use CodeIgniter\Exceptions\PageNotFoundException;
 class IsiSurvey extends BaseController
 {
   protected $surveyModel;
-  protected $pelaksanaanSurveyModel;
+  protected $pertanyaanSurveyModel;
+  protected $isiSurveyModel;
+
   public function __construct()
   {
     $this->surveyModel = new SurveyModel();
-    $this->pelaksanaanSurveyModel = new \App\Models\PelaksanaanSurveyModel();
+    $this->pertanyaanSurveyModel = new PertanyaanSurveyModel();
+    $this->isiSurveyModel = new IsiSurveyModel();
   }
   public function index()
   {
@@ -22,26 +26,51 @@ class IsiSurvey extends BaseController
     echo view('layouts/footer.php');
   }
 
-  public function isiSurvey($id)
+  public function isiSurvey($segment)
   {
+    $explodedSegment = explode('-', $segment);
+    $id = $explodedSegment[1];
     $survey = $this->surveyModel->find($id);
-
     if (!$survey) {
       throw new PageNotFoundException("Survey tidak ditemukan.");
     }
 
-    $pertanyaanModel = new PertanyaanSurveyModel();
-    $questions = $pertanyaanModel->where('id_survey', $id)
-      ->where('is_aktif', true)
-      ->orderBy('urutan', 'ASC')
-      ->findAll();
+    $id_user = getDatabyToken()->uid;
+    if (!$id_user) {
+      return redirectWithMessage('survey/isi-survey', 'error', 'Anda tidak bisa mengisi survey!');
+    }
 
-    $data['survey'] = $survey;
-    $data['questions'] = $questions;
+    if ($this->request->getMethod() === "POST") {
+      $postData = $this->request->getPost();
+      $data = [];
+      foreach ($postData['answers'] as $id_pertanyaan => $jawaban) {
+        $data[] = [
+          'id_pertanyaan' => $id_pertanyaan,
+          'jawaban' => $jawaban,
+          'id_user' => $id_user
+        ];
+      }
+      try {
+        $this->isiSurveyModel->insertBatch($data);
+        return redirectWithMessage('survey/isi-survey', 'success', 'Survey berhasil diisi!');
+      } catch (Exception $e) {
+        return redirectWithMessage('survey/isi-survey', 'error', 'Survey gagal diisi!');
+      }
+    }
 
-    echo view('layouts/header.php', ["title" => "Isi Survey"]);
-    echo view('survey_kepuasan/isi_survey/form.php', $data);
-    echo view('layouts/footer.php');
+    if ($this->request->getMethod() === "GET") {
+      $questions = $this->pertanyaanSurveyModel->where('id_survey', $id)
+        ->where('is_aktif', true)
+        ->orderBy('urutan', 'ASC')
+        ->findAll();
+
+      $data['survey'] = $survey;
+      $data['questions'] = $questions;
+
+      echo view('layouts/header.php', ["title" => "Isi Survey"]);
+      echo view('survey_kepuasan/isi_survey/form.php', $data);
+      echo view('layouts/footer.php');
+    }
   }
 }
 ?>

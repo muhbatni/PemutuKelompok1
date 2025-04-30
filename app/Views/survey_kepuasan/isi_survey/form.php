@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="m-portlet__body">
-        <form action="<?= base_url('public/survey/isi-survey/' . $survey['id']); ?>" method="post">
+        <form action="<?= base_url("public/survey/isi-survey/$survey[kode]-$survey[id]"); ?>" method="POST">
           <?php foreach ($questions as $index => $question): ?>
             <div class="form-group">
               <div class="m-portlet m-portlet--bordered m-portlet--unair p-3">
