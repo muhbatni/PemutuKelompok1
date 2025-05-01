@@ -21,7 +21,7 @@ function handleCache($key, $data, $ttl = 3600)
     if (cache()->get("{$key}_{$userId}")) {
       cache()->delete("{$key}_{$userId}");
     }
-    cache()->save("{$key}_{$userId}", $data, 3600);
+    cache()->save("{$key}_{$userId}", $data, $ttl);
   }
 }
 
