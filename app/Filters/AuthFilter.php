@@ -16,7 +16,6 @@ class AuthFilter implements FilterInterface
       if (!$accessToken) {
         return redirectWithMessage('login', 'error', 'Silahkan login terlebih dahulu!');
       }
-      $_COOKIE['access_token'] = $accessToken;
     }
     $request->token = $accessToken;
   }
