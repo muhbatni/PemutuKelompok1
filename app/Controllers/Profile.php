@@ -49,18 +49,15 @@ class Profile extends BaseController
     $userId = $token->uid;
     $data = [
       "nama" => $this->request->getPost('nama'),
-      "foto" => $this->request->getFile('foto')
     ];
-
-    $file = $data['foto'];
-    if ($file && $file->isValid()) {
-      $file_contents = file_get_contents($file->getTempName());
-      handleCache('avatar', $file_contents);
-      $data['foto'] = pg_escape_bytea($file_contents);
-    }
 
     if (!$this->isDataValid($data)) {
       return;
+    }
+
+    $file = $this->request->getFile('foto');
+    if ($file->isValid()) {
+      $this->userModel->setAvatar($file);
     }
 
     $isUpdate = $this->userModel->update($userId, $data);
