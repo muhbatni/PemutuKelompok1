@@ -61,6 +61,7 @@ $avatar = $user->getAvatar() ?: $defaultAvatar;
 
 <?php
 $uri = service('uri');
+$segment1 = $uri->getSegment(1);
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
 $isDashboardActive = empty($uri->getSegment(1));
@@ -71,8 +72,8 @@ $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPa
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'lembaga', 'unit', 'input-data-pemutu', 'isian-pemutu', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
-$surveyPages = ['manajemen-survey', 'isi-survey', ''];
-$isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surveyPages);
+$surveyPages = ['survey', 'isi-survey'];
+$isSurveyActive = in_array($segment1, $surveyPages);
 ?>
 
 <body
@@ -349,21 +350,20 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <?php
-                  $surveyMenu = [
-                    'manajemen-survey' => 'Manajemen Survey',
-                    'isi-survey' => 'Isi Survey',
-                    '' => 'Hasil Survey'
-                  ];
-                  foreach ($surveyMenu as $slug => $label): ?>
-                    <li class="m-menu__item <?= $isSurveyActive && $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
-                      aria-haspopup="true">
-                      <a href="<?= base_url("public/survey/$slug") ?>" class="m-menu__link">
-                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                        <span class="m-menu__link-text"><?= $label ?></span>
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
+                  <li class="m-menu__item <?= $segment1 === 'survey' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="<?= base_url("public/survey") ?>" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Survey</span>
+                    </a>
+                  </li>
+                  <li class="m-menu__item <?= $segment1 === 'isi-survey' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="<?= base_url("public/isi-survey") ?>" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Isi Survey</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
@@ -390,12 +390,15 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 </li>
                 <?php
                 $segments = "";
-                foreach ($uri->getSegments() as $segment) {
+                $currentSegments = $uri->getSegments();
+                foreach ($currentSegments as $segment) {
                   $segments .= "$segment/";
+                  $isLastSegment = $segment === end($currentSegments);
                   ?>
                   <li class="m-nav__separator">/</li>
                   <li class="m-nav__item">
-                    <a href="<?= base_url("public/$segments") ?>" class="m-nav__link">
+                    <a href="<?= base_url("public/$segments") . ($isLastSegment && $uri->getQuery() ? '?' . $uri->getQuery() : '') ?>"
+                      class="m-nav__link">
                       <span class="m-nav__link-text"><?= esc($segment); ?></span>
                     </a>
                   </li>

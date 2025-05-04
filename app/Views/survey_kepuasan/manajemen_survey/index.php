@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-            <a href="<?= base_url("public/survey/manajemen-survey/create") ?>"
+            <a href="<?= base_url("public/survey/create") ?>"
               class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air">
               <span>
                 <i class="la la-plus"></i>
@@ -44,7 +44,7 @@
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
-      <table class="m-datatable table-bordered" id="html_table" width="100%">
+      <table class="m-datatable table-bordered" id="survey_table" width="100%">
         <thead>
           <tr>
             <th title="Field #1">
@@ -55,12 +55,6 @@
             </th>
             <th title="Field #3">
               Nama
-            </th>
-            <th title="Field #4">
-              Tanggal Mulai
-            </th>
-            <th title="Field #5">
-              Tanggal Selesai
             </th>
             <th title="Field #6">
               Dokumen Pendukung
@@ -86,12 +80,6 @@
                 <?php echo esc($survey['nama']); ?>
               </td>
               <td>
-                <?php echo esc($survey['tanggal_mulai']); ?>
-              </td>
-              <td>
-                <?php echo esc($survey['tanggal_selesai']); ?>
-              </td>
-              <td>
                 <?php echo esc($survey['dokumen_pendukung']) ?: "null"; ?>
               </td>
               <td>
@@ -112,11 +100,11 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                       <!-- <a class="dropdown-item"
-                        href="<?= base_url("public/survey/manajemen-survey/edit/$survey[id]") ?>"><i
+                        href="<?= base_url("public/survey/edit?id_survey=$survey[id]") ?>"><i
                           class="la la-edit"></i> Edit Detail</a> -->
-                      <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Edit Status</a>
-                      <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>
-                      <a class="dropdown-item" href="<?= base_url("public/survey/manajemen-survey/delete/$survey[id]") ?>"
+                      <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Lihat Hasil</a>
+                      <a class="dropdown-item" href="#"><i class="la la-print"></i> Buat Laporan</a>
+                      <a class="dropdown-item" href="<?= base_url("public/survey/delete?id_survey=$survey[id]") ?>"
                         data-toggle="modal" data-target="#deleteModal-<?= $survey['id']; ?>" fdprocessedid="yus45">
                         <i class="la la-trash"></i>Hapus Survey</a>
                     </div>
@@ -136,14 +124,14 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                          <a href="<?= base_url("public/survey/manajemen-survey/delete/$survey[id]") ?>"
+                          <a href="<?= base_url("public/survey/delete?id_survey=$survey[id]") ?>"
                             class="btn btn-danger">Hapus</a>
                         </div>
                       </div>
                     </div>
                   </div>
                   <span>
-                    <a href="<?= base_url("public/survey/manajemen-survey/edit/$survey[id]") ?>"
+                    <a href="<?= base_url("public/survey/edit?id_survey=$survey[id]") ?>"
                       class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
                       title="View">
                       <i class="la la-edit"></i>
@@ -167,13 +155,14 @@
       <div class="row">
         <div class="col-md-12">
           <div class="btn-group d-flex justify-content-center" role="group" aria-label="Default button group">
-            <a <?= $previousURI ? 'href="' . $previousURI . '"' : '' ?> class="btn btn-outline-primary" <?= $previousURI ?: "disabled='disabled'" ?>>Previous</a>
+            <a <?= $previousURI ? "href='$previousURI'" : '' ?> class="btn btn-outline-primary" <?= $previousURI ?: "disabled='disabled'" ?>>Previous</a>
             <?php
-            for ($i = $startPage; $i <= $endPage; $i++) { ?>
-              <a <?= $pager->getPageURI($i) ? 'href="' . $pager->getPageURI($i) . '"' : '' ?>
-                class="btn btn-outline-primary <?= $i === $currentPage ? 'active' : '' ?>" <?= $pager->getPageURI($i) ?: "disabled='disabled'" ?>><?= $i ?></a>
+            for ($index = $startPage; $index <= $endPage; $index++) { ?>
+              <a <?= $pager->getPageURI($index) ? 'href="' . $pager->getPageURI($index) . '"' : '' ?>
+                class="btn btn-outline-primary <?= $index === $currentPage ? 'active' : '' ?>"
+                <?= $pager->getPageURI($index) ?: "disabled='disabled'" ?>><?= $index ?></a>
             <?php } ?>
-            <a <?= $nextURI ? 'href="' . $nextURI . '"' : '' ?> class="btn btn-outline-primary" <?= $nextURI ?: "disabled='disabled'" ?>>Next</a>
+            <a <?= $nextURI ? "href='$nextURI'" : '' ?> class="btn btn-outline-primary" <?= $nextURI ?: "disabled='disabled'" ?>>Next</a>
           </div>
         </div>
       </div>

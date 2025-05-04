@@ -44,9 +44,9 @@ function createPertanyaanData($database, $data)
   return $database->affectedRows() > 0;
 }
 
-function editSurveyData($database, $tableName, $data, $id)
+function editSurveyData($database, $tableName, $data, $id, $column = 'id')
 {
-  $database->table($tableName)->where('id', $id)->update($data);
+  $database->table($tableName)->where($column, $id)->update($data);
   return $database->affectedRows() > 0;
 }
 
@@ -105,8 +105,8 @@ function editPertanyaanData($database, $data)
   if (!empty($pertanyaanDataUpdate)) {
     try {
       $builder->updateBatch($pertanyaanDataUpdate, 'id');
-    } catch (\Exception $e) {
-      log_message('error', 'Update batch error: ' . $e->getMessage());
+    } catch (\Exception $exception) {
+      log_message('error', 'Update batch error: ' . $exception->getMessage());
       return false;
     }
   }
@@ -114,8 +114,8 @@ function editPertanyaanData($database, $data)
   if (!empty($pertanyaanDataInsert)) {
     try {
       $builder->insertBatch($pertanyaanDataInsert);
-    } catch (\Exception $e) {
-      log_message('error', 'Insert batch error: ' . $e->getMessage());
+    } catch (\Exception $exception) {
+      log_message('error', 'Insert batch error: ' . $exception->getMessage());
       return false;
     }
   }

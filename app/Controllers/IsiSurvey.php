@@ -29,15 +29,16 @@ class IsiSurvey extends BaseController
   public function isiSurvey($segment)
   {
     $explodedSegment = explode('-', $segment);
+    $kode = $explodedSegment[0];
     $id = $explodedSegment[1];
-    $survey = $this->surveyModel->find($id);
+    $survey = $this->surveyModel->getSurveyByKodeId($kode, $id);
     if (!$survey) {
-      throw new PageNotFoundException("Survey tidak ditemukan.");
+      return redirectWithMessage('isi-survey', 'error', 'Survey tidak ditemukan.');
     }
 
     $id_user = getDecodedToken()->uid;
     if (!$id_user) {
-      return redirectWithMessage('survey/isi-survey', 'error', 'Anda tidak bisa mengisi survey!');
+      return redirectWithMessage('isi-survey', 'error', 'Anda tidak bisa mengisi survey!');
     }
 
     if ($this->request->getMethod() === "POST") {
@@ -52,9 +53,9 @@ class IsiSurvey extends BaseController
       }
       try {
         $this->isiSurveyModel->insertBatch($data);
-        return redirectWithMessage('survey/isi-survey', 'success', 'Survey berhasil diisi!');
+        return redirectWithMessage('isi-survey', 'success', 'Survey berhasil diisi!');
       } catch (Exception $e) {
-        return redirectWithMessage('survey/isi-survey', 'error', 'Survey gagal diisi!');
+        return redirectWithMessage('isi-survey', 'error', 'Survey gagal diisi!');
       }
     }
 
