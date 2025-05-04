@@ -13,7 +13,7 @@ class IsiSurveyModel extends Model
   protected $allowedFields = ['id_pertanyaan', 'jawaban', 'id_user'];
   protected $returnType = 'array';
 
-  public function getPertanyaanBySurvey($idSurvey)
+  public function getHasilSurveyById($idSurvey)
   {
     return $this->select('s_pertanyaan.*, s_pertanyaan.id AS id_pertanyaan, s_isian_survey.*, s_survey.*')
       ->join('s_pertanyaan', 's_pertanyaan.id = s_isian_survey.id_pertanyaan')
@@ -22,7 +22,7 @@ class IsiSurveyModel extends Model
       ->findAll();
   }
 
-  public function getJawabanSummaryBySurvey($idSurvey, $idPertanyaan)
+  public function getOptionSummaryById($idSurvey, $idPertanyaan)
   {
     return $this->select('jawaban, COUNT(jawaban) as jumlah')
       ->join('s_pertanyaan', 's_pertanyaan.id = s_isian_survey.id_pertanyaan')
