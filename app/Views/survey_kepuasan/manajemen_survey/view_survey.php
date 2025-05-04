@@ -4,15 +4,15 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            <?php echo esc($survey[0]['nama']); ?>
+            <?php echo esc($survey['nama']); ?>
           </h3>
         </div>
       </div>
     </div>
     <div class="m-portlet__body">
       <?php
-      if (isset($optionsData)):
-        foreach ($optionsData as $data): ?>
+      if (isset($survey['data'])):
+        foreach ($survey['data'] as $data): ?>
           <div class="m-portlet">
             <div class="m-portlet__head">
               <div class="m-portlet__head-caption">
@@ -23,16 +23,39 @@
                 </div>
               </div>
             </div>
-            <canvas id="<?= "P_$data[id_pertanyaan]" ?>" width="400" height="200"></canvas>
+            <?php switch ($data['jenis']):
+              case 1: ?>
+                <canvas id="<?= "P_$data[id_pertanyaan]" ?>" width="400" height="200"></canvas>
+                <?php break;
+              case 2: ?>
+                <div class="m-portlet__body">
+                  <table class="m-datatable table-bordered" id="<?= "P_$data[id_pertanyaan]" ?>" width="100%">
+                    <thead>
+                      <tr>
+                        <th title="Field #1">
+                          ID Pengisi
+                        </th>
+                        <th title="Field #3">
+                          Jawaban
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($data['jawaban'] as $jawaban): ?>
+                        <tr>
+                          <td><?= $jawaban['id_pengisi'] ?></td>
+                          <td><?= $jawaban['teks'] ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+            <?php endswitch; ?>
           </div>
           <?php
         endforeach;
       endif;
       ?>
-      <!--begin: Search Form -->
-      <!--end: Search Form -->
-      <!--begin: Datatable -->
-      <!--end: Datatable -->
     </div>
   </div>
 </div>
@@ -50,10 +73,12 @@
     '5': 'Sangat Baik'
   };
   <?php
-  if (isset($optionsData)):
-    foreach ($optionsData as $data): ?>
-      questionIDs.push(<?= $data['id_pertanyaan'] ?>);
-      answers.push(<?= json_encode($data['jawaban']); ?>);
+  if (isset($survey['data'])):
+    foreach ($survey['data'] as $data): ?>
+      <?php if ($data['jenis'] == 1): ?>
+        questionIDs.push(<?= $data['id_pertanyaan'] ?>);
+        answers.push(<?= json_encode($data['jawaban']); ?>);
+      <?php endif; ?>
     <?php endforeach; ?>
     const labels = [];
     const data = [];
