@@ -225,25 +225,28 @@ class ManajemenSurvey extends BaseController
       return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
     }
     $idSurvey = $params[1];
-    $data['survey'] = $this->isiSurveyModel->getPertanyaanBySurvey($idSurvey);
-    if (!$data['survey']) {
-      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    $surveyData = $this->isiSurveyModel->getHasilSurveyById($idSurvey);
+    if (!$surveyData) {
+      return redirectWithMessage('survey', 'error', 'Data hasil survey masih kosong!');
     }
-    $options = array_filter($data['survey'], fn($data) => $data['jenis'] == 1);
-    if ($options) {
-      foreach ($options as $optionData) {
-        $data['optionsData'][$optionData['id_pertanyaan']] = [
-          'teks' => $optionData['teks'],
-          'id_pertanyaan' => $optionData['id_pertanyaan'],
-          'jawaban' => $this->isiSurveyModel->getJawabanSummaryBySurvey($idSurvey, $optionData['id_pertanyaan'])
+    $data['survey']['nama'] = $surveyData[0]['nama'];
+    foreach ($surveyData as $survey) {
+      $data['survey']['data'][$survey['id_pertanyaan']] = [
+        'teks' => $survey['teks'],
+        'jenis' => $survey['jenis'],
+        'id_pertanyaan' => $survey['id_pertanyaan'],
+      ];
+      if ($survey['jenis'] == 1) {
+        $data['survey']['data'][$survey['id_pertanyaan']]['jawaban'] = $this->isiSurveyModel->getOptionSummaryById($idSurvey, $survey['id_pertanyaan']);
+      }
+      if ($survey['jenis'] == 2) {
+        $data['survey']['data'][$survey['id_pertanyaan']]['jawaban'][] = [
+          'id_pengisi' => $survey['id_user'],
+          'teks' => $survey['jawaban'],
         ];
       }
     }
 
-    // echo "<pre>";
-    // print_r($options);
-    // echo "</pre>";
-    // return;
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/view_survey.php', $data);
     echo view('layouts/footer.php');
