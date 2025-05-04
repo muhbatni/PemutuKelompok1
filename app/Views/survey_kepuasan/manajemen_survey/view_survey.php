@@ -35,7 +35,7 @@
                         <th title="Field #1">
                           ID Pengisi
                         </th>
-                        <th title="Field #3">
+                        <th title="Field #2">
                           Jawaban
                         </th>
                       </tr>
