@@ -73,14 +73,7 @@ class Auth extends BaseController
     $secretKey = getenv('JWT_SECRET');
     $accessToken = JWT::encode($accessPayload, $secretKey, 'HS256');
     $refreshToken = JWT::encode($refreshPayload, $secretKey, 'HS256');
-    $userAvatar = $user['foto'];
-    if ($userAvatar) {
-      if (cache()->get("avatar_{$user['id']}")) {
-        cache()->delete("avatar_{$user['id']}");
-      }
-      $image = pg_unescape_bytea($userAvatar);
-      cache()->save("avatar_{$user['id']}", $image, 3600);
-    }
+
     set_cookie('access_token', $accessToken, $accessTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
     set_cookie('refresh_token', $refreshToken, $refreshTokenExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);
     return redirectWithMessage('dashboard', 'success', 'Login berhasil!')->withCookies();

@@ -39,12 +39,12 @@
             <label class="col-form-label col-lg-3 col-sm-12">Status<span style="color: red">*</span></label>
             <div class="m-radio-inline ml-3">
               <label class="m-radio m-radio--success">
-                <input type="radio" name="status_survey" value="true" <?= (isset($old['status_survey']) && $old['status_survey'] == 1) ? "checked" : '' ?>>
+                <input type="radio" name="status_survey" value="true" <?= (isset($old['status_survey']) && $old['status_survey'] === 'true') ? "checked" : '' ?>>
                 Aktif
                 <span></span>
               </label>
               <label class="m-radio m-radio--danger">
-                <input type="radio" name="status_survey" value="false" <?= (isset($old['status_survey']) && $old['status_survey'] == 2) ? "checked" : '' ?>>
+                <input type="radio" name="status_survey" value="false" <?= (isset($old['status_survey']) && $old['status_survey'] === 'false') ? "checked" : '' ?>>
                 Tidak aktif
                 <span></span>
               </label>
@@ -104,53 +104,109 @@
             <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan</label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <div class="row ui-sortable" id="m_sortable_portlets">
-                <div class="col-lg-12 portlet-template">
-                  <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
-                    <div class="m-portlet__head ui-sortable-handle">
-                      <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                          <h3 class="m-portlet__head-text">
-                            Jenis Pertanyaan
-                          </h3>
+                <?php
+                if (isset($old['pertanyaan'])) {
+                  foreach ($old['pertanyaan'] as $index => $pertanyaan): ?>
+                    <div class="col-lg-12 portlet-template">
+                      <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
+                        <div class="m-portlet__head ui-sortable-handle">
+                          <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                              <h3 class="m-portlet__head-text">
+                                Jenis Pertanyaan
+                              </h3>
+                            </div>
+                          </div>
+                          <div class="m-portlet__head-tools">
+                            <ul
+                              class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
+                              role="tablist">
+                              <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link active" data-toggle="tab"
+                                  href="#m_portlet_base_demo_1_tab_content" role="tab">
+                                  <i class="la la-star"></i>
+                                  Opsian
+                                </a>
+                              </li>
+                              <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_base_demo_1_tab_content"
+                                  role="tab" aria-selected="false">
+                                  <i class="la la-pencil-square"></i>
+                                  Isian
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="m-portlet__body">
+                          <div class="d-flex align-items-center justify-content-center">
+                            <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
+                              aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh"
+                              value="<?= $pertanyaan ?>">
+                            <input type="hidden" name="jenis[]" value="<?= $old['jenis'][$index] ?>">
+                          </div>
+                          <br>
+                          <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                            <span>
+                              <i class="la la-trash-o"></i>
+                              <span>Delete</span>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div class="m-portlet__head-tools">
-                        <ul
-                          class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
-                          role="tablist">
-                          <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link active" data-toggle="tab"
-                              href="#m_portlet_base_demo_1_tab_content" role="tab">
-                              <i class="la la-star"></i>
-                              Opsian
-                            </a>
-                          </li>
-                          <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_base_demo_1_tab_content"
-                              role="tab" aria-selected="false">
-                              <i class="la la-pencil-square"></i>
-                              Isian
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
                     </div>
-                    <div class="m-portlet__body">
-                      <div class="d-flex align-items-center justify-content-center">
-                        <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
-                          aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
-                        <input type="hidden" name="jenis[]" value="1">
+                    <?php
+                  endforeach;
+                } else {
+                  ?>
+                  <div class="col-lg-12 portlet-template">
+                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
+                      <div class="m-portlet__head ui-sortable-handle">
+                        <div class="m-portlet__head-caption">
+                          <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                              Jenis Pertanyaan
+                            </h3>
+                          </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                          <ul
+                            class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
+                            role="tablist">
+                            <li class="nav-item m-tabs__item">
+                              <a class="nav-link m-tabs__link active" data-toggle="tab"
+                                href="#m_portlet_base_demo_1_tab_content" role="tab">
+                                <i class="la la-star"></i>
+                                Opsian
+                              </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                              <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_base_demo_1_tab_content"
+                                role="tab" aria-selected="false">
+                                <i class="la la-pencil-square"></i>
+                                Isian
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                      <br>
-                      <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
-                        <span>
-                          <i class="la la-trash-o"></i>
-                          <span>Delete</span>
-                        </span>
+                      <div class="m-portlet__body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
+                            aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
+                          <input type="hidden" name="jenis[]" value="1">
+                        </div>
+                        <br>
+                        <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                          <span>
+                            <i class="la la-trash-o"></i>
+                            <span>Delete</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                <?php } ?>
               </div>
               <div class="form-group row">
                 <div class="col-lg-4">
