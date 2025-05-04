@@ -25,30 +25,28 @@
             </div>
             <?php switch ($data['jenis']):
               case 1: ?>
-                <canvas id="<?= "P_$data[id_pertanyaan]" ?>" width="400" height="200"></canvas>
+                <canvas id="<?= "chart_$data[id_pertanyaan]" ?>" width="400" height="200"></canvas>
                 <?php break;
               case 2: ?>
                 <div class="m-portlet__body">
-                  <table class="m-datatable table-bordered" id="<?= "P_$data[id_pertanyaan]" ?>" width="100%">
-                    <thead>
-                      <tr>
-                        <th title="Field #1">
-                          ID Pengisi
-                        </th>
-                        <th title="Field #2">
-                          Jawaban
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <div id="<?= "table_$data[id_pertanyaan]" ?>" width="100%">
+                    <div class="m-portlet__body font-weight-bold">
+                      <span title="P_<?= $data['id_pertanyaan'] ?>_#1">
+                        ID Pengisi
+                      </span>
+                      <span title="P_<?= $data['id_pertanyaan'] ?>_#2">
+                        Jawaban
+                      </span>
+                    </div>
+                    <div>
                       <?php foreach ($data['jawaban'] as $jawaban): ?>
-                        <tr>
-                          <td><?= $jawaban['id_pengisi'] ?></td>
-                          <td><?= $jawaban['teks'] ?></td>
-                        </tr>
+                        <p>
+                          <span><?php echo esc($jawaban['id_pengisi']) ?></span>
+                          <span><?php echo esc($jawaban['teks']) ?></span>
+                        </p>
                       <?php endforeach; ?>
-                    </tbody>
-                  </table>
+                    </div>
+                  </div>
                 </div>
             <?php endswitch; ?>
           </div>
@@ -59,9 +57,6 @@
     </div>
   </div>
 </div>
-<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
-  type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const questionIDs = [];
   const answers = [];
@@ -87,7 +82,7 @@
       data.push(answer.map(item => item.jumlah));
     });
     questionIDs.forEach((id, index) => {
-      let ctx = document.getElementById(`P_${id}`).getContext('2d');
+      let ctx = document.getElementById(`chart_${id}`).getContext('2d');
       let surveyChart = new Chart(ctx, {
         type: 'bar',
         data: {
