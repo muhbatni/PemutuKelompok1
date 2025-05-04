@@ -159,7 +159,7 @@
           <div class="m-form__actions m-form__actions">
             <div class="row">
               <div class="col-lg-9 ml-lg-auto d-flex justify-content-between">
-                <a href="<?php base_url("public/survey") ?>" class="btn btn-secondary">Batal</a>
+                <a class="btn btn-secondary" href="<?= base_url("public/survey") ?>">Batal</a>
                 <input type="submit" class="btn btn-brand" value="Simpan" />
               </div>
             </div>
