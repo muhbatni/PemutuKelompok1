@@ -20,13 +20,13 @@
       }
     });
 
-    const getPreviewImage = (event) => {
-      const file = event.files[0];
+    const getPreviewImage = (input) => {
+      const file = input.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
           const image = document.querySelector('#profileImagePreview');
-          document.querySelector('#profileImagePreview').src = e.target.result;
+          image.src = e.target.result;
         };
         reader.readAsDataURL(file);
       }
@@ -181,8 +181,7 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
                               <div class="profile-picture-dropdown">
-                                <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture"
-                                  alt="user-profile" />
+                                <img src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
