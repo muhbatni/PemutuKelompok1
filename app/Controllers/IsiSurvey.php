@@ -59,19 +59,17 @@ class IsiSurvey extends BaseController
       }
     }
 
-    if ($this->request->getMethod() === "GET") {
-      $questions = $this->pertanyaanSurveyModel->where('id_survey', $id)
-        ->where('is_aktif', true)
-        ->orderBy('urutan', 'ASC')
-        ->findAll();
+    $questions = $this->pertanyaanSurveyModel->where('id_survey', $id)
+      ->where('is_aktif', true)
+      ->orderBy('urutan', 'ASC')
+      ->findAll();
 
-      $data['survey'] = $survey;
-      $data['questions'] = $questions;
+    $data['survey'] = $survey;
+    $data['questions'] = $questions;
 
-      echo view('layouts/header.php', ["title" => "Isi Survey"]);
-      echo view('survey_kepuasan/isi_survey/form.php', $data);
-      echo view('layouts/footer.php');
-    }
+    echo view('layouts/header.php', ["title" => "Isi Survey"]);
+    echo view('survey_kepuasan/isi_survey/form.php', $data);
+    echo view('layouts/footer.php');
   }
 }
 ?>
