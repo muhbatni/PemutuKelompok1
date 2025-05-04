@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\IsiSurveyModel;
 use App\Models\SurveyModel;
 use App\Models\PertanyaanSurveyModel;
 use App\Models\PelaksanaanSurveyModel;
@@ -12,6 +13,7 @@ class ManajemenSurvey extends BaseController
   protected $surveyModel;
   protected $pelaksanaanSurveyModel;
   protected $pertanyaanSurveyModel;
+  protected $isiSurveyModel;
   protected $periodeModel;
   protected $helpers = ['surveys'];
 
@@ -37,6 +39,7 @@ class ManajemenSurvey extends BaseController
     $this->pelaksanaanSurveyModel = new PelaksanaanSurveyModel();
     $this->pertanyaanSurveyModel = new PertanyaanSurveyModel();
     $this->periodeModel = new PeriodeModel();
+    $this->isiSurveyModel = new IsiSurveyModel();
   }
 
   public function index()
@@ -210,6 +213,43 @@ class ManajemenSurvey extends BaseController
       return redirect()->to(base_url('public/survey'))->with('error', 'Survey gagal dihapus!');
     }
     return redirect()->to(base_url('public/survey'))->with('success', 'Survey berhasil dihapus!');
+  }
+
+  public function viewSurvey()
+  {
+    $uri = $this->request->getUri();
+    $params = $uri->getQuery(['only' => ['id_survey']]);
+    $params = explode('=', $params);
+    if (count($params) < 2) {
+      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    }
+    $idSurvey = $params[1];
+    $data['survey'] = $this->isiSurveyModel->getPertanyaanBySurvey($idSurvey);
+    if (!$data['survey']) {
+      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    }
+    $options = array_filter($data['survey'], fn($data) => $data['jenis'] == 1);
+    if ($options) {
+      foreach ($options as $optionData) {
+        $data['optionsData'][$optionData['id_pertanyaan']] = [
+          'teks' => $optionData['teks'],
+          'id_pertanyaan' => $optionData['id_pertanyaan'],
+          'jawaban' => $this->isiSurveyModel->getJawabanSummaryBySurvey($idSurvey, $optionData['id_pertanyaan'])
+        ];
+      }
+    }
+
+    // echo "<pre>";
+    // print_r($data['optionsData']);
+    // echo "</pre>";
+    // return;
+
+    if (!$data['survey']) {
+      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    }
+    echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
+    echo view('survey_kepuasan/manajemen_survey/view_survey.php', $data);
+    echo view('layouts/footer.php');
   }
 }
 ?>
