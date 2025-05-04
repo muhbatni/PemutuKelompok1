@@ -30,22 +30,22 @@
               case 2: ?>
                 <div class="m-portlet__body">
                   <div id="<?= "table_$data[id_pertanyaan]" ?>" width="100%">
-                    <div class="m-portlet__body font-weight-bold">
-                      <span title="P_<?= $data['id_pertanyaan'] ?>_#1">
-                        ID Pengisi
-                      </span>
-                      <span title="P_<?= $data['id_pertanyaan'] ?>_#2">
-                        Jawaban
-                      </span>
-                    </div>
-                    <div>
-                      <?php foreach ($data['jawaban'] as $jawaban): ?>
-                        <p>
-                          <span><?php echo esc($jawaban['id_pengisi']) ?></span>
-                          <span><?php echo esc($jawaban['teks']) ?></span>
-                        </p>
-                      <?php endforeach; ?>
-                    </div>
+                    <table class="table table-bordered m-table" width="100%">
+                      <thead>
+                        <tr>
+                          <th title="P_<?= $data['id_pertanyaan'] ?>_#1">ID Pengisi</th>
+                          <th title="P_<?= $data['id_pertanyaan'] ?>_#2">Jawaban</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach ($data['jawaban'] as $jawaban): ?>
+                          <tr>
+                            <td><?php echo esc($jawaban['id_pengisi']) ?></td>
+                            <td><?php echo esc($jawaban['teks']) ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
             <?php endswitch; ?>
