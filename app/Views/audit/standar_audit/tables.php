@@ -85,7 +85,24 @@
                   </a>
           </td>
   <td><?= $s['nama']; ?></td>
-  <td><?= $s['id_parent']; ?></td>
+  <!-- <td><?= $s['id_parent']; ?></td> -->
+  <?php
+  $parentOptions = [
+    1 => 'Tata Kelola TI',
+    2 => 'Manajemen Risiko',
+    3 => 'Kepatuhan Regulasi',
+    4 => 'Keamanan Informasi',
+    5 => 'Proses Bisnis',
+    6 => 'Sumber Daya Manusia',
+    7 => 'Pengadaan Barang/Jasa',
+    8 => 'Keuangan dan Akuntansi',
+    9 => 'Infrastruktur dan Aset TI'
+  ];
+?>
+
+<!-- Dalam tabel -->
+<td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Diketahui'; ?></td>
+
   <td><?= $s['dokumen']; ?></td>
    <td>
     <?php 

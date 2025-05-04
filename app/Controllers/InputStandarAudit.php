@@ -90,6 +90,7 @@ class InputStandarAudit extends BaseController
             $data['dokumen'] = $fileName;
         }
 
+
         $updateStatus = $model->update($id, $data);
 
         if ($updateStatus === false) {
