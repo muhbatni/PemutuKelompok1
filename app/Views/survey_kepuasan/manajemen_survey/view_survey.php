@@ -44,6 +44,8 @@
                       <?php foreach ($data['jawaban'] as $jawaban): ?>
                         <tr>
                           <td><?= $jawaban['id_pengisi'] ?></td>
+                        </tr>
+                        <tr>
                           <td><?= $jawaban['teks'] ?></td>
                         </tr>
                       <?php endforeach; ?>
