@@ -103,7 +103,7 @@
                         href="<?= base_url("public/survey/edit?id_survey=$survey[id]") ?>"><i
                           class="la la-edit"></i> Edit Detail</a> -->
                       <a class="dropdown-item" href="<?= base_url("public/survey/view?id_survey=$survey[id]") ?>"><i
-                          class="la la-leaf"></i> Lihat Hasil</a>
+                          class="la la-bar-chart"></i> Lihat Hasil</a>
                       <a class="dropdown-item" href="#"><i class="la la-print"></i> Buat Laporan</a>
                       <a class="dropdown-item" href="<?= base_url("public/survey/delete?id_survey=$survey[id]") ?>"
                         data-toggle="modal" data-target="#deleteModal-<?= $survey['id']; ?>" fdprocessedid="yus45">

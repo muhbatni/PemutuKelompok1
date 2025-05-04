@@ -343,7 +343,7 @@ $isSurveyActive = in_array($segment1, $surveyPages);
               class="m-menu__item m-menu__item--submenu <?= $isSurveyActive ? 'm-menu__item--open m-menu__item--expanded' : '' ?>"
               aria-haspopup="true" data-menu-submenu-toggle="hover">
               <a href="#" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon flaticon-share"></i>
+                <i class="m-menu__link-icon flaticon-clipboard"></i>
                 <span class="m-menu__link-text">Survey Kepuasan</span>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
               </a>
