@@ -24,13 +24,13 @@ class SyaratUnggul extends BaseController
     }
 
     if ($this->request->getMethod() == 'POST') {
+        $id = $this->request->getPost('id');
         $dataForm = [
             'id_lembaga' => $this->request->getPost('id_lembaga'),
             'nama' => $this->request->getPost('nama'),
         ];
 
         // Cek jika ada ID di POST, berarti edit data
-        $id = $this->request->getPost('id');
         if ($id) {
             $syaratUnggulModel->update($id, $dataForm);
             session()->setFlashdata('success', 'Data berhasil diperbarui!');

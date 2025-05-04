@@ -23,7 +23,7 @@
             <option value="">-- Pilih --</option>
             <?php foreach ($unitpemutus as $unit): ?>
               <option value="<?= $unit['id'] ?>" <?= $isEdit && $edit['id_unitpemutu'] == $unit['id'] ? 'selected' : '' ?>>
-                <?= $unit['id'] ?> - <?= $unit['nama'] ?>
+                <?= $unit['nama'] ?>
               </option>
             <?php endforeach; ?>
           </select>
@@ -33,9 +33,9 @@
           <label for="id_instrumen">Pilih Instrumen</label>
           <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
             <option value="">-- Pilih --</option>
-            <?php foreach ($isianlembaga as $instrumen): ?>
-              <option value="<?= $instrumen['id'] ?>" <?= $isEdit && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
-                <?= $instrumen['id'] ?> - <?= $instrumen['nama'] ?>
+            <?php foreach ($jenjang as $instrumen): ?>
+              <option value="<?= $instrumen['id'] ?>" <?= isset($edit) && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
+                <?= $instrumenPemutuModel->getJenjangText($instrumen['jenjang']) ?>
               </option>
             <?php endforeach; ?>
           </select>
@@ -109,8 +109,8 @@
               <?php $no = 1; foreach ($isian_pemutu as $row): ?>
                 <tr>
                   <td><?= $no++ ?></td>
-                  <td><?= esc($row['id_unitpemutu']) ?></td>
-                  <td><?= esc($row['id_instrumen']) ?></td>
+                  <td><?= esc($row['nama_unit']) ?></td>
+                  <td><?= esc($row['jenjang_text']) ?></td>
                   <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
                   <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>
                   <td>

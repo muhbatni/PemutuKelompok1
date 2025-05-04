@@ -91,10 +91,10 @@
                   </td>
                   <td><?= $syarat['nama']; ?></td>
                   <td>
-                    <!-- Tombol Edit -->
-                    <a href="<?= 'syarat-unggul?id=' . $syarat['id']; ?>" class="btn btn-sm btn-warning">
-                      <i class="fa fa-pencil-alt"></i> Edit
-                    </a>
+                  <button class="btn btn-sm btn-warning" 
+                    onclick="showEditConfirmation('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')"> 
+                    Edit
+                  </button>
                     <!-- Tombol Delete -->
                     <button class="btn btn-sm btn-danger" 
                           onclick="showDeleteModal('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')">
@@ -109,30 +109,50 @@
       </div>
     </div>
   <?php endif; ?>
-  <!-- Modal Hapus -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <form method="get">
-              <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      <!-- Modal Hapus -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <form method="get">
+                  <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="delete" id="deleteId">
+                    <p id="deleteMessage"></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                  </div>
+                </form>
               </div>
-              <div class="modal-body">
-                <input type="hidden" name="delete" id="deleteId">
-                <p id="deleteMessage"></p>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-              </div>
-            </form>
+            </div>
           </div>
+    </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title" id="editModalLabel">Konfirmasi Edit</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin mengedit data syarat unggul ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" onclick="confirmEdit()">Ya, Edit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </div>
         </div>
-      </div>
-</div>
+    </div>
 
 <script>
     function handleCancel() {
@@ -156,4 +176,21 @@
     // Menampilkan modal
     $('#deleteModal').modal('show');
   }
+
+  function showEditConfirmation(id, nama) {
+    // Menyesuaikan pesan yang akan ditampilkan pada modal
+    document.getElementById('editModalLabel').innerText = "Konfirmasi Edit";
+    document.getElementById('editModal').querySelector('.modal-body').innerHTML = `Apakah Anda yakin ingin mengedit data syarat unggul: <strong>${nama}</strong>?`;
+    
+    // Menyimpan ID yang akan diedit di data-id
+    document.getElementById('editModal').setAttribute('data-id', id);
+    
+    // Menampilkan modal
+    $('#editModal').modal('show');
+}
+
+function confirmEdit() {
+    var id = document.getElementById('editModal').getAttribute('data-id');
+    window.location.href = 'syarat-unggul?id=' + id; // Arahkan ke form edit dengan ID yang sesuai
+}
 </script>

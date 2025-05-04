@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\IsianPemutuModel;
 use App\Models\UnitPemutuModel;
-use App\Models\LembagaAkreditasiModel;
+use App\Models\InstrumenPemutuModel;
 
 class IsianPemutu extends BaseController
 {
@@ -12,7 +12,7 @@ class IsianPemutu extends BaseController
   {
     $model = new IsianPemutuModel();
     $unitPemutuModel = new UnitPemutuModel();
-    $lembagaAkreditasiModel = new LembagaAkreditasiModel();
+    $instrumenPemutuModel = new InstrumenPemutuModel();
 
     // Hapus data
     if ($this->request->getGet('delete')) {
@@ -30,7 +30,7 @@ class IsianPemutu extends BaseController
     }
 
     // Simpan data (create/update)
-    if ($this->request->getMethod() == 'POST') {
+    if ($this->request->getMethod() === 'POST') {
       $id = $this->request->getPost('id');
       $data = [
         'id_unitpemutu' => $this->request->getPost('id_unitpemutu'),
@@ -50,16 +50,23 @@ class IsianPemutu extends BaseController
       return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
     }
 
-    // Ambil data dropdown unit pemutu
+    // Dropdown Unit Pemutu(nama unit)
     $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
       ->findAll();
+    //Dropdown Instrumen Pemutu(jenjang)
+      $data['instrumenPemutuModel'] = $instrumenPemutuModel;
 
-    // Ambil data dropdown lembaga instrumen
-    $data['isianlembaga'] = $lembagaAkreditasiModel->findAll();
+    // Dropdown Jenjang
+    $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
 
-    // Ambil semua data isian pemutu
-    $data['isian_pemutu'] = $model->findAll();
+    // Data Tabel
+    $isianRaw = $model->getJoin();
+    $data['isian_pemutu'] = array_map(function ($item) use ($instrumenPemutuModel) {
+      $item['jenjang_text'] = $instrumenPemutuModel->getJenjangText($item['jenjang']);
+      return $item;
+    }, $isianRaw);
+
     $data['edit'] = $editData;
     $data['title'] = "Isian Pemutu";
 
@@ -68,4 +75,3 @@ class IsianPemutu extends BaseController
     echo view('layouts/footer.php');
   }
 }
-?>

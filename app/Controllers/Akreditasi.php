@@ -60,6 +60,12 @@ class Akreditasi extends BaseController
     // Jika form disubmit
     if ($this->request->getMethod() == 'POST') {
       $id = $this->request->getPost('id');
+
+      $existingData = null;
+      if ($id) {
+        $existingData = $akreditasiModel->find($id);
+      }
+
       // Mengambil data dari form
       $dataForm = [
         'id_unit' => $this->request->getPost('id_unit'),
