@@ -35,12 +35,12 @@
             <label class="col-form-label col-lg-3 col-sm-12">Status<span style="color: red">*</span></label>
             <div class="m-radio-inline ml-3">
               <label class="m-radio m-radio--success">
-                <input type="radio" name="status_survey" value="true" <?= isset($old['status_survey']) && $old['status_survey'] === "t" ? "checked" : "" ?>>
+                <input type="radio" name="status_survey" value="true" <?= isset($old['status_survey']) && $old['status_survey'] === "true" ? "checked" : "" ?>>
                 Aktif
                 <span></span>
               </label>
               <label class="m-radio m-radio--danger">
-                <input type="radio" name="status_survey" value="false" <?= isset($old['status_survey']) && $old['status_survey'] === "f" ? "checked" : "" ?>>
+                <input type="radio" name="status_survey" value="false" <?= isset($old['status_survey']) && $old['status_survey'] === "false" ? "checked" : "" ?>>
                 Tidak aktif
                 <span></span>
               </label>
