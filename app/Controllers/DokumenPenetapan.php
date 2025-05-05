@@ -47,7 +47,7 @@ class DokumenPenetapan extends BaseController
   
               // Hapus file lama jika update
               if ($id && !empty($edit['dokumen'])) {
-                  $oldPath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $edit['dokumen'];
+                  $oldPath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $edit->dokumen;
                   if (file_exists($oldPath)) {
                       unlink($oldPath);
                   }
