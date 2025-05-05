@@ -87,7 +87,7 @@ class Validation extends BaseConfig
     ]
   ];
 
-  public array $surveys = [
+  public array $create_surveys = [
     'kode_survey' => 'required|is_unique[s_survey.kode]|max_length[10]',
     'nama_survey' => 'required|min_length[5]|max_length[30]',
     'deskripsi_survey' => 'required',
@@ -99,10 +99,51 @@ class Validation extends BaseConfig
     'jenis.*' => 'required|in_list[1,2]',
   ];
 
-  public array $surveys_errors = [
+  public array $create_surveys_errors = [
     'kode_survey' => [
       'required' => 'Kode survey harus diisi.',
       'is_unique' => 'Kode survey sudah ada.',
+      'max_length' => 'Kode survey maksimal 10 karakter.'
+    ],
+    'nama_survey' => [
+      'required' => 'Nama survey harus diisi.',
+      'min_length' => 'Nama survey minimal 5 karakter.',
+      'max_length' => 'Nama survey maksimal 30 karakter.'
+    ],
+    'status_survey' => [
+      'required' => 'Status survey harus diisi.',
+    ],
+    'tanggal_mulai' => [
+      'required' => 'Tanggal mulai harus diisi.'
+    ],
+    'tanggal_selesai' => [
+      'required_with' => 'Tanggal mulai juga harus diisi.',
+      'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
+    ],
+    'pertanyaan.*' => [
+      'required' => 'Pertanyaan ke-{index} harus diisi.'
+    ],
+    'jenis.*' => [
+      'required' => 'Jenis pertanyaan ke-{index} harus diisi.',
+      'in_list' => 'Jenis pertanyaan ke-{index} hanya boleh antara 1 (isian) atau 2 (pilihan ganda).'
+    ]
+  ];
+
+  public array $edit_surveys = [
+    'kode_survey' => 'required|max_length[10]',
+    'nama_survey' => 'required|min_length[5]|max_length[30]',
+    'deskripsi_survey' => 'required',
+    'status_survey' => 'required',
+    'dokumen_pendukung_survey' => 'permit_empty',
+    'tanggal_mulai' => 'required',
+    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
+    'pertanyaan.*' => 'required',
+    'jenis.*' => 'required|in_list[1,2]',
+  ];
+
+  public array $edit_surveys_errors = [
+    'kode_survey' => [
+      'required' => 'Kode survey harus diisi.',
       'max_length' => 'Kode survey maksimal 10 karakter.'
     ],
     'nama_survey' => [

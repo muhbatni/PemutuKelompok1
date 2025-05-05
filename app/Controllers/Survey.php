@@ -159,11 +159,7 @@ class Survey extends BaseController
     $validation = service('validation');
     $data = $this->request->getPost();
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
-    if (!$validation->run($data, 'surveys')) {
-      // echo "<pre>";
-      // print_r($validation->getErrors());
-      // echo "</pre>";
-      // return;
+    if (!$validation->run($data, 'create_surveys')) {
       log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
       echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
       echo view(
@@ -247,7 +243,18 @@ class Survey extends BaseController
     if (!$this->surveyModel->find($idSurvey)) {
       return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
     }
+    $validation = service('validation');
     $data = $this->request->getPost();
+    if (!$validation->run($data, 'edit_surveys')) {
+      log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
+      echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
+      echo view(
+        "survey_kepuasan/manajemen_survey/edit_survey.php",
+        ['errors' => $validation->getErrors(), 'old' => $data, 'idSurvey' => $idSurvey, 'periode' => $this->periodeData]
+      );
+      echo view("layouts/footer.php");
+      return null;
+    }
     $data['id_survey'] = $idSurvey;
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
     $file = $data['dokumen_pendukung_survey'];
