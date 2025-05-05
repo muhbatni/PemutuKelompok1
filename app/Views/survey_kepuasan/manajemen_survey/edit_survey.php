@@ -62,8 +62,6 @@
               </select>
               <span class="m-form__help">
                 <span class="m-badge  m-badge--metal m-badge--wide">2023</span>
-                <span class="m-badge  m-badge--metal m-badge--wide">2024</span>
-                <span class="m-badge  m-badge--metal m-badge--wide">2025</span>
               </span>
             </div>
           </div>
