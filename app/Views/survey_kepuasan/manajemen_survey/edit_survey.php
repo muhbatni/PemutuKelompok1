@@ -24,7 +24,7 @@
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Nama<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-              <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputTitle1"
+              <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputNama1"
                 aria-describedby="titleHelp" placeholder="Isi nama survey" value="<?= $survey['nama'] ?>">
             </div>
           </div>
@@ -101,36 +101,31 @@
                             </h3>
                           </div>
                         </div>
-                        <!-- <div class="m-portlet__head-tools">
-                          <ul
-                            class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
-                            role="tablist">
-                            <li class="nav-item m-tabs__item">
-                              <a class="nav-link m-tabs__link <?= $p['jenis'] == 1 ? 'active' : '' ?>" data-toggle="tab"
-                                href="#m_portlet_base_demo_1_tab_content" role="tab" onclick="setJenis(this, 1)">
-                                <i class="la la-star"></i> Opsian
-                              </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                              <a class="nav-link m-tabs__link <?= $p['jenis'] == 2 ? 'active' : '' ?>" data-toggle="tab"
-                                href="#m_portlet_base_demo_1_tab_content" role="tab" onclick="setJenis(this, 2)">
-                                <i class="la la-pencil-square"></i> Isian
-                              </a>
-                            </li>
-                          </ul>
-                        </div> -->
                         <div class="m-portlet__head-tools">
                           <div class="dropdown d-inline-block">
-                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <?= $p['jenis'] == 1 ? '<i class="la la-star"></i>Opsian' : ($p['jenis'] == 2 ? '<i class="la la-pencil-square"></i>Isian' : 'Pilih') ?>
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                              aria-expanded="false">
+                              <?php switch ($p['jenis']) {
+                                case 1: ?>
+                                  <i class="la la-star"></i> Opsian
+                                  <?php
+                                  break;
+                                case 2: ?>
+                                  <i class="la la-pencil-square"></i> Isian
+                                  <?php
+                                  break;
+                                default: ?>
+                                  Pilih
+                                  <?php
+                                  break;
+                              }
+                              ?>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                               <button class="dropdown-item <?= $p['jenis'] == 1 ? 'active' : '' ?>" type="button"
-                                data-jenis="1" onclick="setJenis(this, <?= $p['id'] ?>)" data-toggle=""><i
-                                  class="la la-star"></i>Opsian</button>
+                                data-jenis="1"><i class="la la-star"></i> Opsian</button>
                               <button class="dropdown-item <?= $p['jenis'] == 2 ? 'active' : '' ?>" type="button"
-                                data-jenis="2" onclick="setJenis(this, <?= $p['id'] ?>)"><i
-                                  class="la la-pencil-square"></i>Isian</button>
+                                data-jenis="2"><i class="la la-pencil-square"></i> Isian</button>
                             </div>
                           </div>
                         </div>
