@@ -108,6 +108,14 @@
                 if (isset($old['pertanyaan'])) {
                   foreach ($old['pertanyaan'] as $index => $pertanyaan) { ?>
                     <div class="col-lg-12 portlet-template">
+                      <?php if (isset($errors["pertanyaan.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["pertanyaan.$index"])) ?></span>
+                      <?php endif; ?>
+                      <?php if (isset($errors["jenis.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["jenis.$index"])) ?></span>
+                      <?php endif; ?>
                       <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                         <div class="m-portlet__head ui-sortable-handle">
                           <div class="m-portlet__head-caption">

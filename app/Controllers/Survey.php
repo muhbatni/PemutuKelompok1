@@ -160,6 +160,10 @@ class Survey extends BaseController
     $data = $this->request->getPost();
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
     if (!$validation->run($data, 'surveys')) {
+      // echo "<pre>";
+      // print_r($validation->getErrors());
+      // echo "</pre>";
+      // return;
       log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
       echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
       echo view(

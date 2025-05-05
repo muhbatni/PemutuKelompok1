@@ -90,10 +90,13 @@ class Validation extends BaseConfig
   public array $surveys = [
     'kode_survey' => 'required|is_unique[s_survey.kode]|max_length[10]',
     'nama_survey' => 'required|min_length[5]|max_length[30]',
-    'dokumen_pendukung_survey' => 'permit_empty',
+    'deskripsi_survey' => 'required',
     'status_survey' => 'required',
+    'dokumen_pendukung_survey' => 'permit_empty',
     'tanggal_mulai' => 'required',
-    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]'
+    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
+    'pertanyaan.*' => 'required',
+    'jenis.*' => 'required|in_list[1,2]',
   ];
 
   public array $surveys_errors = [
@@ -116,6 +119,13 @@ class Validation extends BaseConfig
     'tanggal_selesai' => [
       'required_with' => 'Tanggal mulai juga harus diisi.',
       'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
+    ],
+    'pertanyaan.*' => [
+      'required' => 'Pertanyaan ke-{index} harus diisi.'
+    ],
+    'jenis.*' => [
+      'required' => 'Jenis pertanyaan ke-{index} harus diisi.',
+      'in_list' => 'Jenis pertanyaan ke-{index} hanya boleh antara 1 (isian) atau 2 (pilihan ganda).'
     ]
   ];
 }
