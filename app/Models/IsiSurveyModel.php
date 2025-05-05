@@ -10,7 +10,7 @@ class IsiSurveyModel extends Model
   protected $table = 's_isian_survey';
   protected $primaryKey = 'id';
   protected $useAutoIncrement = true;
-  protected $allowedFields = ['id_pertanyaan', 'jawaban', 'id_user'];
+  protected $allowedFields = ['id_pertanyaan', 'jawaban', 'id_user', 'id_periode'];
   protected $returnType = 'array';
 
   public function getHasilSurveyById($idSurvey)

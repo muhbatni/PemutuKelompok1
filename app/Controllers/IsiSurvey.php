@@ -32,6 +32,7 @@ class IsiSurvey extends BaseController
     $kode = $explodedSegment[0];
     $id = $explodedSegment[1];
     $survey = $this->surveyModel->getSurveyByKodeId($kode, $id);
+
     if (!$survey) {
       return redirectWithMessage('isi-survey', 'error', 'Survey tidak ditemukan.');
     }
@@ -48,13 +49,15 @@ class IsiSurvey extends BaseController
         $data[] = [
           'id_pertanyaan' => $id_pertanyaan,
           'jawaban' => $jawaban,
-          'id_user' => $id_user
+          'id_user' => $id_user,
+          'id_periode' => $survey['id_periode']
         ];
       }
       try {
         $this->isiSurveyModel->insertBatch($data);
         return redirectWithMessage('isi-survey', 'success', 'Survey berhasil diisi!');
-      } catch (Exception $e) {
+      } catch (Exception $exception) {
+        log_message('error', 'Database error: ' . $exception->getMessage());
         return redirectWithMessage('isi-survey', 'error', 'Survey gagal diisi!');
       }
     }

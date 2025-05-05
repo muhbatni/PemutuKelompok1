@@ -49,7 +49,7 @@ class SurveyModel extends Model
       return null;
     }
     $tanggalSekarang = date('Y-m-d');
-    return $this->select('s_survey.*, s_survey.id, s_pertanyaan.id_survey AS id_pertanyaan_survey, s_pelaksanaan_survey.id_survey as id_pelaksanaan_survey, s_pelaksanaan_survey.tanggal_mulai, s_pelaksanaan_survey.tanggal_selesai')
+    return $this->select('s_survey.*, s_survey.id, s_pertanyaan.id_survey AS id_pertanyaan_survey, s_pelaksanaan_survey.id_survey as id_pelaksanaan_survey, s_pelaksanaan_survey.id_periode, s_pelaksanaan_survey.tanggal_mulai, s_pelaksanaan_survey.tanggal_selesai')
       ->join('s_pelaksanaan_survey', 's_pelaksanaan_survey.id_survey = s_survey.id')
       ->join('s_pertanyaan', 's_pertanyaan.id_survey = s_survey.id')
       ->where('tanggal_mulai <=', $tanggalSekarang)

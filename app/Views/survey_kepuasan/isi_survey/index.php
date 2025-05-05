@@ -121,15 +121,6 @@
             <?php endforeach; ?>
           </tbody>
         </table>
-        <!--end: Datatable -->
-        <?php
-        // $currentPage = $pager->getCurrentPage();
-        // $startPage = max(1, $currentPage - 3);
-        // $endPage = min($pager->getPageCount(), $currentPage + 3);
-        
-        // $previousURI = $pager->getPreviousPageURI();
-        // $nextURI = $pager->getNextPageURI();
-        ?>
       </div>
     </div>
     <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
