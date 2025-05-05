@@ -87,7 +87,7 @@
                 <td>
                   <div class="d-flex justify-content-around">
                     <?php if ($survey['status'] === "t"): ?>
-                      <a href="<?= base_url("public/survey/isi-survey/$survey[kode]-$survey[id]") ?>"
+                      <a href="<?= base_url("public/isi-survey/$survey[kode]-$survey[id]") ?>"
                         class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill d-flex align-items-center justify-content-center"
                         title="Isi Survey">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 36 36">

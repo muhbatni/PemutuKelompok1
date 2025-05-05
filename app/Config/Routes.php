@@ -52,13 +52,13 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
 
-  $routes->get('survey', [SurveyKepuasan::class, 'index']);
-  $routes->get('survey/manajemen-survey', [ManajemenSurvey::class, 'index']);
-  $routes->get('survey/manajemen-survey/delete/(:num)', [ManajemenSurvey::class, 'deleteSurvey/$1']);
-  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
-  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
-  $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
-  $routes->match(['GET', 'POST'], 'survey/isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
+  $routes->get('survey', [ManajemenSurvey::class, 'index']);
+  $routes->get('survey/delete', [ManajemenSurvey::class, 'deleteSurvey']);
+  $routes->match(['GET', 'POST'], 'survey/create', [ManajemenSurvey::class, 'createSurvey']);
+  $routes->match(['GET', 'POST'], 'survey/edit', [ManajemenSurvey::class, 'editSurvey']);
+  $routes->get('isi-survey', [IsiSurvey::class, 'index']);
+  $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
+  $routes->get('survey/view', [ManajemenSurvey::class, 'viewSurvey']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);

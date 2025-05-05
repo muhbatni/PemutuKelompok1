@@ -13,7 +13,7 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST"
-        action="<?= base_url("public/survey/manajemen-survey/create") ?>" enctype="multipart/form-data">
+        action="<?= base_url("public/survey/create") ?>" enctype="multipart/form-data">
         <div class="m-portlet__body">
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Kode<span style="color: red">*</span></label>
@@ -106,7 +106,7 @@
               <div class="row ui-sortable" id="m_sortable_portlets">
                 <?php
                 if (isset($old['pertanyaan'])) {
-                  foreach ($old['pertanyaan'] as $index => $pertanyaan): ?>
+                  foreach ($old['pertanyaan'] as $index => $pertanyaan) { ?>
                     <div class="col-lg-12 portlet-template">
                       <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                         <div class="m-portlet__head ui-sortable-handle">
@@ -156,7 +156,7 @@
                       </div>
                     </div>
                     <?php
-                  endforeach;
+                  }
                 } else {
                   ?>
                   <div class="col-lg-12 portlet-template">
@@ -225,7 +225,7 @@
             <div class="m-form__actions m-form__actions">
               <div class="row">
                 <div class="col-lg-9 ml-lg-auto d-flex justify-content-between">
-                  <a href="<?= base_url("public/survey/manajemen-survey") ?>" class="btn btn-secondary">Batal</a>
+                  <a class="btn btn-secondary" href="<?= base_url("public/survey") ?>">Batal</a>
                   <input type="submit" class="btn btn-brand" value="Simpan" />
                 </div>
               </div>
