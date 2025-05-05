@@ -152,6 +152,9 @@ class UserModel extends Model
       return null;
     }
     $user = $userModel->select('tipe')->where('id', $userId)->first();
+    if (!$user || !isset($user['tipe'])) {
+      return null;
+    }
     return match ($user['tipe']) {
       "1" => "Dosen",
       "2" => "Laboran",
