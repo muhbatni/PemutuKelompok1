@@ -18,6 +18,11 @@ class AuditorModel extends Model
                     ->findAll();
     }
 
+    public function getAuditorById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
     // public function simpanAuditor($data)
     // {
     //     return $this->insert($data);

@@ -13,6 +13,10 @@ class UnitModel extends Model
     public function getUnits(){
         return $this->findAll();
     }
+
+    public function getUnitById($id){
+        return $this->where('id', $id)->first();
+    }
 }
 
 ?>

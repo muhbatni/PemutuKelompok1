@@ -5,7 +5,7 @@ class PelaksanaanAuditModel extends Model
 {
     protected $table = 'a_pelaksanaan_audit';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_auditor', 'id_unit'];
+    protected $allowedFields = ['id_auditor', 'id_unit', 'id_standar_audit'];
 
     public function getPelaksanaanAudit()
     {
@@ -92,6 +92,12 @@ class PelaksanaanAuditModel extends Model
                 s.nama
         ", [$audit_id])->getResult();
     }
+
+    public function getPelaksanaanAuditById($id_standar_audit)
+    {
+        return $this->where('id_standar_audit', $id_standar_audit)->findAll();
+    }
+
 
 }
 ?>
