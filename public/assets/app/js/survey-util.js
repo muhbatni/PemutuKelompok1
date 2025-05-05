@@ -28,24 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updateOrder();
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  const container = document.getElementById('m_sortable_portlets');
-  if (!container) {
-    return null;
-  }
-  // Tambahkan event listener untuk tab jenis pertanyaan
-  container.addEventListener('click', function (event) {
-    if (event.target.matches('.nav-link')) {
-      const portlet = event.target.closest('.portlet-template');
-      const jenisInput = portlet.querySelector('input[name="jenis[]"]');
-      if (event.target.textContent.trim() === 'Opsian') {
-        jenisInput.value = 1; // Set jenis ke 1 untuk opsi
-      } else if (event.target.textContent.trim() === 'Isian') {
-        jenisInput.value = 2; // Set jenis ke 2 untuk isian
-      }
-    }
-  });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
   const addButton = document.querySelector('[data-repeater-create]');
@@ -62,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Clear any input fields in the cloned portlet
     const inputs = newPortlet.querySelectorAll('textarea, input');
     inputs.forEach((input) => (input.value = ''));
+
+    // Reset dropdown to default "Pilih"
+    const dropdownButton = newPortlet.querySelector('.dropdown-toggle');
+    const jenisInput = newPortlet.querySelector('input[name="jenis[]"]');
+    if (dropdownButton && jenisInput) {
+      dropdownButton.innerHTML = 'Pilih'; // Set default text
+      jenisInput.value = ''; // Clear the value
+    }
 
     // Tambahkan animasi fade-in menggunakan JavaScript
     newPortlet.style.opacity = 0;
@@ -103,5 +93,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 300); // Durasi animasi
       }
     });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.getElementById('m_sortable_portlets');
+  if (!container) {
+    return null;
+  }
+
+  // Tambahkan event listener untuk dropdown jenis pertanyaan
+  container.addEventListener('click', function (event) {
+    if (event.target.matches('.dropdown-item')) {
+      const dropdownItem = event.target;
+      const dropdownMenu = dropdownItem.closest('.dropdown-menu');
+      const dropdownButton = dropdownMenu.previousElementSibling; // Tombol dropdown
+      const portlet = dropdownItem.closest('.portlet-template');
+      const jenisInput = portlet.querySelector('input[name="jenis[]"]');
+
+      // Perbarui nilai input jenis berdasarkan pilihan
+      const jenisValue = dropdownItem.getAttribute('data-jenis');
+      jenisInput.value = jenisValue;
+
+      // Perbarui teks tombol dropdown
+      dropdownButton.innerHTML = dropdownItem.innerHTML;
+
+      // Tambahkan kelas 'active' pada item yang dipilih
+      dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
+      dropdownItem.classList.add('active');
+    }
   });
 });

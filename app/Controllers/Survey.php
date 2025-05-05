@@ -263,7 +263,7 @@ class Survey extends BaseController
       $database->transRollback();
       $database->close();
       log_message('error', 'Database error: ' . $exception->getMessage());
-      return redirectWithMessage('survey', 'error', 'Gagal mengupdate survey: ' . $exception->getMessage());
+      return redirectWithMessage("survey/edit?id_survey=$idSurvey", 'error', 'Gagal mengupdate survey: ' . $exception->getMessage());
     }
   }
 
