@@ -21,6 +21,9 @@
               <input type="text" name="kode_survey" class="form-control m-input" id="exampleInputKode1"
                 aria-describedby="kodeHelp" placeholder="Isi kode survey"
                 value="<?= isset($old['kode_survey']) ? $old['kode_survey'] : $survey['kode'] ?>">
+              <?php if (isset($errors['kode_survey'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['kode_survey']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -29,6 +32,9 @@
               <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputNama1"
                 aria-describedby="titleHelp" placeholder="Isi nama survey"
                 value="<?= isset($old['nama_survey']) ? $old['nama_survey'] : $survey['nama'] ?>">
+              <?php if (isset($errors['nama_survey'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['nama_survey']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -44,6 +50,9 @@
                 Tidak aktif
                 <span></span>
               </label>
+              <?php if (isset($errors['status_survey'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['status_survey']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -51,6 +60,9 @@
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="file" name="dokumen_pendukung_survey" class="form-control m-input"
                 id="exampleInputSurveyDocument1" aria-describedby="surveyDocumentsHelp">
+              <?php if (isset($errors['dokumen_pendukung'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['dokumen_pendukung']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -80,6 +92,9 @@
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_selesai" required
                 value="<?= isset($old['tanggal_selesai']) ? $old['tanggal_selesai'] : $pelaksanaan_survey['tanggal_selesai'] ?>">
+              <?php if (isset($errors['tanggal_selesai'])): ?>
+                <span class="m-form__help text-danger"><?= esc($errors['tanggal_selesai']) ?></span>
+              <?php endif; ?>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -96,6 +111,14 @@
                 <?php if (isset($old['pertanyaan'])): ?>
                   <?php foreach ($old['pertanyaan'] as $index => $pertanyaan): ?>
                     <div class="col-lg-12 portlet-template">
+                      <?php if (isset($errors["pertanyaan.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["pertanyaan.$index"])) ?></span>
+                      <?php endif; ?>
+                      <?php if (isset($errors["jenis.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["jenis.$index"])) ?></span>
+                      <?php endif; ?>
                       <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                         <div class="m-portlet__head ui-sortable-handle">
                           <div class="m-portlet__head-caption">
