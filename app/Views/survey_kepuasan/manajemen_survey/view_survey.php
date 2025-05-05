@@ -29,19 +29,19 @@
                 <?php break;
               case 2: ?>
                 <div class="m-portlet__body">
-                  <div id="<?= "table_$data[id_pertanyaan]" ?>" width="100%">
-                    <table class="table table-bordered m-table" width="100%">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-checkable">
                       <thead>
                         <tr>
-                          <th title="P_<?= $data['id_pertanyaan'] ?>_#1">ID Pengisi</th>
-                          <th title="P_<?= $data['id_pertanyaan'] ?>_#2">Jawaban</th>
+                          <th>ID Pengisi</th>
+                          <th>Jawaban</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($data['jawaban'] as $jawaban): ?>
                           <tr>
-                            <td><?php echo esc($jawaban['id_pengisi']) ?></td>
-                            <td><?php echo esc($jawaban['teks']) ?></td>
+                            <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['id_pengisi']) ?></td>
+                            <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['teks']) ?></td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>

@@ -101,7 +101,7 @@
                             </h3>
                           </div>
                         </div>
-                        <div class="m-portlet__head-tools">
+                        <!-- <div class="m-portlet__head-tools">
                           <ul
                             class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
                             role="tablist">
@@ -118,6 +118,21 @@
                               </a>
                             </li>
                           </ul>
+                        </div> -->
+                        <div class="m-portlet__head-tools">
+                          <div class="dropdown d-inline-block">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                              <?= $p['jenis'] == 1 ? '<i class="la la-star"></i>Opsian' : ($p['jenis'] == 2 ? '<i class="la la-pencil-square"></i>Isian' : 'Pilih') ?>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <button class="dropdown-item <?= $p['jenis'] == 1 ? 'active' : '' ?>" type="button"
+                                data-jenis="1" onclick="setJenis(this, <?= $p['id'] ?>)" data-toggle=""><i
+                                  class="la la-star"></i>Opsian</button>
+                              <button class="dropdown-item <?= $p['jenis'] == 2 ? 'active' : '' ?>" type="button"
+                                data-jenis="2" onclick="setJenis(this, <?= $p['id'] ?>)"><i
+                                  class="la la-pencil-square"></i>Isian</button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="m-portlet__body">

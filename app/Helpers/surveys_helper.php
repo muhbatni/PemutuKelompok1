@@ -67,7 +67,10 @@ function editPertanyaanData($database, $data)
   $pertanyaanDataInsert = [];
 
   foreach ($pertanyaan as $index => $teks) {
-    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : 1;
+    $jenisValue = isset($jenis[$index]) && is_numeric($jenis[$index]) ? (int) $jenis[$index] : null;
+    if ($jenisValue === null) {
+      throw new \Exception("Pilih jenis pertanyaan dahulu! pertanyaan ke-" . ($index + 1));
+    }
     if (isset($idPertanyaan[$index]) && !empty($idPertanyaan[$index])) {
       $existingIds[] = $idPertanyaan[$index];
       $pertanyaanDataUpdate[] = [
