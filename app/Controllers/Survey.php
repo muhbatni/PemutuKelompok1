@@ -61,6 +61,99 @@ class Survey extends BaseController
     echo view('layouts/footer.php');
   }
 
+  private function createSurvey($database, $data)
+  {
+    $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
+      'kode' => $data['kode_survey'],
+      'nama' => $data['nama_survey'],
+      'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
+      'status' => $data['status_survey'],
+    ]);
+
+    if (!$data['id_survey']) {
+      throw new \Exception('Gagal membuat data survey!');
+    }
+    return $data['id_survey'];
+  }
+
+  private function createPelaksanaanSurvey($database, $data)
+  {
+    $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pelaksanaanSurveyPlaceholder, [
+      'id_survey' => $data['id_survey'],
+      'id_periode' => $data['id_periode'],
+      'tanggal_mulai' => $data['tanggal_mulai'],
+      'tanggal_selesai' => $data['tanggal_selesai'],
+      'deskripsi' => $data['deskripsi_survey'],
+      'created_at' => date('Y-m-d H:i:s'),
+    ]);
+
+    if (!$result) {
+      throw new \Exception('Gagal membuat data pelaksanaan survey!');
+    }
+    return $result;
+  }
+
+  private function createPertanyaanSurvey($database, $data)
+  {
+    $result = createPertanyaanData($database, $data);
+    if (!$result) {
+      throw new \Exception('Gagal membuat data pertanyaan survey!');
+    }
+    return $result;
+  }
+
+  private function editSurvey($database, $data)
+  {
+    $result = editSurveydata($database, 's_survey', [
+      'kode' => $data['kode_survey'],
+      'nama' => $data['nama_survey'],
+      'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
+      'status' => $data['status_survey'],
+    ], $data['id_survey']);
+    if (!$result) {
+      throw new \Exception('Gagal mengupdate survey!');
+    }
+    return $result;
+  }
+
+  private function editPelaksanaanSurvey($database, $data)
+  {
+    if (!$this->pelaksanaanSurveyModel->isPeriodSurveyExist($data['id_survey'], $data['id_periode'])) {
+      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pelaksanaanSurveyPlaceholder, [
+        'id_survey' => $data['id_survey'],
+        'id_periode' => $data['id_periode'],
+        'tanggal_mulai' => $data['tanggal_mulai'],
+        'tanggal_selesai' => $data['tanggal_selesai'],
+        'deskripsi' => $data['deskripsi_survey'],
+        'created_at' => date('Y-m-d H:i:s'),
+      ]);
+      if (!$result) {
+        throw new \Exception('Gagal membuat data pelaksanaan survey!');
+      }
+      return $result;
+    }
+    $result = editSurveydata($database, 's_pelaksanaan_survey', [
+      'id_survey' => $data['id_survey'],
+      'tanggal_mulai' => $data['tanggal_mulai'],
+      'tanggal_selesai' => $data['tanggal_selesai'],
+      'deskripsi' => $data['deskripsi_survey'],
+      'created_at' => date('Y-m-d H:i:s'),
+    ], $data['id_periode'], 'id_periode');
+    if (!$result) {
+      throw new \Exception('Gagal mengupdate data pelaksanaan survey!');
+    }
+    return $result;
+  }
+
+  private function editPertanyaanSurvey($database, $data)
+  {
+    $result = editPertanyaanData($database, $data);
+    if (!$result) {
+      throw new \Exception('Gagal mengupdate pertanyaan survey!');
+    }
+    return $result;
+  }
+
   public function postCreate()
   {
     $validation = service('validation');
@@ -84,47 +177,13 @@ class Survey extends BaseController
 
     $database = Database::connect();
     $database->transStart();
-
     try {
-      $data['id_survey'] = createSurveyData($database, 's_survey', $this->surveyPlaceholder, [
-        'kode' => $data['kode_survey'],
-        'nama' => $data['nama_survey'],
-        'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
-        'status' => $data['status_survey'],
-      ]);
-
-      if (!$data['id_survey']) {
-        $database->transRollback();
-        $database->close();
-        throw new \Exception('Gagal membuat data survey!');
-      }
-
-      $result = createSurveyData($database, 's_pelaksanaan_survey', $this->pelaksanaanSurveyPlaceholder, [
-        'id_survey' => $data['id_survey'],
-        'id_periode' => $data['id_periode'],
-        'tanggal_mulai' => $data['tanggal_mulai'],
-        'tanggal_selesai' => $data['tanggal_selesai'],
-        'deskripsi' => $data['deskripsi_survey'],
-        'created_at' => date('Y-m-d H:i:s'),
-      ]);
-
-      if (!$result) {
-        $database->transRollback();
-        $database->close();
-        throw new \Exception('Gagal membuat data pelaksanaan survey!');
-      }
-
-      $result = createPertanyaanData($database, $data);
-      if (!$result) {
-        $database->transRollback();
-        $database->close();
-        throw new \Exception('Gagal membuat data pertanyaan survey!');
-      }
-
+      $data['id_survey'] = $this->createSurvey($database, $data);
+      $this->createPelaksanaanSurvey($database, $data);
+      $this->createPertanyaanSurvey($database, $data);
       $database->transCommit();
       $database->close();
       return redirectWithMessage('survey', 'success', 'Survey berhasil dibuat!');
-
     } catch (\Exception $exception) {
       $database->transRollback();
       $database->close();
@@ -184,8 +243,8 @@ class Survey extends BaseController
     if (!$this->surveyModel->find($idSurvey)) {
       return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
     }
-
     $data = $this->request->getPost();
+    $data['id_survey'] = $idSurvey;
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
     $file = $data['dokumen_pendukung_survey'];
     if ($file->isValid()) {
@@ -193,40 +252,19 @@ class Survey extends BaseController
     }
     $database = Database::connect();
     $database->transStart();
-    $data['id_survey'] = $idSurvey;
-    editSurveydata($database, 's_survey', [
-      'kode' => $data['kode_survey'],
-      'nama' => $data['nama_survey'],
-      'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
-      'status' => $data['status_survey'],
-    ], $idSurvey);
-    if (!$idSurvey) {
+    try {
+      $this->editSurvey($database, $data);
+      $this->editPelaksanaanSurvey($database, $data);
+      $this->editPertanyaanSurvey($database, $data);
+      $database->transCommit();
+      $database->close();
+      return redirectWithMessage('survey', 'success', 'Survey berhasil diupdate!');
+    } catch (\Exception $exception) {
       $database->transRollback();
       $database->close();
-      return redirectWithMessage('survey', 'error', 'Gagal mengupdate survey!');
+      log_message('error', 'Database error: ' . $exception->getMessage());
+      return redirectWithMessage('survey', 'error', 'Gagal mengupdate survey: ' . $exception->getMessage());
     }
-    $result = editSurveydata($database, 's_pelaksanaan_survey', [
-      'id_survey' => $idSurvey,
-      'id_periode' => $data['id_periode'],
-      'tanggal_mulai' => $data['tanggal_mulai'],
-      'tanggal_selesai' => $data['tanggal_selesai'],
-      'deskripsi' => $data['deskripsi_survey'],
-      'created_at' => date('Y-m-d H:i:s'),
-    ], $data['id_periode'], 'id_periode');
-    if (!$result) {
-      $database->transRollback();
-      $database->close();
-      return redirectWithMessage('survey', 'error', 'Gagal mengupdate pelaksanaan survey!');
-    }
-    $result = editPertanyaanData($database, $data);
-    if (!$result) {
-      $database->transRollback();
-      $database->close();
-      return redirectWithMessage('survey', 'error', 'Gagal mengupdate pertanyaan survey!');
-    }
-    $database->transCommit();
-    $database->close();
-    return redirectWithMessage('survey', 'success', 'Survey berhasil diupdate!');
   }
 
   public function getView()
