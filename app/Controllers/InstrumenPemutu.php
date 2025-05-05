@@ -3,67 +3,131 @@ namespace App\Controllers;
 
 use App\Models\InstrumenPemutuModel;
 use App\Models\LembagaAkreditasiModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class InstrumenPemutu extends BaseController
 {
+    protected $instrumenModel;
+    protected $lembagaModel;
+
+    public function __construct()
+    {
+        $this->instrumenModel = new InstrumenPemutuModel();
+        $this->lembagaModel   = new LembagaAkreditasiModel();
+    }
+
     public function index()
     {
-        $instrumenModel = new InstrumenPemutuModel();
-        $lembagaModel = new LembagaAkreditasiModel();
+        $model = $this->instrumenModel;
 
-        $data['lembagas'] = $lembagaModel->getLembagas();
-        $data['instrumen_pemutu'] = $instrumenModel->getInstrumenWithLembaga();
-
-        foreach ($data['instrumen_pemutu'] as &$row) {
-          $row['jenjang_text'] = $instrumenModel->getJenjangText($row['jenjang']);
-      }
-      
-      echo view('akreditasi/instrumen_pemutu/index', $data);
-      
-        // Proses hapus
-        if ($this->request->getPost('id_delete')) {
-            $idDelete = $this->request->getPost('id_delete');
-            $instrumenModel->delete($idDelete);
-            session()->setFlashdata('success', 'Data berhasil dihapus');
-            return redirect()->to(base_url('public/akreditasi/instrumen-pemutu'));
+        // Handle delete
+        if ($this->request->getGet('delete')) {
+            $id = $this->request->getGet('delete');
+            $model->delete_by_id($id); // Call the delete_by_id method
+            session()->setFlashdata('success', 'Data instrumen berhasil dihapus!');
+            return redirect()->to(site_url('akreditasi/instrumen-pemutu'));
         }
 
-        // Proses edit / tambah
-        $data['isEdit'] = false;
-        $data['edit'] = [];
-        $data['title'] = 'Instrumen Pemutu';
-
+        // Handle edit
+        $editData = null;
         if ($this->request->getGet('edit')) {
-            $data['isEdit'] = true;
-            $data['edit'] = $instrumenModel->find($this->request->getGet('edit'));
+            $id = $this->request->getGet('edit');
+            $editData = $model->find($id);
         }
 
-        if ($this->request->getMethod() == 'POST' && !$this->request->getPost('id_delete')) {
+        // Handle save (create/update)
+        if ($this->request->getMethod() === 'POST') {
             $id = $this->request->getPost('id');
-            $saveData = [
+            $data = [
                 'id_lembaga' => $this->request->getPost('id_lembaga'),
-                'jenjang' => $this->request->getPost('jenjang'),
-                'indikator' => $this->request->getPost('indikator'),
-                'kondisi' => $this->request->getPost('kondisi'),
-                'batas' => $this->request->getPost('batas'),
+                'jenjang'    => $this->request->getPost('jenjang'),
+                'indikator'  => $this->request->getPost('indikator'),
+                'kondisi'    => $this->request->getPost('kondisi'),
+                'batas'      => $this->request->getPost('batas'),
             ];
 
-            if (!is_numeric($saveData['batas'])) {
-                return redirect()->back()->withInput()->with('error', 'Batas harus berupa angka.');
-            }
+            // Validasi batas
+            // if (!is_numeric($data['batas'])) {
+            //     return redirect()->back()->withInput()->with('error', 'Batas harus berupa angka.');
+            // }
 
             if ($id) {
-                $saveData['id'] = $id;
+                $data['id'] = $id;
+                $model->save($data);
+                session()->setFlashdata('success', 'Instrumen berhasil diperbarui!');
+            } else {
+                $model->save($data);
+                session()->setFlashdata('success', 'Instrumen berhasil disimpan!');
             }
 
-            $instrumenModel->save($saveData);
-            session()->setFlashdata('success', $id ? 'Berhasil diperbarui!' : 'Berhasil disimpan!');
-            return redirect()->to(base_url('public/akreditasi/instrumen-pemutu'));
+            return redirect()->to(site_url('akreditasi/instrumen-pemutu'));
         }
 
-        
-        echo view('layouts/header.php', $data);
-        echo view('akreditasi/instrumen_pemutu/form.php');
-        echo view('layouts/footer.php');
+        // Ambil data instrumen
+        $dataInstrumen = $model->getInstrumenWithLembaga();
+        foreach ($dataInstrumen as &$item) {
+            $item['jenjang_text'] = $model->getJenjangText($item['jenjang']);
+        }
+
+        $data = [
+            'title' => 'Instrumen Pemutu',
+            'instrumen_pemutu' => $dataInstrumen,
+            'edit' => $editData,
+            'lembagas' => $this->lembagaModel->getLembagas(),
+            'isEdit' => $editData !== null,
+        ];
+
+        return view('layouts/header', $data)
+            . view('akreditasi/instrumen_pemutu/tables', $data)
+            . view('layouts/footer');
+    }
+
+    public function input()
+    {
+        $model = $this->instrumenModel;
+        $id = $this->request->getGet('id');
+        $edit = null;
+
+        if ($id) {
+            $edit = $model->find($id);
+            if (!$edit) {
+                throw new PageNotFoundException('Data tidak ditemukan');
+            }
+        }
+
+        // Form submit
+        if ($this->request->getMethod() === 'POST') {
+
+            $data = [
+                'id_lembaga' => $this->request->getPost('id_lembaga'),
+                'jenjang'    => $this->request->getPost('jenjang'),
+                'indikator'  => $this->request->getPost('indikator'),
+                'kondisi'    => $this->request->getPost('kondisi'),
+                'batas'      => $this->request->getPost('batas'),
+            ];
+
+            if ($id) {
+                $data['id'] = $id;
+                $model->save($data);
+                session()->setFlashdata('success', 'Data berhasil diperbarui.');
+            } else {
+                $model->save($data);
+                session()->setFlashdata('success', 'Data berhasil disimpan.');
+            }
+
+            return redirect()->to(base_url('akreditasi/instrumen-pemutu'));
+        }
+
+        // Tampilkan form
+        $data = [
+            'title'    => $id ? 'Edit Instrumen Pemutu' : 'Tambah Instrumen Pemutu',
+            'isEdit'   => $id ? true : false,
+            'edit'     => $edit,
+            'lembagas' => $this->lembagaModel->getLembagas(),
+        ];
+
+        return view('layouts/header', $data)
+            . view('akreditasi/instrumen_pemutu/form', $data)
+            . view('layouts/footer');
     }
 }
