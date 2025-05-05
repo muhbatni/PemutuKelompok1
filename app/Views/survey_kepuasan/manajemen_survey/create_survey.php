@@ -129,7 +129,7 @@
                             <div class="dropdown d-inline-block">
                               <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
-                                <?php switch ($old['jenis']) {
+                                <?php switch ($old['jenis'][$index]) {
                                   case 1: ?>
                                     <i class="la la-star"></i> Opsian
                                     <?php
