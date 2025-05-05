@@ -63,7 +63,6 @@ date_default_timezone_set('Asia/Jakarta');
       box-shadow: 0 0 20px rgba(76, 87, 125, 0.05);
     }
 
-    /* Tombol Simpan */
     .btn-primary-custom {
       color: #fff;
       background-color: #5867dd;
@@ -82,7 +81,6 @@ date_default_timezone_set('Asia/Jakarta');
       border-color: #3d4ba8 !important;
     }
 
-    /* Tombol Edit */
     .btn-warning {
       color: #fff;
       background-color: #ffc107;
@@ -101,7 +99,6 @@ date_default_timezone_set('Asia/Jakarta');
       border-color: #d39e00 !important;
     }
 
-    /* Tombol Delete */
     .btn-danger {
       color: #fff;
       background-color: #f64e60;
@@ -120,19 +117,25 @@ date_default_timezone_set('Asia/Jakarta');
       border-color: #c53030 !important;
     }
 
-    /* Tombol Batal */
     .btn-light-custom {
-      background-color: #f9fafe;
+      background-color: #f1f3f9;
       border: 1px solid #dcdfe6;
       color: #5e6278;
+      padding: 10px 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      height: 40px;
+      min-width: 100px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-light-custom:hover {
       background-color: #e2e6ea;
-      color: #000;
+      color: #000000;
     }
 
-    /* Tombol Simpan */
     .btn-primary-custom {
       background-color: #5867dd;
       border-color: #5867dd;
@@ -147,6 +150,22 @@ date_default_timezone_set('Asia/Jakarta');
     .btn-primary-custom:hover {
       background-color: #4856c4;
       border-color: #4856c4;
+    }
+
+    .form-control-plaintext {
+      display: flex;
+      align-items: center;
+      padding: 0 0.75rem;
+      height: 38px;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      background-color: #ffffff;
+    }
+
+
+    /* Perbaikan warna background lembaga agar putih */
+    #lembaga_display.form-control-plaintext {
+      background-color: #fff !important;
     }
   </style>
 </head>
@@ -192,17 +211,12 @@ date_default_timezone_set('Asia/Jakarta');
               </select>
             </div>
 
-            <!-- Dropdown Lembaga -->
+            <!-- Text Lembaga -->
             <div class="mb-3">
-              <label for="id_lembaga" class="form-label">Lembaga</label>
-              <select class="form-select" id="id_lembaga" name="id_lembaga" required>
-                <option value="">-- Pilih Lembaga --</option>
-                <?php foreach ($lembagas as $lembaga): ?>
-                  <option value="<?= htmlspecialchars($lembaga['id']) ?>" <?= (isset($editData) && $editData['id_lembaga'] == $lembaga['id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($lembaga['nama']) ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+              <label for="lembaga_display" class="form-label">Lembaga</label>
+              <div id="lembaga_display" class="form-control-plaintext">-</div>
+              <input type="hidden" name="id_lembaga" id="id_lembaga"
+                value="<?= isset($editData) ? $editData['id_lembaga'] : '' ?>">
             </div>
 
             <!-- Dropdown Status -->
@@ -290,6 +304,41 @@ date_default_timezone_set('Asia/Jakarta');
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('id_unit').addEventListener('change', function () {
+      const unitId = this.value;
+      const lembagaDisplay = document.getElementById('lembaga_display');
+      const idLembagaInput = document.getElementById('id_lembaga');
+
+      if (unitId) {
+        fetch(`<?= site_url('akreditasi/input-data-pemutu/get-lembaga') ?>/${unitId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.id && data.nama) {
+              lembagaDisplay.textContent = data.nama;
+              idLembagaInput.value = data.id;
+            } else {
+              lembagaDisplay.textContent = '–';
+              idLembagaInput.value = '';
+            }
+          })
+          .catch(() => {
+            lembagaDisplay.textContent = '–';
+            idLembagaInput.value = '';
+          });
+      } else {
+        lembagaDisplay.textContent = '–';
+        idLembagaInput.value = '';
+      }
+    });
+
+    <?php if (isset($editData)): ?>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('id_unit').dispatchEvent(new Event('change'));
+      });
+    <?php endif; ?>
+  </script>
+
 </body>
 
 </html>

@@ -52,13 +52,13 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
 
-  $routes->get('survey', [ManajemenSurvey::class, 'index']);
-  $routes->get('survey/delete', [ManajemenSurvey::class, 'deleteSurvey']);
-  $routes->match(['GET', 'POST'], 'survey/create', [ManajemenSurvey::class, 'createSurvey']);
-  $routes->match(['GET', 'POST'], 'survey/edit', [ManajemenSurvey::class, 'editSurvey']);
-  $routes->get('isi-survey', [IsiSurvey::class, 'index']);
-  $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
-  $routes->get('survey/view', [ManajemenSurvey::class, 'viewSurvey']);
+  $routes->get('survey', [SurveyKepuasan::class, 'index']);
+  $routes->get('survey/manajemen-survey', [ManajemenSurvey::class, 'index']);
+  $routes->get('survey/manajemen-survey/delete/(:num)', [ManajemenSurvey::class, 'deleteSurvey/$1']);
+  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
+  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
+  $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
+  $routes->match(['GET', 'POST'], 'survey/isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
@@ -84,11 +84,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan/input', [DokumenPenetapan::class, 'input']);
   $routes->get('dokumen-penetapan/download/(:segment)', 'DokumenPenetapan::download/$1');
   $routes->match(['GET', 'POST'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
-  $routes->match(['GET', 'POST'], 'akreditasi/kriteria/input', [KriteriaAkreditasi::class, 'input']);
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
-  $routes->match(['get', 'post'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
-  $routes->match(['get', 'post'], 'akreditasi/instrumen-pemutu/input', [InstrumenPemutu::class, 'input']);
+  $routes->match(['GET', 'POST'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/periode', [Periode::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/unit', [Unit::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
@@ -101,6 +99,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi/input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);
   $routes->post('akreditasi/input-data-pemutu/update/(:num)', [InputDataPemutu::class, 'update/$1']);
   $routes->get('akreditasi/input-data-pemutu/delete/(:num)', [InputDataPemutu::class, 'delete/$1']);
+
+  $routes->get('akreditasi/input-data-pemutu/get-lembaga/(:num)', [InputDataPemutu::class, 'getLembaga/$1']);
 });
 
 $routes->setAutoRoute(true);
