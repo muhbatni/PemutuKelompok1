@@ -78,7 +78,7 @@
         <div class="form-group m-form__group row">
           <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria</label>
           <div class="col-lg-7 col-md-7 col-sm-12">
-            <select class="form-control" id="id_kriteria" name="id_kriteria" required>
+            <select class="form-control" id="id_kriteria" name="id_kriteria">
               <option value="">-- Pilih Kriteria --</option>
               <?php foreach ($kriteria as $k): ?>
                 <option name="id_kriteria" value="<?= $k['id']; ?>"><?= $k['nama']; ?></option>

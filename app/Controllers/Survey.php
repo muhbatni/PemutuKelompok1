@@ -74,7 +74,7 @@ class Survey extends BaseController
       'nama' => $data['nama_survey'],
       'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
       'status' => $data['status_survey'],
-      'id_kriteria' => $data['id_kriteria'],
+      'id_kriteria' => empty($data['id_kriteria']) ? null : $data['id_kriteria'],
     ]);
 
     if (!$data['id_survey']) {
@@ -166,6 +166,10 @@ class Survey extends BaseController
   {
     $validation = service('validation');
     $data = $this->request->getPost();
+    // echo "<pre>";
+    // print_r($data);
+    // echo "</pre>";
+    // return;
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
     if (!$validation->run($data, 'create_surveys')) {
       log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
