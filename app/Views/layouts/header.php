@@ -318,9 +318,9 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                     'dokumen-penetapan' => 'Dokumen Penetapan',
                     '' => 'Akreditasi',
                     'periode' => 'Periode',
-                    'lembaga' => 'Input Lembaga',
-                    'unit' => 'Input Unit',
-                    'input-data-pemutu' => 'Input Data Pemutu',
+                    'lembaga' => 'Lembaga Akreditasi',
+                    'unit' => 'Unit',
+                    'input-data-pemutu' => 'Data Unit Pemutu',
                     'isian-pemutu' => 'Isian Pemutu',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
