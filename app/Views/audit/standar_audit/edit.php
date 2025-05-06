@@ -75,7 +75,7 @@
 <!-- Table View setelah Form -->
 <div class="row mt-5">
   <div class="col-md-12">
-    <div class="m-portlet">
+    <div class="m-portlet ">
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
