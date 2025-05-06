@@ -49,6 +49,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('dashboard', [Dashboard::class, 'index']);
   $routes->get('profile', [Profile::class, 'index']);
 
+  $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
   $routes->get('isi-survey', [IsiSurvey::class, 'index']);
   $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);

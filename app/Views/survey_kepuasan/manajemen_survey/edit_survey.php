@@ -75,9 +75,6 @@
                   </option>
                 <?php endforeach; ?>
               </select>
-              <span class="m-form__help">
-                <span class="m-badge  m-badge--metal m-badge--wide">2023</span>
-              </span>
             </div>
           </div>
           <div class="form-group m-form__group row">
