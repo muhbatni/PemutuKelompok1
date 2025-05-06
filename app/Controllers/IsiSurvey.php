@@ -32,7 +32,6 @@ class IsiSurvey extends BaseController
     $kode = $explodedSegment[0];
     $id = $explodedSegment[1];
     $survey = $this->surveyModel->getSurveyByKodeId($kode, $id);
-
     if (!$survey) {
       return redirectWithMessage('isi-survey', 'error', 'Survey tidak ditemukan.');
     }
