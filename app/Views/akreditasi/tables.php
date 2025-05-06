@@ -189,6 +189,15 @@
     `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
   $('#deleteModal').modal('show');
 }
+
+$(document).ready(function() {
+    $('#generalSearch').on('keyup', function() {
+      let value = $(this).val().toLowerCase();
+      $('#html_table tbody tr').filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
 </script>
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
