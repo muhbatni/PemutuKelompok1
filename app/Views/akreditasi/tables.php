@@ -187,7 +187,6 @@
     `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
   $('#deleteModal').modal('show');
 }
-
 </script>
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
