@@ -27,10 +27,42 @@ class DokumenPenetapan extends BaseController
       if (!$edit) {
         throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
       }
-    }
-
-    // Jika disubmit (POST)
-    if ($this->request->getMethod() === 'POST') {
+  
+      // Jika disubmit (POST)
+      if ($this->request->getMethod() === 'post') {
+          $data = [
+              'nomor'     => $this->request->getPost('nomor'),
+              'tanggal'   => $this->request->getPost('tanggal'),
+              'nama'      => $this->request->getPost('nama'),
+              'deskripsi' => $this->request->getPost('deskripsi'),
+          ];
+  
+          // Tangani upload file
+          $file = $this->request->getFile('dokumen');
+          if ($file && $file->isValid() && !$file->hasMoved()) {
+              $fileName = $file->getRandomName();
+              $file->move(WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/', $fileName);
+              $data['dokumen'] = $fileName;
+  
+              // Hapus file lama jika update
+              if ($id && !empty($edit['dokumen'])) {
+                  $oldPath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $edit->dokumen;
+                  if (file_exists($oldPath)) {
+                      unlink($oldPath);
+                  }
+              }
+          }
+  
+          // Update jika ID ada, insert jika tidak
+          if ($id) {
+              $model->update($id, $data);
+              session()->setFlashdata('success', 'Data berhasil diperbarui.');
+          }
+  
+          return redirect()->to(base_url('akreditasi/dokumen-penetapan'));
+      }
+  
+      // Tampilkan form
       $data = [
         'nomor' => $this->request->getPost('nomor'),
         'tanggal' => $this->request->getPost('tanggal'),

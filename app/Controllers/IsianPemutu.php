@@ -50,12 +50,17 @@ class IsianPemutu extends BaseController
       return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
     }
 
+    //ambil data instrumenpemutu
+    $data['instrumen_list'] = $instrumenPemutuModel->findAll(); // Ambil semua kolom
+    
     // Dropdown Unit Pemutu(nama unit)
     $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
       ->findAll();
+    
     //Dropdown Instrumen Pemutu(jenjang)
-      $data['instrumenPemutuModel'] = $instrumenPemutuModel;
+    $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
+    $data['instrumenPemutuModel'] = $instrumenPemutuModel;
 
     // Dropdown Jenjang
     $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();

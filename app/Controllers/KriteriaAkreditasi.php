@@ -1,59 +1,85 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\InstrumenPemutuModel;
 use App\Models\KriteriaAkreditasiModel;
 use App\Models\LembagaAkreditasiModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class KriteriaAkreditasi extends BaseController
 {
+    protected $kriteriaModel;
+    protected $lembagaModel;
+
+    public function __construct()
+    {
+        $this->kriteriaModel = new KriteriaAkreditasiModel();
+        $this->lembagaModel  = new LembagaAkreditasiModel();
+    }
+
     public function index()
-    {      
-
-        $kriteriaModel = new KriteriaAkreditasiModel();
-        $lembagaModel = new LembagaAkreditasiModel();
-
-        $data['lembagas'] = $lembagaModel->getLembagas();
-        $data['kriteria'] = $kriteriaModel->getKriteriaWithLembaga();
-      
-        // Proses hapus
-        if ($this->request->getPost('id_delete')) {
-            $idDelete = $this->request->getPost('id_delete');
-            $kriteriaModel->delete($idDelete);
-            session()->setFlashdata('success', 'Data berhasil dihapus');
-            return redirect()->to(base_url('public/akreditasi/kriteria'));
+    {
+        // Handle delete
+        if ($this->request->getGet('delete')) {
+            $id = $this->request->getGet('delete');
+            $this->kriteriaModel->delete($id);
+            session()->setFlashdata('success', 'Data berhasil dihapus!');
+            return redirect()->to(site_url('akreditasi/kriteria'));
         }
 
-        // Proses edit / tambah
-        $data['isEdit'] = false;
-        $data['edit'] = [];
-        $data['title'] = 'Kriteria Akreditasi';
+        // Ambil semua data
+        $data = [
+            'title'    => 'Kriteria Akreditasi',
+            'kriteria' => $this->kriteriaModel->getKriteriaWithLembaga(),
+            'lembagas' => $this->lembagaModel->getLembagas(),
+        ];
 
-        if ($this->request->getGet('edit')) {
-            $data['isEdit'] = true;
-            $data['edit'] = $kriteriaModel->find($this->request->getGet('edit'));
+        return view('layouts/header', $data)
+             . view('akreditasi/kriteria_akreditasi/tables', $data)
+             . view('layouts/footer');
+    }
+
+    public function input()
+    {
+        $id   = $this->request->getGet('id');
+        $edit = null;
+
+        if ($id) {
+            $edit = $this->kriteriaModel->find($id);
+            if (!$edit) {
+                throw new PageNotFoundException('Data tidak ditemukan');
+            }
         }
 
-        if ($this->request->getMethod() == 'POST' && !$this->request->getPost('id_delete')) {
-            $id = $this->request->getPost('id');
-            $saveData = [
+        // Handle form submit
+        if ($this->request->getMethod() === 'POST') {
+            $data = [
                 'id_lembaga' => $this->request->getPost('id_lembaga'),
-                'kode' => $this->request->getPost('kode'),
-                'nama' => $this->request->getPost('nama'),
+                'kode'       => $this->request->getPost('kode'),
+                'nama'       => $this->request->getPost('nama'),
             ];
 
             if ($id) {
-                $saveData['id'] = $id;
+                $data['id'] = $id;
+                $this->kriteriaModel->save($data);
+                session()->setFlashdata('success', 'Data berhasil diperbarui.');
+            } else {
+                $this->kriteriaModel->save($data);
+                session()->setFlashdata('success', 'Data berhasil disimpan.');
             }
 
-            $kriteriaModel->save($saveData);
-            session()->setFlashdata('success', $id ? 'Berhasil diperbarui!' : 'Berhasil disimpan!');
-            return redirect()->to(base_url('public/akreditasi/kriteria'));
+            return redirect()->to(site_url('akreditasi/kriteria'));
         }
 
-        
-        echo view('layouts/header.php', $data);
-        echo view('akreditasi/kriteria_akreditasi/form', $data);
-        echo view('layouts/footer.php');
+        // Tampilkan form input/edit
+        $data = [
+            'title'    => $id ? 'Edit Kriteria Akreditasi' : 'Tambah Kriteria Akreditasi',
+            'isEdit'   => $id ? true : false,
+            'edit'     => $edit,
+            'lembagas' => $this->lembagaModel->getLembagas(),
+        ];
+
+        return view('layouts/header', $data)
+             . view('akreditasi/kriteria_akreditasi/form', $data)
+             . view('layouts/footer');
     }
 }
