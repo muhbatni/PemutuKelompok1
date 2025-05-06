@@ -34,7 +34,7 @@ class InputDataPemutu extends BaseController
     ];
 
     return view('layouts/header', $data)
-      . view('akreditasi/input_data_pemutu/form', $data)
+      . view('akreditasi/input_data_pemutu/tables.php', $data)
       . view('layouts/footer');
   }
 
@@ -133,6 +133,21 @@ class InputDataPemutu extends BaseController
     } else {
       return redirect()->back()->with('pesan', '<div class="alert alert-danger">❌ Gagal memperbarui data.</div>');
     }
+  }
+
+  public function input()
+  {
+    $data = [
+      'title' => 'Form Input Data Pemutu',
+      'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
+      'periodes' => $this->periodeModel->getPeriodes(),
+      'validation' => \Config\Services::validation(),
+      'editData' => null
+    ];
+
+    return view('layouts/header', $data)
+      . view('akreditasi/input_data_pemutu/form', $data)
+      . view('layouts/footer');
   }
 
   public function delete($id)
