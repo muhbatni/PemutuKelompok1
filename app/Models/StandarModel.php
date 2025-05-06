@@ -12,4 +12,9 @@ class StandarModel extends Model
     public function getStandars(){
         return $this->orderBy('id', 'ASC')->findAll();
     }
+
+    public function getStandarsById($id){
+        return $this->where('id', $id)->first();
+    }
+
 }

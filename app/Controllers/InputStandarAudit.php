@@ -11,15 +11,20 @@ class InputStandarAudit extends BaseController
             $model = new StandarModel();
             $data['standar'] = $model->orderBy('id', 'ASC')->findAll();
 
-            $parent = $this->request->getPost('parent');
+            $parent = $this->request->getPost('id_parent'); // nama harus sama seperti di form
             $parent = ($parent === null || $parent === '') ? null : $parent;
 
             $data = [
                 'nama' => $this->request->getPost('judul'),
-                'id_parent' => $parent,
                 'dokumen' => $this->request->getPost('dokumen'),
                 'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
             ];
+
+            if ($parent) {
+                if ($model->getStandarsById($parent)) {
+                    $data['id_parent'] = $parent;
+                }
+            }
 
             $dokumen = $this->request->getFile('dokumen');
             if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
@@ -39,12 +44,15 @@ class InputStandarAudit extends BaseController
         }
 
         // Jika GET
+        $model = new StandarModel();
+        $data['standars'] = $model->orderBy('id', 'ASC')->findAll(); // Tambahkan ini
         $data['title'] = "Input Standar Audit";
         $data['isEdit'] = false;
         $data['edit'] = null;
         echo view('layouts/header.php', $data);
         echo view('audit/standar_audit/form.php', $data);
         echo view('layouts/footer.php');
+
     }
 
     public function edit($id)
@@ -58,25 +66,33 @@ class InputStandarAudit extends BaseController
 
         $data['title'] = "Edit Standar Audit";
         $data['standar'] = $standar;
-        $data['isEdit'] = true;
         $data['edit'] = $standar;
+        $data['isEdit'] = true;
+        $data['standars'] = $model->orderBy('id', 'ASC')->findAll(); // Untuk dropdown parent
+
         echo view('layouts/header.php', $data);
         echo view('audit/standar_audit/form.php', $data);
         echo view('layouts/footer.php');
     }
 
+
     public function update($id)
     {
         $model = new StandarModel();
-
-        $parent = $this->request->getPost('parent');
+        $parent = $this->request->getPost('id_parent'); // nama harus sama seperti di form
         $parent = ($parent === null || $parent === '') ? null : $parent;
+
 
         $data = [
             'nama' => $this->request->getPost('judul'),
-            'id_parent' => $parent,
             'is_aktif' => $this->request->getPost('is_aktif') == '1' ? true : false
         ];
+        if ($parent) {
+            if ($model->getStandarsById($parent)) {
+                $data['id_parent'] = $parent;
+            }
+        }
+
 
         $dokumen = $this->request->getFile('dokumen');
         if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
@@ -101,6 +117,6 @@ class InputStandarAudit extends BaseController
         session()->setFlashdata('success', 'Data berhasil diperbarui!');
         return redirect()->to(base_url('public/audit/standar'));
     }
-    
+
 }
 ?>

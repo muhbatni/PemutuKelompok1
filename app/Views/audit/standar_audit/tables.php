@@ -51,142 +51,132 @@
           <thead class="thead-light">
             <tr>
               <th width="5%"></th>
-      <!-- <table class="m-datatable" id="html_table" width="100%">
+              <!-- <table class="m-datatable" id="html_table" width="100%">
         <thead>
           <tr>
             <th width="5%"></th> -->
-            <th title="Field #1">
-           Judul
-            </th>
-            <th title="Field #2">
-            Parent
-            </th>
-            <th title="Field #3">
-            Dokumen
-            </th>
-            <th title="Field #4">
-              Status Aktif
-            </th>
-            <th title="Field #5">
-              Aksi
-            </th>
-  
+              <th title="Field #1">
+                Judul
+              </th>
+              <th title="Field #2">
+                Parent
+              </th>
+              <th title="Field #3">
+                Dokumen
+              </th>
+              <th title="Field #4">
+                Status Aktif
+              </th>
+              <th title="Field #5">
+                Aksi
+              </th>
 
-          </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($standar as $s): ?>
-          <tr class="main-row">
-          <td class="text-center">
-            <!-- Tombol untuk toggle pernyataan standar dan indikator -->
-            <!-- <button type="button" class="btn btn-primary btn-sm toggle-action" data-id="<?= $s['id']; ?>">+</button> -->
-            <a href="<?= base_url('public/audit/standar/edit/' . $s['id']); ?>" class="btn btn-primary btn-sm">
+
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($standar as $s): ?>
+              <tr class="main-row">
+                <td class="text-center">
+                  <!-- Tombol untuk toggle pernyataan standar dan indikator -->
+                  <!-- <button type="button" class="btn btn-primary btn-sm toggle-action" data-id="<?= $s['id']; ?>">+</button> -->
+                  <a href="<?= base_url('public/audit/standar/edit/' . $s['id']); ?>" class="btn btn-primary btn-sm">
                     +
                   </a>
-          </td>
-  <td><?= $s['nama']; ?></td>
-  <!-- <td><?= $s['id_parent']; ?></td> -->
-  <?php
-  $parentOptions = [
-    1 => 'Tata Kelola TI',
-    2 => 'Manajemen Risiko',
-    3 => 'Kepatuhan Regulasi',
-    4 => 'Keamanan Informasi',
-    5 => 'Proses Bisnis',
-    6 => 'Sumber Daya Manusia',
-    7 => 'Pengadaan Barang/Jasa',
-    8 => 'Keuangan dan Akuntansi',
-    9 => 'Infrastruktur dan Aset TI'
-  ];
-?>
+                </td>
+                <td><?= $s['nama']; ?></td>
+                <!-- <td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Diketahui'; ?>
+                </td> -->
 
-<!-- Dalam tabel -->
-<td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Diketahui'; ?></td>
+                <td><?= $s['id_parent']?></td>
+                <td><?= $s['dokumen']; ?></td>
+                <td>
+                  <?php
+                  if (isset($s['is_aktif'])) {
+                    $aktif = ($s['is_aktif'] === 't') ? 'Aktif' : 'Tidak Aktif';
 
-  <td><?= $s['dokumen']; ?></td>
-   <td>
-    <?php 
-    if(isset($s['is_aktif'])) {
-      $aktif = ($s['is_aktif'] === 't') ? 'Aktif' : 'Tidak Aktif';
+                  } else {
+                    $aktif = 'Tidak Aktif';
+                  }
+                  echo $aktif
+                    ?>
+                </td>
 
-    } else {
-      $aktif = 'Tidak Aktif';
-    } echo $aktif
-    ?>
-   </td>
+                <td class="text-center">
+                  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning"
+                    title="Edit">
+                    <i class="la la-edit"></i>
+                  </a>
+                  <button class="btn btn-sm btn-danger"
+                    onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')" title="Hapus">
+                    <i class="la la-trash"></i> <!-- Icon hapus -->
+                  </button>
+                </td>
+              </tr>
 
-  <td class="text-center">
-  <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning" title="Edit">
-    <i class="la la-edit"></i>
-  </a>
-  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $s['id'] ?>', '<?= esc($s['nama']) ?>')" title="Hapus">
-    <i class="la la-trash"></i> <!-- Icon hapus -->
-  </button>
-  </td>
-  </tr>
-    
-  </td>
-</tr>
-  <?php endforeach; ?>
-</tbody>
+              </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
         </table>
+      </div>
+
+      <!-- Modal Hapus -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <form method="get">
+              <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="delete" id="deleteId">
+                <p id="deleteMessage"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
 
-<!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <form method="get">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="delete" id="deleteId">
-          <p id="deleteMessage"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Menambahkan event listener ke tombol toggle (+)
+          var toggleButtons = document.querySelectorAll('.toggle-action');
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Menambahkan event listener ke tombol toggle (+)
-  var toggleButtons = document.querySelectorAll('.toggle-action');
+          toggleButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+              var id = this.getAttribute('data-id'); // Mengambil ID dari tombol yang diklik
+              var actionRow = document.getElementById('action-' + id); // Menargetkan baris aksi yang sesuai dengan ID
 
-  toggleButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      var id = this.getAttribute('data-id'); // Mengambil ID dari tombol yang diklik
-      var actionRow = document.getElementById('action-' + id); // Menargetkan baris aksi yang sesuai dengan ID
-
-      // Memeriksa apakah baris aksi saat ini disembunyikan atau tidak
-      if (actionRow.style.display === 'none' || actionRow.style.display === '') {
-        actionRow.style.display = 'table-row'; // Menampilkan baris aksi
-        this.textContent = '-'; // Mengubah teks tombol menjadi '-'
-      } else {
-        actionRow.style.display = 'none'; // Menyembunyikan baris aksi
-        this.textContent = '+'; // Mengubah teks tombol kembali menjadi '+'
-      }
-    });
-  });
-});
+              // Memeriksa apakah baris aksi saat ini disembunyikan atau tidak
+              if (actionRow.style.display === 'none' || actionRow.style.display === '') {
+                actionRow.style.display = 'table-row'; // Menampilkan baris aksi
+                this.textContent = '-'; // Mengubah teks tombol menjadi '-'
+              } else {
+                actionRow.style.display = 'none'; // Menyembunyikan baris aksi
+                this.textContent = '+'; // Mengubah teks tombol kembali menjadi '+'
+              }
+            });
+          });
+        });
 
 
 
-  function showDeleteModal(id, nama) {
-    document.getElementById('deleteId').value = id;
-    document.getElementById('deleteMessage').innerHTML =
-      `Apakah Anda yakin ingin menghapus standar <strong>${nama}</strong>?`;
-    $('#deleteModal').modal('show');
-  }
-</script>
+        function showDeleteModal(id, nama) {
+          document.getElementById('deleteId').value = id;
+          document.getElementById('deleteMessage').innerHTML =
+            `Apakah Anda yakin ingin menghapus standar <strong>${nama}</strong>?`;
+          $('#deleteModal').modal('show');
+        }
+      </script>
 
       <!--end: Datatable -->
     </div>
@@ -196,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>
 
-  <style>
+<style>
   .table-responsive {
     overflow-x: auto;
   }
