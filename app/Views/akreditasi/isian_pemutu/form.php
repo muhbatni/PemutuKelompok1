@@ -17,6 +17,7 @@
           <input type="hidden" name="id" value="<?= esc($edit['id']) ?>">
         <?php endif ?>
 
+        <!-- Pilih Unit Pemutu -->
         <div class="form-group m-form__group">
           <label for="id_unitpemutu">Pilih Unit Pemutu</label>
           <select class="form-control m-input" id="id_unitpemutu" name="id_unitpemutu" required>
@@ -29,18 +30,39 @@
           </select>
         </div>
 
-        <div class="form-group m-form__group">
-          <label for="id_instrumen">Pilih Instrumen</label>
-          <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
-            <option value="">-- Pilih --</option>
-            <?php foreach ($jenjang as $instrumen): ?>
-              <option value="<?= $instrumen['id'] ?>" <?= isset($edit) && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
-                <?= $instrumenPemutuModel->getJenjangText($instrumen['jenjang']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
+        <!-- Pilih Instrumen Pemutu -->
+<div class="form-group m-form__group">
+  <label for="id_instrumen">Pilih Instrumen</label>
+  <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
+    <option value="">-- Pilih --</option>
+    <?php foreach ($instrumen_list as $index => $instrumen): ?>
+      <option value="<?= $instrumen['id'] ?>">
+        <?= $index + 1 ?> <!-- Menampilkan penomoran urut -->
+      </option>
+    <?php endforeach ?>
+  </select>
+</div>
 
+
+        <!-- form input untuk isi dari instrumen pemutu -->
+        <div class="form-group m-form__group">
+          <label for="lembaga">Isi dari Instrumen Pemutu</label>
+
+          <input type="text" class="form-control m-input mb-2" id="lembaga" name="lembaga" placeholder="Lembaga"
+            readonly>
+
+          <input type="text" class="form-control m-input mb-2" id="jenjang_instrumen" name="jenjang_instrumen"
+            placeholder="Jenjang" readonly>
+
+          <input type="text" class="form-control m-input mb-2" id="indikator" name="indikator" placeholder="Indikator"
+            readonly>
+
+          <input type="text" class="form-control m-input mb-2" id="kondisi" name="kondisi" placeholder="Kondisi"
+            readonly>
+
+          <input type="text" class="form-control m-input mb-2" id="batas" name="batas" placeholder="Batas" readonly>
+        </div>
+        
         <div class="form-group m-form__group">
           <label for="isian">Isian</label>
           <select class="form-control m-input" id="isian" name="isian" required>
@@ -105,8 +127,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php if (!empty($isian_pemutu)) : ?>
-              <?php $no = 1; foreach ($isian_pemutu as $row): ?>
+            <?php if (!empty($isian_pemutu)): ?>
+              <?php $no = 1;
+              foreach ($isian_pemutu as $row): ?>
                 <tr>
                   <td><?= $no++ ?></td>
                   <td><?= esc($row['nama_unit']) ?></td>
@@ -120,7 +143,9 @@
                 </tr>
               <?php endforeach ?>
             <?php else: ?>
-              <tr><td colspan="6" class="text-center">Belum ada data.</td></tr>
+              <tr>
+                <td colspan="6" class="text-center">Belum ada data.</td>
+              </tr>
             <?php endif ?>
           </tbody>
         </table>
@@ -169,6 +194,29 @@
 </div>
 
 <script>
+  // Simpan data instrumen dalam JS
+  const instrumenData = <?= json_encode(array_column($instrumen_list, null, 'id')) ?>;
+
+  // Ketika dropdown berubah, isi input-input di bawah
+  document.getElementById('id_instrumen').addEventListener('change', function () {
+    const selectedId = this.value;
+    const data = instrumenData[selectedId];
+
+    if (data) {
+      document.getElementById('lembaga').value = data.id_lembaga || '';
+      document.getElementById('jenjang_instrumen').value = data.jenjang || '';
+      document.getElementById('indikator').value = data.indikator || '';
+      document.getElementById('kondisi').value = data.kondisi || '';
+      document.getElementById('batas').value = data.batas || '';
+    } else {
+      // Kosongkan jika tidak ada pilihan
+      document.getElementById('lembaga').value = '';
+      document.getElementById('jenjang_instrumen').value = '';
+      document.getElementById('indikator').value = '';
+      document.getElementById('kondisi').value = '';
+      document.getElementById('batas').value = '';
+    }
+  });
   function showDeleteModal(id) {
     document.getElementById('deleteId').value = id;
     $('#deleteModal').modal('show');
