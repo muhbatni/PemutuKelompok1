@@ -28,7 +28,7 @@
               <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
                   <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
-                  <span class="m-input-icon_icon m-input-icon_icon--left">
+                  <span class="m-input-icon__icon m-input-icon__icon--left">
                     <span><i class="la la-search"></i></span>
                   </span>
                 </div>
@@ -58,39 +58,47 @@
               <?php foreach ($dataAkreditasi as $akreditasi): ?>
                 <tr>
                   <td><?php
-                  foreach ($units as $unit) {
-                      if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
-                          echo $unit['nama'];
-                          break;  // keluar dari loop setelah menemukan yang cocok
-                      } else {
-                          echo "Unit Tidak Ditemukan";
-                          break;
+                  $namaUnit = 'Unit Tidak Ditemukan';
+                  if (isset($akreditasi['id_unit'])) {
+                      foreach ($units as $unit) {
+                          if (isset($unit['id']) && $unit['id'] == $akreditasi['id_unit']) {
+                              $namaUnit = $unit['nama'];
+                              break;
+                          }
                       }
                   }
+                  echo $namaUnit;
                   ?></td>
                   <td><?php
-                  foreach ($lembagas as $lembaga) {
-                      if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
-                          echo $lembaga['nama'];
-                          break;  // keluar dari loop setelah menemukan yang cocok
-                      } else {
-                          echo "Lembaga Tidak Ditemukan";
-                          break;
+                  $namaLembaga = 'Lembaga Tidak Ditemukan';
+                  if (isset($akreditasi['id_lembaga'])) {
+                      foreach ($lembagas as $lembaga) {
+                          if (isset($lembaga['id']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
+                              $namaLembaga = $lembaga['nama'];
+                              break;
+                          }
                       }
                   }
+                  echo $namaLembaga;
                   ?></td>
                   <td><?php
                     $status = '';
                     if (isset($akreditasi['status'])) {
-                        switch ($akreditasi['status']) {
-                            case 0: $status = 'Pengajuan'; break;
-                            case 1: $status = 'Diterima'; break;
-                            case 2: $status = 'Ditolak'; break;
-                        }
-                    } else {
-                        $status = 'Tidak Ditemukan';
-                    }
-                    echo $status;
+                      switch ($akreditasi['status']) {
+                          case 1: $status = 'Unggul'; break;
+                          case 2: $status = 'Baik Sekali'; break;
+                          case 3: $status = 'Baik'; break;
+                          case 4: $status = 'A'; break;
+                          case 5: $status = 'B'; break;
+                          case 6: $status = 'C'; break;
+                          case 7: $status = 'Minimum'; break;
+                          case 8: $status = 'Tidak Ada'; break;
+                          default: $status = 'Status Tidak Dikenal'; break;
+                      }
+                  } else {
+                      $status = 'Status Tidak Ditemukan';
+                  }
+                  echo $status;
                   ?></td>
                   <td>
                     <?= isset($akreditasi['tanggal_berlaku']) ? $akreditasi['tanggal_berlaku'] : 'Tanggal Tidak Ditemukan'; ?>
@@ -100,35 +108,12 @@
                   </td>
                   <td>
                     <?php
-                      $nilai = '';
-                      if (isset($akreditasi['nilai'])) {
-                          switch ($akreditasi['nilai']) {
-                              case 1: $nilai = 'Unggul'; break;
-                              case 2: $nilai = 'Baik Sekali'; break;
-                              case 3: $nilai = 'Baik'; break;
-                              case 4: $nilai = 'A'; break;
-                              case 5: $nilai = 'B'; break;
-                              case 6: $nilai = 'C'; break;
-                              case 7: $nilai = 'Minimum'; break;
-                              case 8: $nilai = 'Tidak Ada'; break;
-                              default: $nilai = 'Nilai Tidak Dikenal'; break;
-                          }
-                      } else {
-                          $nilai = 'Nilai Tidak Ditemukan';
-                      }
-                      echo $nilai;
+                      echo isset($akreditasi['nilai']) ? htmlspecialchars($akreditasi['nilai']) : 'Tidak Ada'; 
                     ?>
                   </td>
                   <td>
-                  <?php
-                    $aktif = '';
-                    if (isset($akreditasi['is_active'])) {
-                        // Mengecek langsung nilai boolean
-                        $aktif = ($akreditasi['is_active'] === 't') ? 'Aktif' : 'Tidak Aktif';
-                    } else {
-                        $aktif = 'Tidak Ada';
-                    }
-                    echo $aktif;
+                  <?=
+                    isset($akreditasi['is_active']) ? ($akreditasi['is_active'] === 't' ? 'Aktif' : 'Tidak Aktif') : 'Tidak Ada';
                   ?>
                   </td>
                   <td>

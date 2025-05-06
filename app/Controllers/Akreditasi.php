@@ -3,6 +3,7 @@ namespace App\Controllers;
 use App\Models\UnitModel;
 use App\Models\LembagaAkreditasiModel;
 use App\Models\AkreditasiModel;
+use App\Models\SyaratUnggulModel;
 
 class Akreditasi extends BaseController
 {
@@ -20,6 +21,10 @@ class Akreditasi extends BaseController
   // Ambil data akreditasi
   $akreditasiModel = new AkreditasiModel();
   $data['dataAkreditasi'] = $akreditasiModel->getAkreditasiData();
+
+  // Ambil data syarat unggul
+  $syaratUnggulModel = new SyaratUnggulModel();
+    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
 
   // Jika ada ID di URL untuk edit
   $editData = null;
@@ -49,9 +54,19 @@ class Akreditasi extends BaseController
       }
     }
 
+    // Ambil nama syarat
+    $syaratName = '';
+    foreach ($data['dataSyarat'] as $syarat) {
+      if ($syarat['id'] == $editData['status']) {
+        $syaratName = $syarat['nama'];
+        break;
+      }
+    }
+
     // Mengirim data unit dan lembaga ke view
     $data['unitName'] = $unitName;
     $data['lembagaName'] = $lembagaName;
+    $data['syaratName'] = $syaratName;
     $data['dataAkreditasi'] = $editData;
   }
 
@@ -77,8 +92,7 @@ class Akreditasi extends BaseController
       'tanggal_berlaku' => $this->request->getPost('tanggal_berlaku'),
       'tanggal_habis' => $this->request->getPost('tanggal_habis'),
       'nilai' => $this->request->getPost('nilai_akreditasi'),
-      'is_active' => $this->request->getPost('is_active'),
-      'file' => $this->request->getPost('file_upload'),
+      'is_active' => $this->request->getPost('is_active') === '1' ? true : false,
     ];
 
     $file = $this->request->getFile('file_upload');

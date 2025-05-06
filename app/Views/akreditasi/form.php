@@ -47,17 +47,24 @@
           <!-- Nilai Akreditasi -->
           <div class="form-group m-form__group">
             <label for="nilai_akreditasi">Nilai Akreditasi</label>
-            <select class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi" required>
-              <option value="">-- Pilih Nilai --</option>
+            <input type="number" class="form-control m-input" id="nilai_akreditasi" name="nilai_akreditasi" 
+            value="<?= isset($dataAkreditasi['nilai']) ? $dataAkreditasi['nilai'] : ''; ?>" required>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group m-form__group">
+          <label for="status">Status</label>
+          <select class="form-control m-input" id="status" name="status" required>
+          <option value="">-- Pilih Nilai --</option>
               <?php
-                $nilaiOptions = [
+                $statusOptions = [
                   1 => 'Unggul', 2 => 'Baik Sekali', 3 => 'Baik', 4 => 'A', 
                   5 => 'B', 6 => 'C', 7 => 'Minimum', 8 => 'Tidak Ada'
                 ];
               ?>
-              <?php foreach ($nilaiOptions as $key => $value): ?>
+              <?php foreach ($statusOptions as $key => $value): ?>
                 <option value="<?= $key; ?>" 
-                  <?= isset($dataAkreditasi['nilai']) && $dataAkreditasi['nilai'] == $key ? 'selected' : ''; ?>>
+                  <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == $key ? 'selected' : ''; ?>>
                   <?= $value; ?>
                 </option>
               <?php endforeach; ?>
@@ -69,30 +76,15 @@
             <label>Is Active</label><br>
             <label class="radio-inline">
                 <input type="radio" name="is_active" value="0" 
-                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == false ? 'checked' : ''; ?> required>
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == 'f' ? 'checked' : ''; ?> required>
                 Tidak Aktif
             </label>
             <label class="radio-inline">
                 <input type="radio" name="is_active" value="1" 
-                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == true ? 'checked' : ''; ?> required>
+                <?= isset($dataAkreditasi['is_active']) && $dataAkreditasi['is_active'] == 't' ? 'checked' : ''; ?> required>
                 Aktif
             </label>
         </div>
-
-
-          <!-- Status -->
-          <div class="form-group m-form__group">
-            <label>Status</label><br>
-            <label class="radio-inline">
-              <input type="radio" name="status" value="0" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 0 ? 'checked' : ''; ?> required> Pengajuan
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="status" value="1" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 1 ? 'checked' : ''; ?> required> Diterima
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="status" value="2" <?= isset($dataAkreditasi['status']) && $dataAkreditasi['status'] == 2 ? 'checked' : ''; ?> required> Ditolak
-            </label>
-          </div>
 
           <!-- Tanggal Berlaku -->
           <div class="form-group m-form__group">
