@@ -8,6 +8,7 @@ use App\Models\PelaksanaanSurveyModel;
 use App\Models\PeriodeModel;
 use CodeIgniter\Database\BaseBuilder;
 use \Config\Database;
+use App\Models\KriteriaAkreditasiModel;
 
 class Survey extends BaseController
 {
@@ -18,14 +19,16 @@ class Survey extends BaseController
   protected $periodeModel;
   protected $isianSurveyModel;
   protected $helpers = ['surveys'];
-
   protected $periodeData;
+  protected $kriteriaAkreditasiModel;
+  protected $kriteriaAkreditasiData;
 
   private $surveyPlaceholder = [
     'kode' => null,
     'nama' => null,
     'dokumen_pendukung' => null,
     'status' => true,
+    'id_kriteria' => null,
   ];
 
   private $pelaksanaanSurveyPlaceholder = [
@@ -45,6 +48,8 @@ class Survey extends BaseController
     $this->periodeModel = new PeriodeModel();
     $this->isiSurveyModel = new IsiSurveyModel();
     $this->periodeData = $this->periodeModel->orderBy('id', 'asc')->findAll();
+    $this->kriteriaAkreditasiModel = new KriteriaAkreditasiModel();
+    $this->kriteriaAkreditasiData = $this->kriteriaAkreditasiModel->orderBy('id', 'asc')->findAll();
   }
 
   public function getIndex()
@@ -58,7 +63,7 @@ class Survey extends BaseController
   public function getCreate()
   {
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
-    echo view('survey_kepuasan/manajemen_survey/create_survey.php', ['periode' => $this->periodeData]);
+    echo view('survey_kepuasan/manajemen_survey/create_survey.php', ['periode' => $this->periodeData, 'kriteria' => $this->kriteriaAkreditasiData]);
     echo view('layouts/footer.php');
   }
 
@@ -69,6 +74,7 @@ class Survey extends BaseController
       'nama' => $data['nama_survey'],
       'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
       'status' => $data['status_survey'],
+      'id_kriteria' => $data['id_kriteria'],
     ]);
 
     if (!$data['id_survey']) {
@@ -110,6 +116,7 @@ class Survey extends BaseController
       'nama' => $data['nama_survey'],
       'dokumen_pendukung' => $data['dokumen_pendukung_survey'],
       'status' => $data['status_survey'],
+      'id_kriteria' => $data['id_kriteria'],
     ], $data['id_survey']);
     if (!$result) {
       throw new \Exception('Gagal mengupdate survey!');
@@ -222,6 +229,7 @@ class Survey extends BaseController
       return redirectWithMessage('survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
     $data['periode'] = $this->periodeData;
+    $data['kriteria'] = $this->kriteriaAkreditasiData;
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $idSurvey)->orderBy('urutan', 'asc')->findAll();
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/edit_survey.php', $data);

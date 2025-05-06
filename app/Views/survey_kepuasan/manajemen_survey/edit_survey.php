@@ -78,6 +78,18 @@
             </div>
           </div>
           <div class="form-group m-form__group row">
+            <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria</label>
+            <div class="col-lg-7 col-md-7 col-sm-12">
+              <select class="form-control" id="id_kriteria" name="id_kriteria" required>
+                <?php foreach ($kriteria as $k): ?>
+                  <option value="<?= $k['id']; ?>">
+                    <?= $k['nama']; ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_mulai" required
