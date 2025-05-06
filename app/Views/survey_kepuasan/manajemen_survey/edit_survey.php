@@ -12,7 +12,7 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST"
-        action="<?= base_url("public/survey/manajemen-survey/edit/$survey[id]") ?>" enctype="multipart/form-data">
+        action="<?= base_url("public/survey/edit?id_survey=$survey[id]") ?>" enctype="multipart/form-data">
         <div class="m-portlet__body">
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Kode<span style="color: red">*</span></label>
@@ -54,35 +54,38 @@
             <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <select class="form-control" id="id_periode" name="id_periode" required>
-                <option value="">-- Pilih Periode --</option>
-                <?php
-                $periodeModel = new App\Models\PeriodeModel();
-                $periode = $periodeModel->findAll();
-                foreach ($periode as $p): ?>
-                  <option name="id_periode" value="<?= $p['id']; ?>"><?= $p['tahun']; ?></option>
+                <?php foreach ($periode as $p): ?>
+                  <option value="<?= $p['id']; ?>" <?= isset($pelaksanaan_survey['id_periode']) && ($pelaksanaan_survey['id_periode'] == $p['id']) ? 'selected' : '' ?>>
+                    <?= $p['tahun']; ?>
+                  </option>
                 <?php endforeach; ?>
               </select>
+              <span class="m-form__help">
+                <span class="m-badge  m-badge--metal m-badge--wide">2023</span>
+                <span class="m-badge  m-badge--metal m-badge--wide">2024</span>
+                <span class="m-badge  m-badge--metal m-badge--wide">2025</span>
+              </span>
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_mulai" required
-                value="<?= isset($pelaksanaan_survey['tanggal_mulai']) ? $pelaksanaan_survey['tanggal_mulai'] : '' ?>">
+                value="<?= $pelaksanaan_survey['tanggal_mulai'] ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <input type="date" class="form-control" name="tanggal_selesai" required
-                value="<?= isset($pelaksanaan_survey['tanggal_selesai']) ? $pelaksanaan_survey['tanggal_selesai'] : '' ?>">
+                value="<?= $pelaksanaan_survey['tanggal_selesai'] ?>">
             </div>
           </div>
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
-                required><?= isset($pelaksanaan_survey['deskripsi']) ? $pelaksanaan_survey['deskripsi'] : '' ?></textarea>
+                required><?= $pelaksanaan_survey['deskripsi'] ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -91,7 +94,7 @@
               <div class="row ui-sortable" id="m_sortable_portlets">
                 <?php foreach ($pertanyaan as $p): ?>
                   <div class="col-lg-12 portlet-template">
-                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered">
+                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                       <div class="m-portlet__head ui-sortable-handle">
                         <div class="m-portlet__head-caption">
                           <div class="m-portlet__head-title">
@@ -138,6 +141,17 @@
                   </div>
                 <?php endforeach; ?>
               </div>
+              <div class="form-group row">
+                <div class="col-lg-4">
+                  <div data-repeater-create=""
+                    class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+                    <span>
+                      <i class="la la-plus"></i>
+                      <span>Add</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -145,7 +159,7 @@
           <div class="m-form__actions m-form__actions">
             <div class="row">
               <div class="col-lg-9 ml-lg-auto d-flex justify-content-between">
-                <a href="<?php base_url("public/survey/manajemen-survey") ?>" class="btn btn-secondary">Batal</a>
+                <a class="btn btn-secondary" href="<?= base_url("public/survey") ?>">Batal</a>
                 <input type="submit" class="btn btn-brand" value="Simpan" />
               </div>
             </div>

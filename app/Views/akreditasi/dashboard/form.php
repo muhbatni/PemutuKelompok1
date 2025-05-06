@@ -1,342 +1,225 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Penjaminan Mutu</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Manajemen Penjaminan Mutu</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
+    /* Background Dashboard */
     body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #f4f7fc, #e9edf5);
+      background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
     }
 
-    .sidebar {
-      height: 100vh;
-      background-color: #343a40;
-      color: #fff;
+    /* Dashboard Card */
+    .dashboard-card {
+      background: linear-gradient(135deg, #ffffff, #89CFF0, #ffffff);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
     }
 
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-      display: block;
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Judul Besar */
+    .page-title {
+      font-weight: 700;
+      font-size: 32px;
+      color: #1e3a8a;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    /* Label Form */
+    .form-label {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* Dropdown Style */
+    #filterTahun {
+      border-radius: 8px;
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
       padding: 10px;
     }
 
-    .sidebar a:hover {
-      background-color: #495057;
-    }
-
-    /* Beautiful dropdown styling */
-    .period-filter {
-      position: relative;
-      z-index: 1000;
-    }
-
-    .period-filter .btn-period {
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-weight: 500;
-      box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .period-filter .btn-period:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
-    }
-
-    .period-filter .btn-period:active {
-      transform: translateY(0);
-    }
-
-    .period-filter .dropdown-menu {
-      border: none;
-      border-radius: 15px;
+    /* Tabel Style */
+    .table {
+      background-color: white;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      padding: 0;
-      margin-top: 10px;
     }
 
-    .period-filter .dropdown-item {
-      padding: 10px 20px;
-      transition: all 0.3s ease;
-      position: relative;
+    .table thead {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd) {
+      background-color: #f8fafc;
+    }
+
+    .table-bordered td,
+    .table-bordered th {
+      border-color: #cbd5e1;
+    }
+
+    .table tbody tr:hover {
+      background-color: #f1f5f9;
+      transition: all 0.2s;
+    }
+
+    /* Badge Status */
+    .badge-status {
+      padding: 2px 6px;
+      font-size: 0.85rem;
+      border-radius: 5px;
+      color: #ffffff;
       font-weight: 500;
     }
 
-    .period-filter .dropdown-item:not(:last-child) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    .badge-cek {
+      color: #6366f1;
+      font-family: 'Poppins';
+      font-weight: bold;
+      font-size: 1rem;
     }
 
-    .period-filter .dropdown-item:hover {
-      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-      color: #2575fc;
-      padding-left: 25px;
+    .badge-lolos {
+      color: #15803d;
+      font-family: 'Poppins';
+      font-weight: bold;
+      font-size: 1rem;
     }
 
-    .period-filter .dropdown-item:hover::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 5px;
-      height: 5px;
-      background-color: #2575fc;
-      border-radius: 50%;
+    .badge-peringatan {
+      color: #FFBF00;
+      font-family: 'Poppins';
+      font-weight: bold;
+      font-size: 1rem;
     }
 
-    .period-filter .dropdown-item.active {
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      color: white;
+    .badge-tidaklolos {
+      color: #B22222;
+      font-family: 'Poppins';
+      font-weight: bold;
+      font-size: 1rem;
     }
 
-    /* Animation for dropdown */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
+    .badge-belum {
+      color: #64748b;
+      font-family: 'Poppins';
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 26px;
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .period-filter .dropdown-menu.show {
-      animation: fadeIn 0.3s ease forwards;
     }
   </style>
 </head>
 
 <body>
-  <div class="col-md-10">
-    <div class="p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0 text-dark fw-bold">Dashboard Manajemen Penjaminan Mutu</h3>
-        <div class="dropdown period-filter">
-          <button class="btn btn-period dropdown-toggle" type="button" id="yearDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            <i class="fas fa-calendar-alt"></i>
-            <span id="selectedYearText">Pilih Periode Tahun</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="yearDropdown" id="yearList">
-            <!-- Years will be populated by JavaScript -->
-          </ul>
-        </div>
-      </div>
 
-      <!-- Cards -->
-      <div class="row mb-4">
-        <div class="col-md-3">
-          <div class="card text-white bg-primary mb-3 border-0 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-clipboard-list me-2"></i>Total Evaluasi</h5>
-              <p class="card-text fs-4 fw-bold" id="totalEvaluasi">120</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-success mb-3 border-0 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-university me-2"></i>Unit Terlibat</h5>
-              <p class="card-text fs-4 fw-bold" id="unitTerlibat">24</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-warning mb-3 border-0 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-file-alt me-2"></i>Instrumen Aktif</h5>
-              <p class="card-text fs-4 fw-bold" id="instrumenAktif">15</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card text-white bg-danger mb-3 border-0 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><i class="fas fa-poll me-2"></i>Survey</h5>
-              <p class="card-text fs-4 fw-bold" id="survey">8</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="container">
+    <h1 class="page-title">Dashboard Manajemen Penjaminan Mutu</h1>
 
-      <!-- Chart -->
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title text-dark fw-bold"><i class="fas fa-chart-bar me-2"></i>Rekap Evaluasi per Unit</h5>
-          <canvas id="chartEvaluasi"></canvas>
-        </div>
+    <!-- Dropdown Filter Tahun Periode -->
+    <div class="dashboard-card">
+      <label for="filterTahun" class="form-label">Filter Tahun Periode</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="fas fa-calendar-alt text-primary"></i>
+        </span>
+        <select id="filterTahun" class="form-select border-start-0 custom-dropdown rounded-end"
+          onchange="filterByTahun(this.value)">
+          <option value="">-- Semua Tahun --</option>
+          <?php if (!empty($periodeList)): ?>
+            <?php foreach ($periodeList as $periode): ?>
+              <option value="<?= esc($periode['id']) ?>" <?= ($selectedTahun == $periode['id']) ? 'selected' : '' ?>>
+                <?= esc($periode['tahun']) ?> (<?= esc($periode['ts']) ?>)
+              </option>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <option value="">Tidak ada data periode</option>
+          <?php endif; ?>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tabel Data Unit Pemutu -->
+    <div class="dashboard-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0"><i class="fas fa-table text-primary me-2"></i>Data Unit Pemutu</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Unit</th>
+              <th>Kondisi</th>
+              <th>Status Isian</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (!empty($unitPemutu)): ?>
+              <?php $no = 1; ?>
+              <?php foreach ($unitPemutu as $row): ?>
+                <tr>
+                  <td><?= $no++; ?></td>
+                  <td><?= esc($row['nama_unit']) ?></td>
+                  <td><?= esc($row['kondisi']) ?></td>
+                  <td>
+                    <?php
+                    $status = strtolower(trim($row['status_isian_text']));
+                    $class = 'badge-status badge-belum';
+                    if ($status == 'cek') {
+                      $class = 'badge-status badge-cek';
+                    } elseif ($status == 'lolos') {
+                      $class = 'badge-status badge-lolos';
+                    } elseif (strpos($status, 'peringatan') !== false) {
+                      $class = 'badge-status badge-peringatan';
+                    } elseif (strpos($status, 'tidak lolos') !== false) {
+                      $class = 'badge-status badge-tidaklolos';
+                    }
+                    ?>
+                    <span class="<?= $class ?>">
+                      <?= esc($row['status_isian_text']) ?>
+                    </span>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="4" class="text-center">Tidak ada data</td>
+              </tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script untuk filter tahun -->
   <script>
-    // Sample data structure that would come from your backend
-    const periodData = {
-      // This would be fetched from your database (m_periode table)
-      availableYears: [2024, 2023],
-
-      // Sample data for each period
-      periodStats: {
-        2023: {
-          totalEvaluasi: 120,
-          unitTerlibat: 24,
-          instrumenAktif: 15,
-          survey: 8,
-          chartData: {
-            labels: ['Unit A', 'Unit B', 'Unit C', 'Unit D', 'Unit E'],
-            data: [12, 19, 7, 10, 5],
-            colors: ['#6a11cb', '#2575fc', '#4facfe', '#00f2fe', '#a6c1ee']
-          }
-        },
-        2024: {
-          totalEvaluasi: 150,
-          unitTerlibat: 28,
-          instrumenAktif: 18,
-          survey: 10,
-          chartData: {
-            labels: ['Unit A', 'Unit B', 'Unit C', 'Unit D', 'Unit E', 'Unit F'],
-            data: [15, 22, 10, 12, 8, 5],
-            colors: ['#6a11cb', '#2575fc', '#4facfe', '#00f2fe', '#a6c1ee', '#fbc2eb']
-          }
-        }
-      }
-    };
-
-    // Initialize chart
-    let evaluationChart;
-    const ctx = document.getElementById('chartEvaluasi').getContext('2d');
-
-    function initializeChart(year) {
-      const data = periodData.periodStats[year];
-
-      if (evaluationChart) {
-        evaluationChart.destroy();
-      }
-
-      evaluationChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.chartData.labels,
-          datasets: [{
-            label: 'Jumlah Evaluasi',
-            data: data.chartData.data,
-            backgroundColor: data.chartData.colors,
-            borderColor: 'rgba(255, 255, 255, 0.8)',
-            borderWidth: 1,
-            borderRadius: 8,
-            hoverBackgroundColor: data.chartData.colors.map(color => `${color}CC`),
-            hoverBorderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleFont: {
-                size: 14,
-                weight: 'bold'
-              },
-              bodyFont: {
-                size: 12
-              },
-              padding: 12,
-              cornerRadius: 10,
-              displayColors: true,
-              boxPadding: 5
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(0, 0, 0, 0.05)'
-              },
-              ticks: {
-                font: {
-                  weight: 'bold'
-                }
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              },
-              ticks: {
-                font: {
-                  weight: 'bold'
-                }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // Populate year dropdown
-    const yearList = document.getElementById('yearList');
-    periodData.availableYears.forEach(year => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.className = 'dropdown-item';
-      a.href = '#';
-      a.innerHTML = `<i class="fas fa-calendar me-2"></i> ${year}`;
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.getElementById('selectedYearText').textContent = `Tahun ${year}`;
-
-        // Update active state
-        document.querySelectorAll('.dropdown-item').forEach(item => {
-          item.classList.remove('active');
-        });
-        a.classList.add('active');
-
-        updateDashboard(year);
-      });
-      li.appendChild(a);
-      yearList.appendChild(li);
-    });
-
-    // Function to update dashboard data
-    function updateDashboard(year) {
-      const data = periodData.periodStats[year];
-
-      document.getElementById('totalEvaluasi').textContent = data.totalEvaluasi;
-      document.getElementById('unitTerlibat').textContent = data.unitTerlibat;
-      document.getElementById('instrumenAktif').textContent = data.instrumenAktif;
-      document.getElementById('survey').textContent = data.survey;
-
-      initializeChart(year);
-    }
-
-    // Initialize with first available year
-    if (periodData.availableYears.length > 0) {
-      const firstYear = periodData.availableYears[0];
-      document.getElementById('selectedYearText').textContent = `Tahun ${firstYear}`;
-      document.querySelector('.dropdown-item').classList.add('active');
-      updateDashboard(firstYear);
+    function filterByTahun(tahun) {
+      window.location.href = '<?= site_url('akreditasi/dashboard-periode') ?>?tahun=' + tahun;
     }
   </script>
+
 </body>
 
 </html>

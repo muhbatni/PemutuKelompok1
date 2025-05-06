@@ -1,37 +1,43 @@
 <?php
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Firebase\JWT\ExpiredException;
 
-function getDatabyToken()
+function redirectTo($redirectPath)
 {
-  helper('cookie');
-  $token = get_cookie('access_token');
-  try {
-    return JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-  } catch (ExpiredException $e) {
+  return redirect()->to(base_url("public/$redirectPath"));
+}
+
+function redirectWithMessage($redirectPath, $type, $message)
+{
+  return redirectTo($redirectPath)->with($type, $message);
+}
+
+function handleCache($key, $data, $ttl = 3600)
+{
+  $decodedToken = getDecodedToken();
+  if (!$decodedToken) {
     return null;
   }
-}
-
-function isValidRefreshToken($model, $id)
-{
-  helper('cookie');
-  $token = get_cookie('refresh_token');
-  if ($token === null) {
-    return false;
-  }
-  try {
-    JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-    return true;
-  } catch (ExpiredException $e) {
-    return false;
+  $userId = $decodedToken->uid;
+  if (isset($data)) {
+    if (cache()->get("{$key}_{$userId}")) {
+      cache()->delete("{$key}_{$userId}");
+    }
+    cache()->save("{$key}_{$userId}", $data, $ttl);
   }
 }
 
-function alert($redirectPath, $type, $message)
+function handleUpload($path, $file, $prefix = null)
 {
-  return redirect()->to(base_url('public/' . $redirectPath))->with($type, $message);
+  if ($file->hasMoved()) {
+    return null;
+  }
+  $filePath = WRITEPATH . 'uploads/' . $path;
+  if (!is_dir($filePath)) {
+    mkdir($filePath, 0777, true);
+  }
+  $prefix = $prefix ? "$prefix-" : '';
+  $fileName = $prefix . $file->getRandomName();
+  $file->move($filePath, $fileName);
+  return $fileName;
 }
 
 ?>
