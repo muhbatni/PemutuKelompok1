@@ -5,9 +5,8 @@ use App\Models\SyaratUnggulModel;
 
 class SyaratUnggul extends BaseController
 {
-  public function index()
-  {
-    //ambil data m_lembaga_akreditasi
+    public function input(){
+        //ambil data m_lembaga_akreditasi
     $lembagaModel = new LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
 
@@ -42,6 +41,20 @@ class SyaratUnggul extends BaseController
 
         return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
     }
+    $data["title"] = "Data Syarat Unggul";
+    echo view('layouts/header.php', $data);
+    echo view('akreditasi/syarat_unggul/form.php');
+    echo view('layouts/footer.php');
+    }
+  public function index()
+  {
+    //ambil data m_lembaga_akreditasi
+    $lembagaModel = new LembagaAkreditasiModel();
+    $data['lembagas'] = $lembagaModel->getLembagas();
+
+    // Ambil data p_syarat_unggul
+    $syaratUnggulModel = new SyaratUnggulModel();
+    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
 
     // Check for 'GET' method for deleting a syarat unggul
     if ($this->request->getGet('delete')) {
@@ -59,7 +72,7 @@ class SyaratUnggul extends BaseController
 
     $data["title"] = "Syarat Unggul";
     echo view('layouts/header.php', $data);
-    echo view('akreditasi/syarat_unggul/form.php');
+    echo view('akreditasi/syarat_unggul/tables.php');
     echo view('layouts/footer.php');
   }
 
