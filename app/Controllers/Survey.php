@@ -6,6 +6,7 @@ use App\Models\IsiSurveyModel;
 use App\Models\PertanyaanSurveyModel;
 use App\Models\PelaksanaanSurveyModel;
 use App\Models\PeriodeModel;
+use CodeIgniter\Database\BaseBuilder;
 use \Config\Database;
 
 class Survey extends BaseController
@@ -194,13 +195,11 @@ class Survey extends BaseController
 
   public function getDelete()
   {
-    $uri = $this->request->getUri();
-    $params = $uri->getQuery(['only' => ['id_survey']]);
-    $params = explode('=', $params);
-    if (count($params) < 2) {
-      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    $params = $this->request->getGet();
+    if (!isset($params['id_survey'])) {
+      return redirectWithMessage("survey", 'error', 'Survey tidak ditemukan');
     }
-    $idSurvey = $params[1];
+    $idSurvey = $params['id_survey'];
     if (!$this->surveyModel->delete($idSurvey)) {
       return redirect()->to(base_url('public/survey'))->with('error', 'Survey gagal dihapus!');
     }
@@ -209,13 +208,11 @@ class Survey extends BaseController
 
   public function getEdit()
   {
-    $uri = $this->request->getUri();
-    $params = $uri->getQuery(['only' => ['id_survey']]);
-    $params = explode('=', $params);
-    if (count($params) < 2) {
-      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    $params = $this->request->getGet();
+    if (!isset($params['id_survey'])) {
+      return redirectWithMessage("survey", 'error', 'Survey tidak ditemukan');
     }
-    $idSurvey = $params[1];
+    $idSurvey = $params['id_survey'];
     $data['survey'] = $this->surveyModel->find($idSurvey);
     if (!$data['survey']) {
       return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
@@ -233,13 +230,11 @@ class Survey extends BaseController
 
   public function postEdit()
   {
-    $uri = $this->request->getUri();
-    $params = $uri->getQuery(['only' => ['id_survey']]);
-    $params = explode('=', $params);
-    if (count($params) < 2) {
-      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    $params = $this->request->getPostGet();
+    if (!isset($params['id_survey'])) {
+      return redirectWithMessage("survey", 'error', 'Survey tidak ditemukan');
     }
-    $idSurvey = $params[1];
+    $idSurvey = $params['id_survey'];
     if (!$this->surveyModel->find($idSurvey)) {
       return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
     }
@@ -280,17 +275,25 @@ class Survey extends BaseController
 
   public function getView()
   {
-    $uri = $this->request->getUri();
-    $params = $uri->getQuery(['only' => ['id_survey']]);
-    $params = explode('=', $params);
-    if (count($params) < 2) {
-      return redirectWithMessage('survey', 'error', 'Survey tidak ditemukan!');
+    $params = $this->request->getGet();
+    $database = Database::connect();
+    $idSurvey = $params['id_survey'];
+    $data['periode'] = $database->table('m_periode')->select('id_periode, tahun')->distinct(true)
+      ->join('s_isian_survey', 'm_periode.id = s_isian_survey.id_periode')
+      ->join('s_pertanyaan', 's_pertanyaan.id = s_isian_survey.id_pertanyaan')
+      ->where('id_survey', $idSurvey)->get()->getResult();
+    if (!$data['periode']) {
+      return redirectWithMessage('survey', 'error', 'Data hasil survey masih kosong!');
     }
-    $idSurvey = $params[1];
-    $surveyData = $this->isiSurveyModel->getHasilSurveyById($idSurvey);
+    $idPeriode = $data['periode'][0]->id_periode;
+    if (isset($params['id_periode'])) {
+      $idPeriode = $params['id_periode'];
+    }
+    $surveyData = $this->isiSurveyModel->getHasilSurvey($idSurvey, $idPeriode);
     if (!$surveyData) {
       return redirectWithMessage('survey', 'error', 'Data hasil survey masih kosong!');
     }
+    $data['survey']['id'] = $surveyData[0]['id'];
     $data['survey']['nama'] = $surveyData[0]['nama'];
     foreach ($surveyData as $survey) {
       if (!isset($data['survey']['data'][$survey['id_pertanyaan']])) {
@@ -298,7 +301,7 @@ class Survey extends BaseController
           'teks' => $survey['teks'],
           'jenis' => $survey['jenis'],
           'id_pertanyaan' => $survey['id_pertanyaan'],
-          'jawaban' => ($survey['jenis'] == 1) ? $this->isiSurveyModel->getOptionSummaryById($idSurvey, $survey['id_pertanyaan']) : []
+          'jawaban' => ($survey['jenis'] == 1) ? $this->isiSurveyModel->getOptionSummaryById($idSurvey, $survey['id_pertanyaan'], $idPeriode) : []
         ];
       }
       if ($survey['jenis'] == 2) {
@@ -308,7 +311,6 @@ class Survey extends BaseController
         ];
       }
     }
-
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/view_survey.php', $data);
     echo view('layouts/footer.php');

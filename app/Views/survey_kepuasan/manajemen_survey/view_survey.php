@@ -10,6 +10,24 @@
       </div>
     </div>
     <div class="m-portlet__body">
+      <div class="form-group m-form__group row col-sm-2 col-lg-2">
+        <div class="dropdown d-inline-block">
+          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+            aria-expanded="false">
+            <?php
+            $idPeriode = $_GET['id_periode'] ?? $periode[0]->id_periode;
+            $selectedPeriode = array_filter($periode, fn($p) => $p->id_periode == $idPeriode);
+            echo esc(reset($selectedPeriode)->tahun);
+            ?>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <?php foreach ($periode as $p): ?>
+              <a class="dropdown-item"
+                href="<?= base_url("public/survey/view?id_survey=$survey[id]&id_periode=$p->id_periode") ?>"><?= $p->tahun ?></a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
       <?php
       if (isset($survey['data'])):
         foreach ($survey['data'] as $data): ?>
