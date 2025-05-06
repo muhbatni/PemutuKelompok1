@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <div class="m-content">
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
@@ -16,7 +18,7 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="audit_select">Pilih Auditor:</label>
-            <select class="form-control m-select2" id="audit_select" name="auditor_select">
+            <select class="form-control m-select2" id="audit_select" name="id_auditor" required>
               <option value="">-- Pilih Auditor --</option>
               <?php foreach ($auditor_list as $auditor): ?>
                 <option value="<?= $auditor->id_auditor ?>"><?= $auditor->nama_auditor ?></option>
@@ -27,7 +29,7 @@
         <div class="col-md-7">
           <div class="form-group">
             <label for="unit_select">Pilih Unit:</label>
-            <select class="form-control m-select2" id="unit_select" name="unit_select">
+            <select class="form-control m-select2" id="unit_select" name="id_unit" required>
               <option value="">-- Pilih Unit --</option>
               <?php foreach ($unit_list as $unit): ?>
                 <option value="<?= $unit->id_unit ?>"><?= $unit->nama_unit ?></option>
@@ -82,16 +84,13 @@
               </div>
             </div>
           </div>
-
-          <div class="mt-4">
-            <button type="submit" class="btn btn-success">Simpan</button>
-            <button type="reset" class="btn btn-secondary">Batal</button>
-          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -100,15 +99,15 @@
 
     // Handle audit and unit selection
     $('#audit_select, #unit_select').change(function () {
-      var auditId = $('#au  dit_select').val();
+      var auditId = $('#audit_select').val();
       var unitId = $('#unit_select').val();
 
-      if (auditId && unitId) {
-        loadAuditStandards(auditId, unitId);
-        $('#audit_content').show();
-      } else {
-        $('#audit_content').hide();
-      }
+      // if (auditId && unitId) {
+      //   loadAuditStandards(auditId, unitId);
+      //   $('#audit_content').show();
+      // } else {
+      //   $('#audit_content').hide();
+      // }
     });
 
     // Ketika klik standar, ambil pernyataan
@@ -224,8 +223,11 @@
                   <p class="card-text">${item.batas || '-'}</p>
                 </div>
                 
-                <form id="audit-form" class="mt-4">
-                  <input type="hidden" name="pernyataan_id" value="${id}">
+                <form id="audit-form" class="mt-4" method="POST" action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>">
+                  <input type="hidden" name="id_pernyataan" value="${id}">
+                  <input type="hidden" name="id_unit" value="${$('#unit_select').val()}">
+                  <input type="hidden" name="id_auditor" value="${$('#audit_select').val()}">
+                  <input type="hidden" name="id_standar_audit" value="<?= $standar_audit_id ?>">
                   
                   <div class="form-row">
                     <div class="form-group col-md-6">
@@ -286,6 +288,11 @@
                       <label for="tanggal_pencegahan">Tanggal Pencegahan:</label>
                       <input type="date" class="form-control" id="tanggal_pencegahan" name="tanggal_pencegahan">
                     </div>
+                  </div>
+
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="reset" class="btn btn-outline-secondary">Batal</button>
                   </div>
                 </form>
               </div>

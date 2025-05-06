@@ -84,8 +84,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/pelaksanaan-audit/edit/(:num)', 'PelaksanaanAudit::edit/$1');
   $routes->get('audit/pelaksanaan-audit/getPernyataanByStandar/(:num)', 'PelaksanaanAudit::getPernyataanByStandar/$1');
   $routes->get('audit/pelaksanaan-audit/getDetailPernyataan/(:num)', 'PelaksanaanAudit::getDetailPernyataan/$1');
+  $routes->post('audit/pelaksanaan-audit/simpan', 'PelaksanaanAudit::simpan');
   $routes->get('audit/data-dukung', [DataDukung::class, 'index']);
-  $routes->match(['get','post'],'audit/input-data-dukung', [InputDataDukung::class, 'index']);
+  $routes->match(['get', 'post'], 'audit/input-data-dukung', [InputDataDukung::class, 'index']);
   $routes->get('audit/input-data-dukung/edit/(:num)', [InputDataDukung::class, 'edit/$1']);
   $routes->post('audit/input-data-dukung/update/(:num)', [InputDataDukung::class, 'update/$1']);
   $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
