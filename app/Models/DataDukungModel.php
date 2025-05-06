@@ -19,6 +19,7 @@ class DataDukungModel extends Model
                 da.id_pelaksanaan,
                 mu.nama AS nama_unit, 
                 p.pernyataan, 
+                p.indikator,
                 da.deskripsi, 
                 da.dokumen,
                 u.username AS auditor_name
