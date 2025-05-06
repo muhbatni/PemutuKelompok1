@@ -100,7 +100,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu/input', [InputDataPemutu::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu', [IsianPemutu::class, 'index']);
-
+  $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu/input', [IsianPemutu::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->post('akreditasi/input-data-pemutu/save', [InputDataPemutu::class, 'save']);
   $routes->get('akreditasi/input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);
