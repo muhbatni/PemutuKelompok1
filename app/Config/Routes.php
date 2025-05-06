@@ -88,7 +88,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/periode', [Periode::class, 'index']);
+  $routes->match(['GET', 'POST'], 'akreditasi/periode/input', [Periode::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/unit', [Unit::class, 'index']);
+  $routes->match(['GET', 'POST'], 'akreditasi/unit/input', [Unit::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/lembaga', [Lembaga::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/lembaga/input', [Lembaga::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
