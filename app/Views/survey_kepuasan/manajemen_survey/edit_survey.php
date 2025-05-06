@@ -12,7 +12,7 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST"
-        action="<?= base_url("public/survey/edit?id_survey=" . (isset($idSurvey) ? $idSurvey : $survey['id'])) ?>"
+        action="<?= base_url("public/survey/edit?id_survey=" . ($idSurvey ?? $survey['id'])) ?>"
         enctype="multipart/form-data">
         <div class="m-portlet__body">
           <div class="form-group m-form__group row">
@@ -41,12 +41,12 @@
             <label class="col-form-label col-lg-3 col-sm-12">Status<span style="color: red">*</span></label>
             <div class="m-radio-inline ml-3">
               <label class="m-radio m-radio--success">
-                <input type="radio" name="status_survey" value="true" <?= isset($old['status_survey']) && $old['status_survey'] === "true" ? "checked" : "" ?>>
+                <input type="radio" name="status_survey" value="true" <?= isset($survey['status']) && $survey['status'] === "t" ? "checked" : "" ?> <?= isset($old['status_survey']) && $old['status_survey'] === "true" ? "checked" : "" ?>>
                 Aktif
                 <span></span>
               </label>
               <label class="m-radio m-radio--danger">
-                <input type="radio" name="status_survey" value="false" <?= isset($old['status_survey']) && $old['status_survey'] === "false" ? "checked" : "" ?>>
+                <input type="radio" name="status_survey" value="false" <?= isset($survey['status']) && $survey['status'] === "f" ? "checked" : "" ?> <?= isset($old['status_survey']) && $old['status_survey'] === "false" ? "checked" : "" ?>>
                 Tidak aktif
                 <span></span>
               </label>
