@@ -4,18 +4,17 @@
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">
-              Formulir Akreditasi
-            </h3>
+            <h3 class="m-portlet__head-text">Formulir Akreditasi</h3>
           </div>
         </div>
       </div>
+
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="akreditasi" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
         <!-- ID input, hidden field -->
-        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
+        <input type="hidden" name="id" value="<?= isset($editData) && isset($editData['id']) ? $editData['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
@@ -123,195 +122,54 @@
         <!-- Submit Button -->
         <div class="m-portlet_foot m-portlet_foot--fit">
           <div class="m-form__actions">
-            <button type="submit" value="add" class="btn btn-primary"><?= isset($editData) ? 'Perbarui' : 'Tambah' ?></button>
-            <button type="button" class="btn btn-secondary" onclick="handleCancel()">Batal</button>
+            <a href="<?= base_url('public/akreditasi') ?>" class="btn btn-danger me-2">
+              <i class="fa fa-arrow-left"></i> Batal
+            </a>
+            <button type="reset" class="btn btn-warning me-2">
+              <i class="fa fa-paint-brush"></i> Reset
+            </button>
+
+            <button type="submit" value="add" class="btn btn-primary">
+                <i class="fa fa-save"></i> <?= isset($editData) ? 'Perbarui' : 'Simpan' ?>
+            </button>
           </div>
         </div>
       </form>
+      <!--end::Form-->
     </div>
   </div>
 </div>
 
-<!-- Tabel Data Akreditasi -->
-<?php if (!isset($editData)): ?>
-      <div class="m-portlet m-portlet--tabs">
-        <div class="m-portlet__head">
-          <div class="m-portlet__head-caption">
-            <div class="m-portlet__head-title">
-              <h3 class="m-portlet__head-text">
-                Data Akreditasi
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div class="m-portlet__body">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Nama Unit</th>
-                <th>Nama Lembaga</th>
-                <th>Status</th>
-                <th>Tanggal Berlaku</th>
-                <th>Tanggal Habis</th>
-                <th>Nilai</th>
-                <th>Is Active</th>
-                <th>File</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($dataAkreditasi as $akreditasi): ?>
-                <tr>
-                  <td><?php
-                  foreach ($units as $unit) {
-                      if (isset($unit['id']) && isset($akreditasi['id_unit']) && $unit['id'] == $akreditasi['id_unit']) {
-                          echo $unit['nama'];
-                          break;  // keluar dari loop setelah menemukan yang cocok
-                      } else {
-                          echo "Unit Tidak Ditemukan";
-                          break;
-                      }
-                  }
-                  ?></td>
-                  <td><?php
-                  foreach ($lembagas as $lembaga) {
-                      if (isset($lembaga['id']) && isset($akreditasi['id_lembaga']) && $lembaga['id'] == $akreditasi['id_lembaga']) {
-                          echo $lembaga['nama'];
-                          break;  // keluar dari loop setelah menemukan yang cocok
-                      } else {
-                          echo "Lembaga Tidak Ditemukan";
-                          break;
-                      }
-                  }
-                  ?></td>
-                  <td><?php
-                    $status = '';
-                    if (isset($akreditasi['status'])) {
-                        switch ($akreditasi['status']) {
-                            case 0: $status = 'Pengajuan'; break;
-                            case 1: $status = 'Diterima'; break;
-                            case 2: $status = 'Ditolak'; break;
-                        }
-                    } else {
-                        $status = 'Tidak Ditemukan';
-                    }
-                    echo $status;
-                  ?></td>
-                  <td>
-                    <?= isset($akreditasi['tanggal_berlaku']) ? $akreditasi['tanggal_berlaku'] : 'Tanggal Tidak Ditemukan'; ?>
-                  </td>
-                  <td>
-                    <?= isset($akreditasi['tanggal_habis']) ? $akreditasi['tanggal_habis'] : 'Tanggal Tidak Ditemukan'; ?>
-                  </td>
-                  <td>
-                    <?php
-                      $nilai = '';
-                      if (isset($akreditasi['nilai'])) {
-                          switch ($akreditasi['nilai']) {
-                              case 1: $nilai = 'Unggul'; break;
-                              case 2: $nilai = 'Baik Sekali'; break;
-                              case 3: $nilai = 'Baik'; break;
-                              case 4: $nilai = 'A'; break;
-                              case 5: $nilai = 'B'; break;
-                              case 6: $nilai = 'C'; break;
-                              case 7: $nilai = 'Minimum'; break;
-                              case 8: $nilai = 'Tidak Ada'; break;
-                              default: $nilai = 'Nilai Tidak Dikenal'; break;
-                          }
-                      } else {
-                          $nilai = 'Nilai Tidak Ditemukan';
-                      }
-                      echo $nilai;
-                    ?>
-                  </td>
-                  <td>
-                  <?php
-                    $aktif = '';
-                    if (isset($akreditasi['is_active'])) {
-                        // Mengecek langsung nilai boolean
-                        $aktif = ($akreditasi['is_active'] === 't') ? 'Aktif' : 'Tidak Aktif';
-                    } else {
-                        $aktif = 'Tidak Ada';
-                    }
-                    echo $aktif;
-                  ?>
-                  </td>
-                  <td>
-                    <?php if (isset($akreditasi['file']) && $akreditasi['file']): ?>
-                      <a href="<?= base_url('public/akreditasi/download/' . esc($akreditasi['file'])) ?>" target="_blank">Download</a>
-                    <?php else: ?>
-                      Tidak ada file
-                    <?php endif; ?>
-                  </td>
-                  <td>
-                    <!-- Tombol Edit -->
-                    <?php if (isset($akreditasi['id'])): ?>
-                      <button class="btn btn-sm btn-warning" 
-                              onclick="showEditModal('<?= $akreditasi['id'] ?>')">
-                        Edit
-                      </button>
-                    <?php endif; ?>
-                    <!-- Tombol Hapus -->
-                  <button class="btn btn-sm btn-danger" 
-                          onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($akreditasi['id_unit']) ?>')">
-                    Hapus
-                  </button>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
+<?php if (session()->getFlashdata('success')): ?>
+  <div class="alert alert-success mt-3">
+    <?= session()->getFlashdata('success') ?>
+  </div>
+<?php endif; ?>
+
+<!-- Modal Update -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-white">
+        <h5 class="modal-title" id="updateModalLabel">Konfirmasi Perbarui Data</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    <?php endif; ?>
-    <!-- Modal Hapus -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <form method="get">
-            <div class="modal-header bg-danger text-white">
-              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" name="delete" id="deleteId">
-              <p id="deleteMessage"></p>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            </div>
-          </form>
-        </div>
+      <div class="modal-body">
+        Apakah Anda yakin ingin memperbarui dokumen ini?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" onclick="submitUpdate()">Ya, Perbarui</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
       </div>
     </div>
-    <!-- Modal Edit -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-warning text-white">
-            <h5 class="modal-title" id="editModalLabel">Konfirmasi Edit</h5>
-            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="editId">
-            <p>Apakah Anda yakin ingin mengedit data ini?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" onclick="confirmEdit()">Ya, Edit</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
+</div>
 
-
+<!-- Script -->
 <script>
-    function handleCancel() {
+  function handleCancel() {
         <?php if (isset($editData)): ?>
             // If editing, redirect to the list or home page
             window.location.href = 'akreditasi'; // You can change this to redirect to a different page
@@ -321,19 +179,7 @@
         <?php endif; ?>
     }
 
-    function showDeleteModal(id, nama) {
-    // Mengatur ID data yang akan dihapus
-    document.getElementById('deleteId').value = id;
-    
-    // Menampilkan pesan konfirmasi penghapusan dengan nama data
-    document.getElementById('deleteMessage').innerHTML = 
-      `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
-
-    // Menampilkan modal
-    $('#deleteModal').modal('show');
-  }
-
-  function showEditModal(id) {
+    function showEditModal(id) {
       document.getElementById('editId').value = id;
       $('#editModal').modal('show');
   }

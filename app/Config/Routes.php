@@ -80,12 +80,14 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
   $routes->get('akreditasi/download/(:segment)', [Akreditasi::class, 'download']);
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/input', [Akreditasi::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan/input', [DokumenPenetapan::class, 'input']);
   $routes->get('dokumen-penetapan/download/(:segment)', 'DokumenPenetapan::download/$1');
   $routes->match(['GET', 'POST'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
   $routes->get('akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/syarat-unggul', [SyaratUnggul::class, 'index']);
+  $routes->match(['get', 'post'], 'akreditasi/syarat-unggul/input', [SyaratUnggul::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/instrumen-pemutu', [InstrumenPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/periode', [Periode::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/periode/input', [Periode::class, 'input']);
