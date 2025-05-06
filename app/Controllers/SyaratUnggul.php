@@ -11,25 +11,51 @@ class SyaratUnggul extends BaseController
     $lembagaModel = new LembagaAkreditasiModel();
     $data['lembagas'] = $lembagaModel->getLembagas();
 
+    // Ambil data p_syarat_unggul
+    $syaratUnggulModel = new SyaratUnggulModel();
+    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
+
+    $editData = null;
+    if ($this->request->getGet('id')) {
+        $id = $this->request->getGet('id');
+        // Get the data for the specified ID
+        $editData = $syaratUnggulModel->find($id);
+        $data['editData'] = $editData;
+    }
+
     if ($this->request->getMethod() == 'POST') {
-      // Mengambil data dari form
-      $data = [
-          'id_lembaga' => $this->request->getPost('id_lembaga'),
-          'nama' => $this->request->getPost('nama'),
-      ];
+        $id = $this->request->getPost('id');
+        $dataForm = [
+            'id_lembaga' => $this->request->getPost('id_lembaga'),
+            'nama' => $this->request->getPost('nama'),
+        ];
 
-      // Simpan data ke database
-      $model = new SyaratUnggulModel();
-      $saveResult = $model->insert($data);
+        // Cek jika ada ID di POST, berarti edit data
+        if ($id) {
+            $syaratUnggulModel->update($id, $dataForm);
+            session()->setFlashdata('success', 'Data berhasil diperbarui!');
+        } else {
+            // Jika tidak ada ID, maka insert data baru
+            $syaratUnggulModel->insert($dataForm);
+            session()->setFlashdata('success', 'Data berhasil disimpan!');
+        }
 
-      if ($saveResult) {
-          session()->setFlashdata('success', 'Dokumen berhasil disimpan!');
-      } else {
-          session()->setFlashdata('error', 'Terjadi kesalahan saat menyimpan data.');
-      }
+        return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
+    }
 
-      return redirect()->to(base_url('public/akreditasi/syarat-unggul'));  // Redirect kembali ke halaman syarat unggul
-  }
+    // Check for 'GET' method for deleting a syarat unggul
+    if ($this->request->getGet('delete')) {
+        $id = $this->request->getGet('delete');
+        $deleteResult = $syaratUnggulModel->delete($id);
+
+        if ($deleteResult) {
+            session()->setFlashdata('success', 'Data berhasil dihapus!');
+        } else {
+            session()->setFlashdata('error', 'Terjadi kesalahan saat menghapus data!');
+        }
+
+        return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
+    }
 
     $data["title"] = "Syarat Unggul";
     echo view('layouts/header.php', $data);

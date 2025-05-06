@@ -6,6 +6,12 @@ use App\Models\UserModel;
 
 class Profile extends BaseController
 {
+  protected $userModel;
+  public function __construct()
+  {
+    $this->userModel = new UserModel();
+  }
+
   public function index()
   {
     $data = ['title' => 'Profile'];
@@ -13,54 +19,52 @@ class Profile extends BaseController
     echo view("profile/index.php");
     echo view("layouts/footer.php");
   }
+  private function isDataValid($data)
+  {
+    $validation = service('validation');
+    if (!$validation->run($data, "profile")) {
+      echo view('layouts/header', ['title' => 'Profile']);
+      echo view(
+        'profile/index',
+        [
+          'errors' => $validation->getErrors(),
+          'old' => $data
+        ]
+      );
+      echo view('layouts/footer');
+      return false;
+    }
+    return true;
+  }
 
   public function edit()
   {
     if ($this->request->getMethod() !== 'POST') {
       return;
     }
-    $validation = service('validation');
-    $userModel = new UserModel();
-    $token = getDatabyToken();
+    $token = getDecodedToken();
     if (!$token) {
       return null;
     }
     $userId = $token->uid;
-    $user = $userModel->where('id', $userId)->first();
-    $data = ['nama' => $this->request->getPost('nama')];
-    $foto = $this->request->getFile('avatar');
-    if ($foto && $foto->isValid()) {
-      $data['foto'] = pg_escape_bytea(file_get_contents($foto->getTempName()));
-    }
-    if (!$this->validate("profile")) {
-      echo view('layouts/header', ['title' => 'Profile']);
-      echo view(
-        'profile/index',
-        [
-          'errors' => $validation->getErrors(),
-          'old' => $this->request->getPost()
-        ]
-      );
-      echo view('layouts/footer');
+    $data = [
+      "nama" => $this->request->getPost('nama'),
+    ];
+
+    if (!$this->isDataValid($data)) {
       return;
     }
-    // Remove empty fields
-    $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
-    if (empty($data)) {
-      return redirect()->back()->with('error', 'No data to update.');
+
+    $file = $this->request->getFile('foto');
+    if ($file->isValid()) {
+      $this->userModel->setAvatar($file);
     }
-    if (isset($data['foto'])) {
-      $image = pg_unescape_bytea($data['foto']);
-      if (cache()->get("avatar_{$user['id']}")) {
-        cache()->delete("avatar_{$user['id']}");
-      }
-      cache()->save("avatar_{$user['id']}", $image, 3600);
-    }
-    $isUpdate = $userModel->update($user['id'], $data);
+
+    $isUpdate = $this->userModel->update($userId, $data);
     if (!$isUpdate) {
-      return alert('profile', 'error', 'Failed to update the profile!');
+      return redirectWithMessage('profile', 'error', 'Gagal memperbarui profil!');
     }
-    return alert('profile', 'success', 'Profile updated successfully!');
+    return redirectWithMessage('profile', 'success', 'Berhasil memperbarui profil!');
   }
 
   public function reset_password()

@@ -6,11 +6,12 @@ use CodeIgniter\Model;
 
 class UnitModel extends Model
 {
-    protected $table            = 'm_unit';
-    protected $primaryKey       = 'id';
-    protected $allowedFields    = ['id', 'nama', 'parent'];
+    protected $table = 'm_unit';
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['id', 'nama', 'parent'];
 
-    public function getUnits(){
+    public function getUnits()
+    {
         return $this->findAll();
     }
 
