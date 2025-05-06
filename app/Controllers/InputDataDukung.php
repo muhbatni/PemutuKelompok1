@@ -86,6 +86,14 @@ class InputDataDukung extends BaseController
 
     return $this->response->setJSON($info);
   }
+
+  public function getPernyataanInfo($id)
+    {
+    $model = new DataDukungModel();
+    $info = $model->getPernyataanInfo($id);
+    return $this->response->setJSON($info);
+    }
+
   public function edit($id)
 {
     // Get data dukung by id

@@ -86,6 +86,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('audit/input-data-dukung/update/(:num)', [InputDataDukung::class, 'update/$1']);
   $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
   $routes->get('audit/get-pelaksanaan-info/(:num)', [InputDataDukung::class, 'getPelaksanaanInfo/$1']);
+  $routes->get('audit/get-pernyataan-info/(:num)', [InputDataDukung::class, 'getPernyataanInfo/$1']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
   $routes->get('akreditasi', [Akreditasi::class, 'index']);

@@ -56,5 +56,14 @@ class DataDukungModel extends Model
         ->get()
         ->getFirstRow('array');
     }
+
+    public function getPernyataanInfo($id) 
+    {
+    return $this->db->table('a_pernyataan p')
+        ->select('p.indikator')
+        ->where('p.id', $id)
+        ->get()
+        ->getFirstRow('array');
+    }
 }
 ?>
