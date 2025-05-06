@@ -65,7 +65,8 @@
           </div>
         </div>
         <div class="form-group m-form__group row">
-          <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
+          <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode<span
+              style="color: red">*</span></label>
           <div class="col-lg-7 col-md-7 col-sm-12">
             <select class="form-control" id="id_periode" name="id_periode" required>
               <option value="">-- Pilih Periode --</option>
@@ -76,9 +77,10 @@
           </div>
         </div>
         <div class="form-group m-form__group row">
-          <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria</label>
+          <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria<span
+              style="color: red">*</span></label>
           <div class="col-lg-7 col-md-7 col-sm-12">
-            <select class="form-control" id="id_kriteria" name="id_kriteria">
+            <select class="form-control" id="id_kriteria" name="id_kriteria" required>
               <option value="">-- Pilih Kriteria --</option>
               <?php foreach ($kriteria as $k): ?>
                 <option name="id_kriteria" value="<?= $k['id']; ?>"><?= $k['nama']; ?></option>
@@ -112,7 +114,7 @@
             </div>
           </div>
           <div class="form-group m-form__group row">
-            <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan</label>
+            <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <div class="row ui-sortable" id="m_sortable_portlets">
                 <?php
