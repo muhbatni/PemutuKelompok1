@@ -43,6 +43,7 @@
       <table class="table table-bordered table-striped" id="html_table" width="100%">
       <thead>
               <tr>
+                <th>No</th>
                 <th>Nama Unit</th>
                 <th>Nama Lembaga</th>
                 <th>Status</th>
@@ -55,8 +56,9 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($dataAkreditasi as $akreditasi): ?>
+              <?php $no = 1; foreach ($dataAkreditasi as $akreditasi): ?>
                 <tr>
+                  <td><?= $no++ ?></td>
                   <td><?php
                   $namaUnit = 'Unit Tidak Ditemukan';
                   if (isset($akreditasi['id_unit'])) {
