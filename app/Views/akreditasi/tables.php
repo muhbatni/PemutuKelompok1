@@ -182,16 +182,12 @@
     }
 
     function showDeleteModal(id, nama) {
-    // Mengatur ID data yang akan dihapus
-    document.getElementById('deleteId').value = id;
-    
-    // Menampilkan pesan konfirmasi penghapusan dengan nama data
-    document.getElementById('deleteMessage').innerHTML = 
-      Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?;
+  document.getElementById('deleteId').value = id;
+  document.getElementById('deleteMessage').innerHTML = 
+    `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
+  $('#deleteModal').modal('show');
+}
 
-    // Menampilkan modal
-    $('#deleteModal').modal('show');
-  }
 </script>
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
