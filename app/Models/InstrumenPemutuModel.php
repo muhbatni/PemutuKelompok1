@@ -19,8 +19,10 @@ class InstrumenPemutuModel extends Model
                 
 }
 public function delete_by_id($id) {
-    return $this->where('p_instrumen_pemutu', ['id' => $id]);
+    return $this->where('id', $id)->delete();
 }
+
+
 
 public function getJenjangText($jenjang)
 {

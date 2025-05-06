@@ -5,6 +5,51 @@ use App\Models\UnitModel;
 
 class Unit extends BaseController
 {
+    
+    public function input()
+    {
+        $model = new UnitModel();
+
+        // Ambil ID jika ada
+        $id = $this->request->getGet('id');
+        $edit = null;
+
+        // Kalau ada ID, ambil data lama untuk ditampilkan di form
+        if ($id) {
+            $edit = $model->find($id);
+            if (!$edit) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+            }
+        }
+
+        // Jika disubmit (POST)
+        if ($this->request->getMethod() === 'post') {
+            $data = [
+                'nama' => $this->request->getPost('nama'),
+                'parent' => $this->request->getPost('parent'),
+            ];
+
+            // Update jika ID ada, insert jika tidak
+            if ($id) {
+                $model->update($id, $data);
+                session()->setFlashdata('success', 'Data berhasil diperbarui.');
+            }
+
+            return redirect()->to(base_url('akreditasi/unit'));
+        }
+
+        // Tampilkan form
+        $data = [
+            'title' => $id ? 'Edit Unit' : 'Tambah Unit',
+            'unit' => $id ? true : false,
+            'edit' => $edit,
+        ];
+
+        echo view('layouts/header', $data);
+        echo view('akreditasi/Unit/form', $data);
+        echo view('layouts/footer');
+    }
+    
     public function index()
     {
         $model = new UnitModel();
@@ -57,7 +102,7 @@ class Unit extends BaseController
 
     // Tampilkan form dan data di view yang sama
     echo view('layouts/header.php', $data);
-    echo view('akreditasi/unit/form.php');
+    echo view('akreditasi/unit/tables.php');
     echo view('layouts/footer.php');
     }
 

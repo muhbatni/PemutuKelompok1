@@ -10,8 +10,9 @@
           </div>
         </div>
       </div>
+      
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="<?= $isEdit ? 'periode?edit=' . esc($edit['id']) : 'periode' ?>">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="<?= site_url('akreditasi/periode') ?>">
 
         <div class="form-group m-form__group row">
           <?php if ($isEdit): ?>
@@ -40,12 +41,18 @@
         <!-- Button -->
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <?php if ($isEdit): ?>
-              <button type="button" class="btn btn-primary" onclick="showUpdateModal()">Perbarui</button>
+          <a href="<?= base_url('public/akreditasi/periode') ?>" class="btn btn-danger me-2">
+              <i class="fa fa-arrow-left"></i> Batal
+          </a>  
+          <?php if ($isEdit): ?>
+            <button type="button" class="btn btn-primary" onclick="showUpdateModal()">
+                <i class="fa fa-save"></i> Perbarui
+            </button>
             <?php else: ?>
-              <button type="submit" class="btn btn-primary">Simpan</button>
+              <button type="submit" class="btn btn-primary" onclick="submitUpdate()">
+                <i class="fa fa-save"></i> Simpan
+            </button>
             <?php endif; ?>
-            <a href="<?= base_url('public/akreditasi/periode') ?>" class="btn btn-secondary">Batal</a>
           </div>
         </div>
       </form>
@@ -59,52 +66,6 @@
     <?= session()->getFlashdata('success') ?>
   </div>
 <?php endif; ?>
-
-<!-- TABEL DATA -->
-<div class="row mt-5">
-  <div class="col-md-12">
-    <div class="m-portlet">
-      <div class="m-portlet__head">
-        <div class="m-portlet__head-caption">
-          <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Daftar Periode</h3>
-          </div>
-        </div>
-      </div>
-      <div class="m-portlet__body">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Tahun</th>
-              <th>Tahun Ajaran</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (!empty($periode)) : ?>
-              <?php $no = 1; foreach ($periode as $row) : ?>
-                <tr>
-                  <td><?= $no++ ?></td>
-                  <td><?= esc($row['tahun']) ?></td>
-                  <td><?= esc($row['ts']) ?></td>
-                  <td>
-                    <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['ts']) ?>')">Hapus</button>
-                  </td>
-                </tr>
-              <?php endforeach ?>
-            <?php else : ?>
-              <tr>
-                <td colspan="4" class="text-center">Belum ada data periode.</td>
-              </tr>
-            <?php endif ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Modal Hapus -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

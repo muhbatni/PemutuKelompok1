@@ -5,6 +5,51 @@ use App\Models\PeriodeModel;
 
 class Periode extends BaseController
 {
+
+    public function input()
+    {
+        $model = new PeriodeModel();
+
+        // Ambil ID jika ada
+        $id = $this->request->getGet('id');
+        $edit = null;
+
+        // Kalau ada ID, ambil data lama untuk ditampilkan di form
+        if ($id) {
+            $edit = $model->find($id);
+            if (!$edit) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+            }
+        }
+
+        // Jika disubmit (POST)
+        if ($this->request->getMethod() === 'post') {
+            $data = [
+                'tahun' => $this->request->getPost('tahun'),
+                'ts' => $this->request->getPost('ts'),
+            ];
+
+            // Update jika ID ada, insert jika tidak
+            if ($id) {
+                $model->update($id, $data);
+                session()->setFlashdata('success', 'Data berhasil diperbarui.');
+            }
+
+            return redirect()->to(base_url('akreditasi/periode'));
+        }
+
+        // Tampilkan form
+        $data = [
+            'title' => $id ? 'Edit Periode' : 'Tambah Periode',
+            'isEdit' => $id ? true : false,
+            'edit' => $edit,
+        ];
+
+        echo view('layouts/header', $data);
+        echo view('akreditasi/periode/form', $data);
+        echo view('layouts/footer');
+    }
+
     public function index()
     {
         $model = new PeriodeModel();
@@ -56,7 +101,7 @@ class Periode extends BaseController
         $data['edit'] = $editData;
 
         echo view('layouts/header.php', $data);
-        echo view('akreditasi/periode/form.php');
+        echo view('akreditasi/periode/tables.php');
         echo view('layouts/footer.php');
     }
 }

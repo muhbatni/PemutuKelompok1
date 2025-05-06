@@ -2,25 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Models\UnitModel;
 use App\Models\LembagaAkreditasiModel;
 use App\Models\PeriodeModel;
 use App\Models\UnitPemutuModel;
 
 class InputDataPemutu extends BaseController
 {
-  protected $unitModel;
   protected $lembagaModel;
   protected $periodeModel;
   protected $unitpemutumodel;
 
   public function __construct()
   {
-    $this->unitModel = new UnitModel();
     $this->lembagaModel = new LembagaAkreditasiModel();
     $this->periodeModel = new PeriodeModel();
     $this->unitpemutumodel = new UnitPemutuModel();
   }
+
 
   public function index()
   {
@@ -28,12 +26,11 @@ class InputDataPemutu extends BaseController
 
     $data = [
       'title' => 'Input Data Pemutu',
-      'units' => $this->unitModel->getUnits(),
-      'lembagas' => $this->lembagaModel->getLembagas(),
+      'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
-      'editData' => null 
+      'editData' => null
     ];
 
     return view('layouts/header', $data)
@@ -41,6 +38,21 @@ class InputDataPemutu extends BaseController
       . view('layouts/footer');
   }
 
+  public function getLembaga($id_unit)
+  {
+    $lembaga = $this->unitpemutumodel->getLembagaByUnit($id_unit);
+
+    if (!$lembaga) {
+      return $this->response->setJSON([
+        'error' => 'Data lembaga tidak ditemukan untuk unit ini'
+      ]);
+    }
+
+    return $this->response->setJSON([
+      'id' => $lembaga['id_lembaga'],
+      'nama' => $lembaga['nama']
+    ]);
+  }
 
   public function save()
   {
@@ -79,12 +91,11 @@ class InputDataPemutu extends BaseController
 
     $data = [
       'title' => 'Edit Data Pemutu',
-      'units' => $this->unitModel->getUnits(),
-      'lembagas' => $this->lembagaModel->getLembagas(),
+      'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
-      'editData' => $editData 
+      'editData' => $editData
     ];
 
     return view('layouts/header', $data)
