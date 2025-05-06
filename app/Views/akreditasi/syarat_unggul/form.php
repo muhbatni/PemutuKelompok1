@@ -19,7 +19,7 @@
         <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
-          <select class="form-control m-input" id="id_lembaga" name="id_lembaga">
+          <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
               <option value="<?= $lembaga['id']; ?>" 
