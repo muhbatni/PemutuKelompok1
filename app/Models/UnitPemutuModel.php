@@ -59,4 +59,12 @@ class UnitPemutuModel extends Model
             ->get()
             ->getRowArray();
     }
+    public function getAllUnits()
+    {
+        return $this->db->table('m_unit')
+            ->select('m_unit.id, m_unit.nama')
+            ->orderBy('m_unit.nama', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }

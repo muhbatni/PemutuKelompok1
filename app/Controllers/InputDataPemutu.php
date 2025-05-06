@@ -139,7 +139,7 @@ class InputDataPemutu extends BaseController
   {
     $data = [
       'title' => 'Form Input Data Pemutu',
-      'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
+      'units' => $this->unitpemutumodel->getAllUnits(), // Ganti ini
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'editData' => null
