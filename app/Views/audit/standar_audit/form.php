@@ -51,6 +51,9 @@
               File yang diperbolehkan: PDF, DOC, DOCX
               <?= $isEdit && !empty($edit['dokumen']) ? '(Abaikan jika tidak ingin mengganti)' : '' ?>
             </span>
+            <?php if (isset($edit['dokumen']) && !empty($edit['dokumen'])): ?>
+    <p>Dokumen saat ini: <strong><?= $edit['dokumen']; ?></strong></p>
+<?php endif; ?>
           </div>
         </div>
 

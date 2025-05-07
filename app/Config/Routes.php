@@ -75,6 +75,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/input-standar/edit/(:num)', [InputStandarAudit::class, 'edit/$1']);
   $routes->post('audit/input-standar/update/(:num)', [InputStandarAudit::class, 'update/$1']);
+  $routes->get('audit/standar/download/(:segment)', [InputStandarAudit::class, 'download/$1']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/input-manajemen-audit', [InputManajemenAudit::class, 'index']);
   $routes->get('audit/input-manajemen-audit/edit/(:num)', 'InputManajemenAudit::edit/$1');

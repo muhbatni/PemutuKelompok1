@@ -89,7 +89,16 @@
                 </td> -->
 
                 <td><?= $s['id_parent']?></td>
-                <td><?= $s['dokumen']; ?></td>
+                <!-- <td><?= $s['dokumen']; ?></td> -->
+                <td>
+    <?php if (!empty($s['dokumen'])): ?>
+        <a href="<?= base_url('public/audit/standar/download/' . $s['dokumen']); ?>" class="btn btn-sm btn-info" title="Download">
+            <i class="la la-download"></i> Download
+        </a>
+    <?php else: ?>
+        <span class="text-muted">Tidak Ada Dokumen</span>
+    <?php endif; ?>
+</td>
                 <td>
                   <?php
                   if (isset($s['is_aktif'])) {
