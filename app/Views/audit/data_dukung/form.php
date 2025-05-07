@@ -40,14 +40,22 @@
                     </div>
 
                     <!-- Info Pelaksanaan akan muncul di bawah dropdown -->
-                    <div id="pelaksanaan-info" style="display: none;">
-                        <div class="form-group m-form__group">
-                            <label>Unit</label>
-                            <input type="text" class="form-control m-input" id="unit-name" readonly>
-                        </div>
-                        <div class="form-group m-form__group">
-                            <label>Auditor</label>
-                            <input type="text" class="form-control m-input" id="auditor-name" readonly>
+                    <div id="pelaksanaan-info">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-form__group">
+                                    <label>Unit</label>
+                                    <input type="text" class="form-control m-input" id="unit-name" readonly
+                                        placeholder="Unit Pelaksanaan">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group m-form__group">
+                                    <label>Auditor</label>
+                                    <input type="text" class="form-control m-input" id="auditor-name" readonly
+                                        placeholder="Auditor Pelaksanaan">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -63,6 +71,16 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+
+                    <!-- Menampilkan Pernyataan dan Indikator (readonly) -->
+                    <div id="pernyataan-info">
+                        <div class="form-group m-form__group">
+                            <label>Indikator</label>
+                            <input type="text" class="form-control m-input" id="indikator" readonly
+                                placeholder="Indikator Pernyataan">
+                        </div>
+                    </div>
+
 
                     <!-- Deskripsi -->
                     <div class="form-group m-form__group">
@@ -142,16 +160,15 @@
                                 if (data) {
                                     document.getElementById('unit-name').value = data.unit_name || '';
                                     document.getElementById('auditor-name').value = data.auditor_name || '';
-                                    document.getElementById('pelaksanaan-info').style.display = 'block';
                                 }
                             })
                             .catch(error => {
                                 console.error('Error:', error);
                                 alert('Gagal mengambil data: ' + error.message);
-                                document.getElementById('pelaksanaan-info').style.display = 'none';
+                                document.getElementById('unit-name').value = '';
+                                document.getElementById('auditor-name').value = '';
                             });
                     } else {
-                        document.getElementById('pelaksanaan-info').style.display = 'none';
                         document.getElementById('unit-name').value = '';
                         document.getElementById('auditor-name').value = '';
                     }
@@ -179,11 +196,77 @@
                     if (resetButton) {
                         resetButton.addEventListener('click', function() {
                             setTimeout(() => {
-                                document.getElementById('pelaksanaan-info').style.display =
-                                    'none';
+                                // Just clear the values without hiding the container
                                 document.getElementById('unit-name').value = '';
                                 document.getElementById('auditor-name').value = '';
+
+                                // Reset pelaksanaan selection if it exists
+                                const pelaksanaanSelect = document.getElementById(
+                                    'id_pelaksanaan');
+                                if (pelaksanaanSelect) {
+                                    pelaksanaanSelect.selectedIndex = 0;
+                                }
+
+                                // Reset pernyataan selection
+                                const pernyataanSelect = document.getElementById(
+                                    'id_pernyataan');
+                                if (pernyataanSelect) {
+                                    pernyataanSelect.selectedIndex = 0;
+                                }
+
+                                // Reset deskripsi
+                                const deskripsi = document.getElementById('deskripsi');
+                                if (deskripsi) {
+                                    deskripsi.value = '';
+                                }
+
+                                // Reset file input
+                                const dokumen = document.getElementById('dokumen');
+                                if (dokumen) {
+                                    dokumen.value = '';
+                                }
                             }, 0);
+                        });
+                    }
+                });
+
+                // Add these event listeners to your existing JavaScript
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Pelaksanaan change handler
+                    const pelaksanaanSelect = document.getElementById('id_pelaksanaan');
+                    if (pelaksanaanSelect) {
+                        pelaksanaanSelect.addEventListener('change', function() {
+                            updatePelaksanaanInfo(this.value);
+                        });
+                    }
+
+                    // Pernyataan change handler
+                    // Replace the existing pernyataan change handler
+                    const pernyataanSelect = document.getElementById('id_pernyataan');
+                    if (pernyataanSelect) {
+                        pernyataanSelect.addEventListener('change', function() {
+                            const pernyataanId = this.value;
+                            if (pernyataanId) {
+                                fetch('<?= site_url('audit/get-pernyataan-info') ?>/' + pernyataanId)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data) {
+                                            document.getElementById('indikator').value = data
+                                                .indikator || '';
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        document.getElementById('indikator').value = '';
+                                    });
+                            } else {
+                                document.getElementById('indikator').value = '';
+                            }
                         });
                     }
                 });
@@ -207,15 +290,13 @@
                     }
                     <?php endif; ?>
                 });
-                </script>
-                <script>
+
                 function confirmBack(url) {
                     if (confirm('Apakah Anda yakin ingin kembali? Perubahan yang belum disimpan akan hilang.')) {
                         window.location.href = url;
                     }
                 }
-                </script>
-                <script>
+
                 function confirmBack(backUrl) {
                     document.getElementById('modalBackLink').href = backUrl;
                     $('#modalBack').modal('show');

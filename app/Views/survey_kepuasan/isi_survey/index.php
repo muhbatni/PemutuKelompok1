@@ -14,230 +14,129 @@
         </div>
       </div>
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right">
-        <div class="m-portlet__body">
-          <div class="form-group m-form__group">
-            <label for="exampleInputEmail1">
-              Email address
-            </label>
-            <input type="email" class="form-control m-input" id="exampleInputEmail1" aria-describedby="emailHelp"
-              placeholder="Enter email">
-            <span class="m-form__help">
-              We'll never share your email with anyone else.
-            </span>
-          </div>
-          <div class="form-group m-form__group">
-            <label for="exampleInputPassword1">
-              Password
-            </label>
-            <input type="password" class="form-control m-input" id="exampleInputPassword1" placeholder="Password">
-          </div>
-          <div class="form-group m-form__group">
-            <label>
-              Static:
-            </label>
-            <p class="form-control-static">
-              email@example.com
-            </p>
-          </div>
-          <div class="form-group m-form__group">
-            <label for="exampleSelect1">
-              Example select
-            </label>
-            <select class="form-control m-input" id="exampleSelect1">
-              <option>
-                1
-              </option>
-              <option>
-                2
-              </option>
-              <option>
-                3
-              </option>
-              <option>
-                4
-              </option>
-              <option>
-                5
-              </option>
-            </select>
-          </div>
-          <div class="form-group m-form__group">
-            <label for="exampleSelect2">
-              Example multiple select
-            </label>
-            <select multiple="" class="form-control m-input" id="exampleSelect2">
-              <option>
-                1
-              </option>
-              <option>
-                2
-              </option>
-              <option>
-                3
-              </option>
-              <option>
-                4
-              </option>
-              <option>
-                5
-              </option>
-            </select>
-          </div>
-          <div class="form-group m-form__group">
-            <label for="exampleTextarea">
-              Example textarea
-            </label>
-            <textarea class="form-control m-input" id="exampleTextarea" rows="3"></textarea>
+      <div class="m-portlet__body">
+        <!--begin: Search Form -->
+        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+          <div class="row align-items-center">
+            <div class="col-xl-8 order-2 order-xl-1">
+              <div class="form-group m-form__group row align-items-center">
+                <div class="col-md-4">
+                  <div class="m-input-icon m-input-icon--left">
+                    <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
+                      id="generalSearch">
+                    <span class="m-input-icon__icon m-input-icon__icon--left">
+                      <span>
+                        <i class="la la-search"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="m-portlet__foot m-portlet__foot--fit">
-          <div class="m-form__actions">
-            <button type="reset" class="btn btn-primary">
-              Submit
-            </button>
-            <button type="reset" class="btn btn-secondary">
-              Cancel
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-    <!--end::Portlet-->
-
-    <!--begin::Portlet-->
-    <div class="m-portlet m-portlet--tab">
-      <div class="m-portlet__head">
-        <div class="m-portlet__head-caption">
-          <div class="m-portlet__head-title">
-            <span class="m-portlet__head-icon m--hide">
-              <i class="la la-gear"></i>
-            </span>
-            <h3 class="m-portlet__head-text">
-              Textual HTML5 Inputs
-            </h3>
-          </div>
-        </div>
+        <!--end: Search Form -->
+        <!--begin: Datatable -->
+        <table class="m-datatable table-bordered" id="html_table" width="100%">
+          <thead>
+            <tr>
+              <th title="Field #1">
+                ID Survey
+              </th>
+              <th title="Field #2">
+                Kode
+              </th>
+              <th title="Field #3">
+                Nama
+              </th>
+              <th title="Field #4">
+                Periode
+              </th>
+              <th title="Field #5">
+                Tanggal mulai
+              </th>
+              <th title="Field #6">
+                Tanggal selesai
+              </th>
+              <th title="Field #7">
+                Status
+              </th>
+              <th title="Field #8">
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($surveys as $survey): ?>
+              <tr>
+                <td>
+                  <?php echo esc($survey['id']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['kode']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['nama']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['tahun']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['tanggal_mulai']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['tanggal_selesai']); ?>
+                </td>
+                <td>
+                  <div class="w-5 text-center">
+                    <?php if ($survey['status'] === "t"): ?>
+                      <span class="m-badge m-badge--success w-24 m-badge--wide">Aktif</span>
+                    <?php else: ?>
+                      <span class="m-badge m-badge--danger w-24 m-badge--wide">Tidak Aktif</span>
+                    <?php endif; ?>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex justify-content-around">
+                    <?php if ($survey['status'] === "t"): ?>
+                      <a href="<?= base_url("public/isi-survey/$survey[kode]-$survey[id]") ?>"
+                        class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill d-flex align-items-center justify-content-center"
+                        title="Isi Survey">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 36 36">
+                          <path fill="currentColor"
+                            d="M21 12H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1M8 10h12V7.94H8Z"
+                            class="clr-i-outline clr-i-outline-path-1" />
+                          <path fill="currentColor"
+                            d="M21 14.08H7a1 1 0 0 0-1 1V19a1 1 0 0 0 1 1h11.36L22 16.3v-1.22a1 1 0 0 0-1-1M20 18H8v-2h12Z"
+                            class="clr-i-outline clr-i-outline-path-2" />
+                          <path fill="currentColor"
+                            d="M11.06 31.51v-.06l.32-1.39H4V4h20v10.25l2-1.89V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v28a1 1 0 0 0 1 1h8a3.4 3.4 0 0 1 .06-.49"
+                            class="clr-i-outline clr-i-outline-path-3" />
+                          <path fill="currentColor" d="m22 19.17l-.78.79a1 1 0 0 0 .78-.79"
+                            class="clr-i-outline clr-i-outline-path-4" />
+                          <path fill="currentColor"
+                            d="M6 26.94a1 1 0 0 0 1 1h4.84l.3-1.3l.13-.55v-.05H8V24h6.34l2-2H7a1 1 0 0 0-1 1Z"
+                            class="clr-i-outline clr-i-outline-path-5" />
+                          <path fill="currentColor"
+                            d="m33.49 16.67l-3.37-3.37a1.61 1.61 0 0 0-2.28 0L14.13 27.09L13 31.9a1.61 1.61 0 0 0 1.26 1.9a1.6 1.6 0 0 0 .31 0a1.2 1.2 0 0 0 .37 0l4.85-1.07L33.49 19a1.6 1.6 0 0 0 0-2.27ZM18.77 30.91l-3.66.81l.89-3.63L26.28 17.7l2.82 2.82Zm11.46-11.52l-2.82-2.82L29 15l2.84 2.84Z"
+                            class="clr-i-outline clr-i-outline-path-6" />
+                          <path fill="none" d="M0 0h36v36H0z" />
+                        </svg>
+                      </a>
+                    <?php else: ?>
+                      <!-- Tampilkan pesan jika survei tidak aktif -->
+                      <span class="text-muted">Tidak Tersedia</span>
+                    <?php endif; ?>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
       </div>
-      <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right">
-        <div class="m-portlet__body">
-          <div class="form-group m-form__group m--margin-top-10">
-            <div class="alert m-alert m-alert--default" role="alert">
-              Here are examples of
-              <code>
-                            .form-control
-                        </code>
-              applied to each textual HTML5 input type:
-            </div>
-
-            <div class="form-group m-form__group row">
-              <label for="example-text-input" class="col-2 col-form-label">
-                Text
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="text" value="Artisanal kale" id="example-text-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-search-input" class="col-2 col-form-label">
-                Search
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="search" value="How do I shoot web" id="example-search-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-email-input" class="col-2 col-form-label">
-                Email
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="email" value="bootstrap@example.com" id="example-email-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-url-input" class="col-2 col-form-label">
-                URL
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="url" value="https://getbootstrap.com" id="example-url-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-tel-input" class="col-2 col-form-label">
-                Telephone
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="tel" value="1-(555)-555-5555" id="example-tel-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-password-input" class="col-2 col-form-label">
-                Password
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="password" value="hunter2" id="example-password-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-number-input" class="col-2 col-form-label">
-                Number
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="number" value="42" id="example-number-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-datetime-local-input" class="col-2 col-form-label">
-                Date and time
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="datetime-local" value="2011-08-19T13:45:00"
-                  id="example-datetime-local-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-date-input" class="col-2 col-form-label">
-                Date
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="date" value="2011-08-19" id="example-date-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-month-input" class="col-2 col-form-label">
-                Month
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="month" value="2011-08" id="example-month-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-week-input" class="col-2 col-form-label">
-                Week
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="week" value="2011-W33" id="example-week-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-time-input" class="col-2 col-form-label">
-                Time
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="time" value="13:45:00" id="example-time-input">
-              </div>
-            </div>
-            <div class="form-group m-form__group row">
-              <label for="example-color-input" class="col-2 col-form-label">
-                Color
-              </label>
-              <div class="col-10">
-                <input class="form-control m-input" type="color" value="#563d7c" id="example-color-input">
-              </div>
-            </div>
-          </div>
-      </form>
     </div>
+    <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
+      type="text/javascript"></script>
+    <!--end::Portlet-->
   </div>
 </div>

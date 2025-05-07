@@ -20,13 +20,13 @@
       }
     });
 
-    const getPreviewImage = (event) => {
-      const file = event.files[0];
+    const getPreviewImage = (input) => {
+      const file = input.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
           const image = document.querySelector('#profileImagePreview');
-          document.querySelector('#profileImagePreview').src = e.target.result;
+          image.src = e.target.result;
         };
         reader.readAsDataURL(file);
       }
@@ -36,10 +36,11 @@
   <!--begin::Base Styles -->
   <link href="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>/public/assets/app/css/style.bundle.css" rel="stylesheet" type="text/css" />
-  <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="<?= base_url(); ?>/public/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/scripts.bundle.js" type="text/javascript"></script>
+  <link href="<?= base_url(); ?>/public/assets/app/css/style.custom.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="<?= base_url(); ?>/public/assets/app/js/survey-util.js"></script>
   <!--end::Base Styles -->
   <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/demo/default/media/img/logo/favicon.ico" />
@@ -61,16 +62,19 @@ $avatar = $user->getAvatar() ?: $defaultAvatar;
 
 <?php
 $uri = service('uri');
+$segment1 = $uri->getSegment(1);
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$isDashboardActive = empty($uri->getSegment(1));
+
+$auditPages = ['auditor','input-auditor', 'standar','input-standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung','input-data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
-$akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'input-data-pemutu', 'dashboard-periode'];
+$akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'lembaga', 'unit', 'input-data-pemutu', 'isian-pemutu', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
-$surveyPages = ['manajemen-survey', 'isi-survey', ''];
-$isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surveyPages);
+$surveyPages = ['survey', 'isi-survey'];
+$isSurveyActive = in_array($segment1, $surveyPages);
 ?>
 
 <body
@@ -177,8 +181,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                           <div class="m-dropdown__header m--align-center">
                             <div class="m-card-user m-card-user--skin-dark">
                               <div class="profile-picture-dropdown">
-                                <img id="profileImagePreview" src="<?= $avatar ?>" class="profile-picture"
-                                  alt="user-profile" />
+                                <img src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                               </div>
                               <div class="m-card-user__details m--flex m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
@@ -250,8 +253,7 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
           <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
 
             <!-- Dashboard -->
-            <li class="m-menu__item <?= $uri->getSegment(1) === 'dashboard' ? 'm-menu__item--active' : '' ?>"
-              aria-haspopup="true">
+            <li class="m-menu__item <?= $isDashboardActive ? 'm-menu__item--active' : '' ?>" aria-haspopup="true">
               <a href="<?= base_url("public/dashboard") ?>" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-line-graph"></i>
                 <span class="m-menu__link-text">Dashboard</span>
@@ -317,14 +319,15 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                     'dokumen-penetapan' => 'Dokumen Penetapan',
                     '' => 'Akreditasi',
                     'periode' => 'Periode',
-                    'lembaga' => 'Input Lembaga',
-                    'unit' => 'Input Unit',
-                    'input-data-pemutu' => 'Input Data Pemutu',
+                    'lembaga' => 'Lembaga Akreditasi',
+                    'unit' => 'Unit',
+                    'input-data-pemutu' => 'Data Unit Pemutu',
                     'isian-pemutu' => 'Isian Pemutu',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
-                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
+                    <li
+                      class="m-menu__item <?= $isAkreditasiActive && $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
                       aria-haspopup="true">
                       <a href="<?= base_url("public/akreditasi/$slug") ?>" class="m-menu__link">
                         <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
@@ -341,28 +344,27 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
               class="m-menu__item m-menu__item--submenu <?= $isSurveyActive ? 'm-menu__item--open m-menu__item--expanded' : '' ?>"
               aria-haspopup="true" data-menu-submenu-toggle="hover">
               <a href="#" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon flaticon-share"></i>
+                <i class="m-menu__link-icon flaticon-clipboard"></i>
                 <span class="m-menu__link-text">Survey Kepuasan</span>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
               </a>
               <div class="m-menu__submenu">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
-                  <?php
-                  $surveyMenu = [
-                    'manajemen-survey' => 'Manajemen Survey',
-                    'isi-survey' => 'Isi Survey',
-                    '' => 'Hasil Survey'
-                  ];
-                  foreach ($surveyMenu as $slug => $label): ?>
-                    <li class="m-menu__item <?= $segment2 === $slug ? 'm-menu__item--active' : '' ?>"
-                      aria-haspopup="true">
-                      <a href="<?= base_url("public/survey/$slug") ?>" class="m-menu__link">
-                        <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
-                        <span class="m-menu__link-text"><?= $label ?></span>
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
+                  <li class="m-menu__item <?= $segment1 === 'survey' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="<?= base_url("public/survey") ?>" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Manajemen Survey</span>
+                    </a>
+                  </li>
+                  <li class="m-menu__item <?= $segment1 === 'isi-survey' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="<?= base_url("public/isi-survey") ?>" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Isi Survey</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
@@ -389,12 +391,15 @@ $isSurveyActive = $uri->getSegment(1) === 'survey' && in_array($segment2, $surve
                 </li>
                 <?php
                 $segments = "";
-                foreach ($uri->getSegments() as $segment) {
+                $currentSegments = $uri->getSegments();
+                foreach ($currentSegments as $segment) {
                   $segments .= "$segment/";
+                  $isLastSegment = $segment === end($currentSegments);
                   ?>
                   <li class="m-nav__separator">/</li>
                   <li class="m-nav__item">
-                    <a href="<?= base_url("public/$segments") ?>" class="m-nav__link">
+                    <a href="<?= base_url("public/$segments") . ($isLastSegment && $uri->getQuery() ? '?' . $uri->getQuery() : '') ?>"
+                      class="m-nav__link">
                       <span class="m-nav__link-text"><?= esc($segment); ?></span>
                     </a>
                   </li>

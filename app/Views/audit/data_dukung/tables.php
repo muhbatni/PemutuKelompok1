@@ -53,9 +53,10 @@
                         <th title="field #2">Unit</th>
                         <th title="field #3">Auditor</th>
                         <th title="Field #4">Pernyataan</th>
-                        <th title="Field #5">Deskripsi</th>
-                        <th title="Field #6">Dokumen</th>
-                        <th title="Field #7">Aksi</th>
+                        <th title="Field #5">Indikator</th>
+                        <th title="Field #6">Deskripsi</th>
+                        <th title="Field #7">Dokumen</th>
+                        <th title="Field #8">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +65,7 @@
                         <td><?= $row['nama_unit']; ?></td>
                         <td><?= $row['auditor_name']; ?></td>
                         <td><?= $row['pernyataan']; ?></td>
+                        <td><?= $row['indikator']; ?></td>
                         <td><?= $row['deskripsi']; ?></td>
                         <td>
                             <?php 

@@ -18,6 +18,32 @@ class InstrumenPemutuModel extends Model
                 ->findAll();
                 
 }
+public function delete_by_id($id) {
+    return $this->where('id', $id)->delete();
+}
 
+
+
+public function getJenjangText($jenjang)
+{
+    $jenjangOptions = [
+        1 => 'S3',
+        2 => 'S2',
+        3 => 'S1',
+        4 => 'D4',
+        5 => 'D3',
+        6 => 'D2',
+        7 => 'D1',
+    ];
+    
+    return $jenjangOptions[$jenjang] ?? 'Unknown';
+}
+
+public function getWithLembaga()
+{
+    return $this->select('p_instrumen_pemutu.*, m_lembaga_akreditasi.nama as nama_lembaga')
+        ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
+        ->findAll();
+}
 }
 ?>
