@@ -10,6 +10,24 @@
       </div>
     </div>
     <div class="m-portlet__body">
+      <div class="form-group m-form__group row col-sm-2 col-lg-2">
+        <div class="dropdown d-inline-block">
+          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+            aria-expanded="false">
+            <?php
+            $idPeriode = $_GET['id_periode'] ?? $periode[0]->id_periode;
+            $selectedPeriode = array_filter($periode, fn($p) => $p->id_periode == $idPeriode);
+            echo esc(reset($selectedPeriode)->tahun);
+            ?>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <?php foreach ($periode as $p): ?>
+              <a class="dropdown-item"
+                href="<?= base_url("public/survey/view?id_survey=$survey[id]&id_periode=$p->id_periode") ?>"><?= $p->tahun ?></a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
       <?php
       if (isset($survey['data'])):
         foreach ($survey['data'] as $data): ?>
@@ -29,19 +47,19 @@
                 <?php break;
               case 2: ?>
                 <div class="m-portlet__body">
-                  <div id="<?= "table_$data[id_pertanyaan]" ?>" width="100%">
-                    <table class="table table-bordered m-table" width="100%">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-checkable">
                       <thead>
                         <tr>
-                          <th title="P_<?= $data['id_pertanyaan'] ?>_#1">ID Pengisi</th>
-                          <th title="P_<?= $data['id_pertanyaan'] ?>_#2">Jawaban</th>
+                          <th>ID Pengisi</th>
+                          <th>Jawaban</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($data['jawaban'] as $jawaban): ?>
                           <tr>
-                            <td><?php echo esc($jawaban['id_pengisi']) ?></td>
-                            <td><?php echo esc($jawaban['teks']) ?></td>
+                            <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['id_pengisi']) ?></td>
+                            <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['teks']) ?></td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>

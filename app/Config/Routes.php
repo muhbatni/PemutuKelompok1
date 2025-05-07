@@ -51,14 +51,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
   $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
-
-  $routes->get('survey', [SurveyKepuasan::class, 'index']);
-  $routes->get('survey/manajemen-survey', [ManajemenSurvey::class, 'index']);
-  $routes->get('survey/manajemen-survey/delete/(:num)', [ManajemenSurvey::class, 'deleteSurvey/$1']);
-  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/create', [ManajemenSurvey::class, 'createSurvey']);
-  $routes->match(['GET', 'POST'], 'survey/manajemen-survey/edit/(:num)', [ManajemenSurvey::class, 'editSurvey/$1']);
-  $routes->get('survey/isi-survey', [IsiSurvey::class, 'index']);
-  $routes->match(['GET', 'POST'], 'survey/isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
+  $routes->get('isi-survey', [IsiSurvey::class, 'index']);
+  $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
 
   $routes->get('audit/auditor', [Auditor::class, 'index']);
   $routes->get('audit/input-auditor', [InputAuditor::class, 'index']);
@@ -82,7 +76,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('akreditasi/dashboard-periode', [DashboardPeriode::class, 'index']);
   $routes->match(['get', 'post'], 'akreditasi/input', [Akreditasi::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/dokumen-penetapan', [DokumenPenetapan::class, 'index']);
-  $routes->match(['get', 'post'], 'akreditasi/dokumen-penetapan/input', [DokumenPenetapan::class, 'input']);
+  $routes->match(['GET', 'POST'], 'akreditasi/dokumen-penetapan/input', [DokumenPenetapan::class, 'input']);
   $routes->get('dokumen-penetapan/download/(:segment)', 'DokumenPenetapan::download/$1');
   $routes->match(['GET', 'POST'], 'akreditasi/kriteria', [KriteriaAkreditasi::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/kriteria/input', [KriteriaAkreditasi::class, 'input']);
