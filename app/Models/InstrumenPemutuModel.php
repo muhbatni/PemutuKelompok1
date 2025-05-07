@@ -39,5 +39,11 @@ public function getJenjangText($jenjang)
     return $jenjangOptions[$jenjang] ?? 'Unknown';
 }
 
+public function getWithLembaga()
+{
+    return $this->select('p_instrumen_pemutu.*, m_lembaga_akreditasi.nama as nama_lembaga')
+        ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
+        ->findAll();
+}
 }
 ?>

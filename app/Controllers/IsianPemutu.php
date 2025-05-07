@@ -8,8 +8,66 @@ use App\Models\InstrumenPemutuModel;
 
 class IsianPemutu extends BaseController
 {
+  public function input()
+  {
+    $model = new IsianPemutuModel();
+    $unitPemutuModel = new UnitPemutuModel();
+    $instrumenPemutuModel = new InstrumenPemutuModel();
+
+    // Cek apakah form disubmit
+    if ($this->request->getMethod() === 'POST') {
+      $id = $this->request->getPost('id');
+      $data = [
+        'id_unitpemutu' => $this->request->getPost('id_unitpemutu'),
+        'id_instrumen' => $this->request->getPost('id_instrumen'),
+        'isian' => $this->request->getPost('isian'),
+        'status' => $this->request->getPost('status'),
+      ];
+
+      if ($id) {
+        $model->update($id, $data);
+        session()->setFlashdata('success', 'Data berhasil diperbarui!');
+      } else {
+        $model->save($data);
+        session()->setFlashdata('success', 'Data berhasil disimpan!');
+      }
+
+      return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
+    }
+
+    // Cek apakah ada parameter edit
+    $editData = null;
+    if ($this->request->getGet('id')) {
+      $id = $this->request->getGet('id');
+      $editData = $model->select('p_isian_pemutu.*, p_instrumen_pemutu.jenjang')
+        ->join('p_instrumen_pemutu', 'p_instrumen_pemutu.id = p_isian_pemutu.id_instrumen')
+        ->where('p_isian_pemutu.id', $id)
+        ->first();
+    }
+
+    // Dropdown data
+    $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
+
+    $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
+      ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
+      ->findAll();
+
+    $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
+
+    $data['title'] = $editData ? "Edit Isian Pemutu" : "Input Isian Pemutu";
+    $data['edit'] = $editData;
+
+    echo view('layouts/header.php', $data);
+    echo view('akreditasi/isian_pemutu/form.php');
+    echo view('layouts/footer.php');
+  }
+
   public function index()
   {
+
+    $isianPemutuModel = new IsianPemutuModel();
+    $data['isian_pemutu'] = $isianPemutuModel->getJoin();
+
     $model = new IsianPemutuModel();
     $unitPemutuModel = new UnitPemutuModel();
     $instrumenPemutuModel = new InstrumenPemutuModel();
@@ -51,13 +109,13 @@ class IsianPemutu extends BaseController
     }
 
     //ambil data instrumenpemutu
-    $data['instrumen_list'] = $instrumenPemutuModel->findAll(); // Ambil semua kolom
-    
+    $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
+
     // Dropdown Unit Pemutu(nama unit)
     $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
       ->findAll();
-    
+
     //Dropdown Instrumen Pemutu(jenjang)
     $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
     $data['instrumenPemutuModel'] = $instrumenPemutuModel;
@@ -76,7 +134,7 @@ class IsianPemutu extends BaseController
     $data['title'] = "Isian Pemutu";
 
     echo view('layouts/header.php', $data);
-    echo view('akreditasi/isian_pemutu/form.php');
+    echo view('akreditasi/isian_pemutu/tables.php');
     echo view('layouts/footer.php');
   }
 }

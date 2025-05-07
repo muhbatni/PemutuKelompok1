@@ -18,7 +18,7 @@
 
     /* Dashboard Card */
     .dashboard-card {
-      background: linear-gradient(135deg, #ffffff, #89CFF0, #ffffff);
+      /* background: linear-gradient(135deg, #ffffff, #89CFF0, #ffffff); */
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       padding: 25px;
@@ -26,9 +26,9 @@
       transition: all 0.3s ease;
     }
 
-    .dashboard-card:hover {
+    /* .dashboard-card:hover {
       transform: translateY(-3px);
-    }
+    } */
 
     /* Judul Besar */
     .page-title {
@@ -170,7 +170,7 @@
             <tr>
               <th>No</th>
               <th>Unit</th>
-              <th>Kondisi</th>
+              <th>periode</th>
               <th>Status Isian</th>
             </tr>
           </thead>
@@ -181,7 +181,7 @@
                 <tr>
                   <td><?= $no++; ?></td>
                   <td><?= esc($row['nama_unit']) ?></td>
-                  <td><?= esc($row['kondisi']) ?></td>
+                  <td><?= esc($row['periode']) ?> (<?= $row['ts'] ?>)</td>
                   <td>
                     <?php
                     $status = strtolower(trim($row['status_isian_text']));

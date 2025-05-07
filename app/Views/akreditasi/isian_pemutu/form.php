@@ -31,17 +31,17 @@
         </div>
 
         <!-- Pilih Instrumen Pemutu -->
-<div class="form-group m-form__group">
-  <label for="id_instrumen">Pilih Instrumen</label>
-  <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
-    <option value="">-- Pilih --</option>
-    <?php foreach ($instrumen_list as $index => $instrumen): ?>
-      <option value="<?= $instrumen['id'] ?>">
-        <?= $index + 1 ?> <!-- Menampilkan penomoran urut -->
-      </option>
-    <?php endforeach ?>
-  </select>
-</div>
+        <div class="form-group m-form__group">
+          <label for="id_instrumen">Pilih Instrumen</label>
+          <select class="form-control m-input" id="id_instrumen" name="id_instrumen" required>
+            <option value="">-- Pilih --</option>
+            <?php foreach ($instrumen_list as $index => $instrumen): ?>
+              <option value="<?= $instrumen['id'] ?>" <?= $isEdit && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
+                <?= $index + 1 ?>
+              </option>
+            <?php endforeach ?>
+          </select>
+        </div>
 
 
         <!-- form input untuk isi dari instrumen pemutu -->
@@ -62,7 +62,7 @@
 
           <input type="text" class="form-control m-input mb-2" id="batas" name="batas" placeholder="Batas" readonly>
         </div>
-        
+
         <div class="form-group m-form__group">
           <label for="isian">Isian</label>
           <select class="form-control m-input" id="isian" name="isian" required>
@@ -83,14 +83,23 @@
           </select>
         </div>
 
-        <div class="m-portlet_foot m-portlet_foot--fit">
+        <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
+            <a href="<?= site_url('akreditasi/isian-pemutu') ?>" class="btn btn-danger me-2">
+              <i class="fa fa-arrow-left"></i> Batal
+            </a>
+            <button type="reset" class="btn btn-warning me-2">
+              <i class="fa fa-paint-brush"></i> Reset
+            </button>
             <?php if ($isEdit): ?>
-              <button type="button" class="btn btn-primary" onclick="showUpdateModal()">Perbarui</button>
+              <button type="button" class="btn btn-primary" onclick="showUpdateModal()">
+                <i class="fa fa-save"></i> Perbarui
+              </button>
             <?php else: ?>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            <?php endif ?>
-            <a href="isian-pemutu" class="btn btn-secondary">Batal</a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save"></i> Simpan
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </form>
@@ -102,57 +111,6 @@
 <?php if (session()->getFlashdata('success')): ?>
   <div class="alert alert-success mt-3"><?= session()->getFlashdata('success') ?></div>
 <?php endif ?>
-
-<!-- TABEL DATA -->
-<div class="row mt-5">
-  <div class="col-md-12">
-    <div class="m-portlet">
-      <div class="m-portlet__head">
-        <div class="m-portlet__head-caption">
-          <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Daftar Isian Pemutu</h3>
-          </div>
-        </div>
-      </div>
-      <div class="m-portlet__body">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Unit Pemutu</th>
-              <th>Instrumen</th>
-              <th>Isian</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (!empty($isian_pemutu)): ?>
-              <?php $no = 1;
-              foreach ($isian_pemutu as $row): ?>
-                <tr>
-                  <td><?= $no++ ?></td>
-                  <td><?= esc($row['nama_unit']) ?></td>
-                  <td><?= esc($row['jenjang_text']) ?></td>
-                  <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
-                  <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>
-                  <td>
-                    <a href="?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>')">Hapus</button>
-                  </td>
-                </tr>
-              <?php endforeach ?>
-            <?php else: ?>
-              <tr>
-                <td colspan="6" class="text-center">Belum ada data.</td>
-              </tr>
-            <?php endif ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Modal Hapus -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
@@ -194,6 +152,16 @@
 </div>
 
 <script>
+  const jenjangMap = {
+    1: 'S3',
+    2: 'S2',
+    3: 'S1',
+    4: 'D4',
+    5: 'D3',
+    6: 'D2',
+    7: 'D1'
+  };
+
   // Simpan data instrumen dalam JS
   const instrumenData = <?= json_encode(array_column($instrumen_list, null, 'id')) ?>;
 
@@ -203,8 +171,8 @@
     const data = instrumenData[selectedId];
 
     if (data) {
-      document.getElementById('lembaga').value = data.id_lembaga || '';
-      document.getElementById('jenjang_instrumen').value = data.jenjang || '';
+      document.getElementById('lembaga').value = data.nama_lembaga || '';
+      document.getElementById('jenjang_instrumen').value = jenjangMap[data.jenjang] || '';
       document.getElementById('indikator').value = data.indikator || '';
       document.getElementById('kondisi').value = data.kondisi || '';
       document.getElementById('batas').value = data.batas || '';

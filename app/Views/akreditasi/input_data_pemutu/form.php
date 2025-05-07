@@ -234,73 +234,15 @@ date_default_timezone_set('Asia/Jakarta');
               <button type="submit" class="btn btn-sm btn-primary-custom me-2">
                 <?= isset($editData) ? 'Perbarui Data' : 'Simpan' ?>
               </button>
-              <?php if (isset($editData)): ?>
-                <a href="<?= base_url('public/akreditasi/input-data-pemutu') ?>" class="btn btn-sm btn-light-custom">
-                  Batal
-                </a>
-              <?php endif; ?>
+              <a href="<?= base_url('public/akreditasi/input-data-pemutu') ?>" class="btn btn-sm btn-light-custom">
+                Batal
+              </a>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Tabel Data Pemutu -->
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Daftar Data Pemutu</h5>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table align-middle mb-0">
-              <thead class="bg-light">
-                <tr>
-                  <th>No</th>
-                  <th>Unit</th>
-                  <th>Periode</th>
-                  <th>Lembaga</th>
-                  <th>Status</th>
-                  <th>Tanggal Input</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php if (empty($data_pemutu)): ?>
-                  <tr>
-                    <td colspan="7" class="text-center">Tidak ada data</td>
-                  </tr>
-                <?php else: ?>
-                  <?php foreach ($data_pemutu as $index => $data): ?>
-                    <tr>
-                      <td><?= $index + 1 ?></td>
-                      <td><?= htmlspecialchars($data['unit']) ?></td>
-                      <td><?= htmlspecialchars($data['periode']) ?></td>
-                      <td><?= htmlspecialchars($data['lembaga']) ?></td>
-                      <td>
-                        <span class="status-badge <?= $data['status'] == 0 ? 'status-aktif' : 'status-nonaktif' ?>">
-                          <?= $data['status'] == 0 ? 'Aktif' : 'Nonaktif' ?>
-                        </span>
-                      </td>
-                      <td><?= date('d/m/Y H:i', strtotime($data['created_at'])) ?></td>
-                      <td>
-                        <a href="<?= base_url('public/akreditasi/input-data-pemutu/edit/' . $data['id']) ?>"
-                          class="btn btn-sm btn-warning">Edit</a>
-                        <a href="<?= base_url('public/akreditasi/input-data-pemutu/delete/' . $data['id']) ?>"
-                          class="btn btn-sm btn-danger"
-                          onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
-                      </td>
-                    </tr>
-                  <?php endforeach; ?>
-                <?php endif; ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
