@@ -65,10 +65,9 @@ $uri = service('uri');
 $segment1 = $uri->getSegment(1);
 $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isDashboardActive = empty($uri->getSegment(1));
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$auditPages = ['auditor','input-auditor', 'standar','input-standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung','input-data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'lembaga', 'unit', 'input-data-pemutu', 'isian-pemutu', 'dashboard-periode'];

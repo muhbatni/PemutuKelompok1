@@ -93,7 +93,10 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
   $routes->get('audit/get-pelaksanaan-info/(:num)', [InputDataDukung::class, 'getPelaksanaanInfo/$1']);
   $routes->get('audit/temuan', [Temuan::class, 'index']);
-  $routes->get('audit/input-temuan', [InputTemuan::class, 'index']);
+  $routes->match(['get','post'],'audit/input-temuan', [InputTemuan::class, 'index']);
+  $routes->get('audit/input-temuan/edit/(:num)', [InputTemuan::class, 'edit/$1']);
+  $routes->post('audit/input-temuan/update/(:num)', [InputTemuan::class, 'update/$1']);
+  $routes->get('audit/input-temuan/delete/(:num)', [InputTemuan::class, 'delete/$1']);
   $routes->get('akreditasi', [Akreditasi::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi', [Akreditasi::class, 'index']);
   $routes->get('akreditasi/download/(:segment)', [Akreditasi::class, 'download']);
