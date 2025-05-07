@@ -28,7 +28,7 @@
           <div class="form-group m-form__group row">
             <label class="col-form-label col-lg-3 col-sm-12">Nama<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
-              <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputTitle1"
+              <input type="text" name="nama_survey" class="form-control m-input" id="exampleInputNama1"
                 aria-describedby="titleHelp" placeholder="Isi nama survey" value="<?= $old['nama_survey'] ?? '' ?>">
               <?php if (isset($errors['nama_survey'])): ?>
                 <span class="m-form__help text-danger"><?= esc($errors['nama_survey']) ?></span>
@@ -65,12 +65,25 @@
           </div>
         </div>
         <div class="form-group m-form__group row">
-          <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
+          <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode<span
+              style="color: red">*</span></label>
           <div class="col-lg-7 col-md-7 col-sm-12">
             <select class="form-control" id="id_periode" name="id_periode" required>
               <option value="">-- Pilih Periode --</option>
               <?php foreach ($periode as $p): ?>
                 <option name="id_periode" value="<?= $p['id']; ?>"><?= $p['tahun']; ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria<span
+              style="color: red">*</span></label>
+          <div class="col-lg-7 col-md-7 col-sm-12">
+            <select class="form-control" id="id_kriteria" name="id_kriteria" required>
+              <option value="">-- Pilih Kriteria --</option>
+              <?php foreach ($kriteria as $k): ?>
+                <option name="id_kriteria" value="<?= $k['id']; ?>"><?= $k['nama']; ?></option>
               <?php endforeach; ?>
             </select>
           </div>
@@ -101,13 +114,21 @@
             </div>
           </div>
           <div class="form-group m-form__group row">
-            <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan</label>
+            <label class="col-form-label col-lg-3 col-sm-12">List Pertanyaan<span style="color: red">*</span></label>
             <div class="col-lg-7 col-md-7 col-sm-12">
               <div class="row ui-sortable" id="m_sortable_portlets">
                 <?php
                 if (isset($old['pertanyaan'])) {
                   foreach ($old['pertanyaan'] as $index => $pertanyaan) { ?>
                     <div class="col-lg-12 portlet-template">
+                      <?php if (isset($errors["pertanyaan.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["pertanyaan.$index"])) ?></span>
+                      <?php endif; ?>
+                      <?php if (isset($errors["jenis.$index"])): ?>
+                        <span
+                          class="m-form__help text-danger"><?= str_replace('{index}', $index, esc($errors["jenis.$index"])) ?></span>
+                      <?php endif; ?>
                       <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
                         <div class="m-portlet__head ui-sortable-handle">
                           <div class="m-portlet__head-caption">
@@ -118,30 +139,37 @@
                             </div>
                           </div>
                           <div class="m-portlet__head-tools">
-                            <ul
-                              class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
-                              role="tablist">
-                              <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link active" data-toggle="tab"
-                                  href="#m_portlet_base_demo_1_tab_content" role="tab">
-                                  <i class="la la-star"></i>
-                                  Opsian
-                                </a>
-                              </li>
-                              <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_base_demo_1_tab_content"
-                                  role="tab" aria-selected="false">
-                                  <i class="la la-pencil-square"></i>
-                                  Isian
-                                </a>
-                              </li>
-                            </ul>
+                            <div class="dropdown d-inline-block">
+                              <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                                <?php switch ($old['jenis'][$index]) {
+                                  case 1: ?>
+                                    <i class="la la-star"></i> Opsian
+                                    <?php
+                                    break;
+                                  case 2: ?>
+                                    <i class="la la-pencil-square"></i> Isian
+                                    <?php
+                                    break;
+                                  default: ?>
+                                    Pilih
+                                    <?php
+                                    break;
+                                }
+                                ?>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item <?= $old['jenis'][$index] == 1 ? 'active' : '' ?>"
+                                  type="button" data-jenis="1"><i class="la la-star"></i> Opsian</button>
+                                <button class="dropdown-item <?= $old['jenis'][$index] == 2 ? 'active' : '' ?>"
+                                  type="button" data-jenis="2"><i class="la la-pencil-square"></i> Isian</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="m-portlet__body">
                           <div class="d-flex align-items-center justify-content-center">
-                            <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
-                              aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh"
+                            <input type="text" name="pertanyaan[]" class="form-control m-input" placeholder="Isi Pertanyaan"
                               value="<?= $pertanyaan ?>">
                             <input type="hidden" name="jenis[]" value="<?= $old['jenis'][$index] ?>">
                           </div>
@@ -160,7 +188,7 @@
                 } else {
                   ?>
                   <div class="col-lg-12 portlet-template">
-                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
+                    <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered">
                       <div class="m-portlet__head ui-sortable-handle">
                         <div class="m-portlet__head-caption">
                           <div class="m-portlet__head-title">
@@ -170,30 +198,24 @@
                           </div>
                         </div>
                         <div class="m-portlet__head-tools">
-                          <ul
-                            class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand  m-tabs-line--right m-tabs-line-danger"
-                            role="tablist">
-                            <li class="nav-item m-tabs__item">
-                              <a class="nav-link m-tabs__link active" data-toggle="tab"
-                                href="#m_portlet_base_demo_1_tab_content" role="tab">
-                                <i class="la la-star"></i>
-                                Opsian
-                              </a>
-                            </li>
-                            <li class="nav-item m-tabs__item">
-                              <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_base_demo_1_tab_content"
-                                role="tab" aria-selected="false">
-                                <i class="la la-pencil-square"></i>
-                                Isian
-                              </a>
-                            </li>
-                          </ul>
+                          <div class="dropdown d-inline-block">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                              aria-expanded="false">
+                              Pilih
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <button class="dropdown-item" type="button" data-jenis="1"><i class="la la-star"></i>
+                                Opsian</button>
+                              <button class="dropdown-item" type="button" data-jenis="2"><i
+                                  class="la la-pencil-square"></i> Isian</button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="m-portlet__body">
                         <div class="d-flex align-items-center justify-content-center">
-                          <input type="text" name="pertanyaan[]" class="form-control m-input" id="exampleInputTitle1"
-                            aria-describedby="emailHelp" placeholder="Isi Pertanyaan" fdprocessedid="8wf9oh">
+                          <input type="text" name="pertanyaan[]" class="form-control m-input"
+                            placeholder="Isi Pertanyaan">
                           <input type="hidden" name="jenis[]" value="1">
                         </div>
                         <br>

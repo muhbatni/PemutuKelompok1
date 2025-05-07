@@ -19,6 +19,7 @@ class DataDukungModel extends Model
                 da.id_pelaksanaan,
                 mu.nama AS nama_unit, 
                 p.pernyataan, 
+                p.indikator,
                 da.deskripsi, 
                 da.dokumen,
                 u.username AS auditor_name
@@ -53,6 +54,15 @@ class DataDukungModel extends Model
         ->join('a_auditor a', 'a.id = pa.id_auditor')
         ->join('m_user u', 'u.id = a.id') // tambahan join ke m_user
         ->where('pa.id', $id)
+        ->get()
+        ->getFirstRow('array');
+    }
+
+    public function getPernyataanInfo($id) 
+    {
+    return $this->db->table('a_pernyataan p')
+        ->select('p.indikator')
+        ->where('p.id', $id)
         ->get()
         ->getFirstRow('array');
     }

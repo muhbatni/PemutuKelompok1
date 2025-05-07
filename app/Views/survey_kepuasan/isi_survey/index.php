@@ -50,12 +50,18 @@
                 Nama
               </th>
               <th title="Field #4">
-                Dokumen Pendukung
+                Periode
               </th>
               <th title="Field #5">
-                Status
+                Tanggal mulai
               </th>
               <th title="Field #6">
+                Tanggal selesai
+              </th>
+              <th title="Field #7">
+                Status
+              </th>
+              <th title="Field #8">
                 Aksi
               </th>
             </tr>
@@ -73,7 +79,13 @@
                   <?php echo esc($survey['nama']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['dokumen_pendukung']) ?: "null"; ?>
+                  <?php echo esc($survey['tahun']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['tanggal_mulai']); ?>
+                </td>
+                <td>
+                  <?php echo esc($survey['tanggal_selesai']); ?>
                 </td>
                 <td>
                   <div class="w-5 text-center">
@@ -121,15 +133,6 @@
             <?php endforeach; ?>
           </tbody>
         </table>
-        <!--end: Datatable -->
-        <?php
-        // $currentPage = $pager->getCurrentPage();
-        // $startPage = max(1, $currentPage - 3);
-        // $endPage = min($pager->getPageCount(), $currentPage + 3);
-        
-        // $previousURI = $pager->getPreviousPageURI();
-        // $nextURI = $pager->getNextPageURI();
-        ?>
       </div>
     </div>
     <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"

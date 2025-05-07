@@ -134,7 +134,7 @@
                   <span>
                     <a href="<?= base_url("public/survey/edit?id_survey=$survey[id]") ?>"
                       class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill"
-                      title="View">
+                      title="Edit">
                       <i class="la la-edit"></i>
                     </a>
                   </span>
