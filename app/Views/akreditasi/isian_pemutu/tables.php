@@ -59,7 +59,7 @@
             foreach ($isian_pemutu as $row): ?>
               <tr>
                 <td><?= $no++ ?></td>
-                <td><?= esc($row['nama_unit']) ?></td>
+                <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
                 <td><?= esc($row['jenjang_text']) ?></td>
                 <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
                 <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>

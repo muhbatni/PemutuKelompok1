@@ -48,8 +48,10 @@ class IsianPemutu extends BaseController
     // Dropdown data
     $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
 
-    $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
+    $data['unitpemutus'] = $unitPemutuModel
+      ->select('p_unit_pemutu.id, m_unit.nama as nama_unit, m_periode.ts as tahun_ajaran')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
+      ->join('m_periode', 'p_unit_pemutu.id_periode = m_periode.id')
       ->findAll();
 
     $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
@@ -112,8 +114,10 @@ class IsianPemutu extends BaseController
     $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
 
     // Dropdown Unit Pemutu(nama unit)
-    $data['unitpemutus'] = $unitPemutuModel->select('p_unit_pemutu.id, m_unit.nama')
+    $data['unitpemutus'] = $unitPemutuModel
+      ->select('p_unit_pemutu.id, m_unit.nama as nama_unit, m_periode.ts as tahun_ajaran')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
+      ->join('m_periode', 'p_unit_pemutu.id_periode = m_periode.id')
       ->findAll();
 
     //Dropdown Instrumen Pemutu(jenjang)

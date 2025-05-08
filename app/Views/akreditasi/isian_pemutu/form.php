@@ -24,7 +24,7 @@
             <option value="">-- Pilih --</option>
             <?php foreach ($unitpemutus as $unit): ?>
               <option value="<?= $unit['id'] ?>" <?= $isEdit && $edit['id_unitpemutu'] == $unit['id'] ? 'selected' : '' ?>>
-                <?= $unit['nama'] ?>
+                <?= $unit['nama_unit'] ?> - <?= $unit['tahun_ajaran'] ?>
               </option>
             <?php endforeach; ?>
           </select>
