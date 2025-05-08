@@ -12,7 +12,7 @@ function getDecodedToken()
   }
   $token = $request->token;
   try {
-    $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
+    $decoded = JWT::decode($token, config('Pemutu')->myConfig['jwt_secret']);
     return $decoded;
   } catch (Exception $exception) {
     return null;
@@ -25,7 +25,7 @@ function isValidToken($token)
     return null;
   }
   try {
-    return JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
+    return JWT::decode($token, config('Pemutu')->myConfig['jwt_secret']);
   } catch (ExpiredException $exception) {
     return null;
   }
@@ -39,7 +39,7 @@ function refreshToken()
     return null;
   }
   try {
-    $refreshDecoded = JWT::decode($refreshToken, new Key(getenv('JWT_SECRET'), 'HS256'));
+    $refreshDecoded = JWT::decode($refreshToken, config('Pemutu')->myConfig['jwt_secret']);
     if ($refreshDecoded->type !== 'refresh') {
       return null;
     }
