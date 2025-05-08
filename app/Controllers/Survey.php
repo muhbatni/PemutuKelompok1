@@ -55,6 +55,7 @@ class Survey extends BaseController
   public function getIndex()
   {
     $data = $this->surveyModel->getPaginatedSurveys(10);
+    $data['periode'] = $this->periodeModel->orderBy('id', 'asc')->findAll();
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/index.php', $data);
     echo view('layouts/footer.php');
@@ -232,7 +233,15 @@ class Survey extends BaseController
     if (!$data['pelaksanaan_survey']) {
       return redirectWithMessage('survey', 'error', 'Pelaksanaan survey tidak ditemukan!');
     }
-    $data['periode'] = $this->periodeData;
+    $data['periode'] = $this->pelaksanaanSurveyModel
+      ->select('s_pelaksanaan_survey.id_periode AS id, m_periode.tahun')
+      ->join('m_periode', 'm_periode.id = s_pelaksanaan_survey.id_periode')
+      ->where('s_pelaksanaan_survey.id_survey', $idSurvey)
+      ->findAll();
+    if (!$data['periode']) {
+      return redirectWithMessage('survey', 'error', 'Periode survey tidak ditemukan!');
+    }
+    // $data['periode'] = $this->periodeData;
     $data['kriteria'] = $this->kriteriaAkreditasiData;
     $data['pertanyaan'] = $this->pertanyaanSurveyModel->where('id_survey', $idSurvey)->orderBy('urutan', 'asc')->findAll();
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
