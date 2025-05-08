@@ -11,7 +11,6 @@ class Pemutu extends BaseConfig
   public function __construct()
   {
     $this->myConfig['jwt_secret'] = new Key(getenv('JWT_SECRET'), 'HS256');
-    // $this->myConfig[''] = ;
   }
 }
 ?>
