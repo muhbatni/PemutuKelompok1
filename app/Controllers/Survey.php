@@ -6,7 +6,7 @@ use App\Models\IsiSurveyModel;
 use App\Models\PertanyaanSurveyModel;
 use App\Models\PelaksanaanSurveyModel;
 use App\Models\PeriodeModel;
-use CodeIgniter\Database\BaseBuilder;
+use CodeIgniter\Database\Query;
 use \Config\Database;
 use App\Models\KriteriaAkreditasiModel;
 
@@ -166,10 +166,6 @@ class Survey extends BaseController
   {
     $validation = service('validation');
     $data = $this->request->getPost();
-    // echo "<pre>";
-    // print_r($data);
-    // echo "</pre>";
-    // return;
     $data['dokumen_pendukung_survey'] = $this->request->getFile('dokumen_pendukung_survey');
     if (!$validation->run($data, 'create_surveys')) {
       log_message('error', 'Validation failed: ' . json_encode($validation->getErrors()));
@@ -326,6 +322,53 @@ class Survey extends BaseController
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/view_survey.php', $data);
     echo view('layouts/footer.php');
+  }
+
+  public function getDownload()
+  {
+    try {
+      $params = $this->request->getGet();
+      if (!isset($params['id_survey']) || !isset($params['id_periode'])) {
+        return redirectWithMessage('survey', 'error', 'Survey atau periode tidak ditemukan!');
+      }
+      $idSurvey = $params['id_survey'];
+      $idPeriode = $params['id_periode'];
+      $surveyData = $this->isiSurveyModel->getHasilSurvey($idSurvey, $idPeriode);
+      if (!$surveyData) {
+        return redirectWithMessage('survey', 'error', 'Data hasil survei masih kosong!');
+      }
+      $database = Database::connect();
+      $results = $database->table('s_isian_survey i')
+        ->select('p.teks AS pertanyaan, p.jenis AS jenis_pertanyaan, i.jawaban AS jawaban')
+        ->join('s_pertanyaan p', 'p.id = i.id_pertanyaan')
+        ->join('s_survey s', 's.id = p.id_survey')
+        ->where('s.id', $idSurvey)
+        ->where('i.id_periode', $idPeriode)
+        ->get()->getResult();
+      $filename = "hasil_survey_$idSurvey" . "_periode_$idPeriode" . "_" . date('Y-m-d') . ".csv";
+      header("Content-Type: application/csv");
+      header("Content-Disposition: attachment; filename=$filename");
+      $output = fopen('php://output', 'w');
+      if (!$output) {
+        log_message('error', 'Gagal membuka output stream');
+        return redirectWithMessage('survey', 'error', 'Gagal membuka output stream.');
+      }
+      fputcsv($output, ['Pertanyaan', 'Jenis Jawaban', 'Jawaban']);
+      $number = 1;
+      foreach ($results as $result) {
+        $data = [
+          $number++,
+          $result->pertanyaan,
+          $result->jenis_pertanyaan,
+          $result->jawaban
+        ];
+        fputcsv($output, $data);
+      }
+      fclose($output);
+    } catch (\Exception $exception) {
+      log_message('error', 'Download error: ' . $exception->getMessage());
+      return redirectWithMessage('survey', 'error', 'Gagal mengunduh hasil survei: ' . $exception->getMessage());
+    }
   }
 }
 ?>
