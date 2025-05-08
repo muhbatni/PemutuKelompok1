@@ -44,11 +44,11 @@ class DashboardModel extends Model
                     $row['status_isian_class'] = 'badge bg-success'; // hijau
                     break;
                 case '2':
-                    $row['status_isian_text'] = 'Peringatan';
+                    $row['status_isian_text'] = 'Peringatan (50%)';
                     $row['status_isian_class'] = 'badge bg-warning'; // kuning
                     break;
                 case '3':
-                    $row['status_isian_text'] = 'Tidak Lolos';
+                    $row['status_isian_text'] = 'Tidak Lolos (<49%)';
                     $row['status_isian_class'] = 'badge bg-danger'; // merah
                     break;
                 default:
