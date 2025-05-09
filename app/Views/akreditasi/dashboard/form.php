@@ -161,8 +161,8 @@
       </div>
     </div>
 
-   <!-- Tabel Data Unit Pemutu -->
-   <div class="dashboard-card">
+    <!-- Tabel Data Unit Pemutu -->
+    <div class="dashboard-card">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="fas fa-table text-primary me-2"></i>Data Unit Pemutu</h5>
       </div>
@@ -220,17 +220,19 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Real-time Filtering Script -->
   <script>
     $(document).ready(function () {
       $('#yearFilter').on('input', function () {
-        const searchTerm = $(this).val().toLowerCase().trim();
+        const searchTerm = $(this).val().trim();
 
-        $('#tableBody tr').each(function () {
+        $('.table tbody tr').each(function () {
           const $row = $(this);
-          const yearText = $row.find('td:eq(2)').text().toLowerCase();
+          const yearText = $row.find('td:eq(2)').text();
 
-          if (yearText.includes(searchTerm) || searchTerm === '') {
+          // Ekstrak tahun utama dari format "2024 (2024/2025)"
+          const mainYear = yearText.match(/\d{4}/)?.[0] || '';
+
+          if (mainYear.includes(searchTerm) || searchTerm === '') {
             $row.show();
           } else {
             $row.hide();
