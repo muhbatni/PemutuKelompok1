@@ -12,6 +12,7 @@
   <style>
     /* Background Dashboard */
     body {
+       font-family: 'Poppins';
       background: linear-gradient(to bottom, #f4f7fc, #e9edf5);
       background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
     }
@@ -156,7 +157,7 @@
       <label for="yearFilter" class="form-label">Filter Tahun Periode</label>
       <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" id="yearFilter" class="search-input" placeholder="Ketik tahun (contoh: 2025, 2024/2025)"
+        <input type="text" id="yearFilter" class="search-input" placeholder="Ketik tahun (contoh: 2025)"
           autocomplete="off">
       </div>
     </div>
@@ -216,10 +217,7 @@
 
   </div>
 
-  <!-- JavaScript Libraries -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+  <!-- Real-time Filtering Script -->
   <script>
     $(document).ready(function () {
       $('#yearFilter').on('input', function () {
