@@ -38,17 +38,6 @@ if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
     $dokumen->move($uploadPath, $fileName);
     $data['dokumen'] = $fileName;
 }
-            // $dokumen = $this->request->getFile('dokumen');
-            // if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-            //     $uploadPath = WRITEPATH . 'uploads/dokumen/';
-            //     if (!is_dir($uploadPath)) {
-            //         mkdir($uploadPath, 0777, true);
-            //     }
-
-            //     $fileName = $dokumen->getRandomName();
-            //     $dokumen->move($uploadPath, $fileName);
-            //     $data['dokumen'] = $fileName;
-            // }
 
             $model->insert($data);
 
@@ -116,19 +105,6 @@ if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
         $dokumen->move($uploadPath, $fileName);
         $data['dokumen'] = $fileName;
     }
-        // $dokumen = $this->request->getFile('dokumen');
-        // if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-        //     $uploadPath = WRITEPATH . 'uploads/dokumen/';
-        //     if (!is_dir($uploadPath)) {
-        //         mkdir($uploadPath, 0777, true);
-        //     }
-
-        //     $fileName = $dokumen->getRandomName();
-        //     $dokumen->move($uploadPath, $fileName);
-        //     $data['dokumen'] = $fileName;
-        // }
-
-
         $updateStatus = $model->update($id, $data);
 
         if ($updateStatus === false) {
