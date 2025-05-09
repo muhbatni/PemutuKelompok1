@@ -1,5 +1,4 @@
 <div class="m-content">
-
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
       <div class="m-portlet__head-caption">
@@ -10,6 +9,7 @@
         </div>
       </div>
     </div>
+
 
     <div class="m-portlet__body">
       <!--begin: Search Form -->
@@ -45,6 +45,7 @@
         </div>
       </div>
       <!--end: Search Form -->
+
       <!--begin: Datatable -->
       <div class="table-responsive">
         <table class="table table-striped m-table" id="html_table">
@@ -60,13 +61,14 @@
                 Dokumen
               </th>
               <th title="Field #4">
-                Status Aktif
+                Status
               </th>
               <th title="Field #5">
                 Aksi
               </th>
             </tr>
           </thead>
+
           <tbody>
             <?php foreach ($standar as $s): ?>
               <tr class="main-row">
@@ -75,26 +77,27 @@
 
                 <td>
                   <?php if (!empty($s['dokumen'])): ?>
-                  <a href="<?= base_url('public/audit/standar/download/' . $s['dokumen']); ?>" class="btn btn-sm btn-info" title="Download">
+                    <a href="<?= base_url('public/audit/standar/download/' . $s['dokumen']); ?>" class="btn btn-sm btn-info"
+                      title="Download">
                       <i class="la la-download"></i> Download
-                  </a>
+                    </a>
                   <?php else: ?>
-                      <span class="text-muted">Tidak Ada Dokumen</span>
+                    <span class="text-muted">Tidak Ada Dokumen</span>
                   <?php endif; ?>
                 </td>
-                <td>
-                  <?php
-                  if (isset($s['is_aktif'])) {
-                    $aktif = ($s['is_aktif'] === 't') ? 'Aktif' : 'Tidak Aktif';
 
+                <td>
+
+                  <?php
+                  if (isset($s['is_aktif']) && $s['is_aktif'] === 't') {
+                    echo '<span class="badge badge-pill badge-success px-3 py-2" style="font-weight: 500;">Aktif</span>';
                   } else {
-                    $aktif = 'Tidak Aktif';
+                    echo '<span class="badge badge-pill badge-danger px-3 py-2" style="font-weight: 500;">Tidak Aktif</span>';
                   }
-                  echo $aktif
-                    ?>
+                  ?>
                 </td>
 
-                <td class="text-center">
+                <td class="text-start">
                   <a href="<?= base_url('public/audit/input-standar/edit/' . $s['id']); ?>" class="btn btn-sm btn-warning"
                     title="Edit">
                     <i class="la la-edit"></i>

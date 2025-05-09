@@ -27,17 +27,17 @@ class InputStandarAudit extends BaseController
             }
 
             $dokumen = $this->request->getFile('dokumen');
-if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-    $uploadPath = WRITEPATH . 'uploads/dokumen/';
-    if (!is_dir($uploadPath)) {
-        mkdir($uploadPath, 0777, true);
-    }
+            if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+                $uploadPath = WRITEPATH . 'uploads/dokumen/';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
 
-    // Menggunakan nama asli file
-    $fileName = $dokumen->getClientName();
-    $dokumen->move($uploadPath, $fileName);
-    $data['dokumen'] = $fileName;
-}
+                // Menggunakan nama asli file
+                $fileName = $dokumen->getClientName();
+                $dokumen->move($uploadPath, $fileName);
+                $data['dokumen'] = $fileName;
+            }
 
             $model->insert($data);
 
@@ -94,17 +94,17 @@ if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
             }
         }
 
-    $dokumen = $this->request->getFile('dokumen');
-    if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-        $uploadPath = WRITEPATH . 'uploads/dokumen/';
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
-        }
+        $dokumen = $this->request->getFile('dokumen');
+        if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+            $uploadPath = WRITEPATH . 'uploads/dokumen/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
 
-        $fileName = $dokumen->getClientName();
-        $dokumen->move($uploadPath, $fileName);
-        $data['dokumen'] = $fileName;
-    }
+            $fileName = $dokumen->getClientName();
+            $dokumen->move($uploadPath, $fileName);
+            $data['dokumen'] = $fileName;
+        }
         $updateStatus = $model->update($id, $data);
 
         if ($updateStatus === false) {
@@ -117,15 +117,15 @@ if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
     }
 
     public function download($fileName)
-{
-    $filePath = WRITEPATH . 'uploads/dokumen/' . $fileName;
+    {
+        $filePath = WRITEPATH . 'uploads/dokumen/' . $fileName;
 
-    if (file_exists($filePath)) {
-        return $this->response->download($filePath, null)->setFileName($fileName);
+        if (file_exists($filePath)) {
+            return $this->response->download($filePath, null)->setFileName($fileName);
+        }
+
+        return redirect()->to(base_url('public/audit/standar'))->with('error', 'File tidak ditemukan!');
     }
-
-    return redirect()->to(base_url('public/audit/standar'))->with('error', 'File tidak ditemukan!');
-}
 
 }
 ?>
