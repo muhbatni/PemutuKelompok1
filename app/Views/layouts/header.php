@@ -70,7 +70,7 @@ $isDashboardActive = empty($uri->getSegment(1));
 $auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
-$akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'lembaga', 'unit', 'input-data-pemutu', 'isian-pemutu', 'dashboard-periode'];
+$akreditasiPages = [ 'lembaga', 'kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'unit', 'input-data-pemutu', 'isian-pemutu', 'isian-pemutu-unit', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
 $surveyPages = ['survey', 'isi-survey'];
@@ -312,16 +312,17 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                 <ul class="m-menu__subnav">
                   <?php
                   $akreditasiMenu = [
+                    'lembaga' => 'Lembaga Akreditasi',
                     'kriteria' => 'Kriteria Akreditasi',
                     'syarat-unggul' => 'Syarat Unggul',
                     'instrumen-pemutu' => 'Instrumen Pemutu',
                     'dokumen-penetapan' => 'Dokumen Penetapan',
                     '' => 'Akreditasi',
                     'periode' => 'Periode',
-                    'lembaga' => 'Lembaga Akreditasi',
                     'unit' => 'Unit',
                     'input-data-pemutu' => 'Data Unit Pemutu',
                     'isian-pemutu' => 'Isian Pemutu',
+                    'isian-pemutu-unit' => 'Isian Pemutu Unit',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
