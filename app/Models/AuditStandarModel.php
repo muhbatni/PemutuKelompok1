@@ -28,8 +28,26 @@ class AuditStandarModel extends Model
             ->get()
             ->getResult();
     }
+    public function getStandarByAudit($id_audit)
+    {
+        return $this->db->table('a_standar_audit sa')
+            ->join('a_standar s', 's.id = sa.id_standar')
+            ->select('sa.id_standar, s.nama')
+            ->where('sa.id_audit', $id_audit)
+            ->get()
+            ->getResult();
+    }
 
+    // Mengambil 1 data standar audit berdasarkan ID-nya (sudah ada find() bawaan CI4)
+    public function getStandarById($id_standar)
+    {
+        return $this->where('id', $id_standar)->first();
+    }
 
+    public function getAuditIdByStandar($id_standar_audit)
+    {
+        return $this->where('id', $id_standar_audit)->select('id_audit')->first()['id_audit'] ?? null;
+    }
 
 
 }

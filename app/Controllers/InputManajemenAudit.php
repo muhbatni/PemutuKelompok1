@@ -27,12 +27,12 @@ class InputManajemenAudit extends BaseController
 
       if (empty($auditData['id_periode']) || empty($auditData['kode']) || empty($auditData['tanggal_mulai']) || empty($auditData['tanggal_selesai'])) {
         session()->setFlashdata('Error', 'Semua field harus diisi');
-        return redirect()->to('/input-manajemen-audit'); // Ganti dengan URL yang sesuai
+        return redirect()->to('/audit/input-manajemen-audit'); // Ganti dengan URL yang sesuai
       }
 
       if (strtotime($auditData['tanggal_selesai']) < strtotime($auditData['tanggal_mulai'])) {
         session()->setFlashdata('Error', 'Tanggal selesai tidak boleh lebih awal dari tanggal mulai.');
-        return redirect()->to('/input-manajemen-audit')->withInput();
+        return redirect()->to('/audit/input-manajemen-audit')->withInput();
       }
 
       $model = new ManajemenAuditModel();

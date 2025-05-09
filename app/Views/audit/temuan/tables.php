@@ -5,7 +5,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Datatable initilized from HTML table
+            Tabel Temuan
           </h3>
         </div>
       </div>
@@ -15,9 +15,21 @@
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
-          <div class="col-xl-8 order-2 order-xl-1">
+          <div class="col-xl-4 order-1 order-xl-1 m--align-left">
+            <a href="/pemutu/public/audit/input-temuan"
+              class=" btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+              <span>
+                <i class="flaticon-add"></i>
+                <span>
+                  Tambah Temuan
+                </span>
+              </span>
+            </a>
+            <div class="m-separator m-separator--dashed d-xl-none"></div>
+          </div>
+          <div class="col-xl-8 order-2 order-xl-2">
             <div class="form-group m-form__group row align-items-center">
-              <div class="col-md-4">
+              <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
                   <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
                     id="generalSearch">
@@ -30,131 +42,79 @@
               </div>
             </div>
           </div>
-          <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-            <a href="/pemutu/public/audit/input-temuan" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-              <span>
-                <i class="la la-cart-plus"></i>
-                <span>
-                  New Order
-                </span>
-              </span>
-            </a>
-            <div class="m-separator m-separator--dashed d-xl-none"></div>
-          </div>
         </div>
       </div>
       <!--end: Search Form -->
       <!--begin: Datatable -->
-      <table class="m-datatable" id="html_table" width="100%">
-        <thead>
-          <tr>
-            <th title="Field #1">
-              Order ID
-            </th>
-            <th title="Field #2">
-              Owner
-            </th>
-            <th title="Field #3">
-              Contact
-            </th>
-            <th title="Field #4">
-              Car Make
-            </th>
-            <th title="Field #5">
-              Car Model
-            </th>
-            <th title="Field #6">
-              Color
-            </th>
-            <th title="Field #7">
-              Deposit Paid
-            </th>
-            <th title="Field #8">
-              Order Date
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              16590-107
-            </td>
-            <td>
-              Zandra Fisbburne
-            </td>
-            <td>
-              (916) 6137523
-            </td>
-            <td>
-              Pontiac
-            </td>
-            <td>
-              Grand Am
-            </td>
-            <td>
-              Puce
-            </td>
-            <td>
-              $75343.80
-            </td>
-            <td>
-              2016-09-08
-            </td>
-          </tr>
-          <tr>
-            <td>
-              58232-0517
-            </td>
-            <td>
-              Mela Ord
-            </td>
-            <td>
-              (331) 6613809
-            </td>
-            <td>
-              Lamborghini
-            </td>
-            <td>
-              Gallardo
-            </td>
-            <td>
-              Aquamarine
-            </td>
-            <td>
-              $46031.10
-            </td>
-            <td>
-              2016-08-21
-            </td>
-          </tr>
-          <tr>
-            <td>
-              67296-0590
-            </td>
-            <td>
-              Benyamin Boerderman
-            </td>
-            <td>
-              (248) 3715044
-            </td>
-            <td>
-              Lexus
-            </td>
-            <td>
-              LX
-            </td>
-            <td>
-              Green
-            </td>
-            <td>
-              $86721.38
-            </td>
-            <td>
-              2017-11-17
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="m-datatable" id="html_table" width="100%">
+          <thead>
+            <tr>
+              <th title="Field #1">
+                Id
+              </th>
+              <th title="Field #2">
+                Unit
+              </th>
+              <th title="Field #3">
+                Kondisi
+              </th>
+              <th title="Field #4">
+                Rencana Perbaikan
+              </th>
+              <th title="Field #5">
+                Tanggal Perbaikan
+              </th>
+              <th title="Field #6">
+                Catatan
+              </th>
+              <th title="Field #7">
+                Status
+              </th>
+              <th title="Field #8">
+                Id Isian Audit
+              </th>
+              <th title="Field #9">
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($temuan as $row): ?>
+              <tr>
+                <td><?= $row['id']; ?></td>
+                <td><?= $row['nama_unit']; ?></td>
+                <td><?= $row['kondisi']; ?></td>
+                <td><?= $row['rencana_perbaikan']; ?></td>
+                <td><?= $row['tanggal_perbaikan']; ?></td>
+                <td><?= $row['catatan'] ?? '-' ?></td>
+                <?php
+                $status_labels = [
+                  '0' => 'Belum Ditindaklanjuti',
+                  '1' => 'Sedang Ditindaklanjuti',
+                  '2' => 'Selesai'
+                ];
+                ?>
+                <td><?= isset($row['status']) ? $status_labels[$row['status']] : 'Belum Diisi'; ?></td>
+                <td><?= $row['id_isian_audit'] ?? '-'; ?></td>
+
+
+                <td>
+                  <a href="<?= base_url('public/audit/input-temuan/edit/' . $row['id']); ?>"
+                    class="btn btn-sm btn-warning" title="Edit">
+                    <i class="la la-edit"></i>
+                  </a>
+                  <a href="<?= base_url('public/audit/input-temuan/delete/' . $row['id']); ?>"
+                    class="btn btn-sm btn-danger" title="Hapus"
+                    onclick="return confirm('Yakin ingin menghapus data ini?')">
+                    <i class="la la-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
       <!--end: Datatable -->
     </div>
   </div>
@@ -162,3 +122,28 @@
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>
+
+<style>
+  /* Styling untuk sticky column */
+  th:last-child,
+  td:last-child {
+    position: sticky !important;
+    right: 0;
+    z-index: 3;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Styling untuk tabel dan container */
+  .m-datatable {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    position: relative;
+    width: 100%;
+  }
+</style>
