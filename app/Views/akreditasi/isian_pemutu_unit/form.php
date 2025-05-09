@@ -20,11 +20,10 @@
         <!-- Pilih Unit Pemutu -->
         <div class="form-group m-form__group">
           <label for="id_unitpemutu">Pilih Unit Pemutu</label>
-          <select class="form-control js-example-basic-multiple" id="id_unitpemutu" name="id_unitpemutu[]" multiple
-            required>
-            <option value="">-- Pilih --</option>
+          <select class="form-control js-example-basic-single" id="id_unitpemutu" name="id_unitpemutu" required>
+            <option value="" selected disabled hidden></option>
             <?php foreach ($unitpemutus as $unit): ?>
-              <option value="<?= $unit['id'] ?>" <?= in_array($unit['id'], $selectedUnits ?? []) ? 'selected' : '' ?>>
+              <option value="<?= $unit['id'] ?>" <?= $isEdit && $edit['id_unitpemutu'] == $unit['id'] ? 'selected' : '' ?>>
                 <?= $unit['nama_unit'] ?> - <?= $unit['tahun_ajaran'] ?>
               </option>
             <?php endforeach; ?>
@@ -34,17 +33,15 @@
         <!-- Pilih Instrumen Pemutu -->
         <div class="form-group m-form__group">
           <label for="id_instrumen">Pilih Instrumen</label>
-          <select class="form-control js-example-basic-multiple" id="id_instrumen" name="id_instrumen[]" multiple
-            required>
+          <select class="form-control" id="id_instrumen" name="id_instrumen" required>
             <option value="">-- Pilih --</option>
             <?php foreach ($instrumen_list as $index => $instrumen): ?>
-              <option value="<?= $instrumen['id'] ?>" <?= in_array($instrumen['id'], $selectedInstrumen ?? []) ? 'selected' : '' ?>>
+              <option value="<?= $instrumen['id'] ?>" <?= $isEdit && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
                 <?= $index + 1 ?>
               </option>
             <?php endforeach ?>
           </select>
         </div>
-        
 
         <!-- form input untuk isi dari instrumen pemutu -->
         <div class="form-group m-form__group">
@@ -157,7 +154,7 @@
 
   // Inisialisasi Select2 untuk dropdown
   $(document).ready(function () {
-    $('.js-example-basic-multiple').select2({
+    $('.js-example-basic-single').select2({
       placeholder: "-- Pilih --",
       allowClear: true
     });
