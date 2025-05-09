@@ -71,7 +71,8 @@
             <?php foreach ($standar as $s): ?>
               <tr class="main-row">
                 <td><?= $s['nama']; ?></td>
-                <td><?= $s['id_parent']?></td>
+                <td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Ada'; ?></td>
+
                 <td>
                   <?php if (!empty($s['dokumen'])): ?>
                   <a href="<?= base_url('public/audit/standar/download/' . $s['dokumen']); ?>" class="btn btn-sm btn-info" title="Download">

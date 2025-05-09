@@ -25,6 +25,11 @@ class StandarAudit extends BaseController
         $data["title"] = "Standar Audit";
         $data["standar"] = $model->findAll(); // ambil data dari DB
 
+        $data["parentOptions"] = [];
+foreach ($data["standar"] as $item) {
+    $data["parentOptions"][$item['id']] = $item['nama'];
+}
+
         // Buat array mapping dari id ke nama
 $parentOptions = [];
 foreach ($data["standar"] as $item) {
