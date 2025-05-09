@@ -88,7 +88,9 @@
                 <!-- <td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Diketahui'; ?>
                 </td> -->
 
-                <td><?= $s['id_parent']?></td>
+                <!-- <td><?= $s['id_parent']?></td> -->
+                <td><?= isset($parentOptions[$s['id_parent']]) ? $parentOptions[$s['id_parent']] : 'Tidak Ada'; ?></td>
+
                 <!-- <td><?= $s['dokumen']; ?></td> -->
                 <td>
     <?php if (!empty($s['dokumen'])): ?>
