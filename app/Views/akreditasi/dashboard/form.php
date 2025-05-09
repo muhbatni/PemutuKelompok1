@@ -221,26 +221,26 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-  $(document).ready(function () {
-    $('#yearFilter').on('input', function () {
-      const searchTerm = $(this).val().trim();
-      
-      $('.table tbody tr').each(function () {
-        const $row = $(this);
-        const yearText = $row.find('td:eq(2)').text();
-        
-        // Ekstrak tahun utama dari format "2024 (2024/2025)"
-        const mainYear = yearText.match(/\d{4}/)?.[0] || '';
-        
-        if (mainYear.includes(searchTerm) || searchTerm === '') {
-          $row.show();
-        } else {
-          $row.hide();
-        }
+    $(document).ready(function () {
+      $('#yearFilter').on('input', function () {
+        const searchTerm = $(this).val().trim();
+
+        $('.table tbody tr').each(function () {
+          const $row = $(this);
+          const yearText = $row.find('td:eq(2)').text();
+
+          // Ekstrak tahun utama dari format "2024 (2024/2025)"
+          const mainYear = yearText.match(/\d{4}/)?.[0] || '';
+
+          if (mainYear.includes(searchTerm) || searchTerm === '') {
+            $row.show();
+          } else {
+            $row.hide();
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 
 </body>
 
