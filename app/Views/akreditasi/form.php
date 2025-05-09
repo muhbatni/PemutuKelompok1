@@ -19,7 +19,7 @@
           <!-- ID Unit -->
           <div class="form-group m-form__group">
             <label for="id_unit">Unit</label>
-            <select class="form-control m-input" id="id_unit" name="id_unit" required>
+            <select class="form-control m-input js-example-basic-multiple" id="id_unit" name="id_unit" required>
               <option value="">-- Pilih Unit --</option>
               <?php foreach ($units as $unit): ?>
                 <option value="<?= $unit['id']; ?>" 
@@ -33,7 +33,7 @@
           <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
-          <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
+          <select class="form-control m-input js-example-basic-multiple" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
               <option value="<?= $lembaga['id']; ?>" 
@@ -55,7 +55,7 @@
           <div class="form-group m-form__group">
           <label for="status">Status</label>
           <select class="form-control m-input" id="status" name="status" required>
-          <option value="">-- Pilih Nilai --</option>
+          <option value="">-- Tentukan Status --</option>
               <?php
                 $statusOptions = [
                   1 => 'Unggul', 2 => 'Baik Sekali', 3 => 'Baik', 4 => 'A', 
@@ -161,6 +161,12 @@
 
 <!-- Script -->
 <script>
+  $(document).ready(function () {
+      $('.js-example-basic-multiple').select2({
+        placeholder: "-- Pilih --",
+        allowClear: true
+      });
+    });
   function handleCancel() {
         <?php if (isset($editData)): ?>
             // If editing, redirect to the list or home page
