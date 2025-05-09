@@ -2,6 +2,7 @@
 
 use App\Controllers\Akreditasi;
 use App\Controllers\InputManajemenAudit;
+use App\Controllers\IsianPemutuUnit;
 use App\Controllers\ManajemenAudit;
 use App\Controllers\ManajemenSurvey;
 use App\Controllers\DashboardPeriode;
@@ -101,6 +102,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu/input', [InputDataPemutu::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu', [IsianPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu/input', [IsianPemutu::class, 'input']);
+  $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu-unit', [IsianPemutuUnit::class, 'index']);
+  $routes->match(['GET', 'POST'], 'akreditasi/isian-pemutu-unit/input', [IsianPemutuUnit::class, 'input']);
   $routes->match(['GET', 'POST'], 'akreditasi/input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->post('akreditasi/input-data-pemutu/save', [InputDataPemutu::class, 'save']);
   $routes->get('akreditasi/input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);
