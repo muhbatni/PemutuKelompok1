@@ -349,6 +349,7 @@ class Survey extends BaseController
       log_message('error', 'Database error: ' . $exception->getMessage());
       return redirectWithMessage('survey', 'error', $exception->getMessage());
     }
+  }
 
   public function getDownload()
   {
