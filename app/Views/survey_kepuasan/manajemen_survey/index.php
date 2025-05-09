@@ -112,7 +112,8 @@
                         <i class="la la-trash"></i>Hapus Survey</a>
                     </div>
                   </span>
-                  <div class="modal fade" id="pelaksanaanModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
+                  <form method="POST" action="<?= base_url("public/survey/create-pelaksanaan?id_survey=$survey[id]") ?>"
+                    class="modal fade" id="pelaksanaanModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
                     aria-labelledby="pelaksanaanModalLabel-<?= $survey['id']; ?>" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
@@ -140,12 +141,11 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                          <a href="<?= base_url("public/survey/pelaksanaan?id_survey=$survey[id]") ?>"
-                            class="btn btn-primary">Tambah</a>
+                          <input type="submit" class="btn btn-primary" value="Tambah">
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                   <div class="modal fade" id="deleteModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
                     aria-labelledby="deleteModalLabel-<?= $survey['id']; ?>" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
