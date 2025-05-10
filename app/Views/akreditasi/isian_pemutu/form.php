@@ -63,24 +63,22 @@
           <input type="text" class="form-control m-input mb-2" id="batas" name="batas" placeholder="Batas" readonly>
         </div>
 
+        <!-- form input untuk isian pemutu -->
         <div class="form-group m-form__group">
-          <label for="isian">Isian</label>
-          <select class="form-control m-input" id="isian" name="isian" required>
-            <option value="">-- Pilih --</option>
-            <option value="0" <?= $isEdit && $edit['isian'] == '0' ? 'selected' : '' ?>>0 - Cek</option>
-            <option value="1" <?= $isEdit && $edit['isian'] == '1' ? 'selected' : '' ?>>1 - Lolos</option>
-            <option value="2" <?= $isEdit && $edit['isian'] == '2' ? 'selected' : '' ?>>2 - Peringatan (0-50%)</option>
-            <option value="3" <?= $isEdit && $edit['isian'] == '3' ? 'selected' : '' ?>>3 - Tidak Lolos (50%)</option>
-          </select>
+          <label for="isian">Isian (Hanya angka)</label>
+          <input type="number" class="form-control m-input" id="isian" name="isian" required min="0" step="1"
+            value="<?= $isEdit ? htmlspecialchars($edit['isian']) : '' ?>">
         </div>
 
         <div class="form-group m-form__group">
-          <label for="status">Status</label>
-          <select class="form-control m-input" id="status" name="status" required>
+          <label for="status">Status (otomatis terisi apabila isian terisi)</label>
+          <select class="form-control m-input" id="status_display" disabled>
             <option value="">-- Pilih --</option>
-            <option value="0" <?= $isEdit && $edit['status'] == '0' ? 'selected' : '' ?>>Tidak Aktif</option>
-            <option value="1" <?= $isEdit && $edit['status'] == '1' ? 'selected' : '' ?>>Aktif</option>
+            <option value="0" <?= $isEdit && (int) $edit['status'] === 0 ? 'selected' : '' ?>>Tidak Lolos</option>
+            <option value="1" <?= $isEdit && (int) $edit['status'] === 1 ? 'selected' : '' ?>>Lolos</option>
           </select>
+          <!-- Hidden input untuk nilai sebenarnya -->
+          <input type="hidden" name="status" value="<?= $isEdit ? (int) $edit['status'] : '' ?>">
         </div>
 
         <div class="m-portlet__foot m-portlet__foot--fit">
@@ -152,6 +150,43 @@
 </div>
 
 <script>
+
+  // Event saat input isian berubah
+  document.getElementById('isian').addEventListener('input', function () {
+    const isian = parseFloat(this.value);
+    const kondisi = document.getElementById('kondisi').value.trim();
+    const batas = parseFloat(document.getElementById('batas').value);
+    let status = '';
+
+    if (!isNaN(isian) && !isNaN(batas)) {
+      switch (kondisi) {
+        case '>':
+          status = isian > batas ? 1 : 0;
+          break;
+        case '>=':
+          status = isian >= batas ? 1 : 0;
+          break;
+        case '<':
+          status = isian < batas ? 1 : 0;
+          break;
+        case '<=':
+          status = isian <= batas ? 1 : 0;
+          break;
+        case '=':
+          status = isian == batas ? 1 : 0;
+          break;
+        default:
+          status = 0;
+      }
+    } else {
+      status = '';
+    }
+
+    // Set ke select disabled
+    document.getElementById('status_display').value = status;
+    // Set ke hidden input untuk disimpan
+    document.querySelector('input[name="status"]').value = status;
+  });
 
   // Inisialisasi Select2 untuk dropdown
   $(document).ready(function () {

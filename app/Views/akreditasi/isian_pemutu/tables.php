@@ -61,8 +61,8 @@
                 <td><?= $no++ ?></td>
                 <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
                 <td><?= esc($row['jenjang_text']) ?></td>
-                <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
-                <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>
+                <td><?= esc($row['isian']) ?></td>
+                <td><?= $row['status'] ? 'Lolos' : 'Tidak Lolos' ?></td>
                 <td>
                   <a href="<?= site_url('akreditasi/isian-pemutu/input?id=' . $row['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
                   <button class="btn btn-sm btn-danger"
