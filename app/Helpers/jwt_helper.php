@@ -45,12 +45,11 @@ function refreshToken()
     if (!isset($refreshDecoded->uid)) {
       return null;
     }
-    // Issue new access token
     $now = time();
     $newAccessExp = $now + 3600;
     $newAccessPayload = [
       'iat' => $now,
-      'exp' => $newAccessExp, // 1 hour
+      'exp' => $newAccessExp,
       'uid' => $refreshDecoded->uid
     ];
     $newAccessToken = JWT::encode($newAccessPayload, getenv('JWT_SECRET'), 'HS256');
