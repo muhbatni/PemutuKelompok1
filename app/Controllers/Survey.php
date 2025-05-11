@@ -380,7 +380,7 @@ class Survey extends BaseController
         log_message('error', 'Gagal membuka output stream');
         return redirectWithMessage('survey', 'error', 'Gagal membuka output stream.');
       }
-      fputcsv($output, ['Pertanyaan', 'Jenis Jawaban', 'Jawaban']);
+      fputcsv($output, ['Nomor', 'Pertanyaan', 'Jenis Jawaban', 'Jawaban']);
       $number = 1;
       foreach ($results as $result) {
         $data = [
@@ -392,7 +392,7 @@ class Survey extends BaseController
         fputcsv($output, $data);
       }
       fclose($output);
-    } catch (\Exception $exception) {
+    } catch (Throwable $exception) {
       log_message('error', 'Download error: ' . $exception->getMessage());
       return redirectWithMessage('survey', 'error', 'Gagal mengunduh hasil survei: ' . $exception->getMessage());
     }
