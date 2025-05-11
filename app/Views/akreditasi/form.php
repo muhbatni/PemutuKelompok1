@@ -10,11 +10,11 @@
       </div>
 
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="<?= site_url('akreditasi/input') ?>" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
         <!-- ID input, hidden field -->
-        <input type="hidden" name="id" value="<?= isset($editData) && isset($editData['id']) ? $editData['id'] : ''; ?>">
+        <input type="hidden" name="id" value="<?= isset($dataAkreditasi) ? $dataAkreditasi['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
@@ -167,15 +167,6 @@
         allowClear: true
       });
     });
-  function handleCancel() {
-        <?php if (isset($editData)): ?>
-            // If editing, redirect to the list or home page
-            window.location.href = 'akreditasi'; // You can change this to redirect to a different page
-        <?php else: ?>
-            // If adding a new record, reset the form
-            document.querySelector("form").reset();
-        <?php endif; ?>
-    }
 
     function showEditModal(id) {
       document.getElementById('editId').value = id;
