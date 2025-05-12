@@ -13,7 +13,8 @@
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
           <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/akreditasi/lembaga/input" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a href="/pemutu/public/akreditasi/lembaga/input"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
               <span>
                 <i class="flaticon-add"></i>
                 <span>Tambah Lembaga</span>
@@ -25,7 +26,8 @@
             <div class="form-group m-form__group row align-items-center">
               <div class="col-md-4 ml-auto">
                 <div class="m-input-icon m-input-icon--left">
-                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
+                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
+                    id="generalSearch">
                   <span class="m-input-icon__icon m-input-icon__icon--left">
                     <span><i class="la la-search"></i></span>
                   </span>
@@ -48,21 +50,28 @@
           </tr>
         </thead>
         <tbody>
-          <?php if (!empty($lembaga)) : ?>
-            <?php $no = 1; foreach ($lembaga as $row) : ?>
+          <?php if (!empty($lembaga)): ?>
+            <?php $no = 1;
+            foreach ($lembaga as $row): ?>
               <tr>
                 <td><?= $no++ ?></td>
                 <td><?= esc($row['nama']) ?></td>
                 <td><?= esc($row['deskripsi']) ?></td>
-                <td class="text-center">
-                <div class="d-flex justify-content-center flex-wrap">
-                  <a href="<?= site_url('akreditasi/lembaga/input?id=' . $row['id']) ?>" class="btn btn-sm btn-warning mr-2 mb-1">Edit</a>
-                  <button class="btn btn-sm btn-danger mb-1" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
-                </div>
-              </td>
+                <td>
+                  <div class="d-inline-flex flex-wrap justify-content-center" style="max-width: fit-content; gap: 0.5rem;">
+                    <a href="<?= site_url('akreditasi/lembaga/input?id=' . $row['id']) ?>"
+                      class="btn btn-sm btn-warning mb-1">Edit</a>
+                    <button class="btn btn-sm btn-danger mb-1"
+                      onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
+                    <a href="<?= site_url('akreditasi/kriteria/input') ?>"
+                      class="btn btn-sm btn-info mb-1">Kriteria</a>
+                    <a href="<?= site_url('akreditasi/syarat-unggul/input') ?>"
+                      class="btn btn-sm btn-success mb-1">Syarat Unggul</a>
+                  </div>
+                </td>
               </tr>
             <?php endforeach ?>
-          <?php else : ?>
+          <?php else: ?>
             <tr>
               <td colspan="4" class="text-center">Belum ada data lembaga.</td>
             </tr>
@@ -75,7 +84,8 @@
 </div>
 
 <!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form method="get">
@@ -105,10 +115,10 @@
     $('#deleteModal').modal('show');
   }
 
-  $(document).ready(function() {
-    $('#generalSearch').on('keyup', function() {
+  $(document).ready(function () {
+    $('#generalSearch').on('keyup', function () {
       let value = $(this).val().toLowerCase();
-      $('#html_table tbody tr').filter(function() {
+      $('#html_table tbody tr').filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
