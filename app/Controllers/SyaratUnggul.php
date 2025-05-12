@@ -5,47 +5,48 @@ use App\Models\SyaratUnggulModel;
 
 class SyaratUnggul extends BaseController
 {
-    public function input(){
-        //ambil data m_lembaga_akreditasi
-    $lembagaModel = new LembagaAkreditasiModel();
-    $data['lembagas'] = $lembagaModel->getLembagas();
+    public function input() {
+        $lembagaModel = new LembagaAkreditasiModel();
+        $data['lembagas'] = $lembagaModel->getLembagas();
 
-    // Ambil data p_syarat_unggul
-    $syaratUnggulModel = new SyaratUnggulModel();
-    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
+        $syaratUnggulModel = new SyaratUnggulModel();
+        $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
 
-    $editData = null;
-    if ($this->request->getGet('id')) {
+        $editData = null;
         $id = $this->request->getGet('id');
-        // Get the data for the specified ID
-        $editData = $syaratUnggulModel->find($id);
-        $data['editData'] = $editData;
-    }
-
-    if ($this->request->getMethod() == 'POST') {
-        $id = $this->request->getPost('id');
-        $dataForm = [
-            'id_lembaga' => $this->request->getPost('id_lembaga'),
-            'nama' => $this->request->getPost('nama'),
-        ];
-
-        // Cek jika ada ID di POST, berarti edit data
         if ($id) {
-            $syaratUnggulModel->update($id, $dataForm);
-            session()->setFlashdata('success', 'Data berhasil diperbarui!');
-        } else {
-            // Jika tidak ada ID, maka insert data baru
-            $syaratUnggulModel->insert($dataForm);
-            session()->setFlashdata('success', 'Data berhasil disimpan!');
+            $editData = $syaratUnggulModel->find($id);
+            $data['editData'] = $editData;
         }
 
-        return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
+        if ($this->request->getMethod() == 'POST') {
+            $id = $this->request->getPost('id');
+            $dataForm = [
+                'id_lembaga' => $this->request->getPost('id_lembaga'),
+                'nama' => $this->request->getPost('nama'),
+            ];
+
+            if ($id) {
+                $syaratUnggulModel->update($id, $dataForm);
+                session()->setFlashdata('success', 'Data berhasil diperbarui!');
+            } else {
+                $syaratUnggulModel->insert($dataForm);
+                session()->setFlashdata('success', 'Data berhasil disimpan!');
+            }
+
+            return redirect()->to(base_url('public/akreditasi/syarat-unggul'));
+        }
+
+        // Ambil id_lembaga dari query string hanya jika bukan edit
+        $data['selected_lembaga'] = !$id ? $this->request->getGet('id_lembaga') : null;
+        $data['isEdit'] = $id ? true : false;
+        $data["title"] = "Data Syarat Unggul";
+
+        echo view('layouts/header.php', $data);
+        echo view('akreditasi/syarat_unggul/form.php', $data);
+        echo view('layouts/footer.php');
     }
-    $data["title"] = "Data Syarat Unggul";
-    echo view('layouts/header.php', $data);
-    echo view('akreditasi/syarat_unggul/form.php');
-    echo view('layouts/footer.php');
-    }
+
   public function index()
   {
     //ambil data m_lembaga_akreditasi

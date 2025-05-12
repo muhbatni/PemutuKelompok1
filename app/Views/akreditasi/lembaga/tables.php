@@ -63,9 +63,9 @@
                       class="btn btn-sm btn-warning mb-1">Edit</a>
                     <button class="btn btn-sm btn-danger mb-1"
                       onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">Hapus</button>
-                    <a href="<?= site_url('akreditasi/kriteria/input') ?>"
+                    <a href="<?= site_url('akreditasi/kriteria/input?id_lembaga=' . $row['id']) ?>"
                       class="btn btn-sm btn-info mb-1">Kriteria</a>
-                    <a href="<?= site_url('akreditasi/syarat-unggul/input') ?>"
+                    <a href="<?= site_url('akreditasi/syarat-unggul/input?id_lembaga=' . $row['id']) ?>"
                       class="btn btn-sm btn-success mb-1">Syarat Unggul</a>
                   </div>
                 </td>
