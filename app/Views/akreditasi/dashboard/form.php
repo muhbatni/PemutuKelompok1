@@ -12,7 +12,7 @@
   <style>
     /* Background Dashboard */
     body {
-       font-family: 'Poppins';
+      font-family: 'Poppins';
       background: linear-gradient(to bottom, #f4f7fc, #e9edf5);
       background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
     }
@@ -152,15 +152,21 @@
   <div class="container">
     <h1 class="page-title">Dashboard Manajemen Penjaminan Mutu</h1>
 
-    <!-- Search Input for Year Filter -->
+    <!-- Search Input dan Dropdown Filter Tahun -->
     <div class="dashboard-card">
       <label for="yearFilter" class="form-label">Filter Tahun Periode</label>
       <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="yearFilter" class="search-input" placeholder="Ketik tahun (contoh: 2025)"
-          autocomplete="off">
+        <select id="yearFilter" class="form-select search-input select2">
+          <option value="">Ketik atau pilih tahun (contoh: 2025)</option>
+          <?php foreach ($periodeList as $periode): ?>
+            <option value="<?= $periode['tahun'] ?>" <?= ($selectedTahun == $periode['tahun']) ? 'selected' : '' ?>>
+              <?= $periode['tahun'] ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </div>
     </div>
+
 
     <!-- Tabel Data Unit Pemutu -->
     <div class="dashboard-card">
@@ -199,7 +205,7 @@
                       $class = 'badge-status badge-tidaklolos';
                     }
                     ?>
-                    <span class="<?= $class ?>">
+                    <span class="<?= $row['status_isian_class'] ?>">
                       <?= esc($row['status_isian_text']) ?>
                     </span>
                   </td>
@@ -220,23 +226,34 @@
   <!-- Real-time Filtering Script -->
   <script>
     $(document).ready(function () {
-      $('#yearFilter').on('input', function () {
-        const searchTerm = $(this).val().trim();
+      // Inisialisasi Select2 dengan search
+      $('#yearFilter').select2({
+        placeholder: "Ketik atau pilih tahun (contoh: 2025)",
+        allowClear: true,
+        width: '100%',
+        minimumResultsForSearch: 1 // Selalu tampilkan search
+      });
 
+      // Filter tabel saat tahun dipilih
+      $('#yearFilter').on('change', function () {
+        const tahun = $(this).val();
+        filterByTahun(tahun);
+      });
+
+      // Fungsi filter tabel
+      function filterByTahun(tahun) {
         $('.table tbody tr').each(function () {
           const $row = $(this);
           const yearText = $row.find('td:eq(2)').text();
-
-          // Ekstrak tahun utama dari format "2024 (2024/2025)"
           const mainYear = yearText.match(/\d{4}/)?.[0] || '';
 
-          if (mainYear.includes(searchTerm) || searchTerm === '') {
+          if (mainYear.includes(tahun) || tahun === '') {
             $row.show();
           } else {
             $row.hide();
           }
         });
-      });
+      }
     });
   </script>
 
