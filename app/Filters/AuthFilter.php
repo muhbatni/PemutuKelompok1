@@ -19,8 +19,8 @@ class AuthFilter implements FilterInterface
   }
 
   private array $guardedRoutes = [
-    "akreditasi/unit" => 'Admin',
-    "akreditasi/isian-pemutu" => 'Admin',
+    "akreditasi/unit" => '3',
+    "akreditasi/isian-pemutu" => '3',
   ];
 
   public function before(RequestInterface $request, $arguments = null)

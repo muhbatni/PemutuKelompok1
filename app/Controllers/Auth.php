@@ -24,7 +24,8 @@ class Auth extends BaseController
     $data = [
       'username' => $postData['username'],
       'password' => $hashedPassword,
-      'tipe' => $postData['tipe']
+      'tipe' => $postData['tipe'],
+      'id_unit' => $postData['id_unit']
     ];
     if (!$this->validate('signup')) {
       return view(

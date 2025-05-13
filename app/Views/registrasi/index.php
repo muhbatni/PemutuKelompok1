@@ -86,7 +86,7 @@
                     </select>
                   </div>
                   <div class="form-group m-form__group">
-                    <select class="form-control m-input" name="unit">
+                    <select class="form-control m-input" name="id_unit">
                       <option value="">Pilih Unit</option>
                       <?php foreach ($units as $unit): ?>
                         <option value="<?= $unit['id'] ?>" <?= isset($old['unit']) && $old['unit'] == $unit['id'] ? 'selected' : '' ?>>
