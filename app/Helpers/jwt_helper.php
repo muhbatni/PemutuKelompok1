@@ -50,7 +50,8 @@ function refreshToken()
     $newAccessPayload = [
       'iat' => $now,
       'exp' => $newAccessExp,
-      'uid' => $refreshDecoded->uid
+      'uid' => $refreshDecoded->uid,
+      'utype' => $refreshDecoded->utype
     ];
     $newAccessToken = JWT::encode($newAccessPayload, getenv('JWT_SECRET'), 'HS256');
     set_cookie('access_token', $newAccessToken, $newAccessExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);

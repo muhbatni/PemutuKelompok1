@@ -11,7 +11,7 @@ class UserModel extends Model
   protected $table = 'm_user';
   protected $primaryKey = 'id';
   protected $useAutoIncrement = false;
-  protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto'];
+  protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto', 'id_unit'];
 
   protected $beforeInsert = ['generateUUID'];
 
@@ -157,8 +157,8 @@ class UserModel extends Model
     }
     return match ($user['tipe']) {
       "1" => "Dosen",
-      "2" => "Laboran",
-      "3" => "Mahasiswa",
+      "2" => "Mahasiswa",
+      "3" => "Admin",
       default => "Undefined"
     };
   }
