@@ -53,7 +53,7 @@ class IsianPemutu extends BaseController
         session()->setFlashdata('success', 'Data berhasil disimpan!');
       }
 
-      return redirect()->to(base_url('akreditasi/isian-pemutu'));
+      return redirect()->to(site_url('akreditasi/isian-pemutu'));
     }
 
     // === Mode Edit: Ambil data berdasarkan ID ===
@@ -103,7 +103,7 @@ class IsianPemutu extends BaseController
       $id = $this->request->getGet('delete');
       $model->delete($id);
       session()->setFlashdata('success', 'Data berhasil dihapus!');
-      return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
+      return redirect()->to(site_url('akreditasi/isian-pemutu'));
     }
 
     // Edit data
@@ -131,7 +131,7 @@ class IsianPemutu extends BaseController
         session()->setFlashdata('success', 'Data berhasil disimpan!');
       }
 
-      return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
+      return redirect()->to(site_url('akreditasi/isian-pemutu'));
     }
 
     //ambil data instrumenpemutu
