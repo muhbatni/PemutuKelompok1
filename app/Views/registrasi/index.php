@@ -75,14 +75,26 @@
                       <small class="text-danger"><?= esc($errors['konfirmasi_password']) ?></small>
                     <?php endif; ?>
                   </div>
-                  <select class="form-control m-input" name="tipe">
-                    <option value="">Pilih Tipe Akun</option>
-                    <option value="1" <?= isset($old['tipe']) && $old['tipe'] == '1' ? 'selected' : '' ?>>Dosen</option>
-                    <option value="2" <?= isset($old['tipe']) && $old['tipe'] == '2' ? 'selected' : '' ?>>Laboran
-                    </option>
-                    <option value="3" <?= isset($old['tipe']) && $old['tipe'] == '3' ? 'selected' : '' ?>>
-                      Peserta/Mahasiswa</option>
-                  </select>
+                  <div class="form-group m-form__group">
+                    <select class="form-control m-input" name="tipe">
+                      <option value="">Pilih Tipe Akun</option>
+                      <option value="1" <?= isset($old['tipe']) && $old['tipe'] == '1' ? 'selected' : '' ?>>Dosen</option>
+                      <option value="2" <?= isset($old['tipe']) && $old['tipe'] == '2' ? 'selected' : '' ?>>Mahasiswa
+                      </option>
+                      <option value="3" <?= isset($old['tipe']) && $old['tipe'] == '3' ? 'selected' : '' ?>>
+                        Admin</option>
+                    </select>
+                  </div>
+                  <div class="form-group m-form__group">
+                    <select class="form-control m-input" name="unit">
+                      <option value="">Pilih Unit</option>
+                      <?php foreach ($units as $unit): ?>
+                        <option value="<?= $unit['id'] ?>" <?= isset($old['unit']) && $old['unit'] == $unit['id'] ? 'selected' : '' ?>>
+                          <?= $unit['nama'] ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
                   <?php if (isset($errors['tipe'])): ?>
                     <small class="text-danger"><?= esc($errors['tipe']) ?></small>
                   <?php endif; ?>

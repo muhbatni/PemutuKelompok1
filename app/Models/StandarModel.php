@@ -10,6 +10,11 @@ class StandarModel extends Model
     protected $allowedFields = ['id_parent', 'nama', 'dokumen', 'is_aktif'];
 
     public function getStandars(){
-        return $this->findAll();
+        return $this->orderBy('id', 'ASC')->findAll();
     }
+
+    public function getStandarsById($id){
+        return $this->where('id', $id)->first();
+    }
+
 }

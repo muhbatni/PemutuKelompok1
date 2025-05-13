@@ -14,6 +14,10 @@ class UnitModel extends Model
     {
         return $this->findAll();
     }
+
+    public function getUnitById($id){
+        return $this->where('id', $id)->first();
+    }
 }
 
 ?>

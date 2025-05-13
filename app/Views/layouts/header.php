@@ -67,7 +67,7 @@ $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
 $isDashboardActive = empty($uri->getSegment(1));
 
-$auditPages = ['input-auditor', 'standar', 'manajemen-audit', 'data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$auditPages = ['auditor','input-auditor', 'standar','input-standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung','input-data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
 $akreditasiPages = [ 'lembaga', 'kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'unit', 'input-data-pemutu', 'isian-pemutu', 'isian-pemutu-unit', 'dashboard-periode'];
@@ -280,9 +280,10 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                 <ul class="m-menu__subnav">
                   <?php
                   $akreditasiMenu = [
-                    'input-auditor' => 'Input Auditor',
+                    'auditor' => 'Auditor',
                     'standar' => 'Standar Audit',
                     'manajemen-audit' => 'Manajemen Audit',
+                    'pelaksanaan-audit' => 'Pelaksanaan Audit',
                     'data-dukung' => 'Data Dukung',
                     'temuan' => 'Temuan',
                   ];
