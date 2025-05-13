@@ -68,7 +68,11 @@ class IsianPemutuUnit extends BaseController
   {
 
     $isianPemutuModel = new IsianPemutuUnitModel();
-    $data['isian_pemutu'] = $isianPemutuModel->getJoin();
+    $data = [
+    'isianPemutu' => $isianPemutuModel->getJoin(),
+    'periodeList' => $isianPemutuModel->getAllPeriode(),
+];
+
 
     $model = new IsianPemutuUnitModel();
     $unitPemutuModel = new UnitPemutuModel();

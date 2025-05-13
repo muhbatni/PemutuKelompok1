@@ -10,91 +10,90 @@
       </div>
     </div>
 
-<div class="m-portlet__body">
-  <!--begin: Search Form -->
-  <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-    <div class="row align-items-center justify-content-between">
-      
-      <!-- Tombol kiri -->
-      <div class="col-xl-4 col-md-12 mb-2 mb-xl-0">
-        <a href="<?= site_url('akreditasi/isian-pemutu-unit/input') ?>"
-          class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-          <span>
-            <i class="flaticon-add"></i>
-            <span>Input Isian Unit</span>
-          </span>
-        </a>
-      </div>
+    <div class="m-portlet__body">
+      <!--begin: Search Form -->
+      <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+        <div class="row align-items-center justify-content-between">
 
-      <!-- Filter & Search kanan -->
-      <div class="col-xl-8 col-md-12">
-        <div class="form-group m-form__group row align-items-center justify-content-end">
-          <div class="col-md-5">
-            <select id="periodeFilter" class="form-control m-input m-input--solid">
-              <option value="">Filter Periode...</option>
-              <option value="2021/2022">2021/2022</option>
-              <option value="2022/2023">2022/2023</option>
-              <option value="2023/2024">2023/2024</option>
-              <option value="2024/2025">2024/2025</option>
-            </select>
-          </div>
-          <div class="col-md-5">
-            <div class="m-input-icon m-input-icon--left">
-              <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
-                id="generalSearch">
-              <span class="m-input-icon__icon m-input-icon__icon--left">
-                <span><i class="la la-search"></i></span>
+          <!-- Tombol kiri -->
+          <div class="col-xl-4 col-md-12 mb-2 mb-xl-0">
+            <a href="<?= site_url('akreditasi/isian-pemutu-unit/input') ?>"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+              <span>
+                <i class="flaticon-add"></i>
+                <span>Input Isian Unit</span>
               </span>
+            </a>
+          </div>
+
+          <!-- Filter & Search kanan -->
+          <div class="col-xl-8 col-md-12">
+            <div class="form-group m-form__group row align-items-center justify-content-end">
+              <div class="col-md-5">
+                <select id="periodeFilter" class="form-control m-input m-input--solid">
+                  <option value="">Filter Periode...</option>
+                  <?php foreach ($periodeList as $periode): ?>
+                    <option value="<?= esc($periode['ts']) ?>"><?= esc($periode['ts']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <div class="m-input-icon m-input-icon--left">
+                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
+                    id="generalSearch">
+                  <span class="m-input-icon__icon m-input-icon__icon--left">
+                    <span><i class="la la-search"></i></span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
-
+      <!--end: Search Form -->
     </div>
-  </div>
-  <!--end: Search Form -->
-</div>
 
-      <!--begin: Datatable -->
-      <table class="table table-bordered table-striped" id="html_table" width="100%">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Unit Pemutu</th>
-            <th>Instrumen</th>
-            <th>Isian</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if (!empty($isian_pemutu)): ?>
-            <?php $no = 1;
-            foreach ($isian_pemutu as $row): ?>
-              <tr>
-                <td><?= $no++ ?></td>
-                <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
-                <td><?= esc($row['jenjang_text']) ?></td>
-                <td><?= esc($row['isian']) ?></td>
-                <td><?= $row['status'] ? 'Lolos' : 'Tidak Lolos' ?></td>
-                <td>
-                  <a href="<?= site_url('akreditasi/isian-pemutu-unit/input?id=' . $row['id']) ?>"
-                    class="btn btn-sm btn-warning">Edit</a>
-                  <button class="btn btn-sm btn-danger"
-                    onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama_unit']) ?>')">Hapus</button>
-                </td>
-              </tr>
-            <?php endforeach ?>
-          <?php else: ?>
+    <!--begin: Datatable -->
+    <table class="table table-bordered table-striped" id="html_table" width="100%">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Unit Pemutu</th>
+          <th>Instrumen</th>
+          <th>Isian</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (!empty($isian_pemutu)): ?>
+          <?php $no = 1;
+          foreach ($isian_pemutu as $row): ?>
             <tr>
-              <td colspan="6" class="text-center">Belum ada data isian pemutu.</td>
+              <td><?= $no++ ?></td>
+              <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
+              <td><?= esc($row['jenjang_text']) ?></td>
+              <td><?= esc($row['isian']) ?></td>
+              <td><?= $row['status'] ? 'Lolos' : 'Tidak Lolos' ?></td>
+              <td>
+                <a href="<?= site_url('akreditasi/isian-pemutu-unit/input?id=' . $row['id']) ?>"
+                  class="btn btn-sm btn-warning">Edit</a>
+                <button class="btn btn-sm btn-danger"
+                  onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama_unit']) ?>')">Hapus</button>
+              </td>
             </tr>
-          <?php endif ?>
-        </tbody>
-      </table>
-      <!--end: Datatable -->
-    </div>
+          <?php endforeach ?>
+        <?php else: ?>
+          <tr>
+            <td colspan="6" class="text-center">Belum ada data isian pemutu.</td>
+          </tr>
+        <?php endif ?>
+      </tbody>
+    </table>
+    <!--end: Datatable -->
   </div>
+</div>
 </div>
 
 <!-- Modal Hapus -->
@@ -131,37 +130,37 @@
   }
 
   $(document).ready(function () {
-  function applyFilters() {
-    let searchValue = $('#generalSearch').val().toLowerCase().trim();
-    let periodeValue = $('#periodeFilter').val().toLowerCase().trim();
+    function applyFilters() {
+      let searchValue = $('#generalSearch').val().toLowerCase().trim();
+      let periodeValue = $('#periodeFilter').val().toLowerCase().trim();
 
-    $('#html_table tbody tr').each(function () {
-      let row = $(this);
-      let unitPemutu = row.find('td:nth-child(2)').text().toLowerCase();
-      let instrumen = row.find('td:nth-child(3)').text().toLowerCase();
-      let status = row.find('td:nth-child(5)').text().toLowerCase();
+      $('#html_table tbody tr').each(function () {
+        let row = $(this);
+        let unitPemutu = row.find('td:nth-child(2)').text().toLowerCase();
+        let instrumen = row.find('td:nth-child(3)').text().toLowerCase();
+        let status = row.find('td:nth-child(5)').text().toLowerCase();
 
-      // Cek apakah periode cocok
-      let isPeriodeMatch = periodeValue === "" || unitPemutu.includes(periodeValue);
+        // Cek apakah periode cocok
+        let isPeriodeMatch = periodeValue === "" || unitPemutu.includes(periodeValue);
 
-      // Cek apakah search cocok di salah satu kolom
-      let isSearchMatch = false;
-      if (searchValue === "") {
-        isSearchMatch = true;
-      } else if (status === searchValue) {
-        isSearchMatch = true;
-      } else if (unitPemutu.includes(searchValue) || instrumen.includes(searchValue)) {
-        isSearchMatch = true;
-      }
+        // Cek apakah search cocok di salah satu kolom
+        let isSearchMatch = false;
+        if (searchValue === "") {
+          isSearchMatch = true;
+        } else if (status === searchValue) {
+          isSearchMatch = true;
+        } else if (unitPemutu.includes(searchValue) || instrumen.includes(searchValue)) {
+          isSearchMatch = true;
+        }
 
-      // Tampilkan baris hanya jika dua-duanya cocok
-      row.toggle(isPeriodeMatch && isSearchMatch);
-    });
-  }
+        // Tampilkan baris hanya jika dua-duanya cocok
+        row.toggle(isPeriodeMatch && isSearchMatch);
+      });
+    }
 
-  $('#generalSearch').on('keyup', applyFilters);
-  $('#periodeFilter').on('change', applyFilters);
-});
+    $('#generalSearch').on('keyup', applyFilters);
+    $('#periodeFilter').on('change', applyFilters);
+  });
 
 </script>
 

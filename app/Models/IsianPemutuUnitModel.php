@@ -48,5 +48,14 @@ class IsianPemutuUnitModel extends Model
         return $result;
     }
 
+    public function getAllPeriode()
+{
+    return $this->db->table('m_periode')
+        ->select('id, ts')
+        ->orderBy('ts', 'DESC')
+        ->get()
+        ->getResultArray();
+}
+
 }
 ?>
