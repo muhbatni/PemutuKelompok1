@@ -50,9 +50,6 @@
         <table class="m-datatable" id="html_table" width="100%">
           <thead>
             <tr>
-              <th title="Field #1">
-                Id
-              </th>
               <th title="Field #2">
                 Unit
               </th>
@@ -71,9 +68,6 @@
               <th title="Field #7">
                 Status
               </th>
-              <th title="Field #8">
-                Id Isian Audit
-              </th>
               <th title="Field #9">
                 Aksi
               </th>
@@ -82,23 +76,24 @@
           <tbody>
             <?php foreach ($temuan as $row): ?>
               <tr>
-                <td><?= $row['id']; ?></td>
                 <td><?= $row['nama_unit']; ?></td>
                 <td><?= $row['kondisi']; ?></td>
                 <td><?= $row['rencana_perbaikan']; ?></td>
                 <td><?= $row['tanggal_perbaikan']; ?></td>
                 <td><?= $row['catatan'] ?? '-' ?></td>
-                <?php
-                $status_labels = [
-                  '0' => 'Belum Ditindaklanjuti',
-                  '1' => 'Sedang Ditindaklanjuti',
-                  '2' => 'Selesai'
-                ];
-                ?>
-                <td><?= isset($row['status']) ? $status_labels[$row['status']] : 'Belum Diisi'; ?></td>
-                <td><?= $row['id_isian_audit'] ?? '-'; ?></td>
-
-
+                <td>
+                  <?php
+                  if (isset($row['status']) && $row['status'] === '0') {
+                    echo '<span class="badge badge-pill badge-danger px-3 py-2" style="font-weight: 500; white-space: normal;">Belum Ditindaklanjuti</span>';
+                  } elseif (isset($row['status']) && $row['status'] === '1') {
+                    echo '<span class="badge badge-pill badge-warning px-3 py-2" style="font-weight: 500; white-space: normal;">Sedang Ditindaklanjuti</span>';
+                  } elseif (isset($row['status']) && $row['status'] === '2') {
+                    echo '<span class="badge badge-pill badge-success px-3 py-2" style="font-weight: 500; white-space: normal;">Selesai</span>';
+                  } else {
+                    echo '<span class="badge badge-pill badge-secondary px-3 py-2" style="font-weight: 500; white-space: normal;">Belum Diisi</span>';
+                  }
+                  ?>
+                </td>
                 <td>
                   <a href="<?= base_url('public/audit/input-temuan/edit/' . $row['id']); ?>"
                     class="btn btn-sm btn-warning" title="Edit">
@@ -122,28 +117,3 @@
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
   type="text/javascript"></script>
-
-<style>
-  /* Styling untuk sticky column */
-  th:last-child,
-  td:last-child {
-    position: sticky !important;
-    right: 0;
-    z-index: 3;
-    background-color: #fff;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Styling untuk tabel dan container */
-  .m-datatable {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-  }
-
-  .table-container {
-    overflow-x: auto;
-    position: relative;
-    width: 100%;
-  }
-</style>
