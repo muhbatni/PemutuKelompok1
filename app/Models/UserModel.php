@@ -71,6 +71,27 @@ class UserModel extends Model
     return null;
   }
 
+
+  /**
+   * Get the unit of the user by the user's id.
+   *
+   * @return string|null
+   */
+  public function getUnit()
+  {
+    $token = getDecodedToken();
+    if (!$token) {
+      return null;
+    }
+    $userId = $token->uid;
+    $userModel = new UserModel();
+    $user = $userModel->select('mu.nama AS nama_unit')->join('m_unit mu', 'mu.id = m_user.id_unit')->where('m_user.id', $userId)->first();
+    if ($user) {
+      return $user['nama_unit'];
+    }
+    return null;
+  }
+
   public function setAvatar($file)
   {
     if ($file->getError() !== 0) {
