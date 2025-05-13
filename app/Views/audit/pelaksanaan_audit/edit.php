@@ -12,81 +12,107 @@
       </div>
     </div>
 
-    <div class="m-portlet__body">
-      <!-- Begin: Filter Section -->
-      <div class="row mb-4">
-        <div class="col-md-5">
-          <div class="form-group">
-            <label for="audit_select">Pilih Auditor:</label>
-            <select class="form-control m-select2" id="audit_select" name="id_auditor" required>
-              <option value="">-- Pilih Auditor --</option>
-              <?php foreach ($auditor_list as $auditor): ?>
-                <option value="<?= $auditor->id_auditor ?>"><?= $auditor->nama_auditor ?></option>
+    <form id="audit-form" class="mt-4" method="POST" action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>">
+      <input type="hidden" name="id_standar_audit" value="<?= esc($standar_audit_id ?? $id_standar_audit ?? ''); ?>">
+      <div class="m-portlet__body">
+        <!-- Begin: Filter Section -->
+        <div class="row mb-4">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="audit_select">Pilih Auditor:</label>
+              <select class="form-control m-select2" id="audit_select" name="id_auditor" <?= !empty($isExistingData) ? 'disabled' : '' ?> <?= empty($isExistingData) ? 'required' : '' ?>>
+                <option value="">-- Pilih Auditor --</option>
+                <?php foreach ($auditor_list as $auditor): ?>
+                  <option value="<?= $auditor->id_auditor ?>" <?= (isset($firstStandar['id_auditor']) && $firstStandar['id_auditor'] == $auditor->id_auditor) ? 'selected' : '' ?>>
+                    <?= $auditor->nama_auditor ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+              <?php if (!empty($isExistingData)): ?>
+                <!-- Hidden input hanya jika select disabled, pastikan tidak duplikat -->
+                <input type="hidden" name="id_auditor" value="<?= esc($firstStandar['id_auditor'] ?? '') ?>">
+              <?php endif; ?>
+            </div>
+          </div>
+
+          <div class="col-md-7">
+            <div class="form-group">
+              <label for="unit_select">Pilih Unit:</label>
+              <select class="form-control m-select2" id="unit_select" name="id_unit" <?= !empty($isExistingData) ? 'disabled' : '' ?> <?= empty($isExistingData) ? 'required' : '' ?>>
+                <option value="">-- Pilih Unit --</option>
+                <?php foreach ($unit_list as $unit): ?>
+                  <option value="<?= $unit->id_unit ?>" <?= (isset($firstStandar['id_unit']) && $firstStandar['id_unit'] == $unit->id_unit) ? 'selected' : '' ?>>
+                    <?= $unit->nama_unit ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+              <?php if (!empty($isExistingData)): ?>
+                <!-- Hidden input hanya jika select disabled, pastikan tidak duplikat -->
+                <input type="hidden" name="id_unit" value="<?= esc($firstStandar['id_unit'] ?? '') ?>">
+              <?php endif; ?>
+            </div>
+          </div>
+
+        </div>
+        <!-- End: Filter Section -->
+
+        <!-- Left Panel: Standards List -->
+        <div class="row">
+          <div class="col-md-5">
+            <!-- Standar Header -->
+            <div class="card mb-3">
+              <div class="card-header bg-primary text-white">
+                <h5 class="m-0">Daftar Standar</h5>
+              </div>
+            </div>
+
+            <div id="list-standar">
+              <?php foreach ($standar as $item): ?>
+                <!-- Standar Item -->
+                <div class="card mb-2">
+                  <div class="card-header p-2">
+                    <a href="#" class="list-group-item list-group-item-action border-0 p-2"
+                      data-standar-id="<?= $item->id_standar ?>">
+                      <i class="fa fa-folder-open mr-2"></i> <?= esc($item->nama) ?>
+                    </a>
+                  </div>
+
+                  <!-- Pernyataan Items (hidden by default) -->
+                  <div class="list-pernyataan card-body p-0" data-wrapper-id="<?= $item->id_standar ?>"
+                    style="display: none; border-top: 1px solid #ebedf2;">
+                    <!-- Pernyataan akan dimuat di sini oleh AJAX -->
+                  </div>
+                </div>
               <?php endforeach; ?>
-            </select>
+            </div>
+          </div>
+
+          <!-- Right Panel: Statement & Form -->
+          <div class="col-md-7">
+            <div class="card">
+              <div class="card-header bg-info text-white">
+                <h5 class="m-0">Detail Pernyataan</h5>
+              </div>
+              <div class="card-body" id="indicator-content">
+                <div class="text-center text-muted p-5">
+                  <i class="fa fa-info-circle fa-3x mb-3"></i>
+                  <p>Silakan pilih pernyataan dari daftar di sebelah kiri untuk melihat detailnya</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-md-7">
-          <div class="form-group">
-            <label for="unit_select">Pilih Unit:</label>
-            <select class="form-control m-select2" id="unit_select" name="id_unit" required>
-              <option value="">-- Pilih Unit --</option>
-              <?php foreach ($unit_list as $unit): ?>
-                <option value="<?= $unit->id_unit ?>"><?= $unit->nama_unit ?></option>
-              <?php endforeach; ?>
-            </select>
+        <div class="row mt-4">
+          <div class="col-md-12 text-right">
+            <button type="button" class="btn btn-success" onclick="$('#audit-form').submit();">Simpan</button>
+            <button type="button" class="btn btn-outline-secondary ml-2"
+              onclick="window.location.href='<?= base_url('public/audit/pelaksanaan-audit'); ?>'">
+              Kembali
+            </button>
           </div>
         </div>
       </div>
-      <!-- End: Filter Section -->
-
-      <!-- Left Panel: Standards List -->
-      <div class="row">
-        <div class="col-md-5">
-          <!-- Standar Header -->
-          <div class="card mb-3">
-            <div class="card-header bg-primary text-white">
-              <h5 class="m-0">Daftar Standar</h5>
-            </div>
-          </div>
-
-          <div id="list-standar">
-            <?php foreach ($standar as $item): ?>
-              <!-- Standar Item -->
-              <div class="card mb-2">
-                <div class="card-header p-2">
-                  <a href="#" class="list-group-item list-group-item-action border-0 p-2"
-                    data-standar-id="<?= $item->id_standar ?>">
-                    <i class="fa fa-folder-open mr-2"></i> <?= esc($item->nama) ?>
-                  </a>
-                </div>
-
-                <!-- Pernyataan Items (hidden by default) -->
-                <div class="list-pernyataan card-body p-0" data-wrapper-id="<?= $item->id_standar ?>"
-                  style="display: none; border-top: 1px solid #ebedf2;">
-                  <!-- Pernyataan akan dimuat di sini oleh AJAX -->
-                </div>
-              </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-
-        <!-- Right Panel: Statement & Form -->
-        <div class="col-md-7">
-          <div class="card">
-            <div class="card-header bg-info text-white">
-              <h5 class="m-0">Detail Pernyataan</h5>
-            </div>
-            <div class="card-body" id="indicator-content">
-              <div class="text-center text-muted p-5">
-                <i class="fa fa-info-circle fa-3x mb-3"></i>
-                <p>Silakan pilih pernyataan dari daftar di sebelah kiri untuk melihat detailnya</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
 
@@ -101,13 +127,6 @@
     $('#audit_select, #unit_select').change(function () {
       var auditId = $('#audit_select').val();
       var unitId = $('#unit_select').val();
-
-      // if (auditId && unitId) {
-      //   loadAuditStandards(auditId, unitId);
-      //   $('#audit_content').show();
-      // } else {
-      //   $('#audit_content').hide();
-      // }
     });
 
     // Ketika klik standar, ambil pernyataan
@@ -223,7 +242,6 @@
                   <p class="card-text">${item.batas || '-'}</p>
                 </div>
                 
-                <form id="audit-form" class="mt-4" method="POST" action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>">
                   <input type="hidden" name="id_pernyataan" value="${id}">
                   <input type="hidden" name="id_unit" value="${$('#unit_select').val()}">
                   <input type="hidden" name="id_auditor" value="${$('#audit_select').val()}">
@@ -290,11 +308,6 @@
                     </div>
                   </div>
 
-                  <div class="mt-4">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                    <button type="reset" class="btn btn-outline-secondary">Batal</button>
-                  </div>
-                </form>
               </div>
             </div>
           `;
@@ -306,6 +319,20 @@
         }
       });
     });
+  });
+  document.querySelector('.btn-success').addEventListener('click', function () {
+    if ($('#audit-form')[0].checkValidity()) {
+      $('#audit-form').submit();
+    } else {
+      $('#audit-form')[0].reportValidity();
+    }
+  });
+
+  $(document).ready(function() {
+    <?php if (!empty($isExistingData)): ?>
+      $('select[name="id_auditor"]').prop('disabled', true);
+      $('select[name="id_unit"]').prop('disabled', true);
+    <?php endif; ?>
   });
 </script>
 

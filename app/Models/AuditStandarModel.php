@@ -49,5 +49,14 @@ class AuditStandarModel extends Model
         return $this->where('id', $id_standar_audit)->select('id_audit')->first()['id_audit'] ?? null;
     }
 
+    public function getByAuditId($id_audit)
+    {
+        return $this->select('a_standar_audit.id, a_standar.nama')
+            ->join('a_standar', 'a_standar.id = a_standar_audit.id_standar')
+            ->where('a_standar_audit.id_audit', $id_audit)
+            ->findAll();
+    }
+
+
 
 }
