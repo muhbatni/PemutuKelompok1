@@ -59,6 +59,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'audit/auditor/input-auditor', [InputAuditor::class, 'index']);
   $routes->match(['get', 'post'], 'audit/auditor/input-auditor/(:segment)', [InputAuditor::class, 'edit/$1']);
   $routes->post('audit/auditor/input-auditor/delete/(:segment)', [InputAuditor::class, 'delete/$1']);
+  $routes->get('audit/auditor/download/(:segment)', [InputAuditor::class, 'download/$1']);
   $routes->get('audit/standar', [StandarAudit::class, 'index']);
   $routes->match(['get', 'post'], 'audit/standar', 'StandarAudit::insert');
   $routes->get('audit/standar/edit/(:num)', 'StandarAudit::edit/$1');
@@ -70,6 +71,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->match(['get', 'post'], 'audit/input-standar', [InputStandarAudit::class, 'index']);
   $routes->get('audit/input-standar/edit/(:num)', [InputStandarAudit::class, 'edit/$1']);
   $routes->post('audit/input-standar/update/(:num)', [InputStandarAudit::class, 'update/$1']);
+  $routes->get('audit/standar/download/(:segment)', [InputStandarAudit::class, 'download/$1']);
   $routes->get('audit/manajemen-audit', [ManajemenAudit::class, 'index']);
   $routes->match(['GET', 'POST'], 'audit/input-manajemen-audit', [InputManajemenAudit::class, 'index']);
   $routes->get('audit/input-manajemen-audit/edit/(:num)', 'InputManajemenAudit::edit/$1');
@@ -87,6 +89,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
   $routes->get('audit/get-pelaksanaan-info/(:num)', [InputDataDukung::class, 'getPelaksanaanInfo/$1']);
   $routes->get('audit/get-pernyataan-info/(:num)', [InputDataDukung::class, 'getPernyataanInfo/$1']);
+  $routes->get('audit/get-pernyataan-by-standar/(:num)', 'InputDataDukung::getPernyataanByStandar/$1');
+  $routes->get('audit/data-dukung/download/(:segment)', 'InputDataDukung::download/$1');
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->match(['get','post'],'audit/input-temuan', [InputTemuan::class, 'index']);
   $routes->get('audit/input-temuan/edit/(:num)', [InputTemuan::class, 'edit/$1']);

@@ -55,15 +55,23 @@
             <tr>
               <td><?= esc($row['username']); ?></td>
               <td>
-                <?= esc($row['dokumen']); ?>
+                <?php if (!empty($row['dokumen'])): ?>
+                  <a href="<?= base_url('public/audit/auditor/download/' . $row['dokumen']); ?>" class="btn btn-sm btn-info"
+                    title="Download">
+                    <i class="la la-download"></i> Download
+                  </a>
+                <?php else: ?>
+                  <span class="text-muted">Tidak Ada Dokumen</span>
+                <?php endif; ?>
               </td>
               <td>
-                  <a href="<?= base_url('public/audit/auditor/input-auditor/' . $row['id']); ?>" class="btn btn-sm btn-warning">
-                      Edit <i class="la la-edit"></i>
-                  </a>
-                  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['username']) ?>')">
-                      Hapus
-                  </button>
+                <a href="<?= base_url('audit/input-auditor/edit/' . $row['id']); ?>" class="btn btn-sm btn-warning">
+                  Edit <i class="la la-edit"></i>
+                </a>
+                <button class="btn btn-sm btn-danger"
+                  onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['username']) ?>')">
+                  Hapus
+                </button>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -75,7 +83,8 @@
 </div>
 
 <!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form id="deleteForm" method="post" action="">
@@ -106,4 +115,5 @@
   }
 </script>
 
-<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
+<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
+  type="text/javascript"></script>

@@ -13,10 +13,11 @@
           </div>
         </div>
       </div>
+
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="post"
-      action="<?= isset($pernyataan['id']) ? base_url('public/audit/standar/update/' . $pernyataan['id']) : base_url('public/audit/standar') ?>" 
-      enctype="multipart/form-data">
+        action="<?= isset($pernyataan['id']) ? base_url('public/audit/standar/update/' . $pernyataan['id']) : base_url('public/audit/standar') ?>"
+        enctype="multipart/form-data">
         <input type="hidden" name="id_standar" value="<?= $id_standar ?>">
         <div class="m-portlet__body">
 
@@ -42,8 +43,10 @@
               <option value="">-- Pilih Kondisi --</option>
               <option value="<" <?= (isset($pernyataan['kondisi']) && $pernyataan["kondisi"] === "<") ? "selected" : "" ?>>
                 Kurang dari (&lt;)</option>
-              <option value="=" <?= (isset($pernyataan['kondisi']) && $pernyataan["kondisi"] === "=") ? 'selected' : '' ?>>Sama dengan (=)</option>
-              <option value=">" <?= (isset($pernyataan['kondisi']) && $pernyataan["kondisi"] === ">") ? 'selected' : '' ?>>Lebih dari (&gt;)</option>
+              <option value="=" <?= (isset($pernyataan['kondisi']) && $pernyataan["kondisi"] === "=") ? 'selected' : '' ?>>
+                Sama dengan (=)</option>
+              <option value=">" <?= (isset($pernyataan['kondisi']) && $pernyataan["kondisi"] === ">") ? 'selected' : '' ?>>
+                Lebih dari (&gt;)</option>
             </select>
           </div>
 
@@ -109,10 +112,10 @@
                     <td><?= esc($row['kondisi']) ?></td>
                     <td><?= esc($row['batas']) ?></td>
                     <td class="text-center">
-                    <a href="<?= base_url("public/audit/standar/edit/$id_standar/$row[id]") ?>"
-                      class="btn btn-sm btn-warning" title="Edit">
-                      <i class="la la-edit"></i>
-                    </a>
+                      <a href="<?= base_url("public/audit/standar/edit/$id_standar/$row[id]") ?>"
+                        class="btn btn-sm btn-warning" title="Edit">
+                        <i class="la la-edit"></i>
+                      </a>
                       <a href="<?= base_url('public/audit/standar/delete/' . $row['id']) ?>" class="btn btn-sm btn-danger"
                         onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
                         <i class="la la-trash"></i>

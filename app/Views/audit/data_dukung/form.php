@@ -20,65 +20,69 @@
                 <div class="m-portlet__body">
 
                     <div class="form-group m-form__group">
-                        <label for="id_pelaksanaan">ID Pelaksanaan</label>
+                        <label for="id_pelaksanaan">Kode Audit</label>
                         <?php if(isset($dataDukung)): ?>
                         <!-- Show readonly input when editing -->
                         <input type="hidden" name="id_pelaksanaan" value="<?= $dataDukung['id_pelaksanaan'] ?>">
-                        <input type="text" class="form-control m-input" value="<?= $dataDukung['id_pelaksanaan'] ?>"
+                        <input type="text" class="form-control m-input" value="<?= $dataDukung['kode_audit'] ?>"
                             readonly>
                         <?php else: ?>
                         <!-- Show dropdown when creating new -->
                         <select class="form-control m-input" name="id_pelaksanaan" id="id_pelaksanaan" required>
-                            <option value="">Pilih ID Pelaksanaan</option>
+                            <option value="">Pilih Kode Audit</option>
                             <?php foreach ($pelaksanaans as $pelaksanaan): ?>
                             <option value="<?= $pelaksanaan['id'] ?>">
-                                <?= $pelaksanaan['id'] ?>
+                                <?= $pelaksanaan['kode_audit'] ?>
                             </option>
                             <?php endforeach; ?>
                         </select>
                         <?php endif; ?>
                     </div>
 
-                    <!-- Info Pelaksanaan akan muncul di bawah dropdown -->
+                    <!-- Info Pelaksanaan -->
                     <div id="pelaksanaan-info">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group m-form__group">
-                                    <label>Unit</label>
-                                    <input type="text" class="form-control m-input" id="unit-name" readonly
-                                        placeholder="Unit Pelaksanaan">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group m-form__group">
-                                    <label>Auditor</label>
-                                    <input type="text" class="form-control m-input" id="auditor-name" readonly
-                                        placeholder="Auditor Pelaksanaan">
-                                </div>
-                            </div>
+                        <div class="form-group m-form__group">
+                            <label>Unit</label>
+                            <input type="text" class="form-control m-input" id="unit-name" readonly
+                                placeholder="Unit Pelaksanaan">
                         </div>
                     </div>
 
+                    <!-- Standar dropdown -->
+                    <div class="form-group m-form__group">
+                        <label for="id_standar">Standar</label>
+                        <select class="form-control m-input" name="id_standar" id="id_standar" required>
+                            <option value="">Pilih Standar</option>
+                            <?php foreach ($standars as $standar): ?>
+                            <option value="<?= $standar['id'] ?>"
+                                <?= (isset($dataDukung) && $dataDukung['id_standar'] == $standar['id']) ? 'selected' : '' ?>>
+                                <?= $standar['nama_standar'] ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- Pernyataan dropdown -->
                     <div class="form-group m-form__group">
                         <label for="id_pernyataan">Pernyataan</label>
-                        <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan">
-                            <option value="">Pilih Pernyataan</option>
+                        <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan" required disabled>
+                            <option value="">Pilih Standar terlebih dahulu</option>
+                            <?php if(!empty($pernyataans)): ?>
                             <?php foreach ($pernyataans as $pernyataan): ?>
                             <option value="<?= $pernyataan['id'] ?>"
                                 <?= (isset($dataDukung) && $dataDukung['id_pernyataan'] == $pernyataan['id']) ? 'selected' : '' ?>>
                                 <?= $pernyataan['pernyataan'] ?>
                             </option>
                             <?php endforeach; ?>
+                            <?php endif; ?>
                         </select>
                     </div>
 
-                    <!-- Menampilkan Pernyataan dan Indikator (readonly) -->
-                    <div id="pernyataan-info">
-                        <div class="form-group m-form__group">
-                            <label>Indikator</label>
-                            <input type="text" class="form-control m-input" id="indikator" readonly
-                                placeholder="Indikator Pernyataan">
-                        </div>
+                    <!-- Indikator display -->
+                    <div class="form-group m-form__group">
+                        <label>Indikator</label>
+                        <input type="text" class="form-control m-input" id="indikator" readonly
+                            value="<?= isset($dataDukung) ? $dataDukung['indikator'] : '' ?>">
                     </div>
 
 
@@ -152,25 +156,22 @@
                         fetch('<?= site_url('audit/get-pelaksanaan-info') ?>/' + pelaksanaanId)
                             .then(response => {
                                 if (!response.ok) {
-                                    throw new Error('Network response was not ok: ' + response.status);
+                                    throw new Error(`HTTP error! status: ${response.status}`);
                                 }
                                 return response.json();
                             })
                             .then(data => {
                                 if (data) {
                                     document.getElementById('unit-name').value = data.unit_name || '';
-                                    document.getElementById('auditor-name').value = data.auditor_name || '';
                                 }
                             })
                             .catch(error => {
                                 console.error('Error:', error);
-                                alert('Gagal mengambil data: ' + error.message);
                                 document.getElementById('unit-name').value = '';
-                                document.getElementById('auditor-name').value = '';
+                                alert('Gagal mengambil data: ' + error.message);
                             });
                     } else {
                         document.getElementById('unit-name').value = '';
-                        document.getElementById('auditor-name').value = '';
                     }
                 }
 
@@ -198,7 +199,6 @@
                             setTimeout(() => {
                                 // Just clear the values without hiding the container
                                 document.getElementById('unit-name').value = '';
-                                document.getElementById('auditor-name').value = '';
 
                                 // Reset pelaksanaan selection if it exists
                                 const pelaksanaanSelect = document.getElementById(
@@ -301,6 +301,45 @@
                     document.getElementById('modalBackLink').href = backUrl;
                     $('#modalBack').modal('show');
                 }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const standarSelect = document.getElementById('id_standar');
+                    const pernyataanSelect = document.getElementById('id_pernyataan');
+
+                    if (standarSelect) {
+                        standarSelect.addEventListener('change', function() {
+                            const standarId = this.value;
+                            pernyataanSelect.disabled = true;
+                            pernyataanSelect.innerHTML = '<option value="">Pilih Pernyataan</option>';
+
+                            if (standarId) {
+                                fetch('<?= site_url('audit/get-pernyataan-by-standar') ?>/' + standarId)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data) {
+                                            data.forEach(item => {
+                                                const option = document.createElement(
+                                                    'option');
+                                                option.value = item.id;
+                                                option.textContent = item.pernyataan;
+                                                pernyataanSelect.appendChild(option);
+                                            });
+                                            pernyataanSelect.disabled = false;
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('Gagal mengambil data pernyataan');
+                                    });
+                            }
+                        });
+                    }
+                });
                 </script>
 
             </form>

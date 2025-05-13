@@ -139,4 +139,15 @@ class InputAuditor extends BaseController
         // Redirect dengan pesan sukses
         return redirect()->to(base_url('public/audit/auditor'))->with('success', 'Data auditor berhasil dihapus.');
     }
+    public function download($fileName)
+    {
+        $filePath = WRITEPATH . 'uploads/audit/dokumen_auditor/' . $fileName;
+
+        if (file_exists($filePath)) {
+            return $this->response->download($filePath, null)->setFileName($fileName);
+        }
+
+        return redirect()->to(base_url('public/audit/auditor'))->with('error', 'File tidak ditemukan!');
+    }
 }
+?>

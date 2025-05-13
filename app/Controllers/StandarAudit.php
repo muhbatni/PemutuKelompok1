@@ -25,6 +25,18 @@ class StandarAudit extends BaseController
         $data["title"] = "Standar Audit";
         $data["standar"] = $model->findAll(); // ambil data dari DB
 
+        $data["parentOptions"] = [];
+        foreach ($data["standar"] as $item) {
+            $data["parentOptions"][$item['id']] = $item['nama'];
+        }
+
+        // Buat array mapping dari id ke nama
+        $parentOptions = [];
+        foreach ($data["standar"] as $item) {
+            $parentOptions[$item['id']] = $item['nama'];
+        }
+        $data["parentOptions"] = $parentOptions;
+
         // hapus data 
         if ($this->request->getGet('delete')) {
             $id = $this->request->getGet('delete');
@@ -72,7 +84,7 @@ class StandarAudit extends BaseController
     }
 
 
-    public function edit($id_standar, $id_pernyataan =null)
+    public function edit($id_standar, $id_pernyataan = null)
     {
         // Ambil data standar berdasarkan id_audit
         $standar = $this->AuditStandarModel->getStandarByAudit($id_standar);
