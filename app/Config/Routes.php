@@ -121,6 +121,8 @@ $routes->group('akreditasi', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'input-data-pemutu/input', [InputDataPemutu::class, 'input']);
   $routes->match(['GET', 'POST'], 'isian-pemutu', [IsianPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'isian-pemutu/input', [IsianPemutu::class, 'input']);
+  $routes->match(['GET', 'POST'], 'isian-pemutu-unit', [IsianPemutuUnit::class, 'index']);
+  $routes->match(['GET', 'POST'], 'isian-pemutu-unit/input', [IsianPemutuUnit::class, 'input']);
   $routes->match(['GET', 'POST'], 'input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->post('input-data-pemutu/save', [InputDataPemutu::class, 'save']);
   $routes->get('input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);
