@@ -21,6 +21,14 @@ class InputDataDukung extends BaseController
     $pelaksanaanModel = new DataDukungModel();
     $data['pelaksanaans'] = $pelaksanaanModel->getPelaksanaanList();
 
+    $model = new DataDukungModel();
+    $data = [
+        'title' => 'Input Data Dukung',
+        'pelaksanaans' => $model->getPelaksanaanList(),
+        'standars' => $model->getStandarList(),
+        'pernyataans' => []  // Initialize empty array for pernyataans
+    ];
+
     if ($this->request->getMethod() == 'POST') {
         $model = new DataDukungModel();
         
@@ -80,12 +88,23 @@ class InputDataDukung extends BaseController
   }
 
   public function getPelaksanaanInfo($id)
-  {
-    $dataDukungModel = new \App\Models\DataDukungModel();
-    $info = $dataDukungModel->getPelaksanaanInfo($id);
-
-    return $this->response->setJSON($info);
-  }
+{
+    try {
+        $dataDukungModel = new \App\Models\DataDukungModel();
+        $info = $dataDukungModel->getPelaksanaanInfo($id);
+        
+        if (!$info) {
+            return $this->response->setStatusCode(404)
+                                ->setJSON(['error' => 'Data not found']);
+        }
+        
+        return $this->response->setJSON($info);
+    } catch (\Exception $e) {
+        log_message('error', 'Controller getPelaksanaanInfo error: ' . $e->getMessage());
+        return $this->response->setStatusCode(500)
+                            ->setJSON(['error' => 'Internal server error']);
+    }
+}
 
   public function getPernyataanInfo($id)
     {
@@ -94,32 +113,38 @@ class InputDataDukung extends BaseController
     return $this->response->setJSON($info);
     }
 
-  public function edit($id)
-{
-    // Get data dukung by id
+    public function getPernyataanByStandar($standarId)
+    {
     $model = new DataDukungModel();
-    $dataDukung = $model->find($id);
-    
-    if (!$dataDukung) {
-        session()->setFlashdata('error', 'Data tidak ditemukan');
-        return redirect()->to(base_url('public/audit/data-dukung'));
+    $pernyataans = $model->getPernyataanByStandar($standarId);
+    return $this->response->setJSON($pernyataans);
     }
 
-    // Get pelaksanaan data for dropdown
-    $pelaksanaanModel = new PelaksanaanAuditModel();
-    $data['pelaksanaans'] = $pelaksanaanModel->select('id')->findAll();
-
-    // Get pernyataan data for dropdown
-    $pernyataanModel = new PernyataanModel();
-    $data['pernyataans'] = $pernyataanModel->select('id, pernyataan')->findAll();
-
-    $data['dataDukung'] = $dataDukung;
-    $data['title'] = 'Edit Data Dukung';
-
-    echo view('layouts/header.php', $data);
-    echo view('audit/data_dukung/form.php', $data);
-    echo view('layouts/footer.php');
-}
+    public function edit($id)
+    {
+        // Initialize model
+        $model = new DataDukungModel();
+        $dataDukung = $model->find($id);
+        
+        if (!$dataDukung) {
+            session()->setFlashdata('error', 'Data tidak ditemukan');
+            return redirect()->to(base_url('public/audit/data-dukung'));
+        }
+    
+        // Prepare all data needed for the form
+        $data = [
+            'title' => 'Edit Data Dukung',
+            'dataDukung' => $dataDukung,
+            'pelaksanaans' => $model->getPelaksanaanList(),
+            'standars' => $model->getStandarList(),
+            'pernyataans' => $model->getPernyataanByStandar($dataDukung['id_standar'])
+        ];
+    
+        // Load views with complete data
+        echo view('layouts/header.php', $data);
+        echo view('audit/data_dukung/form.php', $data);
+        echo view('layouts/footer.php');
+    }
 
 public function update($id)
 {
@@ -218,5 +243,17 @@ public function delete($id)
       
       return redirect()->to(base_url('public/audit/data-dukung'));
   }
+
+
+    public function download($filename)
+    {
+        $path = WRITEPATH . 'uploads/audit/data_dukung/' . $filename;
+        
+        if (file_exists($path)) {
+            return $this->response->download($path, null);
+        }
+        
+        return redirect()->back()->with('error', 'File tidak ditemukan');
+    }
 }
 ?>

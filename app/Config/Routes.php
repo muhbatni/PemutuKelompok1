@@ -89,6 +89,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('audit/data-dukung/delete/(:num)', [InputDataDukung::class, 'delete/$1']);
   $routes->get('audit/get-pelaksanaan-info/(:num)', [InputDataDukung::class, 'getPelaksanaanInfo/$1']);
   $routes->get('audit/get-pernyataan-info/(:num)', [InputDataDukung::class, 'getPernyataanInfo/$1']);
+  $routes->get('audit/get-pernyataan-by-standar/(:num)', 'InputDataDukung::getPernyataanByStandar/$1');
+  $routes->get('audit/data-dukung/download/(:segment)', 'InputDataDukung::download/$1');
   $routes->get('audit/temuan', [Temuan::class, 'index']);
   $routes->match(['get','post'],'audit/input-temuan', [InputTemuan::class, 'index']);
   $routes->get('audit/input-temuan/edit/(:num)', [InputTemuan::class, 'edit/$1']);
