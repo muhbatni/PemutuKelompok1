@@ -151,6 +151,23 @@
 
 <script>
 
+$('#id_unitpemutu').on('change', function () {
+    var unitId = $(this).val();
+
+    $.ajax({
+      url: '<?= base_url('akreditasi/isian-pemutu/input?action=input') ?>',
+      method: 'GET',
+      data: { id_unitpemutu: unitId },
+      success: function (data) {
+        var $instrumen = $('#id_instrumen');
+        $instrumen.empty().append('<option value="">Pilih Instrumen</option>');
+        $.each(data, function (index, item) {
+          $instrumen.append('<option value="' + item.id + '">' + item.id_lembaga + '</option>');
+        });
+      }
+    });
+  });
+
   // Event saat input isian berubah
   document.getElementById('isian').addEventListener('input', function () {
     const isian = parseFloat(this.value);

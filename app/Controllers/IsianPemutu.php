@@ -14,7 +14,28 @@ class IsianPemutu extends BaseController
     $unitPemutuModel = new UnitPemutuModel();
     $instrumenPemutuModel = new InstrumenPemutuModel();
 
-    // Cek apakah form disubmit
+    // === AJAX Request: Get Instrumen berdasarkan Unit Pemutu ===
+    if ($this->request->isAJAX() && $this->request->getGet('action') === 'get-instrumen') {
+      $unitPemutuId = $this->request->getGet('id_unitpemutu');
+
+      $unit = $unitPemutuModel
+        ->select('p_unit_pemutu.id, m_unit.id_lembaga')
+        ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
+        ->where('p_unit_pemutu.id', $unitPemutuId)
+        ->first();
+
+      if (!$unit || !$unit['id_lembaga']) {
+        return $this->response->setJSON([]);
+      }
+
+      $instrumenList = $instrumenPemutuModel
+        ->where('id_lembaga', $unit['id_lembaga'])
+        ->findAll();
+
+      return $this->response->setJSON($instrumenList);
+    }
+
+    // === POST Request: Simpan / Update data ===
     if ($this->request->getMethod() === 'POST') {
       $id = $this->request->getPost('id');
       $data = [
@@ -32,28 +53,31 @@ class IsianPemutu extends BaseController
         session()->setFlashdata('success', 'Data berhasil disimpan!');
       }
 
-      return redirect()->to(base_url('public/akreditasi/isian-pemutu'));
+      return redirect()->to(base_url('akreditasi/isian-pemutu'));
     }
 
-    // Cek apakah ada parameter edit
+    // === Mode Edit: Ambil data berdasarkan ID ===
     $editData = null;
     if ($this->request->getGet('id')) {
       $id = $this->request->getGet('id');
-      $editData = $model->select('p_isian_pemutu.*, p_instrumen_pemutu.jenjang')
+      $editData = $model
+        ->select('p_isian_pemutu.*, p_instrumen_pemutu.jenjang')
         ->join('p_instrumen_pemutu', 'p_instrumen_pemutu.id = p_isian_pemutu.id_instrumen')
         ->where('p_isian_pemutu.id', $id)
         ->first();
     }
 
-    // Dropdown data
-    $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
-
+    // === Dropdown Unit Pemutu ===
     $data['unitpemutus'] = $unitPemutuModel
       ->select('p_unit_pemutu.id, m_unit.nama as nama_unit, m_periode.ts as tahun_ajaran')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
       ->join('m_periode', 'p_unit_pemutu.id_periode = m_periode.id')
       ->findAll();
 
+    // === Dropdown Instrumen (semua dengan info lembaga & jenjang) ===
+    $data['instrumen_list'] = $instrumenPemutuModel->getWithLembaga();
+
+    // === Jenjang untuk select2 JS (jika diperlukan di tempat lain) ===
     $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
 
     $data['title'] = $editData ? "Edit Isian Pemutu" : "Input Isian Pemutu";
