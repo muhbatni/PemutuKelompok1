@@ -13,7 +13,7 @@ class KriteriaAkreditasi extends BaseController
     public function __construct()
     {
         $this->kriteriaModel = new KriteriaAkreditasiModel();
-        $this->lembagaModel  = new LembagaAkreditasiModel();
+        $this->lembagaModel = new LembagaAkreditasiModel();
     }
 
     public function index()
@@ -28,19 +28,19 @@ class KriteriaAkreditasi extends BaseController
 
         // Ambil semua data
         $data = [
-            'title'    => 'Kriteria Akreditasi',
+            'title' => 'Kriteria Akreditasi',
             'kriteria' => $this->kriteriaModel->getKriteriaWithLembaga(),
             'lembagas' => $this->lembagaModel->getLembagas(),
         ];
 
         return view('layouts/header', $data)
-             . view('akreditasi/kriteria_akreditasi/tables', $data)
-             . view('layouts/footer');
+            . view('akreditasi/kriteria_akreditasi/tables', $data)
+            . view('layouts/footer');
     }
 
     public function input()
     {
-        $id   = $this->request->getGet('id');
+        $id = $this->request->getGet('id');
         $edit = null;
 
         if ($id) {
@@ -54,8 +54,8 @@ class KriteriaAkreditasi extends BaseController
         if ($this->request->getMethod() === 'POST') {
             $data = [
                 'id_lembaga' => $this->request->getPost('id_lembaga'),
-                'kode'       => $this->request->getPost('kode'),
-                'nama'       => $this->request->getPost('nama'),
+                'kode' => $this->request->getPost('kode'),
+                'nama' => $this->request->getPost('nama'),
             ];
 
             if ($id) {
@@ -70,16 +70,20 @@ class KriteriaAkreditasi extends BaseController
             return redirect()->to(site_url('akreditasi/kriteria'));
         }
 
+        // Ambil id_lembaga dari query string untuk mode tambah
+        $selectedLembaga = !$id ? $this->request->getGet('id_lembaga') : null;
+
         // Tampilkan form input/edit
         $data = [
-            'title'    => $id ? 'Edit Kriteria Akreditasi' : 'Tambah Kriteria Akreditasi',
-            'isEdit'   => $id ? true : false,
-            'edit'     => $edit,
+            'title' => $id ? 'Edit Kriteria Akreditasi' : 'Tambah Kriteria Akreditasi',
+            'isEdit' => $id ? true : false,
+            'edit' => $edit,
             'lembagas' => $this->lembagaModel->getLembagas(),
+            'selected_lembaga' => $selectedLembaga,
         ];
 
         return view('layouts/header', $data)
-             . view('akreditasi/kriteria_akreditasi/form', $data)
-             . view('layouts/footer');
+            . view('akreditasi/kriteria_akreditasi/form', $data)
+            . view('layouts/footer');
     }
 }

@@ -4,7 +4,7 @@
       <div class="m-portlet__head-caption">
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
-            Daftar Akreditasi
+            Data Akreditasi
           </h3>
         </div>
       </div>
@@ -134,10 +134,7 @@
                       </a>
                     <?php endif; ?>
                     <!-- Tombol Hapus -->
-                  <button class="btn btn-sm btn-danger" 
-                          onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($akreditasi['id_unit']) ?>')">
-                    Hapus
-                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $akreditasi['id'] ?>', '<?= esc($namaUnit) ?>')">Hapus</button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -150,45 +147,35 @@
 
 <!-- Modal Hapus -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <form method="get">
-            <div class="modal-header bg-danger text-white">
-              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" name="delete" id="deleteId">
-              <p id="deleteMessage"></p>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            </div>
-          </form>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form method="get">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </div>
+        <div class="modal-body">
+          <input type="hidden" name="delete" id="deleteId">
+          <p id="deleteMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>
 
 <script>
-  function handleCancel() {
-        <?php if (isset($editData)): ?>
-            // If editing, redirect to the list or home page
-            window.location.href = 'akreditasi'; // You can change this to redirect to a different page
-        <?php else: ?>
-            // If adding a new record, reset the form
-            document.querySelector("form").reset();
-        <?php endif; ?>
-    }
-
-    function showDeleteModal(id, nama) {
-  document.getElementById('deleteId').value = id;
-  document.getElementById('deleteMessage').innerHTML = 
-    `Apakah Anda yakin ingin menghapus data <strong>${nama}</strong>?`;
-  $('#deleteModal').modal('show');
-}
+  function showDeleteModal(id, nama) {
+    document.getElementById('deleteId').value = id;
+    document.getElementById('deleteMessage').innerHTML =
+      `Apakah Anda yakin ingin menghapus dokumen <strong>${nama}</strong>?`;
+    $('#deleteModal').modal('show');
+  }
 
 $(document).ready(function() {
     $('#generalSearch').on('keyup', function() {

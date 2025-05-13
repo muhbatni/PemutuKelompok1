@@ -2,6 +2,7 @@
 
 use App\Controllers\Akreditasi;
 use App\Controllers\InputManajemenAudit;
+use App\Controllers\IsianPemutuUnit;
 use App\Controllers\ManajemenAudit;
 use App\Controllers\ManajemenSurvey;
 use App\Controllers\DashboardPeriode;
@@ -51,7 +52,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->get('profile', [Profile::class, 'index']);
 
   $routes->post('profile/edit', [Profile::class, 'edit']);
-  $routes->post('profile/reset-password', [Profile::class, 'reset_password']);
   $routes->get('isi-survey', [IsiSurvey::class, 'index']);
   $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
 });
@@ -121,6 +121,8 @@ $routes->group('akreditasi', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'input-data-pemutu/input', [InputDataPemutu::class, 'input']);
   $routes->match(['GET', 'POST'], 'isian-pemutu', [IsianPemutu::class, 'index']);
   $routes->match(['GET', 'POST'], 'isian-pemutu/input', [IsianPemutu::class, 'input']);
+  $routes->match(['GET', 'POST'], 'isian-pemutu-unit', [IsianPemutuUnit::class, 'index']);
+  $routes->match(['GET', 'POST'], 'isian-pemutu-unit/input', [IsianPemutuUnit::class, 'input']);
   $routes->match(['GET', 'POST'], 'input-data-pemutu', [InputDataPemutu::class, 'index']);
   $routes->post('input-data-pemutu/save', [InputDataPemutu::class, 'save']);
   $routes->get('input-data-pemutu/edit/(:num)', [InputDataPemutu::class, 'edit/$1']);

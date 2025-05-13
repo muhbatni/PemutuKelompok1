@@ -3,7 +3,6 @@ namespace App\Controllers;
 use App\Models\UnitModel;
 use App\Models\LembagaAkreditasiModel;
 use App\Models\AkreditasiModel;
-use App\Models\SyaratUnggulModel;
 
 class Akreditasi extends BaseController
 {
@@ -21,10 +20,6 @@ class Akreditasi extends BaseController
   // Ambil data akreditasi
   $akreditasiModel = new AkreditasiModel();
   $data['dataAkreditasi'] = $akreditasiModel->getAkreditasiData();
-
-  // Ambil data syarat unggul
-  $syaratUnggulModel = new SyaratUnggulModel();
-    $data['dataSyarat'] = $syaratUnggulModel->getSyaratData();
 
   // Jika ada ID di URL untuk edit
   $editData = null;
@@ -54,19 +49,9 @@ class Akreditasi extends BaseController
       }
     }
 
-    // Ambil nama syarat
-    $syaratName = '';
-    foreach ($data['dataSyarat'] as $syarat) {
-      if ($syarat['id'] == $editData['status']) {
-        $syaratName = $syarat['nama'];
-        break;
-      }
-    }
-
     // Mengirim data unit dan lembaga ke view
     $data['unitName'] = $unitName;
     $data['lembagaName'] = $lembagaName;
-    $data['syaratName'] = $syaratName;
     $data['dataAkreditasi'] = $editData;
   }
 
@@ -116,10 +101,10 @@ class Akreditasi extends BaseController
       session()->setFlashdata('success', 'Data berhasil disimpan!');
     }
 
-    return redirect()->to(site_url('akreditasi'));
+    return redirect()->to(base_url('public/akreditasi'));
   }
 
-  $data["title"] = "Formulir Akreditasi";
+  $data["title"] = "Data Akreditasi";
   echo view('layouts/header.php', $data);
   echo view('akreditasi/form.php', $data);
   echo view('layouts/footer.php');

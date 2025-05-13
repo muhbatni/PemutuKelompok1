@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class IsianPemutuModel extends Model
+class IsianPemutuUnitModel extends Model
 {
     protected $table = 'p_isian_pemutu';
     protected $primaryKey = 'id';

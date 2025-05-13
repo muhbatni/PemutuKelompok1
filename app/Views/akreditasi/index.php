@@ -35,6 +35,20 @@
   <!-- begin:: Page -->
   <div class="m-grid m-grid--hor m-grid--root m-page"></div>
 
+    <!-- Link JS Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- Initialize Select2 -->
+  <script>
+    $(document).ready(function() {
+      // Mengaktifkan Select2 pada dropdown unit
+      $('#status').select2({
+        placeholder: "-- Tentukan Status --",
+        allowClear: true
+      });
+    });
+  </script>
+
 </body>
 
 </html>

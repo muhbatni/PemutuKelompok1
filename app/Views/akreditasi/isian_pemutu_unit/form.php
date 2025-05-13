@@ -6,7 +6,7 @@
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Formulir Isian Pemutu</h3>
+            <h3 class="m-portlet__head-text">Formulir Isian Pemutu Unit</h3>
           </div>
         </div>
       </div>
@@ -43,7 +43,6 @@
           </select>
         </div>
 
-
         <!-- form input untuk isi dari instrumen pemutu -->
         <div class="form-group m-form__group">
           <label for="lembaga">Isi dari Instrumen Pemutu</label>
@@ -63,7 +62,6 @@
           <input type="text" class="form-control m-input mb-2" id="batas" name="batas" placeholder="Batas" readonly>
         </div>
 
-        <!-- form input untuk isian pemutu -->
         <div class="form-group m-form__group">
           <label for="isian">Isian (Hanya angka)</label>
           <input type="number" class="form-control m-input" id="isian" name="isian" required min="0" step="1"
@@ -73,7 +71,7 @@
         <div class="form-group m-form__group">
           <label for="status">Status (otomatis terisi apabila isian terisi)</label>
           <select class="form-control m-input" id="status_display" disabled>
-            <option value="">-- Pilih --</option>
+            <option value="">-</option>
             <option value="0" <?= $isEdit && (int) $edit['status'] === 0 ? 'selected' : '' ?>>Tidak Lolos</option>
             <option value="1" <?= $isEdit && (int) $edit['status'] === 1 ? 'selected' : '' ?>>Lolos</option>
           </select>
@@ -83,7 +81,7 @@
 
         <div class="m-portlet__foot m-portlet__foot--fit">
           <div class="m-form__actions">
-            <a href="<?= site_url('akreditasi/isian-pemutu') ?>" class="btn btn-danger me-2">
+            <a href="<?= site_url('akreditasi/isian-pemutu-unit') ?>" class="btn btn-danger me-2">
               <i class="fa fa-arrow-left"></i> Batal
             </a>
             <button type="reset" class="btn btn-warning me-2">
@@ -151,23 +149,6 @@
 
 <script>
 
-$('#id_unitpemutu').on('change', function () {
-    var unitId = $(this).val();
-
-    $.ajax({
-      url: '<?= base_url('akreditasi/isian-pemutu/input?action=input') ?>',
-      method: 'GET',
-      data: { id_unitpemutu: unitId },
-      success: function (data) {
-        var $instrumen = $('#id_instrumen');
-        $instrumen.empty().append('<option value="">Pilih Instrumen</option>');
-        $.each(data, function (index, item) {
-          $instrumen.append('<option value="' + item.id + '">' + item.id_lembaga + '</option>');
-        });
-      }
-    });
-  });
-
   // Event saat input isian berubah
   document.getElementById('isian').addEventListener('input', function () {
     const isian = parseFloat(this.value);
@@ -204,7 +185,7 @@ $('#id_unitpemutu').on('change', function () {
     // Set ke hidden input untuk disimpan
     document.querySelector('input[name="status"]').value = status;
   });
-
+  
   // Inisialisasi Select2 untuk dropdown
   $(document).ready(function () {
     $('.js-example-basic-single').select2({
