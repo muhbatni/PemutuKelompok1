@@ -14,7 +14,7 @@
         <div class="m-portlet__body">
 
         <!-- ID input, hidden field -->
-        <input type="hidden" name="id" value="<?= isset($dataAkreditasi) ? $dataAkreditasi['id'] : ''; ?>">
+        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
