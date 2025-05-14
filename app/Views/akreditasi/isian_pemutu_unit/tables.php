@@ -5,7 +5,9 @@
         <div class="m-portlet__head-title">
           <h3 class="m-portlet__head-text">
             Isian Pemutu Unit
+            <small class="text-muted">- <?= esc($nama_unit_login) ?></small>
           </h3>
+          <input type="hidden" id="currentUnit" value="<?= esc($nama_unit_login) ?>">
         </div>
       </div>
     </div>
@@ -133,31 +135,37 @@
     function applyFilters() {
       let searchValue = $('#generalSearch').val().toLowerCase().trim();
       let periodeValue = $('#periodeFilter').val().toLowerCase().trim();
+      let currentUnit = $('#currentUnit').val().toLowerCase().trim(); // Nama unit login
 
       $('#html_table tbody tr').each(function () {
         let row = $(this);
-        let unitPemutu = row.find('td:nth-child(2)').text().toLowerCase();
-        let instrumen = row.find('td:nth-child(3)').text().toLowerCase();
-        let status = row.find('td:nth-child(5)').text().toLowerCase();
+        let unitPemutu = row.find('td:nth-child(2)').text().toLowerCase(); // Kolom unit
+        let instrumen = row.find('td:nth-child(3)').text().toLowerCase(); // Kolom instrumen
+        let status = row.find('td:nth-child(5)').text().toLowerCase();    // Kolom status
 
-        // Cek apakah periode cocok
+        // Cek apakah nama unit login cocok
+        let isUnitMatch = currentUnit === "" || unitPemutu.includes(currentUnit);
+
+        // Cek apakah filter periode cocok
         let isPeriodeMatch = periodeValue === "" || unitPemutu.includes(periodeValue);
 
-        // Cek apakah search cocok di salah satu kolom
+        // Cek apakah search cocok
         let isSearchMatch = false;
         if (searchValue === "") {
           isSearchMatch = true;
-        } else if (status === searchValue) {
-          isSearchMatch = true;
-        } else if (unitPemutu.includes(searchValue) || instrumen.includes(searchValue)) {
+        } else if (status.includes(searchValue) || unitPemutu.includes(searchValue) || instrumen.includes(searchValue)) {
           isSearchMatch = true;
         }
 
-        // Tampilkan baris hanya jika dua-duanya cocok
-        row.toggle(isPeriodeMatch && isSearchMatch);
+        // Tampilkan baris hanya jika semua cocok
+        row.toggle(isUnitMatch && isPeriodeMatch && isSearchMatch);
       });
     }
 
+    // Jalankan filter saat halaman pertama kali dibuka
+    applyFilters();
+
+    // Jalankan filter saat input berubah
     $('#generalSearch').on('keyup', applyFilters);
     $('#periodeFilter').on('change', applyFilters);
   });
