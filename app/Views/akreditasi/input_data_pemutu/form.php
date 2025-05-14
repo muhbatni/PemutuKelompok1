@@ -219,14 +219,12 @@ date_default_timezone_set('Asia/Jakarta');
                 value="<?= isset($editData) ? $editData['id_lembaga'] : '' ?>">
             </div>
 
-            <!-- Dropdown Status -->
+            <!-- Text Status -->
             <div class="mb-3">
-              <label for="status" class="form-label">Status</label>
-              <select name="status" class="form-select" required>
-                <option value="">-- Pilih Status --</option>
-                <option value="0" <?= (isset($editData) && $editData['status'] == 0) ? 'selected' : '' ?>>Aktif</option>
-                <option value="1" <?= (isset($editData) && $editData['status'] == 1) ? 'selected' : '' ?>>Nonaktif</option>
-              </select>
+              <label for="status_display" class="form-label">Status</label>
+              <div id="status_display" class="form-control-plaintext"></div>
+              <input type="hidden" name="status" id="status_input"
+                value="<?= isset($editData) ? $editData['status'] : '' ?>">
             </div>
 
             <!-- Tombol Aksi -->
@@ -247,38 +245,122 @@ date_default_timezone_set('Asia/Jakarta');
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.getElementById('id_unit').addEventListener('change', function () {
-      const unitId = this.value;
-      const lembagaDisplay = document.getElementById('lembaga_display');
-      const idLembagaInput = document.getElementById('id_lembaga');
+function updateLembaga(unitId) {
+    const lembagaDisplay = document.getElementById('lembaga_display');
+    const idLembagaInput = document.getElementById('id_lembaga');
 
-      if (unitId) {
-        fetch(`<?= site_url('akreditasi/input-data-pemutu/get-lembaga') ?>/${unitId}`)
-          .then(response => response.json())
-          .then(data => {
-            if (data && data.id && data.nama) {
-              lembagaDisplay.textContent = data.nama;
-              idLembagaInput.value = data.id;
-            } else {
-              lembagaDisplay.textContent = '–';
-              idLembagaInput.value = '';
-            }
-          })
-          .catch(() => {
-            lembagaDisplay.textContent = '–';
-            idLembagaInput.value = '';
-          });
-      } else {
-        lembagaDisplay.textContent = '–';
+    if (!unitId) {
+        lembagaDisplay.textContent = '-';
         idLembagaInput.value = '';
-      }
-    });
+        return;
+    }
+
+    fetch(`<?= base_url('public/akreditasi/input-data-pemutu/get-lembaga') ?>/${unitId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                lembagaDisplay.textContent = '-';
+                idLembagaInput.value = '';
+            } else {
+                lembagaDisplay.textContent = data.nama;
+                idLembagaInput.value = data.id;
+            }
+        })
+        .catch(() => {
+            lembagaDisplay.textContent = '-';
+            idLembagaInput.value = '';
+        });
+}
+
+// Event listener untuk perubahan unit
+document.getElementById('id_unit').addEventListener('change', function() {
+    updateLembaga(this.value);
+});
+
+// Set lembaga saat halaman dimuat jika dalam mode edit
+<?php if (isset($editData)): ?>
+document.addEventListener('DOMContentLoaded', function() {
+    const unitSelect = document.getElementById('id_unit');
+    const lembagaDisplay = document.getElementById('lembaga_display');
+    
+    // Set nilai awal lembaga jika ada
+    if ('<?= $editData['lembaga_nama'] ?? '' ?>' !== '') {
+        lembagaDisplay.textContent = '<?= $editData['lembaga_nama'] ?>';
+    }
+    
+    // Trigger change event untuk memperbarui lembaga
+    updateLembaga(unitSelect.value);
+});
+<?php endif; ?>
 
     <?php if (isset($editData)): ?>
       document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('id_unit').dispatchEvent(new Event('change'));
       });
     <?php endif; ?>
+
+    // Tambahkan di dalam tag <script> yang sudah ada
+   function updateStatus(data) {
+    const statusDisplay = document.getElementById('status_display');
+    const statusInput = document.getElementById('status_input');
+
+    if (data.total_isian === 0) {
+        statusDisplay.textContent = '-';
+        statusDisplay.className = 'form-control-plaintext';
+        statusInput.value = '';
+        return;
+    }
+
+    const percentage = data.percentage || Math.round((data.jumlah_lolos / data.total_isian) * 100);
+    let statusText, statusClass;
+
+    if (percentage >= 60) {
+        statusText = `Lolos (${percentage}%)`;
+        statusClass = 'text-success';
+    } else if (percentage >= 50) {
+        statusText = `Peringatan (${percentage}%)`;
+        statusClass = 'text-warning';
+    } else {
+        statusText = `Tidak Lolos (${percentage}%)`;
+        statusClass = 'text-danger';
+    }
+
+    statusDisplay.textContent = statusText;
+    statusDisplay.className = `form-control-plaintext ${statusClass}`;
+    statusInput.value = statusText;
+}
+
+    // Modifikasi event listener unit untuk mengambil data status
+    document.getElementById('id_unit').addEventListener('change', function () {
+      const unitId = this.value;
+      const periodeId = document.getElementById('id_periode').value;
+
+      if (unitId && periodeId) {
+        fetch(`<?= site_url('akreditasi/input-data-pemutu/get-status') ?>/${unitId}/${periodeId}`)
+          .then(response => response.json())
+          .then(data => {
+            updateStatus(data);
+          })
+          .catch(() => {
+            updateStatus({
+              total_isian: 0,
+              jumlah_lolos: 0,
+              percentage: 0
+            });
+          });
+      } else {
+        updateStatus({
+          total_isian: 0,
+          jumlah_lolos: 0,
+          percentage: 0
+        });
+      }
+    });
+
+    // Tambahkan event listener untuk periode juga
+    document.getElementById('id_periode').addEventListener('change', function () {
+      document.getElementById('id_unit').dispatchEvent(new Event('change'));
+    });
   </script>
 
 </body>

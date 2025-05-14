@@ -86,7 +86,14 @@ class InputDataPemutu extends BaseController
     $editData = $this->unitpemutumodel->find($id);
 
     if (!$editData) {
-      return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-danger">Data tidak ditemukan.</div>');
+      return redirect()->to('/akreditasi/input-data-pemutu')
+        ->with('pesan', '<div class="alert alert-danger">Data tidak ditemukan.</div>');
+    }
+
+    // Ambil data lembaga
+    $lembaga = $this->unitpemutumodel->getLembagaByUnit($editData['id_unit']);
+    if ($lembaga) {
+      $editData['lembaga_nama'] = $lembaga['nama'];
     }
 
     $data = [
@@ -94,7 +101,6 @@ class InputDataPemutu extends BaseController
       'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
-      'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
       'editData' => $editData
     ];
 
@@ -102,7 +108,6 @@ class InputDataPemutu extends BaseController
       . view('akreditasi/input_data_pemutu/form', $data)
       . view('layouts/footer');
   }
-
 
   public function update($id)
   {
@@ -154,5 +159,15 @@ class InputDataPemutu extends BaseController
   {
     $this->unitpemutumodel->delete($id);
     return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil dihapus.</div>');
+  }
+
+  public function getStatus($id_unit, $id_periode)
+  {
+    $result = $this->unitpemutumodel->getStatusByUnitPeriode($id_unit, $id_periode);
+
+    return $this->response->setJSON([
+      'total_isian' => (int) $result['total_isian'],
+      'jumlah_lolos' => (int) $result['jumlah_lolos']
+    ]);
   }
 }
