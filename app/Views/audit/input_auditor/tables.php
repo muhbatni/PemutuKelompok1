@@ -65,7 +65,7 @@
                 <?php endif; ?>
               </td>
               <td>
-                <a href="<?= base_url('audit/input-auditor/edit/' . $row['id']); ?>" class="btn btn-sm btn-warning">
+                <a href="<?= base_url('public/audit/auditor/input-auditor/edit/' . $row['id']); ?>" class="btn btn-sm btn-warning">
                   Edit <i class="la la-edit"></i>
                 </a>
                 <button class="btn btn-sm btn-danger"

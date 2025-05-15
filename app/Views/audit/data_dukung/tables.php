@@ -50,7 +50,7 @@
             <table class="m-datatable" id="html_table" width="100%">
                 <thead>
                     <tr>
-                        <th title="field #2">Kode Audit</th>
+                        <th title="field #2">Judul Audit</th>
                         <th title="field #3">Unit</th>
                         <th title="field #3">Standar</th>
                         <th title="Field #4">Pernyataan</th>
