@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\IsianPemutuUnitModel;
 use App\Models\UnitPemutuModel;
 use App\Models\InstrumenPemutuModel;
+$unitModel = new \App\Models\UnitModel(); // Model ini harus mengambil dari tabel m_unit
+
 
 class IsianPemutuUnit extends BaseController
 {
@@ -67,8 +69,20 @@ class IsianPemutuUnit extends BaseController
   public function index()
   {
 
+    $userId = session()->get('user_id');
+
+    $userModel = new \App\Models\UserModel();
+    $unit = $userModel->getUnit() ?: "null";
+    ;
+
+    $nama_unit = esc($unit);
     $isianPemutuModel = new IsianPemutuUnitModel();
-    $data['isian_pemutu'] = $isianPemutuModel->getJoin();
+    $data = [
+      'isianPemutu' => $isianPemutuModel->getJoin(),
+      'periodeList' => $isianPemutuModel->getAllPeriode(),
+      'nama_unit_login' => $nama_unit,
+    ];
+
 
     $model = new IsianPemutuUnitModel();
     $unitPemutuModel = new UnitPemutuModel();

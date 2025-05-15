@@ -11,52 +11,53 @@ class DashboardModel extends Model
 
     public function getUnitPemutu($tahun = null)
     {
+        // Query untuk menghitung status berdasarkan isian pemutu
         $builder = $this->db->table('p_unit_pemutu pu');
-        $builder->select('pu.id, mu.nama as nama_unit, 
-                     mp.tahun as periode,
-                     mp.ts as ts, 
-                     isi.isian as status_isian,
-                     isi.status as status_aktif,
-                     pu.id_periode');
+        $builder->select('pu.id, 
+                    mu.nama as nama_unit, 
+                    mp.tahun as periode,
+                    mp.ts as ts,
+                    pu.id_periode,
+                    COUNT(isi.id) as total_isian,
+                    SUM(CASE WHEN isi.status = 1 THEN 1 ELSE 0 END) as jumlah_lolos');
         $builder->join('m_unit mu', 'pu.id_unit = mu.id', 'left');
         $builder->join('p_isian_pemutu isi', 'isi.id_unitpemutu = pu.id', 'left');
-        $builder->join('p_instrumen_pemutu ip', 'isi.id_instrumen = ip.id', 'left');
         $builder->join('m_periode mp', 'pu.id_periode = mp.id', 'left');
 
         if ($tahun !== null && $tahun !== '') {
             $builder->where('pu.id_periode', $tahun);
         }
 
+        $builder->groupBy('pu.id, mu.nama, mp.tahun, mp.ts, pu.id_periode');
         $builder->orderBy('mu.nama', 'ASC');
         $query = $builder->get();
         $results = $query->getResultArray();
 
-        // Mapping status_isian dan badge class di sini
+        // Mapping status berdasarkan persentase
         foreach ($results as &$row) {
-            $status = $row['status_isian'];
-            switch ($status) {
-                case '0':
-                    $row['status_isian_text'] = 'Cek';
-                    $row['status_isian_class'] = 'badge bg-primary'; // biru
-                    break;
-                case '1':
-                    $row['status_isian_text'] = 'Lolos';
-                    $row['status_isian_class'] = 'badge bg-success'; // hijau
-                    break;
-                case '2':
-                    $row['status_isian_text'] = 'Peringatan (50%)';
-                    $row['status_isian_class'] = 'badge bg-warning'; // kuning
-                    break;
-                case '3':
-                    $row['status_isian_text'] = 'Tidak Lolos (<49%)';
-                    $row['status_isian_class'] = 'badge bg-danger'; // merah
-                    break;
-                default:
-                    $row['status_isian_text'] = '-';
-                    $row['status_isian_class'] = 'badge bg-secondary'; // abu
-                    break;
+            $total = $row['total_isian'];
+            $lolos = $row['jumlah_lolos'];
+
+            if ($total == 0) {
+                $row['status_isian_text'] = '-';
+                $row['status_isian_class'] = 'badge-status badge-belum';
+                continue;
+            }
+
+            $persentase = round(($lolos / $total) * 100);
+
+            if ($persentase <= 49) {
+                $row['status_isian_text'] = 'Tidak Lolos (' . $persentase . '%)';
+                $row['status_isian_class'] = 'badge-status badge-tidaklolos';
+            } elseif ($persentase == 50) {
+                $row['status_isian_text'] = 'Peringatan (50%)';
+                $row['status_isian_class'] = 'badge-status badge-peringatan';
+            } else {
+                $row['status_isian_text'] = 'Lolos (' . $persentase . '%)';
+                $row['status_isian_class'] = 'badge-status badge-lolos';
             }
         }
+
         return $results;
     }
 

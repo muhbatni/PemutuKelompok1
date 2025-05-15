@@ -14,7 +14,7 @@ class IsianPemutuUnitModel extends Model
     public function getJoin()
     {
         $result = $this->db->table('p_isian_pemutu as isian')
-        ->select('
+            ->select('
             isian.id,
             unit.nama AS nama_unit,
             periode.ts AS tahun_ajaran,
@@ -22,12 +22,12 @@ class IsianPemutuUnitModel extends Model
             isian.isian,
             isian.status
         ')
-        ->join('p_unit_pemutu as punit', 'punit.id = isian.id_unitpemutu')
-        ->join('m_unit as unit', 'unit.id = punit.id_unit')
-        ->join('m_periode as periode', 'periode.id = punit.id_periode')
-        ->join('p_instrumen_pemutu as instrumen', 'instrumen.id = isian.id_instrumen')
-        ->get()
-        ->getResultArray();
+            ->join('p_unit_pemutu as punit', 'punit.id = isian.id_unitpemutu')
+            ->join('m_unit as unit', 'unit.id = punit.id_unit')
+            ->join('m_periode as periode', 'periode.id = punit.id_periode')
+            ->join('p_instrumen_pemutu as instrumen', 'instrumen.id = isian.id_instrumen')
+            ->get()
+            ->getResultArray();
 
         // Mapping jenjang ke teks
         $jenjangMap = [
@@ -46,6 +46,15 @@ class IsianPemutuUnitModel extends Model
         }
 
         return $result;
+    }
+
+    public function getAllPeriode()
+    {
+        return $this->db->table('m_periode')
+            ->select('id, ts')
+            ->orderBy('ts', 'DESC')
+            ->get()
+            ->getResultArray();
     }
 
 }
