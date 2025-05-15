@@ -22,9 +22,12 @@
           <label for="id_lembaga">Lembaga Akreditasi</label>
           <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
-            <?php foreach ($lembagas as $lembaga): ?>
+            <?php
+            $selectedId = old('id_lembaga') ?? ($editData['id_lembaga'] ?? $selected_lembaga ?? null);
+            foreach ($lembagas as $lembaga):
+              ?>
               <option value="<?= $lembaga['id'] ?>" <?=
-                  (old('id_lembaga') ?? ($editData['id_lembaga'] ?? '')) == $lembaga['id'] ? 'selected' : '' ?>>
+                  $selectedId == $lembaga['id'] ? 'selected' : '' ?>>
                 <?= esc($lembaga['nama']) ?>
               </option>
             <?php endforeach; ?>
