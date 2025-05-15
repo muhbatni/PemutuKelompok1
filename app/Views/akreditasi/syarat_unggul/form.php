@@ -24,13 +24,10 @@
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
               <option value="<?= $lembaga['id'] ?>" <?=
-                  (old('id_lembaga')
-                    ?? ($isEdit ? $edit['id_lembaga'] : ($selected_lembaga ?? ''))) == $lembaga['id']
-                  ? 'selected' : ''
-                  ?>>
-          <?= esc($lembaga['nama']) ?>
+                  (old('id_lembaga') ?? ($editData['id_lembaga'] ?? '')) == $lembaga['id'] ? 'selected' : '' ?>>
+                <?= esc($lembaga['nama']) ?>
               </option>
-            <?php endforeach ?>
+            <?php endforeach; ?>
           </select>
         </div>
 
