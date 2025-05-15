@@ -103,7 +103,7 @@ $routes->group('akreditasi', ['filter' => 'auth'], function ($routes) {
   $routes->match(['GET', 'POST'], 'input', [Akreditasi::class, 'input']);
   $routes->match(['GET', 'POST'], 'dokumen-penetapan', [DokumenPenetapan::class, 'index']);
   $routes->match(['GET', 'POST'], 'dokumen-penetapan/input', [DokumenPenetapan::class, 'input']);
-  $routes->get('dokumen-penetapan/download/(:segment)', [DokumenPenetapan::class, 'download/$1']);
+  $routes->get('dokumen-penetapan/download/(:segment)', [DokumenPenetapan::class, 'download']);
   $routes->match(['GET', 'POST'], 'kriteria', [KriteriaAkreditasi::class, 'index']);
   $routes->match(['GET', 'POST'], 'kriteria/input', [KriteriaAkreditasi::class, 'input']);
   $routes->get('syarat-unggul', [SyaratUnggul::class, 'index']);
