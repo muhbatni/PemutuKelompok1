@@ -2,12 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel; // Ensure you have a UserModel for database interaction
+use App\Models\UnitModel;
 
 class Registrasi extends BaseController
 {
+  protected $unitModel;
+
+  public function __construct()
+  {
+    $this->unitModel = new UnitModel();
+  }
+
   public function index()
   {
-    echo view("registrasi/index.php");
+    $data['units'] = $this->unitModel->findAll();
+    echo view("registrasi/index.php", $data);
   }
 }

@@ -10,16 +10,16 @@
       </div>
 
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="" enctype="multipart/form-data">
+      <form class="m-form m-form--fit m-form--label-align-right" method="POST" action="<?= site_url('akreditasi/input') ?>" enctype="multipart/form-data">
         <div class="m-portlet__body">
 
         <!-- ID input, hidden field -->
-        <input type="hidden" name="id" value="<?= isset($editData) && isset($editData['id']) ? $editData['id'] : ''; ?>">
+        <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
           
           <!-- ID Unit -->
           <div class="form-group m-form__group">
             <label for="id_unit">Unit</label>
-            <select class="form-control m-input" id="id_unit" name="id_unit" required>
+            <select class="form-control m-input js-example-basic-multiple" id="id_unit" name="id_unit" required>
               <option value="">-- Pilih Unit --</option>
               <?php foreach ($units as $unit): ?>
                 <option value="<?= $unit['id']; ?>" 
@@ -33,7 +33,7 @@
           <!-- ID Lembaga Akreditasi -->
         <div class="form-group m-form__group">
           <label for="id_lembaga">Lembaga Akreditasi</label>
-          <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
+          <select class="form-control m-input js-example-basic-multiple" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
               <option value="<?= $lembaga['id']; ?>" 
@@ -55,7 +55,7 @@
           <div class="form-group m-form__group">
           <label for="status">Status</label>
           <select class="form-control m-input" id="status" name="status" required>
-          <option value="">-- Pilih Nilai --</option>
+          <option value="">-- Tentukan Status --</option>
               <?php
                 $statusOptions = [
                   1 => 'Unggul', 2 => 'Baik Sekali', 3 => 'Baik', 4 => 'A', 
@@ -161,15 +161,12 @@
 
 <!-- Script -->
 <script>
-  function handleCancel() {
-        <?php if (isset($editData)): ?>
-            // If editing, redirect to the list or home page
-            window.location.href = 'akreditasi'; // You can change this to redirect to a different page
-        <?php else: ?>
-            // If adding a new record, reset the form
-            document.querySelector("form").reset();
-        <?php endif; ?>
-    }
+  $(document).ready(function () {
+      $('.js-example-basic-multiple').select2({
+        placeholder: "-- Pilih --",
+        allowClear: true
+      });
+    });
 
     function showEditModal(id) {
       document.getElementById('editId').value = id;

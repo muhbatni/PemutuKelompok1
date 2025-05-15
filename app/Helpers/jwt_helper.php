@@ -1,6 +1,5 @@
 <?php
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use CodeIgniter\Cookie\CookieInterface;
 
@@ -12,7 +11,7 @@ function getDecodedToken()
   }
   $token = $request->token;
   try {
-    $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
+    $decoded = JWT::decode($token, config('Pemutu')->myConfig['jwt_secret']);
     return $decoded;
   } catch (Exception $exception) {
     return null;
@@ -25,7 +24,7 @@ function isValidToken($token)
     return null;
   }
   try {
-    return JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
+    return JWT::decode($token, config('Pemutu')->myConfig['jwt_secret']);
   } catch (ExpiredException $exception) {
     return null;
   }
@@ -39,20 +38,20 @@ function refreshToken()
     return null;
   }
   try {
-    $refreshDecoded = JWT::decode($refreshToken, new Key(getenv('JWT_SECRET'), 'HS256'));
+    $refreshDecoded = JWT::decode($refreshToken, config('Pemutu')->myConfig['jwt_secret']);
     if ($refreshDecoded->type !== 'refresh') {
       return null;
     }
     if (!isset($refreshDecoded->uid)) {
       return null;
     }
-    // Issue new access token
     $now = time();
     $newAccessExp = $now + 3600;
     $newAccessPayload = [
       'iat' => $now,
-      'exp' => $newAccessExp, // 1 hour
-      'uid' => $refreshDecoded->uid
+      'exp' => $newAccessExp,
+      'uid' => $refreshDecoded->uid,
+      'utype' => $refreshDecoded->utype
     ];
     $newAccessToken = JWT::encode($newAccessPayload, getenv('JWT_SECRET'), 'HS256');
     set_cookie('access_token', $newAccessToken, $newAccessExp, '', '/', '', false, false, CookieInterface::SAMESITE_LAX);

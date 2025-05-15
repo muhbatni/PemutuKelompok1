@@ -12,23 +12,19 @@
   <style>
     /* Background Dashboard */
     body {
+      font-family: 'Poppins';
       background: linear-gradient(to bottom, #f4f7fc, #e9edf5);
       background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
     }
 
     /* Dashboard Card */
     .dashboard-card {
-      /* background: linear-gradient(135deg, #ffffff, #89CFF0, #ffffff); */
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       padding: 25px;
       margin-bottom: 30px;
       transition: all 0.3s ease;
     }
-
-    /* .dashboard-card:hover {
-      transform: translateY(-3px);
-    } */
 
     /* Judul Besar */
     .page-title {
@@ -45,15 +41,35 @@
       color: #334155;
     }
 
-    /* Dropdown Style */
-    #filterTahun {
-      border-radius: 8px;
-      background-color: #ffffff;
-      border: 1px solid #cbd5e1;
-      padding: 10px;
+    /* Search Input Style */
+    .search-container {
+      position: relative;
+      margin-bottom: 15px;
     }
 
-    /* Tabel Style */
+    .search-input {
+      width: 100%;
+      padding: 10px 15px 10px 40px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background-color: white;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+    }
+
+    /* Tabel Style - TAMPILAN ASLI */
     .table {
       background-color: white;
       border-radius: 12px;
@@ -79,7 +95,7 @@
       transition: all 0.2s;
     }
 
-    /* Badge Status */
+    /* Badge Status - TAMPILAN ASLI */
     .badge-status {
       padding: 2px 6px;
       font-size: 0.85rem;
@@ -136,28 +152,21 @@
   <div class="container">
     <h1 class="page-title">Dashboard Manajemen Penjaminan Mutu</h1>
 
-    <!-- Dropdown Filter Tahun Periode -->
+    <!-- Search Input dan Dropdown Filter Tahun -->
     <div class="dashboard-card">
-      <label for="filterTahun" class="form-label">Filter Tahun Periode</label>
-      <div class="input-group mb-3">
-        <span class="input-group-text bg-white border-end-0">
-          <i class="fas fa-calendar-alt text-primary"></i>
-        </span>
-        <select id="filterTahun" class="form-select border-start-0 custom-dropdown rounded-end"
-          onchange="filterByTahun(this.value)">
-          <option value="">-- Semua Tahun --</option>
-          <?php if (!empty($periodeList)): ?>
-            <?php foreach ($periodeList as $periode): ?>
-              <option value="<?= esc($periode['id']) ?>" <?= ($selectedTahun == $periode['id']) ? 'selected' : '' ?>>
-                <?= esc($periode['tahun']) ?> (<?= esc($periode['ts']) ?>)
-              </option>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <option value="">Tidak ada data periode</option>
-          <?php endif; ?>
+      <label for="yearFilter" class="form-label">Filter Tahun Periode</label>
+      <div class="search-container">
+        <select id="yearFilter" class="form-select search-input select2">
+          <option value="">Ketik atau pilih tahun (contoh: 2025)</option>
+          <?php foreach ($periodeList as $periode): ?>
+            <option value="<?= $periode['tahun'] ?>" <?= ($selectedTahun == $periode['tahun']) ? 'selected' : '' ?>>
+              <?= $periode['tahun'] ?>
+            </option>
+          <?php endforeach; ?>
         </select>
       </div>
     </div>
+
 
     <!-- Tabel Data Unit Pemutu -->
     <div class="dashboard-card">
@@ -170,7 +179,7 @@
             <tr>
               <th>No</th>
               <th>Unit</th>
-              <th>periode</th>
+              <th>Periode</th>
               <th>Status Isian</th>
             </tr>
           </thead>
@@ -196,7 +205,7 @@
                       $class = 'badge-status badge-tidaklolos';
                     }
                     ?>
-                    <span class="<?= $class ?>">
+                    <span class="<?= $row['status_isian_class'] ?>">
                       <?= esc($row['status_isian_text']) ?>
                     </span>
                   </td>
@@ -211,13 +220,41 @@
         </table>
       </div>
     </div>
+
   </div>
 
-  <!-- Script untuk filter tahun -->
+  <!-- Real-time Filtering Script -->
   <script>
-    function filterByTahun(tahun) {
-      window.location.href = '<?= site_url('akreditasi/dashboard-periode') ?>?tahun=' + tahun;
-    }
+    $(document).ready(function () {
+      // Inisialisasi Select2 dengan search
+      $('#yearFilter').select2({
+        placeholder: "Ketik atau pilih tahun (contoh: 2025)",
+        allowClear: true,
+        width: '100%',
+        minimumResultsForSearch: 1 // Selalu tampilkan search
+      });
+
+      // Filter tabel saat tahun dipilih
+      $('#yearFilter').on('change', function () {
+        const tahun = $(this).val();
+        filterByTahun(tahun);
+      });
+
+      // Fungsi filter tabel
+      function filterByTahun(tahun) {
+        $('.table tbody tr').each(function () {
+          const $row = $(this);
+          const yearText = $row.find('td:eq(2)').text();
+          const mainYear = yearText.match(/\d{4}/)?.[0] || '';
+
+          if (mainYear.includes(tahun) || tahun === '') {
+            $row.show();
+          } else {
+            $row.hide();
+          }
+        });
+      }
+    });
   </script>
 
 </body>

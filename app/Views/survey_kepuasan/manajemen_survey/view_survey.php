@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="m-portlet__body">
-      <div class="form-group m-form__group row col-sm-2 col-lg-2">
+      <div class="m-portlet__head">
         <div class="dropdown d-inline-block">
           <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
             aria-expanded="false">
@@ -27,6 +27,10 @@
             <?php endforeach; ?>
           </div>
         </div>
+        <a href="<?= base_url("public/survey/download?id_survey=$survey[id]&id_periode=$idPeriode") ?>"
+          class="btn btn-primary">
+          Unduh CSV
+        </a>
       </div>
       <?php
       if (isset($survey['data'])):

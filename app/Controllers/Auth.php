@@ -24,7 +24,8 @@ class Auth extends BaseController
     $data = [
       'username' => $postData['username'],
       'password' => $hashedPassword,
-      'tipe' => $postData['tipe']
+      'tipe' => $postData['tipe'],
+      'id_unit' => $postData['id_unit']
     ];
     if (!$this->validate('signup')) {
       return view(
@@ -61,13 +62,14 @@ class Auth extends BaseController
       'iat' => $issuedAt,
       'exp' => $accessTokenExp,
       'uid' => $user['id'],
+      'utype' => $user['tipe']
     ];
 
     $refreshPayload = [
       'iat' => $issuedAt,
       'exp' => $refreshTokenExp,
       'uid' => $user['id'],
-      'type' => 'refresh'
+      'utype' => $user['tipe']
     ];
 
     $secretKey = getenv('JWT_SECRET');

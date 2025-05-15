@@ -25,8 +25,16 @@
             <div class="m-separator m-separator--dashed d-xl-none"></div>
           </div>
           <div class="col-xl-8 order-2 order-xl-2">
-            <div class="form-group m-form__group row align-items-center">
-              <div class="col-md-4 ml-auto">
+            <div class="form-group m-form__group row align-items-center justify-content-end">
+              <div class="col-md-4">
+                <select id="periodeFilter" class="form-control m-input m-input--solid">
+                  <option value="">Filter Periode...</option>
+                  <?php foreach ($periodeList as $periode): ?>
+                    <option value="<?= esc($periode['ts']) ?>"><?= esc($periode['ts']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="col-md-4">
                 <div class="m-input-icon m-input-icon--left">
                   <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
                     id="generalSearch">
@@ -59,12 +67,13 @@
             foreach ($isian_pemutu as $row): ?>
               <tr>
                 <td><?= $no++ ?></td>
-                <td><?= esc($row['nama_unit']) ?></td>
+                <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
                 <td><?= esc($row['jenjang_text']) ?></td>
-                <td><?= ['Cek', 'Lolos', 'Peringatan (0-50%)', 'Tidak Lolos (50%)'][$row['isian']] ?></td>
-                <td><?= $row['status'] ? 'Aktif' : 'Tidak Aktif' ?></td>
+                <td><?= esc($row['isian']) ?></td>
+                <td><?= $row['status'] ? 'Lolos' : 'Tidak Lolos' ?></td>
                 <td>
-                  <a href="<?= site_url('akreditasi/isian-pemutu/input?id=' . $row['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                  <a href="<?= site_url('akreditasi/isian-pemutu/input?id=' . $row['id']) ?>"
+                    class="btn btn-sm btn-warning">Edit</a>
                   <button class="btn btn-sm btn-danger"
                     onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama_unit']) ?>')">Hapus</button>
                 </td>

@@ -104,12 +104,48 @@
                           class="la la-edit"></i> Edit Detail</a> -->
                       <a class="dropdown-item" href="<?= base_url("public/survey/view?id_survey=$survey[id]") ?>"><i
                           class="la la-bar-chart"></i> Lihat Hasil</a>
-                      <a class="dropdown-item" href="#"><i class="la la-print"></i> Buat Laporan</a>
+                      <a class="dropdown-item" href="#" data-toggle="modal"
+                        data-target="#pelaksanaanModal-<?= $survey['id']; ?>" fdprocessedid="yus45"><i
+                          class="la la-calendar-plus-o"></i> Pelaksanaan</a>
                       <a class="dropdown-item" href="<?= base_url("public/survey/delete?id_survey=$survey[id]") ?>"
                         data-toggle="modal" data-target="#deleteModal-<?= $survey['id']; ?>" fdprocessedid="yus45">
                         <i class="la la-trash"></i>Hapus Survey</a>
                     </div>
                   </span>
+                  <form method="POST" action="<?= base_url("public/survey/create-pelaksanaan?id_survey=$survey[id]") ?>"
+                    class="modal fade" id="pelaksanaanModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
+                    aria-labelledby="pelaksanaanModalLabel-<?= $survey['id']; ?>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="pelaksanaanModalLabel-<?= $survey['id']; ?>">Pelaksanaan Survey</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Pilih periode untuk menambah pelaksanaan survey!</p>
+                          <div class="form-group m-form__group row">
+                            <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode</label>
+                            <br>
+                            <div class="col-lg-9 col-md-9 col-sm-12">
+                              <select class="form-control" id="id_periode" name="id_periode" required>
+                                <?php foreach ($periode as $p): ?>
+                                  <option value="<?= $p['id']; ?>" <?= isset($pelaksanaan_survey['id_periode']) && ($pelaksanaan_survey['id_periode'] == $p['id']) ? 'selected' : '' ?>>
+                                    <?= $p['tahun']; ?>
+                                  </option>
+                                <?php endforeach; ?>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                          <input type="submit" class="btn btn-primary" value="Tambah">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                   <div class="modal fade" id="deleteModal-<?= $survey['id']; ?>" tabindex="-1" role="dialog"
                     aria-labelledby="deleteModalLabel-<?= $survey['id']; ?>" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">

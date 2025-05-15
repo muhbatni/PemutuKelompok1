@@ -11,7 +11,7 @@ class UserModel extends Model
   protected $table = 'm_user';
   protected $primaryKey = 'id';
   protected $useAutoIncrement = false;
-  protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto'];
+  protected $allowedFields = ['username', 'password', 'tipe', 'nama', 'foto', 'id_unit'];
 
   protected $beforeInsert = ['generateUUID'];
 
@@ -67,6 +67,27 @@ class UserModel extends Model
     $user = $userModel->select('nama, username')->where('id', $userId)->first();
     if ($user) {
       return $user['nama'] ?? $user['username'];
+    }
+    return null;
+  }
+
+
+  /**
+   * Get the unit of the user by the user's id.
+   *
+   * @return string|null
+   */
+  public function getUnit()
+  {
+    $token = getDecodedToken();
+    if (!$token) {
+      return null;
+    }
+    $userId = $token->uid;
+    $userModel = new UserModel();
+    $user = $userModel->select('mu.nama AS nama_unit')->join('m_unit mu', 'mu.id = m_user.id_unit')->where('m_user.id', $userId)->first();
+    if ($user) {
+      return $user['nama_unit'];
     }
     return null;
   }
@@ -157,8 +178,8 @@ class UserModel extends Model
     }
     return match ($user['tipe']) {
       "1" => "Dosen",
-      "2" => "Laboran",
-      "3" => "Mahasiswa",
+      "2" => "Mahasiswa",
+      "3" => "Admin",
       default => "Undefined"
     };
   }

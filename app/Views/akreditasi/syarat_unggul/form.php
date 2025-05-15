@@ -4,14 +4,15 @@
       <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
           <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">Formulir Dokumen Penetapan</h3>
+            <h3 class="m-portlet__head-text">Formulir Syarat Unggul</h3>
           </div>
         </div>
       </div>
 
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right"
-            action="<?= site_url('akreditasi/syarat-unggul/input') ?>" method="POST" enctype="multipart/form-data" id="syaratForm">
+        action="<?= site_url('akreditasi/syarat-unggul/input') ?>" method="POST" enctype="multipart/form-data"
+        id="syaratForm">
 
         <!-- ID untuk form edit, jika ada -->
         <input type="hidden" name="id" value="<?= isset($editData) ? $editData['id'] : ''; ?>">
@@ -22,19 +23,22 @@
           <select class="form-control m-input" id="id_lembaga" name="id_lembaga" required>
             <option value="">-- Pilih Lembaga --</option>
             <?php foreach ($lembagas as $lembaga): ?>
-              <option value="<?= $lembaga['id']; ?>" 
-                <?= isset($editData['id_lembaga']) && $editData['id_lembaga'] == $lembaga['id'] ? 'selected' : ''; ?>>
-                <?= $lembaga['nama']; ?>
+              <option value="<?= $lembaga['id'] ?>" <?=
+                  (old('id_lembaga')
+                    ?? ($isEdit ? $edit['id_lembaga'] : ($selected_lembaga ?? ''))) == $lembaga['id']
+                  ? 'selected' : ''
+                  ?>>
+          <?= esc($lembaga['nama']) ?>
               </option>
-            <?php endforeach; ?>
+            <?php endforeach ?>
           </select>
         </div>
 
         <!-- Nama Syarat -->
         <div class="form-group m-form__group">
           <label for="nama">Nama Syarat Unggul</label>
-          <input type="text" class="form-control m-input" id="nama" name="nama" placeholder="Masukkan Nama" maxlength="100" 
-            value="<?= isset($editData) ? $editData['nama'] : ''; ?>" required>
+          <input type="text" class="form-control m-input" id="nama" name="nama" placeholder="Masukkan Nama"
+            maxlength="100" value="<?= isset($editData) ? $editData['nama'] : ''; ?>" required>
         </div>
 
         <div class="m-portlet__foot m-portlet__foot--fit">
@@ -51,7 +55,7 @@
             </button>
           </div>
         </div>
-        
+
       </form>
       <!--end::Form-->
     </div>
@@ -65,7 +69,8 @@
 <?php endif; ?>
 
 <!-- Modal Update -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-warning text-white">

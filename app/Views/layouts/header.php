@@ -58,6 +58,7 @@ $user = new App\Models\UserModel();
 $displayName = $user->getDisplayName() ?: 'Guest';
 $defaultAvatar = base_url() . '/public/assets/app/media/img/users/default-avatar.jpg';
 $avatar = $user->getAvatar() ?: $defaultAvatar;
+$unit = $user->getUnit() ?: "null";
 ?>
 
 <?php
@@ -67,10 +68,10 @@ $segment2 = $uri->getTotalSegments() >= 2 ? $uri->getSegment(2) : '';
 
 $isDashboardActive = empty($uri->getSegment(1));
 
-$auditPages = ['auditor','input-auditor', 'standar','input-standar', 'manajemen-audit','pelaksanaan-audit', 'data-dukung','input-data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
+$auditPages = ['auditor', 'input-auditor', 'standar', 'input-standar', 'manajemen-audit', 'pelaksanaan-audit', 'data-dukung', 'input-data-dukung', "temuan", "input-temuan", "input-manajemen-audit"];
 $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPages);
 
-$akreditasiPages = ['kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'lembaga', 'unit', 'input-data-pemutu', 'isian-pemutu', 'dashboard-periode'];
+$akreditasiPages = ['lembaga', 'kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'unit', 'input-data-pemutu', 'isian-pemutu', 'isian-pemutu-unit', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
 $surveyPages = ['survey', 'isi-survey'];
@@ -183,12 +184,15 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                               <div class="profile-picture-dropdown">
                                 <img src="<?= $avatar ?>" class="profile-picture" alt="user-profile" />
                               </div>
-                              <div class="m-card-user__details m--flex m--items-end">
+                              <div class="m-card-user__details m--flex flex-column m--items-end">
                                 <span class="m-card-user__name m--font-weight-500">
                                   <?= esc($displayName); ?>
                                 </span>
                                 <span class="m-card-user__email m--font-weight-300">
                                   <?= $user->getUserType() ?>
+                                </span>
+                                <span class="m--font-weight-300">
+                                  <?= esc($unit); ?>
                                 </span>
                               </div>
                             </div>
@@ -313,16 +317,17 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                 <ul class="m-menu__subnav">
                   <?php
                   $akreditasiMenu = [
+                    'lembaga' => 'Lembaga Akreditasi',
                     'kriteria' => 'Kriteria Akreditasi',
                     'syarat-unggul' => 'Syarat Unggul',
                     'instrumen-pemutu' => 'Instrumen Pemutu',
                     'dokumen-penetapan' => 'Dokumen Penetapan',
                     '' => 'Akreditasi',
                     'periode' => 'Periode',
-                    'lembaga' => 'Lembaga Akreditasi',
                     'unit' => 'Unit',
                     'input-data-pemutu' => 'Data Unit Pemutu',
                     'isian-pemutu' => 'Isian Pemutu',
+                    'isian-pemutu-unit' => 'Isian Pemutu Unit',
                     'dashboard-periode' => 'Dashboard Pemutu'
                   ];
                   foreach ($akreditasiMenu as $slug => $label): ?>
