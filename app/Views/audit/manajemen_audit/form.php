@@ -28,9 +28,9 @@
         <div class="m-portlet__body">
           <div class="form-group m-form__group">
             <label for="kode">
-              Kode Audit
+              Judul Audit
             </label>
-            <input type="text" class="form-control m-input" id="kode" name="kode" placeholder="AU001"
+            <input type="text" class="form-control m-input" id="kode" name="kode" placeholder="Audit..."
               value="<?= isset($audit) ? $audit['kode'] : ''; ?>" required>
           </div>
 

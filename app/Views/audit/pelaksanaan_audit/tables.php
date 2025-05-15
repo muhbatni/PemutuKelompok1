@@ -14,20 +14,28 @@
       <!--begin: Search Form -->
       <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
         <div class="row align-items-center">
-          <div class="col-xl-12 order-2 order-xl-2">
-            <div class="form-group m-form__group row align-items-center">
-              <div class="col-md-4 ml-auto">
-                <div class="m-input-icon m-input-icon--left">
-                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..."
-                    id="generalSearch">
-                  <span class="m-input-icon__icon m-input-icon__icon--left">
-                    <span>
-                      <i class="la la-search"></i>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div class="col-md-4">
+            <label for="filterJudulAudit">Audit</label>
+            <select id="filterJudulAudit" class="form-control m-input m-input--solid">
+              <option value="">Semua</option>
+              <?php foreach ($list_audit as $audit): ?>
+                <option value="<?= esc($audit['id']); ?>" <?= ($audit['id'] == ($_GET['id'] ?? '')) ? 'selected' : '' ?>>
+                  <?= esc($audit['kode']); ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="col-xl-4 ml-auto text-right">
+            <a id="btnTambahAudit" href="<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+              <span>
+                <i class="flaticon-add"></i>
+                <span>
+                  Tambah Pelaksanaan Audit
+                </span>
+              </span>
+            </a>
+            <div class="m-separator m-separator--dashed d-xl-none"></div>
           </div>
         </div>
       </div>
@@ -38,44 +46,26 @@
         <table class="table table-striped m-table" id="html_table">
           <thead class="thead-light">
             <tr>
-              <th width="5%"></th>
-              <th>Kode Audit</th>
-              <th>Periode</th>
-              <th>Standar</th>
+              <th>Judul Audit</th>
               <th>Auditor</th>
               <th>Unit</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($pelaksanaan_audit as $data): ?>
-              <tr class="main-row">
-                <td class="text-center">
-                  <button type="button" class="btn btn-primary btn-sm toggle-action"
-                    data-id="<?= $data->id_audit; ?>">+</button>
-                </td>
-                <td><?= esc($data->kode_audit); ?></td>
-                <td><?= esc($data->tahun_periode); ?></td>
-                <td><?= esc($data->nama_standar); ?></td>
+              <tr data-id-audit="<?= esc($data['id_audit']); ?>">
+                <td><?= esc($data['kode_audit']); ?></td>
                 <td>
-                  <?php if ($data->id_auditor !== 'Belum dipilih'): ?>
-                    <?= esc($data->id_auditor); ?>
-                  <?php else: ?>
-                    Belum dipilih
-                  <?php endif; ?>
+                  <?= !empty($data['nama_auditor']) ? esc($data['nama_auditor']) : 'Belum dipilih'; ?>
                 </td>
                 <td>
-                  <?php if ($data->id_unit !== 'Belum dipilih'): ?>
-                    <?= esc($data->id_unit); ?>
-                  <?php else: ?>
-                    Belum dipilih
-                  <?php endif; ?>
+                  <?= !empty($data['nama_unit']) ? esc($data['nama_unit']) : 'Belum dipilih'; ?>
                 </td>
-              </tr>
-              <tr class="action-row" id="action-<?= $data->id_audit; ?>" style="display:none;">
-                <td colspan="6" class="text-center">
-                  <a href="<?= base_url('public/audit/pelaksanaan-audit/edit/' . $data->id_audit); ?>"
-                    class="btn btn-success">
-                    Lakukan Audit
+                <td>
+                  <a href="<?= base_url('public/audit/pelaksanaan-audit/edit/' . $data['id_standar_audit']); ?>"
+                    class="btn btn-success btn-sm">
+                    Laksanakan Audit
                   </a>
                 </td>
               </tr>
@@ -90,25 +80,48 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Add click event to all toggle buttons
-    var toggleButtons = document.querySelectorAll('.toggle-action');
+    const filterJudulAudit = document.getElementById('filterJudulAudit');
+    const btnTambahAudit = document.getElementById('btnTambahAudit');
+    const rows = document.querySelectorAll('#html_table tbody tr');
 
-    toggleButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        var id = this.getAttribute('data-id');
-        var actionRow = document.getElementById('action-' + id);
-
-        if (actionRow.style.display === 'none') {
-          actionRow.style.display = 'table-row';
-          this.textContent = '-';
-        } else {
-          actionRow.style.display = 'none';
-          this.textContent = '+';
-        }
+    function filterTable(selectedValue) {
+      rows.forEach(function (row) {
+        const rowIdAudit = row.getAttribute('data-id-audit');
+        const isVisible = !selectedValue || rowIdAudit === selectedValue;
+        row.style.display = isVisible ? '' : 'none';
       });
+
+      // Update tombol Tambah
+      btnTambahAudit.href = selectedValue
+        ? "<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>/" + encodeURIComponent(selectedValue)
+        : "<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>";
+    }
+
+    // Trigger initial filter (pakai ?id=... di URL jika ada)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialId = urlParams.get('id');
+    if (initialId) {
+      filterJudulAudit.value = initialId;
+      filterTable(initialId);
+    }
+
+    // Event listener untuk perubahan dropdown
+    filterJudulAudit.addEventListener('change', function () {
+      filterTable(this.value);
+      // Update URL (opsional, agar bisa dishare)
+      const newUrl = new URL(window.location.href);
+      if (this.value) {
+        newUrl.searchParams.set('id', this.value);
+      } else {
+        newUrl.searchParams.delete('id');
+      }
+      window.history.replaceState({}, '', newUrl);
     });
   });
 </script>
+
+
+
 
 <style>
   .table-responsive {

@@ -50,8 +50,9 @@
             <table class="m-datatable" id="html_table" width="100%">
                 <thead>
                     <tr>
-                        <th title="field #2">Unit</th>
-                        <th title="field #3">Auditor</th>
+                        <th title="field #2">Judul Audit</th>
+                        <th title="field #3">Unit</th>
+                        <th title="field #3">Standar</th>
                         <th title="Field #4">Pernyataan</th>
                         <th title="Field #5">Indikator</th>
                         <th title="Field #6">Deskripsi</th>
@@ -62,26 +63,32 @@
                 <tbody>
                     <?php foreach ($dataDukung as $row) : ?>
                     <tr>
+                        <td><?= $row['kode_audit']; ?></td>
                         <td><?= $row['nama_unit']; ?></td>
-                        <td><?= $row['auditor_name']; ?></td>
+                        <td><?= $row['nama_standar']; ?></td>
                         <td><?= $row['pernyataan']; ?></td>
                         <td><?= $row['indikator']; ?></td>
                         <td><?= $row['deskripsi']; ?></td>
                         <td>
                             <?php 
                             $files = explode('|', $row['dokumen']);
-                            foreach($files as $file): ?>
-                            <div>
-                                <a href="<?= base_url('writable/uploads/audit/data_dukung/' . $file); ?>"
-                                    target="_blank">
-                                    <?= $file ?>
-                                </a>
-                            </div>
-                            <?php endforeach; ?>
+                            if (!empty($row['dokumen'])): 
+                                foreach($files as $file): ?>
+                                    <div class="mb-2">
+                                        <a href="<?= base_url('public/audit/data-dukung/download/' . $file); ?>" 
+                                        class="btn btn-sm btn-info" 
+                                        title="Download">
+                                            <i class="la la-download"></i> Download
+                                        </a>
+                                    </div>
+                                <?php endforeach;
+                            else: ?>
+                                <span class="text-muted">Tidak Ada Dokumen</span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <a href="<?= base_url('public/audit/input-data-dukung/edit/' . $row['id']); ?>"
-                                class="btn btn-sm btn-info" title="Edit">
+                                class="btn btn-sm btn-warning" title="Edit">
                                 <i class="la la-edit"></i>
                             </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Delete"

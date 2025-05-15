@@ -59,7 +59,7 @@
         <thead>
           <tr>
             <th title="Field #1">
-              Kode Audit
+              Judul Audit
             </th>
             <th title="Field #2">
               Standar

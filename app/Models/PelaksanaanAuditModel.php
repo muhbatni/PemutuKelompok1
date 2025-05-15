@@ -7,29 +7,31 @@ class PelaksanaanAuditModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = ['id_auditor', 'id_unit', 'id_standar_audit'];
 
-    public function getPelaksanaanAudit()
+    public function getPelaksanaanAudit($id_audit = null)
     {
-        return $this->db->query("
-            SELECT 
-                a.id AS id_audit,
-                a.kode AS kode_audit,
-                p.tahun AS tahun_periode,
-                STRING_AGG(DISTINCT s.nama, ', ') AS nama_standar,
-                STRING_AGG(DISTINCT sa.id::text, ',') AS standar_audit_ids,
-                COALESCE(MAX(pa.id_auditor::text), 'Belum dipilih') AS id_auditor,
-                COALESCE(MAX(pa.id_unit::text), 'Belum dipilih') AS id_unit
-            FROM 
-                a_audit a
-                JOIN a_standar_audit sa ON a.id = sa.id_audit
-                JOIN m_periode p ON p.id = a.id_periode
-                JOIN a_standar s ON s.id = sa.id_standar
-                LEFT JOIN a_pelaksanaan_audit pa ON pa.id = sa.id
-            GROUP BY 
-                a.id, a.kode, p.tahun
-            ORDER BY 
-                a.kode
-        ")->getResult();
+        $builder = $this->select('a_pelaksanaan_audit.*, a_standar_audit.id_standar AS id_standar_audit, a_standar_audit.id_audit AS id_audit, a_audit.kode AS kode_audit, m_user.nama AS nama_auditor, m_unit.nama AS nama_unit')
+            ->join('a_standar_audit', 'a_standar_audit.id = a_pelaksanaan_audit.id_standar_audit')
+            ->join('a_audit', 'a_audit.id = a_standar_audit.id_audit')
+            ->join('a_auditor', 'a_auditor.id = a_pelaksanaan_audit.id_auditor', 'left')
+            ->join('m_user', 'm_user.id = a_auditor.id', 'left')
+            ->join('m_unit', 'm_unit.id = a_pelaksanaan_audit.id_unit', 'left');
+        if ($id_audit) {
+            $builder->where('a_standar_audit.id_audit', $id_audit);
+        }
+        return $builder->findAll();
     }
+
+    public function getListAuditForDropdown()
+    {
+        return $this->db->table('a_standar_audit')
+            ->select('a_audit.id, a_audit.kode')
+            ->join('a_audit', 'a_audit.id = a_standar_audit.id_audit')
+            ->distinct()
+            ->orderBy('a_audit.kode', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
 
 
     public function getAuditorList()
@@ -95,7 +97,14 @@ class PelaksanaanAuditModel extends Model
 
     public function getPelaksanaanAuditById($id_standar_audit)
     {
-        return $this->where('id_standar_audit', $id_standar_audit)->findAll();
+        return $this->select('a_pelaksanaan_audit.*, a_standar_audit.id_audit AS id_audit, a_audit.kode AS kode_audit, m_user.nama AS nama_auditor, m_unit.nama AS nama_unit')
+            ->join('a_standar_audit', 'a_standar_audit.id = a_pelaksanaan_audit.id_standar_audit')
+            ->join('a_audit', 'a_audit.id = a_standar_audit.id_audit')
+            ->join('a_auditor', 'a_auditor.id = a_pelaksanaan_audit.id_auditor', 'left')
+            ->join('m_user', 'm_user.id = a_auditor.id', 'left')
+            ->join('m_unit', 'm_unit.id = a_pelaksanaan_audit.id_unit', 'left')
+            ->where('a_pelaksanaan_audit.id_standar_audit', $id_standar_audit)
+            ->findAll();
     }
 
 

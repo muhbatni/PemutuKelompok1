@@ -33,7 +33,8 @@ class InputStandarAudit extends BaseController
                     mkdir($uploadPath, 0777, true);
                 }
 
-                $fileName = $dokumen->getRandomName();
+                // Menggunakan nama asli file
+                $fileName = $dokumen->getClientName();
                 $dokumen->move($uploadPath, $fileName);
                 $data['dokumen'] = $fileName;
             }
@@ -93,7 +94,6 @@ class InputStandarAudit extends BaseController
             }
         }
 
-
         $dokumen = $this->request->getFile('dokumen');
         if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
             $uploadPath = WRITEPATH . 'uploads/dokumen/';
@@ -101,12 +101,10 @@ class InputStandarAudit extends BaseController
                 mkdir($uploadPath, 0777, true);
             }
 
-            $fileName = $dokumen->getRandomName();
+            $fileName = $dokumen->getClientName();
             $dokumen->move($uploadPath, $fileName);
             $data['dokumen'] = $fileName;
         }
-
-
         $updateStatus = $model->update($id, $data);
 
         if ($updateStatus === false) {
@@ -116,6 +114,17 @@ class InputStandarAudit extends BaseController
 
         session()->setFlashdata('success', 'Data berhasil diperbarui!');
         return redirect()->to(base_url('public/audit/standar'));
+    }
+
+    public function download($fileName)
+    {
+        $filePath = WRITEPATH . 'uploads/dokumen/' . $fileName;
+
+        if (file_exists($filePath)) {
+            return $this->response->download($filePath, null)->setFileName($fileName);
+        }
+
+        return redirect()->to(base_url('public/audit/standar'))->with('error', 'File tidak ditemukan!');
     }
 
 }

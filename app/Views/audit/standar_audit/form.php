@@ -13,6 +13,7 @@
           </div>
         </div>
       </div>
+      
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="post"
         action="<?= isset($standar) ? base_url('public/audit/input-standar/update/' . $standar['id']) : base_url('public/audit/input-standar') ?>"
@@ -51,6 +52,9 @@
               File yang diperbolehkan: PDF, DOC, DOCX
               <?= $isEdit && !empty($edit['dokumen']) ? '(Abaikan jika tidak ingin mengganti)' : '' ?>
             </span>
+            <?php if (isset($edit['dokumen']) && !empty($edit['dokumen'])): ?>
+              <p>Dokumen saat ini: <strong><?= $edit['dokumen']; ?></strong></p>
+            <?php endif; ?>
           </div>
         </div>
 
@@ -78,7 +82,7 @@
       <div class="m-form__actions">
         <a href="<?= base_url('public/audit/standar') ?>" class="btn btn-light">Kembali</a>
         <button type="submit" class="btn btn-primary">
-        <?= isset($isEdit) && $isEdit ? 'Update' : 'Simpan' ?>
+          <?= isset($isEdit) && $isEdit ? 'Update' : 'Simpan' ?>
         </button>
         <button type="reset" class="btn btn-metal">Reset</button>
       </div>
