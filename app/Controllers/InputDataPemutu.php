@@ -67,14 +67,6 @@ class InputDataPemutu extends BaseController
           'rules' => 'required',
           'errors' => ['required' => 'Periode harus dipilih']
         ],
-        'id_lembaga' => [
-          'rules' => 'required',
-          'errors' => ['required' => 'Lembaga harus dipilih']
-        ],
-        'status' => [
-          'rules' => 'required',
-          'errors' => ['required' => 'Status harus dipilih']
-        ]
       ])
     ) {
       return redirect()->back()
@@ -156,7 +148,7 @@ class InputDataPemutu extends BaseController
       . view('akreditasi/input_data_pemutu/form', $data)
       . view('layouts/footer');
   }
-  
+
   public function update($id)
   {
     // Validasi input dengan pesan error yang jelas
