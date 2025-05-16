@@ -26,6 +26,7 @@ class UnitPemutuModel extends Model
             m_unit.nama as unit,
             m_periode.tahun as periode,
             m_lembaga_akreditasi.nama as lembaga,
+            p_unit_pemutu.status as status_awal,
             p_unit_pemutu.created_at,
             (SELECT COUNT(isi.id) 
              FROM p_isian_pemutu isi 
@@ -42,29 +43,11 @@ class UnitPemutuModel extends Model
             ->get()
             ->getResultArray();
 
-        // Hitung status untuk setiap row
         foreach ($result as &$row) {
-            $total = (int) $row['total_isian'];
-            $lolos = (int) $row['jumlah_lolos'];
-
-            if ($total === 0) {
-                $row['status'] = '-';
-                $row['status_class'] = '';
-                continue;
-            }
-
-            $percentage = round(($lolos / $total) * 100);
-
-            if ($percentage >= 60) {
-                $row['status'] = "Lolos ($percentage%)";
-                $row['status_class'] = 'text-success';
-            } else if ($percentage >= 50) {
-                $row['status'] = "Peringatan ($percentage%)";
-                $row['status_class'] = 'text-warning';
-            } else {
-                $row['status'] = "Tidak Lolos ($percentage%)";
-                $row['status_class'] = 'text-danger';
-            }
+            $statusData = $this->calculateStatusBasedOnIsian($row); // Perhatikan huruf besar 'I'
+            $row['status'] = $statusData['status'];
+            $row['status_class'] = $statusData['status_class'];
+            $row['status_value'] = $statusData['status_value'];
         }
 
         return $result;
@@ -110,67 +93,75 @@ class UnitPemutuModel extends Model
 
     public function getStatusByUnitPeriode($id_unit, $id_periode)
     {
-        $builder = $this->db->table('p_unit_pemutu pu');
-        $builder->select('
-        COUNT(isi.id) as total_isian,
-        SUM(CASE WHEN isi.status = 1 THEN 1 ELSE 0 END) as jumlah_lolos,
-        pu.id as unit_pemutu_id
-    ');
-        $builder->join('p_isian_pemutu isi', 'isi.id_unitpemutu = pu.id', 'left');
-        $builder->where('pu.id_unit', $id_unit);
-        $builder->where('pu.id_periode', $id_periode);
+        $builder = $this->db->table('p_isian_pemutu isi')
+            ->select('COUNT(isi.id) as total_isian, 
+                 SUM(CASE WHEN isi.status = 1 THEN 1 ELSE 0 END) as jumlah_lolos')
+            ->join('p_unit_pemutu pu', 'isi.id_unitpemutu = pu.id')
+            ->where('pu.id_unit', $id_unit)
+            ->where('pu.id_periode', $id_periode)
+            ->groupBy('pu.id_unit, pu.id_periode');
 
         $result = $builder->get()->getRowArray();
 
-        // Jika tidak ada data, kembalikan status default
-        if (empty($result)) {
-            return [
-                'total_isian' => 0,
-                'jumlah_lolos' => 0,
-                'percentage' => 0,
-                'status' => '-',
-                'status_class' => ''
-            ];
-        }
-
-        // Hitung status menggunakan data yang ada
-        return $this->calculateStatus($result);
+        // Pastikan mengembalikan array dengan nilai default jika tidak ada data
+        return [
+            'total_isian' => $result['total_isian'] ?? 0,
+            'jumlah_lolos' => $result['jumlah_lolos'] ?? 0
+        ];
     }
 
-    private function calculateStatus($data)
+    private function calculateStatusBasedOnIsian($data)
     {
         $total = (int) $data['total_isian'];
         $lolos = (int) $data['jumlah_lolos'];
 
         if ($total === 0) {
             return [
-                'total_isian' => 0,
-                'jumlah_lolos' => 0,
-                'percentage' => 0,
                 'status' => '-',
-                'status_class' => ''
+                'status_class' => 'text-primary', // Ubah menjadi text-primary untuk warna biru
+                'status_value' => 0
             ];
         }
 
         $percentage = round(($lolos / $total) * 100);
 
-        $result = [
-            'total_isian' => $total,
-            'jumlah_lolos' => $lolos,
-            'percentage' => $percentage
-        ];
-
-        if ($percentage >= 60) {
-            $result['status'] = "Lolos ($percentage%)";
-            $result['status_class'] = 'text-success';
-        } else if ($percentage >= 50) {
-            $result['status'] = "Peringatan ($percentage%)";
-            $result['status_class'] = 'text-warning';
+        if ($percentage > 50) {
+            return [
+                'status' => "Lolos ($percentage%)",
+                'status_class' => 'text-success',
+                'status_value' => 1
+            ];
         } else {
-            $result['status'] = "Tidak Lolos ($percentage%)";
-            $result['status_class'] = 'text-danger';
+            return [
+                'status' => "Tidak Lolos ($percentage%)",
+                'status_class' => 'text-danger',
+                'status_value' => 0
+            ];
+        }
+    }
+
+    public function getDetailPemutuData($id)
+    {
+        $result = $this->db->table($this->table)
+            ->select('
+            p_unit_pemutu.id,
+            p_unit_pemutu.status as status_awal,
+            (SELECT COUNT(isi.id) 
+             FROM p_isian_pemutu isi 
+             WHERE isi.id_unitpemutu = p_unit_pemutu.id) as total_isian,
+            (SELECT COUNT(isi.id) 
+             FROM p_isian_pemutu isi 
+             WHERE isi.id_unitpemutu = p_unit_pemutu.id 
+             AND isi.status = 1) as jumlah_lolos
+        ')
+            ->where('p_unit_pemutu.id', $id)
+            ->get()
+            ->getRowArray();
+
+        if (!$result) {
+            return null;
         }
 
-        return $result;
+        return $this->calculateStatusBasedOnIsian($result);
     }
 }
