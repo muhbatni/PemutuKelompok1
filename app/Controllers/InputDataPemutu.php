@@ -56,29 +56,70 @@ class InputDataPemutu extends BaseController
 
   public function save()
   {
+    // Validasi input dengan pesan error yang jelas
     if (
       !$this->validate([
-        'id_unit' => 'required',
-        'id_periode' => 'required',
-        'id_lembaga' => 'required',
-        'status' => 'required'
+        'id_unit' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Unit harus dipilih']
+        ],
+        'id_periode' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Periode harus dipilih']
+        ],
+        'id_lembaga' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Lembaga harus dipilih']
+        ],
+        'status' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Status harus dipilih']
+        ]
       ])
     ) {
-      return redirect()->back()->withInput()->with('validation', $this->validator);
+      return redirect()->back()
+        ->withInput()
+        ->with('validation', $this->validator)
+        ->with('pesan', '<div class="alert alert-danger">Mohon periksa kembali input Anda.</div>');
     }
 
-    $data = [
-      'id_unit' => $this->request->getPost('id_unit'),
-      'id_periode' => $this->request->getPost('id_periode'),
-      'id_lembaga' => $this->request->getPost('id_lembaga'),
-      'status' => $this->request->getPost('status'),
-      'created_at' => date('Y-m-d H:i:s'),
-      'updated_at' => date('Y-m-d H:i:s')
-    ];
+    try {
+      // Cek duplikasi data
+      $existingData = $this->unitpemutumodel->where([
+        'id_unit' => $this->request->getPost('id_unit'),
+        'id_periode' => $this->request->getPost('id_periode')
+      ])->first();
 
-    $this->unitpemutumodel->insert($data);
+      if ($existingData) {
+        return redirect()->back()
+          ->withInput()
+          ->with('pesan', '<div class="alert alert-danger">Data untuk unit dan periode ini sudah ada.</div>');
+      }
 
-    return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil disimpan.</div>');
+      $data = [
+        'id_unit' => $this->request->getPost('id_unit'),
+        'id_periode' => $this->request->getPost('id_periode'),
+        'id_lembaga' => $this->request->getPost('id_lembaga'),
+        'status' => $this->request->getPost('status'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+      ];
+
+      if ($this->unitpemutumodel->insert($data)) {
+        return redirect()->to('/akreditasi/input-data-pemutu')
+          ->with('pesan', '<div class="alert alert-success">✅ Data berhasil disimpan.</div>');
+      } else {
+        return redirect()->back()
+          ->withInput()
+          ->with('pesan', '<div class="alert alert-danger">Gagal menyimpan data.</div>');
+      }
+
+    } catch (\Exception $e) {
+      log_message('error', 'Error saving data: ' . $e->getMessage());
+      return redirect()->back()
+        ->withInput()
+        ->with('pesan', '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan data.</div>');
+    }
   }
 
   public function edit($id)
@@ -96,11 +137,18 @@ class InputDataPemutu extends BaseController
       $editData['lembaga_nama'] = $lembaga['nama'];
     }
 
+    // Ambil data status berbasis isian - ini yang perlu ditambahkan
+    $statusData = $this->unitpemutumodel->getDetailPemutuData($id);
+    if ($statusData) {
+      $editData['status'] = $statusData['status'];
+      $editData['status_class'] = $statusData['status_class'];
+      $editData['status_value'] = $statusData['status_value'];
+    }
+
     $data = [
       'title' => 'Edit Data Pemutu',
       'units' => $this->unitpemutumodel->getUnitsFromAkreditasi(),
       'periodes' => $this->periodeModel->getPeriodes(),
-      'validation' => \Config\Services::validation(),
       'editData' => $editData
     ];
 
@@ -108,35 +156,78 @@ class InputDataPemutu extends BaseController
       . view('akreditasi/input_data_pemutu/form', $data)
       . view('layouts/footer');
   }
-
+  
   public function update($id)
   {
-    // Validate input
+    // Validasi input dengan pesan error yang jelas
     if (
       !$this->validate([
-        'id_unit' => 'required',
-        'id_periode' => 'required',
-        'id_lembaga' => 'required',
-        'status' => 'required'
+        'id_unit' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Unit harus dipilih']
+        ],
+        'id_periode' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Periode harus dipilih']
+        ],
+        'id_lembaga' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Lembaga harus dipilih']
+        ],
+        'status' => [
+          'rules' => 'required',
+          'errors' => ['required' => 'Status harus dipilih']
+        ]
       ])
     ) {
-      return redirect()->back()->withInput()->with('validation', $this->validator);
+      return redirect()->back()
+        ->withInput()
+        ->with('validation', $this->validator)
+        ->with('pesan', '<div class="alert alert-danger">Mohon periksa kembali input Anda.</div>');
     }
 
-    // Prepare data for update
-    $data = [
-      'id_unit' => $this->request->getPost('id_unit'),
-      'id_periode' => $this->request->getPost('id_periode'),
-      'id_lembaga' => $this->request->getPost('id_lembaga'),
-      'status' => $this->request->getPost('status'),
-      'updated_at' => date('Y-m-d H:i:s')
-    ];
+    try {
+      // Cek apakah data exists
+      $existingData = $this->unitpemutumodel->find($id);
+      if (!$existingData) {
+        return redirect()->to('/akreditasi/input-data-pemutu')
+          ->with('pesan', '<div class="alert alert-danger">Data tidak ditemukan.</div>');
+      }
 
-    // Attempt to update
-    if ($this->unitpemutumodel->update($id, $data)) {
-      return redirect()->to('/akreditasi/input-data-pemutu')->with('pesan', '<div class="alert alert-success">✅ Data berhasil diperbarui.</div>');
-    } else {
-      return redirect()->back()->with('pesan', '<div class="alert alert-danger">❌ Gagal memperbarui data.</div>');
+      // Cek duplikasi dengan data lain
+      $duplicateCheck = $this->unitpemutumodel->where([
+        'id_unit' => $this->request->getPost('id_unit'),
+        'id_periode' => $this->request->getPost('id_periode')
+      ])->where('id !=', $id)->first();
+
+      if ($duplicateCheck) {
+        return redirect()->back()
+          ->withInput()
+          ->with('pesan', '<div class="alert alert-danger">Data untuk unit dan periode ini sudah ada.</div>');
+      }
+
+      $data = [
+        'id_unit' => $this->request->getPost('id_unit'),
+        'id_periode' => $this->request->getPost('id_periode'),
+        'id_lembaga' => $this->request->getPost('id_lembaga'),
+        'status' => $this->request->getPost('status'),
+        'updated_at' => date('Y-m-d H:i:s')
+      ];
+
+      if ($this->unitpemutumodel->update($id, $data)) {
+        return redirect()->to('/akreditasi/input-data-pemutu')
+          ->with('pesan', '<div class="alert alert-success">✅ Data berhasil diperbarui.</div>');
+      } else {
+        return redirect()->back()
+          ->withInput()
+          ->with('pesan', '<div class="alert alert-danger">Gagal memperbarui data.</div>');
+      }
+
+    } catch (\Exception $e) {
+      log_message('error', 'Error updating data: ' . $e->getMessage());
+      return redirect()->back()
+        ->withInput()
+        ->with('pesan', '<div class="alert alert-danger">Terjadi kesalahan saat memperbarui data.</div>');
     }
   }
 
