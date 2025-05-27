@@ -1,8 +1,8 @@
 // app.js
 const express = require('express');
 const app = express();
-const standarRoutes = require('./routes/standar');
 const cors = require('cors');
+const standarRoutes = require('./routes/standar');
 
 app.use(cors()); // Supaya frontend PHP bisa akses API Node.js
 app.use(express.json());
