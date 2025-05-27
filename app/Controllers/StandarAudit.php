@@ -28,15 +28,11 @@ class StandarAudit extends BaseController
             $client = new APIClient();
             $response = $client->getAllStandar();
 
-            if (!$response) {
-                throw new \Exception('Empty response from API');
+            if (!$response || isset($response['error'])) {
+                throw new \Exception('Empty or error response from API');
             }
 
-            $data['standar'] = json_decode($response, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON response: ' . json_last_error_msg());
-            }
+            $data['standar'] = $response;
 
         } catch (\Exception $e) {
             log_message('error', 'API Error: ' . $e->getMessage());
