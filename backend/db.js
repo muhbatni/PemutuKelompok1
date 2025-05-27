@@ -1,14 +1,24 @@
+require('dotenv').config();
 const { Pool } = require('pg');
 
-// Buat koneksi ke PostgreSQL
-const db = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'pemutu',
-    password: 'admin123',
-    port: 5433, // port default PostgreSQL
+console.log('ENV VARS:', {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
-db.connect()
-    .then(() => console.log('PostgreSQL Connected...'))
-    .catch(err => console.error('Connection error', err.stack));
+const pool = new Pool({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  port: parseInt(process.env.DB_PORT),
+});
+
+module.exports = pool;
+
+pool.connect()
+.then(() => console.log('PostgreSQL Connected...'))
+.catch(err => console.error('Connection error', err.stack));
