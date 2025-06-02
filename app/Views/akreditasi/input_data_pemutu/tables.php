@@ -12,24 +12,38 @@
 
     <div class="m-portlet__body">
       <!--begin: Search Form -->
-      <div class="row mb-4 align-items-center">
-        <div class="col-md-6 mb-2 mb-md-0">
-          <a href=/pemutu/public/akreditasi/input-data-pemutu/input class="btn btn-accent">
-            <i class="flaticon-add"></i> Input Data Pemutu
-          </a>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group m-form__group mb-0">
-            <div class="m-input-icon m-input-icon--left">
-              <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
-              <span class="m-input-icon__icon m-input-icon__icon--left">
-                <span><i class="la la-search"></i></span>
-              </span>
-            </div>
-          </div>
-        </div>
+<div class="row mb-4 align-items-center">
+  <!-- Tombol Input -->
+  <div class="col-md-4 mb-2 mb-md-0">
+    <a href="/pemutu/public/akreditasi/input-data-pemutu/input" class="btn btn-accent">
+      <i class="flaticon-add"></i> Input Data Pemutu
+    </a>
+  </div>
+
+  <!-- Filter Lembaga -->
+  <div class="col-md-4 mb-2 mb-md-0">
+    <select id="lembagaFilter" class="form-control m-input">
+      <option value="">Filter Lembaga...</option>
+      <?php foreach ($lembagas as $lembaga): ?>
+        <option value="<?= esc($lembaga['nama']) ?>"><?= esc($lembaga['nama']) ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+  <!-- Search -->
+  <div class="col-md-4">
+    <div class="form-group m-form__group mb-0">
+      <div class="m-input-icon m-input-icon--left">
+        <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+        <span class="m-input-icon__icon m-input-icon__icon--left">
+          <span><i class="la la-search"></i></span>
+        </span>
       </div>
-      <!--end: Search Form -->
+    </div>
+  </div>
+</div>
+<!--end: Search Form -->
+
 
       <!--begin: Datatable -->
       <table class="table table-bordered table-striped" id="html_table" width="100%">
@@ -107,18 +121,26 @@
 </div>
 
 <script>
-  // Fungsi untuk filter data berdasarkan periode
   $(document).ready(function () {
-    $('#generalSearch').on('keyup', function () {
-      let searchValue = $(this).val().toLowerCase();
-      $('#html_table tbody tr').each(function () {
-        // Ambil nilai dari kolom periode (kolom ke-3)
-        let periodeValue = $(this).find('td:eq(2)').text().toLowerCase();
-        // Toggle tampilan baris berdasarkan kecocokan dengan periode
-        $(this).toggle(periodeValue.includes(searchValue));
-      });
+  // Fungsi filter umum
+  function filterTable(value) {
+    const searchValue = value.toLowerCase();
+    $('#html_table tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
+  }
+
+  // General Search
+  $('#generalSearch').on('keyup', function () {
+    filterTable($(this).val());
   });
+
+  // Filter dari dropdown Lembaga
+  $('#lembagaFilter').on('change', function () {
+    const selected = $(this).val();
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
+  });
+});
 
   // Fungsi untuk menampilkan lembaga berdasarkan unit
   document.getElementById('id_unit').addEventListener('change', function () {

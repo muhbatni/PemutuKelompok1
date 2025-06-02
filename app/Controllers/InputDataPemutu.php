@@ -30,6 +30,7 @@ class InputDataPemutu extends BaseController
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
+      'lembagas' => $this->lembagaModel->getLembagas(),
       'editData' => null
     ];
 

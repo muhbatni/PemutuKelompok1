@@ -9,17 +9,30 @@
     </div>
 
     <div class="m-portlet__body">
-      <!-- Tombol Tambah dan Pencarian -->
+      <!-- Tombol Tambah, Filter Lembaga, dan Pencarian -->
       <div class="row mb-4 align-items-center">
-        <div class="col-md-6 mb-2 mb-md-0">
-          <a href="<?= site_url('akreditasi/kriteria/input') ?>" class="btn btn-accent">
+        <!-- Tombol Input Kriteria -->
+        <div class="col-md-3 mb-2 mb-md-0">
+          <a href="<?= site_url('akreditasi/kriteria/input') ?>" class="btn btn-accent w-100">
             <i class="flaticon-add"></i> Input Kriteria
           </a>
         </div>
-        <div class="col-md-6">
+
+        <!-- Filter Lembaga -->
+        <div class="col-md-5 mb-2 mb-md-0">
+          <select id="lembagaFilter" id="generalSearch" class="form-control m-input m-input--solid">
+            <option value="">Filter Lembaga...</option>
+            <?php foreach ($lembagaList as $lembaga): ?>
+              <option value="<?= esc($lembaga['id']) ?>"><?= esc($lembaga['nama']) ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+
+        <!-- Pencarian -->
+        <div class="col-md-4">
           <div class="form-group m-form__group mb-0">
             <div class="m-input-icon m-input-icon--left">
-              <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+              <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
               <span class="m-input-icon__icon m-input-icon__icon--left">
                 <span><i class="la la-search"></i></span>
               </span>
@@ -42,14 +55,16 @@
           </thead>
           <tbody>
             <?php if (!empty($kriteria)): ?>
-              <?php $no = 1; foreach ($kriteria as $row): ?>
+              <?php $no = 1;
+              foreach ($kriteria as $row): ?>
                 <tr>
                   <td><?= $no++ ?></td>
                   <td><?= esc($row['nama_lembaga']) ?></td>
                   <td><?= esc($row['kode']) ?></td>
                   <td><?= esc($row['nama']) ?></td>
                   <td>
-                    <a href="<?= site_url('akreditasi/kriteria/input?id=' . $row['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="<?= site_url('akreditasi/kriteria/input?id=' . $row['id']) ?>"
+                      class="btn btn-sm btn-warning">Edit</a>
                     <button type="button" class="btn btn-sm btn-danger"
                       onclick="showDeleteModal('<?= $row['id'] ?>', '<?= esc($row['nama']) ?>')">
                       Hapus
@@ -70,7 +85,8 @@
 </div>
 
 <!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">
@@ -98,11 +114,23 @@
   }
 
   $(document).ready(function () {
-    $('#generalSearch').on('keyup', function () {
-      const value = $(this).val().toLowerCase();
-      $('#kriteriaTable tbody tr').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-      });
+  // Fungsi filter umum
+  function filterTable(value) {
+    const searchValue = value.toLowerCase();
+    $('#kriteriaTable tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
+  }
+
+  // General Search
+  $('#generalSearch').on('keyup', function () {
+    filterTable($(this).val());
   });
+
+  // Filter dari dropdown Lembaga
+  $('#lembagaFilter').on('change', function () {
+    const selected = $(this).val();
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
+  });
+});
 </script>
