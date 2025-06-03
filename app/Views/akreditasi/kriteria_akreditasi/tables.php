@@ -114,23 +114,37 @@
   }
 
   $(document).ready(function () {
-  // Fungsi filter umum
-  function filterTable(value) {
+  function filterTable(value, columnIndex = null) {
     const searchValue = value.toLowerCase();
+
     $('#kriteriaTable tbody tr').filter(function () {
-      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
+      if (columnIndex === null) {
+        // General search (seluruh baris)
+        $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
+      } else {
+        // Search berdasarkan kolom tertentu
+        const cellText = $(this).find('td').eq(columnIndex).text().toLowerCase();
+        $(this).toggle(cellText.indexOf(searchValue) > -1);
+      }
     });
   }
 
-  // General Search
+  // General Search: cari di semua kolom
   $('#generalSearch').on('keyup', function () {
-    filterTable($(this).val());
+    const value = $(this).val();
+    filterTable(value); // tanpa kolomIndex = cari di seluruh baris
   });
 
-  // Filter dari dropdown Lembaga
+  // Filter Nama Lembaga (hanya di kolom 'Nama Lembaga', misalnya kolom ke-2)
   $('#lembagaFilter').on('change', function () {
     const selected = $(this).val();
-    filterTable(selected); // Langsung panggil filter, tanpa isi input search
+    if (selected === '') {
+      // Kosongkan filter
+      $('#kriteriaTable tbody tr').show();
+    } else {
+      filterTable(selected, 0); // kolom index (Nama Lembaga)
+    }
+    $('#generalSearch').val(''); // kosongkan input search
   });
 });
 </script>
