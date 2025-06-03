@@ -2,26 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Models\PelaksanaanAuditModel;
-use App\Models\PernyataanModel;
 use App\Models\DataDukungModel;
 
 class InputDataDukung extends BaseController
 {
+    //Input data dukung
     public function index()
     {
-        // Get pelaksanaan data for dropdown
-        $pelaksanaanModel = new PelaksanaanAuditModel();
-        $data['pelaksanaans'] = $pelaksanaanModel->select('id, id')->findAll();
-
-        // Get pernyataan data for dropdown
-        $pernyataanModel = new PernyataanModel();
-        $data['pernyataans'] = $pernyataanModel->select('id, pernyataan')->findAll();
-
-        // Get pelaksanaan data for dropdown
-        $pelaksanaanModel = new DataDukungModel();
-        $data['pelaksanaans'] = $pelaksanaanModel->getPelaksanaanList();
-
         $model = new DataDukungModel();
         $data = [
             'title' => 'Input Data Dukung',
@@ -88,19 +75,15 @@ class InputDataDukung extends BaseController
         echo view('layouts/footer.php');
     }
 
+    //Dropdown for unit pelaksanaan by audit
     public function getPelaksanaanInfo($id)
     {
-        $dataDukungModel = new \App\Models\DataDukungModel();
-        $info = $dataDukungModel->getPelaksanaanInfo($id);
-
-        if (!$info) {
-            return $this->response->setStatusCode(404)
-                ->setJSON(['error' => 'Data not found']);
-        }
-
+        $model = new DataDukungModel();
+        $info = $model->getPelaksanaanInfo($id);
         return $this->response->setJSON($info);
     }
 
+    //Dropdown for indikator by pernyataan
     public function getPernyataanInfo($id)
     {
         $model = new DataDukungModel();
@@ -108,6 +91,7 @@ class InputDataDukung extends BaseController
         return $this->response->setJSON($info);
     }
 
+    //Dropdown for pernyataan by standar
     public function getPernyataanByStandar($standarId)
     {
         $model = new DataDukungModel();
@@ -115,16 +99,12 @@ class InputDataDukung extends BaseController
         return $this->response->setJSON($pernyataans);
     }
 
+    //Edit in edit mode
     public function edit($id)
     {
         // Initialize model
         $model = new DataDukungModel();
         $dataDukung = $model->find($id);
-
-        if (!$dataDukung) {
-            session()->setFlashdata('error', 'Data tidak ditemukan');
-            return redirect()->to(base_url('public/audit/data-dukung'));
-        }
 
         // Prepare all data needed for the form
         $data = [
@@ -141,6 +121,7 @@ class InputDataDukung extends BaseController
         echo view('layouts/footer.php');
     }
 
+    //update in edit mode
     public function update($id)
     {
         $model = new DataDukungModel();
@@ -211,6 +192,7 @@ class InputDataDukung extends BaseController
         }
     }
 
+    //Delete data dukung
     public function delete($id)
     {
         $model = new DataDukungModel();
@@ -241,6 +223,7 @@ class InputDataDukung extends BaseController
         return redirect()->to(base_url('public/audit/data-dukung'));
     }
 
+    //Download file
     public function download($filename)
     {
         $path = WRITEPATH . 'uploads/audit/data_dukung/' . $filename;
