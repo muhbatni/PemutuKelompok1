@@ -11,33 +11,43 @@
     </div>
 
     <div class="m-portlet__body">
-      <!--begin: Search Form -->
-      <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-        <div class="row align-items-center">
-          <div class="col-xl-4 order-1 order-xl-1 m--align-left">
-            <a href="/pemutu/public/akreditasi/syarat-unggul/input" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-              <span>
-                <i class="flaticon-add"></i>
-                <span>Input Syarat Unggul</span>
-              </span>
-            </a>
-            <div class="m-separator m-separator--dashed d-xl-none"></div>
-          </div>
-          <div class="col-xl-8 order-2 order-xl-2">
-            <div class="form-group m-form__group row align-items-center">
-              <div class="col-md-4 ml-auto">
-                <div class="m-input-icon m-input-icon--left">
-                  <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
-                  <span class="m-input-icon__icon m-input-icon__icon--left">
-                    <span><i class="la la-search"></i></span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+   <!--begin: Search Form -->
+<div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+  <div class="row align-items-center">
+    <!-- Kolom kiri: Tombol -->
+    <div class="col-md-4 text-left mb-2">
+      <a href="/pemutu/public/akreditasi/syarat-unggul/input"
+        class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+        <span>
+          <i class="flaticon-add"></i>
+          <span>Input Syarat Unggul</span>
+        </span>
+      </a>
+    </div>
+
+    <!-- Kolom tengah: Filter Dropdown -->
+    <div class="col-md-4 text-center mb-2">
+      <select id="lembagaFilter" class="form-control m-input m-input--solid">
+        <option value="">Filter Lembaga...</option>
+        <?php foreach ($lembagas as $lembaga): ?>
+          <option value="<?= esc($lembaga['id']) ?>"><?= esc($lembaga['nama']) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+
+    <!-- Kolom kanan: Search -->
+    <div class="col-md-4 text-right mb-2">
+      <div class="m-input-icon m-input-icon--left">
+        <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
+        <span class="m-input-icon__icon m-input-icon__icon--left">
+          <span><i class="la la-search"></i></span>
+        </span>
       </div>
-      <!--end: Search Form -->
+    </div>
+  </div>
+</div>
+<!--end: Search Form -->
+
 
       <!--begin: Datatable -->
       <table class="table table-bordered table-striped" id="html_table" width="100%">
@@ -50,30 +60,33 @@
           </tr>
         </thead>
         <tbody>
-          <?php if (!empty($dataSyarat)) : ?>
-            <?php $no = 1; foreach ($dataSyarat as $syarat) : ?>
+          <?php if (!empty($dataSyarat)): ?>
+            <?php $no = 1;
+            foreach ($dataSyarat as $syarat): ?>
               <tr>
                 <td><?= $no++ ?></td>
                 <td>
-                    <?php
-                      $lembaga = null;
-                      foreach ($lembagas as $l) {
-                        if ($l['id'] == $syarat['id_lembaga']) {
-                          $lembaga = $l['nama'];
-                          break;
-                        }
-                      }
-                      echo $lembaga ? $lembaga : 'Lembaga Tidak Ditemukan';
-                    ?>
-                  </td>
-                  <td><?= $syarat['nama']; ?></td>
+                  <?php
+                  $lembaga = null;
+                  foreach ($lembagas as $l) {
+                    if ($l['id'] == $syarat['id_lembaga']) {
+                      $lembaga = $l['nama'];
+                      break;
+                    }
+                  }
+                  echo $lembaga ? $lembaga : 'Lembaga Tidak Ditemukan';
+                  ?>
+                </td>
+                <td><?= $syarat['nama']; ?></td>
                 <td>
-                  <a href="<?= site_url('akreditasi/syarat-unggul/input?id=' . $syarat['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')">Hapus</button>
+                  <a href="<?= site_url('akreditasi/syarat-unggul/input?id=' . $syarat['id']) ?>"
+                    class="btn btn-sm btn-warning">Edit</a>
+                  <button class="btn btn-sm btn-danger"
+                    onclick="showDeleteModal('<?= $syarat['id'] ?>', '<?= esc($syarat['nama']) ?>')">Hapus</button>
                 </td>
               </tr>
             <?php endforeach ?>
-          <?php else : ?>
+          <?php else: ?>
             <tr>
               <td colspan="7" class="text-center">Belum ada data.</td>
             </tr>
@@ -86,7 +99,8 @@
 </div>
 
 <!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form method="get">
@@ -117,14 +131,27 @@
     $('#deleteModal').modal('show');
   }
 
-  $(document).ready(function() {
-    $('#generalSearch').on('keyup', function() {
-      let value = $(this).val().toLowerCase();
-      $('#html_table tbody tr').filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+  $(document).ready(function () {
+  // Fungsi filter umum
+  function filterTable(value) {
+    const searchValue = value.toLowerCase();
+    $('#html_table tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
+  }
+
+  // General Search
+  $('#generalSearch').on('keyup', function () {
+    filterTable($(this).val());
   });
+
+  // Filter dari dropdown Lembaga
+  $('#lembagaFilter').on('change', function () {
+    const selected = $(this).val();
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
+  });
+});
 </script>
 
-<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js" type="text/javascript"></script>
+<script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
+  type="text/javascript"></script>

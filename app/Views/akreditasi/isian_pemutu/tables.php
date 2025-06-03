@@ -137,13 +137,25 @@
   }
 
   $(document).ready(function () {
-    $('#generalSearch').on('keyup', function () {
-      let value = $(this).val().toLowerCase();
-      $('#html_table tbody tr').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+  // Fungsi filter umum
+  function filterTable(value) {
+    const searchValue = value.toLowerCase();
+    $('#html_table tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
+  }
+
+  // General Search
+  $('#generalSearch').on('keyup', function () {
+    filterTable($(this).val());
   });
+
+  // Filter dari dropdown Lembaga
+  $('#periodeFilter').on('change', function () {
+    const selected = $(this).val();
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
+  });
+});
 </script>
 
 <script src="<?= base_url(); ?>/public/assets/demo/default/custom/components/datatables/base/html-table.js"
