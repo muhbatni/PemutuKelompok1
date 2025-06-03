@@ -30,7 +30,7 @@
       <select id="lembagaFilter" class="form-control m-input m-input--solid">
         <option value="">Filter Lembaga...</option>
         <?php foreach ($lembagas as $lembaga): ?>
-          <option value="<?= esc($lembaga['id']) ?>"><?= esc($lembaga['nama']) ?></option>
+          <option value="<?= esc($lembaga['nama']) ?>"><?= esc($lembaga['nama']) ?></option>
         <?php endforeach; ?>
       </select>
     </div>
@@ -50,7 +50,7 @@
 
 
       <!--begin: Datatable -->
-      <table class="table table-bordered table-striped" id="html_table" width="100%">
+      <table class="table table-bordered table-striped" id="syaratTable" width="100%">
         <thead>
           <tr>
             <th>No</th>
@@ -132,37 +132,23 @@
   }
 
   $(document).ready(function () {
-  function filterTable(value, columnIndex = null) {
+  // Fungsi filter umum
+  function filterTable(value) {
     const searchValue = value.toLowerCase();
-
-    $('#html_table tbody tr').filter(function () {
-      if (columnIndex === null) {
-        // General search (seluruh baris)
-        $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
-      } else {
-        // Search berdasarkan kolom tertentu
-        const cellText = $(this).find('td').eq(columnIndex).text().toLowerCase();
-        $(this).toggle(cellText.indexOf(searchValue) > -1);
-      }
+    $('#syaratTable tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
   }
 
-  // General Search: cari di semua kolom
+  // General Search
   $('#generalSearch').on('keyup', function () {
-    const value = $(this).val();
-    filterTable(value); // tanpa kolomIndex = cari di seluruh baris
+    filterTable($(this).val());
   });
 
-  // Filter Nama Lembaga (hanya di kolom 'Nama Lembaga', misalnya kolom ke-2)
+  // Filter dari dropdown Lembaga
   $('#lembagaFilter').on('change', function () {
     const selected = $(this).val();
-    if (selected === '') {
-      // Kosongkan filter
-      $('#html_table tbody tr').show();
-    } else {
-      filterTable(selected, 0); // kolom index (Nama Lembaga)
-    }
-    $('#generalSearch').val(''); // kosongkan input search
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
   });
 });
 

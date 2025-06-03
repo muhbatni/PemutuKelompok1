@@ -23,7 +23,7 @@
           <select id="lembagaFilter" id="generalSearch" class="form-control m-input m-input--solid">
             <option value="">Filter Lembaga...</option>
             <?php foreach ($lembagaList as $lembaga): ?>
-              <option value="<?= esc($lembaga['id']) ?>"><?= esc($lembaga['nama']) ?></option>
+              <option value="<?= esc($lembaga['nama']) ?>"><?= esc($lembaga['nama']) ?></option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -114,37 +114,23 @@
   }
 
   $(document).ready(function () {
-  function filterTable(value, columnIndex = null) {
+  // Fungsi filter umum
+  function filterTable(value) {
     const searchValue = value.toLowerCase();
-
     $('#kriteriaTable tbody tr').filter(function () {
-      if (columnIndex === null) {
-        // General search (seluruh baris)
-        $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
-      } else {
-        // Search berdasarkan kolom tertentu
-        const cellText = $(this).find('td').eq(columnIndex).text().toLowerCase();
-        $(this).toggle(cellText.indexOf(searchValue) > -1);
-      }
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
   }
 
-  // General Search: cari di semua kolom
+  // General Search
   $('#generalSearch').on('keyup', function () {
-    const value = $(this).val();
-    filterTable(value); // tanpa kolomIndex = cari di seluruh baris
+    filterTable($(this).val());
   });
 
-  // Filter Nama Lembaga (hanya di kolom 'Nama Lembaga', misalnya kolom ke-2)
+  // Filter dari dropdown Lembaga
   $('#lembagaFilter').on('change', function () {
     const selected = $(this).val();
-    if (selected === '') {
-      // Kosongkan filter
-      $('#kriteriaTable tbody tr').show();
-    } else {
-      filterTable(selected, 0); // kolom index (Nama Lembaga)
-    }
-    $('#generalSearch').val(''); // kosongkan input search
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
   });
 });
 </script>
