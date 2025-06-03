@@ -45,5 +45,12 @@ public function getWithLembaga()
         ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
         ->findAll();
 }
+public function getWithLembaga2($id)
+{
+    return $this->select('p_instrumen_pemutu.*, m_lembaga_akreditasi.nama as nama_lembaga')
+        ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
+        ->where('p_instrumen_pemutu.nama_lembaga', $id) 
+        ->findAll();
+}
 }
 ?>
