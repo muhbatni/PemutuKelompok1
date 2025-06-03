@@ -36,7 +36,7 @@
             <option value="" disabled hidden <?= !$isEdit ? 'selected' : '' ?>>-- Pilih --</option>
             <?php foreach ($instrumen_list as $index => $instrumen): ?>
               <option value="<?= $instrumen['id'] ?>" <?= $isEdit && $edit['id_instrumen'] == $instrumen['id'] ? 'selected' : '' ?>>
-                <?= $index + 1 ?>
+                <?= ($index + 1).' - '.$instrumen['nama_lembaga'].' - '.$instrumen['indikator'] ?>
               </option>
             <?php endforeach; ?>
           </select>
