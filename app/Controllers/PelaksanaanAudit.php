@@ -29,11 +29,14 @@ class PelaksanaanAudit extends BaseController
     $this->isianAuditModel = new IsianAuditModel();
     $this->temuanModel = new TemuanModel();
   }
-
   public function index()
   {
     $id_audit = $this->request->getGet('id');
+    $data['id_audit'] = $id_audit; // Menambahkan id_audit ke data yang akan dikirim ke view
     $data['list_audit'] = $this->pelaksanaanAuditModel->getListAuditForDropdown();
+    $data['auditor_list'] = $this->pelaksanaanAuditModel->getAuditorList();
+    $data['unit_list'] = $this->pelaksanaanAuditModel->getUnitList();
+
 
     if ($id_audit) {
       $data['pelaksanaan_audit'] = $this->pelaksanaanAuditModel->getPelaksanaanAudit($id_audit);
@@ -92,73 +95,82 @@ class PelaksanaanAudit extends BaseController
     try {
       $id_unit = $this->request->getPost('id_unit');
       $id_auditor = $this->request->getPost('id_auditor');
-      $id_standar_audit = $this->request->getPost('id_standar_audit');
+      $id_audit = $this->request->getPost('id_audit');
 
       // Validasi input
-      if (
-        empty($id_unit) || $id_unit === 'undefined' ||
-        empty($id_auditor) || $id_auditor === 'undefined' ||
-        empty($id_standar_audit) || $id_standar_audit === 'undefined'
-      ) {
-        return redirect()->back()->with('error', 'Auditor, Unit, dan Standar Audit wajib dipilih!');
+      if (empty($id_unit) || empty($id_auditor) || empty($id_audit)) {
+        return redirect()->back()->with('error', 'Audit, Auditor, dan Unit wajib dipilih!');
       }
 
-      // 1. Insert/update pelaksanaan audit (auditor & unit)
+      // Ambil semua standar audit berdasarkan id_audit
+      $standarModel = new AuditStandarModel(); // pastikan model ini ada
+      $standarList = $standarModel->where('id_audit', $id_audit)->findAll();
+
+      if (empty($standarList)) {
+        return redirect()->back()->with('error', 'Tidak ada standar audit yang terkait dengan audit ini.');
+      }
+
       $pelaksanaanModel = new PelaksanaanAuditModel();
-      $pelaksanaanData = [
-        'id_unit' => $id_unit,
-        'id_auditor' => $id_auditor,
-        'id_standar_audit' => $id_standar_audit,
-      ];
-      $pelaksanaan = $pelaksanaanModel
-        ->where('id_unit', $id_unit)
-        ->where('id_auditor', $id_auditor)
-        ->where('id_standar_audit', $id_standar_audit)
-        ->first();
-      if ($pelaksanaan) {
-        $idPelaksanaan = $pelaksanaan['id'];
-        $pelaksanaanModel->update($idPelaksanaan, $pelaksanaanData);
-      } else {
-        $pelaksanaanModel->insert($pelaksanaanData);
-        $idPelaksanaan = $pelaksanaanModel->getInsertID();
-      }
 
-      // 2. Insert isian audit jika ada data isian
-      if ($this->request->getPost('id_pernyataan')) {
-        $isianModel = new IsianAuditModel();
-        $isianData = [
-          'id_pelaksanaan' => $idPelaksanaan,
-          'id_pernyataan' => $this->request->getPost('id_pernyataan'),
-          'capaian' => $this->request->getPost('capaian'),
-          'kondisi' => $this->request->getPost('kondisi'),
-          'akar' => $this->request->getPost('akar'),
-          'akibat' => $this->request->getPost('akibat'),
-          'rekom' => $this->request->getPost('rekom'),
-          'tanggapan' => $this->request->getPost('tanggapan'),
-          'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
-          'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
-          'rencana_pencegahan' => $this->request->getPost('rencana_pencegahan'),
-          'tanggal_pencegahan' => $this->request->getPost('tanggal_pencegahan'),
-          'is_temuan' => $this->request->getPost('is_temuan') === 'on' ? true : false
+      foreach ($standarList as $standar) {
+        $pelaksanaanData = [
+          'id_unit' => $id_unit,
+          'id_auditor' => $id_auditor,
+          'id_standar_audit' => $standar['id'],
         ];
-        $isianModel->insert($isianData);
-        $idIsian = $isianModel->getInsertID();
 
-        // 3. Insert temuan jika is_temuan dicentang
-        if ($this->request->getPost('is_temuan')) {
-          $temuanModel = new TemuanModel();
-          $temuanData = [
-            'id_unit' => $this->request->getPost('id_unit'),
-            'id_isian_audit' => $idIsian,
+        // Cek apakah pelaksanaan sudah ada
+        $existing = $pelaksanaanModel
+          ->where('id_unit', $id_unit)
+          ->where('id_auditor', $id_auditor)
+          ->where('id_standar_audit', $standar['id'])
+          ->first();
+
+        if ($existing) {
+          $pelaksanaanModel->update($existing['id'], $pelaksanaanData);
+          $idPelaksanaan = $existing['id'];
+        } else {
+          $pelaksanaanModel->insert($pelaksanaanData);
+          $idPelaksanaan = $pelaksanaanModel->getInsertID();
+        }
+
+        // Simpan isian audit jika ada
+        if ($this->request->getPost('id_pernyataan')) {
+          $isianModel = new IsianAuditModel();
+          $isianData = [
+            'id_pelaksanaan' => $idPelaksanaan,
+            'id_pernyataan' => $this->request->getPost('id_pernyataan'),
+            'capaian' => $this->request->getPost('capaian'),
             'kondisi' => $this->request->getPost('kondisi'),
+            'akar' => $this->request->getPost('akar'),
+            'akibat' => $this->request->getPost('akibat'),
+            'rekom' => $this->request->getPost('rekom'),
+            'tanggapan' => $this->request->getPost('tanggapan'),
             'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
             'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
-            'catatan' => $this->request->getPost('catatan'),
-            'status' => $this->request->getPost('status'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'rencana_pencegahan' => $this->request->getPost('rencana_pencegahan'),
+            'tanggal_pencegahan' => $this->request->getPost('tanggal_pencegahan'),
+            'is_temuan' => $this->request->getPost('is_temuan') === 'on' ? true : false
           ];
-          $temuanModel->insert($temuanData);
+          $isianModel->insert($isianData);
+          $idIsian = $isianModel->getInsertID();
+
+          // Simpan temuan jika is_temuan dicentang
+          if ($this->request->getPost('is_temuan')) {
+            $temuanModel = new TemuanModel();
+            $temuanData = [
+              'id_unit' => $id_unit,
+              'id_isian_audit' => $idIsian,
+              'kondisi' => $this->request->getPost('kondisi'),
+              'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
+              'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
+              'catatan' => $this->request->getPost('catatan'),
+              'status' => $this->request->getPost('status'),
+              'created_at' => date('Y-m-d H:i:s'),
+              'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $temuanModel->insert($temuanData);
+          }
         }
       }
 
@@ -169,6 +181,7 @@ class PelaksanaanAudit extends BaseController
       return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
     }
   }
+
 
   public function getAuditor()
   {
