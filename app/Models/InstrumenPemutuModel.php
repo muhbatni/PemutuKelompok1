@@ -45,7 +45,8 @@ public function getWithLembaga()
         ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
         ->findAll();
 }
-public function getWithLembaga2($id_lembaga)
+
+public function getWithLembaga2($id_lembaga) // Mengambil instrumen berdasarkan ID lembaga
 {
     return $this->select('p_instrumen_pemutu.*, m_lembaga_akreditasi.nama as nama_lembaga')
         ->join('m_lembaga_akreditasi', 'p_instrumen_pemutu.id_lembaga = m_lembaga_akreditasi.id', 'left')
