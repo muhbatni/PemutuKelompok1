@@ -19,7 +19,7 @@
 
         <!-- Pilih Unit Pemutu -->
         <div class="form-group m-form__group">
-        <label for="id_unitpemutu">Pilih Unit Pemutu <span class="text-danger">*</span></label>
+          <label for="id_unitpemutu">Pilih Unit Pemutu <span class="text-danger">*</span></label>
           <select class="form-control js-example-basic-single" id="id_unitpemutu" name="id_unitpemutu" required>
             <option value="">-- Pilih Unit Pemutu --</option>
             <?php foreach ($unitpemutus as $unit): ?>
@@ -47,26 +47,38 @@
         <!-- form input untuk isi dari instrumen pemutu -->
         <div class="form-group m-form__group">
           <label>Detail Instrumen Pemutu</label>
+
+          <!-- Baris 1: Lembaga & Jenjang -->
           <div class="row">
             <div class="col-md-6">
-              <input type="text" class="form-control m-input mb-2" id="lembaga" name="lembaga" 
-                     placeholder="Lembaga" readonly>
+              <input type="text" class="form-control m-input mb-2" id="lembaga" name="lembaga" placeholder="Lembaga"
+                readonly>
             </div>
             <div class="col-md-6">
               <input type="text" class="form-control m-input mb-2" id="jenjang_instrumen" name="jenjang_instrumen"
-                     placeholder="Jenjang" readonly>
+                placeholder="Jenjang" readonly>
             </div>
           </div>
-          <input type="text" class="form-control m-input mb-2" id="indikator" name="indikator" 
-                 placeholder="Indikator" readonly>
+
+          <!-- Baris 2: Indikator + Kondisi (masuk dalam Lembaga) dan Batas (sejajar Jenjang) -->
           <div class="row">
+            <!-- Kolom kiri: indikator & kondisi (masuk ke dalam 50%) -->
             <div class="col-md-6">
-              <input type="text" class="form-control m-input mb-2" id="kondisi" name="kondisi" 
-                     placeholder="Kondisi" readonly>
+              <div class="row">
+                <div class="col-md-6 pr-1">
+                  <input type="text" class="form-control m-input mb-2" id="indikator" name="indikator"
+                    placeholder="Indikator" readonly>
+                </div>
+                <div class="col-md-6 pl-1">
+                  <input type="text" class="form-control m-input mb-2" id="kondisi" name="kondisi" placeholder="Kondisi"
+                    readonly>
+                </div>
+              </div>
             </div>
+
+            <!-- Kolom kanan: batas -->
             <div class="col-md-6">
-              <input type="text" class="form-control m-input mb-2" id="batas" name="batas" 
-                     placeholder="Batas" readonly>
+              <input type="text" class="form-control m-input mb-2" id="batas" name="batas" placeholder="Batas" readonly>
             </div>
           </div>
         </div>
@@ -75,7 +87,7 @@
         <div class="form-group m-form__group">
           <label for="isian">Isian (Hanya angka) <span class="text-danger">*</span></label>
           <input type="number" class="form-control m-input" id="isian" name="isian" required min="0" step="1"
-                 value="<?= $isEdit ? htmlspecialchars($edit['isian']) : '' ?>" placeholder="Masukkan nilai isian">
+            value="<?= $isEdit ? htmlspecialchars($edit['isian']) : '' ?>" placeholder="Masukkan nilai isian">
         </div>
 
         <!-- Status (auto calculated) -->
@@ -83,8 +95,8 @@
           <label for="status">Status (otomatis terisi berdasarkan isian)</label>
           <select class="form-control m-input" id="status_display" disabled>
             <option value="">-- Status akan muncul setelah isian diisi --</option>
-             <option value="0" <?= ($isEdit && $edit['status'] == 0) ? 'selected' : '' ?>>Tidak Lolos</option>
-             <option value="1" <?= ($isEdit && $edit['status'] == 1) ? 'selected' : '' ?>>Lolos</option>
+            <option value="0" <?= ($isEdit && $edit['status'] == 0) ? 'selected' : '' ?>>Tidak Lolos</option>
+            <option value="1" <?= ($isEdit && $edit['status'] == 1) ? 'selected' : '' ?>>Lolos</option>
           </select>
           <!-- Hidden input untuk nilai sebenarnya -->
           <input type="hidden" name="status" id="status_hidden" value="<?= $isEdit ? (int) $edit['status'] : '' ?>">
@@ -170,49 +182,49 @@
 </div>
 
 <script>
-  $(document).ready(function(){
+  $(document).ready(function () {
     $('.js-example-basic-single').select2({
       placeholder: "-- Pilih Unit Pemutu --",
-        allowClear: true
+      allowClear: true
     });
 
     const jenjangMap = {
-        1: 'S3', 2: 'S2', 3: 'S1', 4: 'D4', 
-        5: 'D3', 6: 'D2', 7: 'D1'
+      1: 'S3', 2: 'S2', 3: 'S1', 4: 'D4',
+      5: 'D3', 6: 'D2', 7: 'D1'
     };
 
     const editInstrumenId = '<?= $isEdit && !empty($edit['id_instrumen']) ? $edit['id_instrumen'] : '' ?>';
 
-    $('#id_unitpemutu').change(function() {
-        const unitPemutuId = $(this).val();
-        const instrumenSelect = $('#id_instrumen');
-        const loadingText = $('#loadingInstrumen');
+    $('#id_unitpemutu').change(function () {
+      const unitPemutuId = $(this).val();
+      const instrumenSelect = $('#id_instrumen');
+      const loadingText = $('#loadingInstrumen');
 
-    instrumenSelect.html('<option value="">-- Pilih Instrumen --</option>');
-        clearInstrumenDetails();
-        
-        if (unitPemutuId !== '') {
-            loadingText.show();
-            instrumenSelect.prop('disabled', true);
-    
-    $.ajax({
-                url: '<?= current_url() ?>',
-                type: 'POST',
-                data: {
-                    action: 'get-instrumen',
-                    id_unitpemutu: unitPemutuId,
-                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
-                },
-                dataType: 'json',
-                success: function(response) {
-                    loadingText.hide();
-                    instrumenSelect.prop('disabled', false);
-                    
-                    if (response.status === 'success' && response.data.length > 0) {
-                        let options = '<option value="">-- Pilih Instrumen --</option>';
-                        
-                        response.data.forEach(function(item) {
-                            options += `<option value="${item.id}" 
+      instrumenSelect.html('<option value="">-- Pilih Instrumen --</option>');
+      clearInstrumenDetails();
+
+      if (unitPemutuId !== '') {
+        loadingText.show();
+        instrumenSelect.prop('disabled', true);
+
+        $.ajax({
+          url: '<?= current_url() ?>',
+          type: 'POST',
+          data: {
+            action: 'get-instrumen',
+            id_unitpemutu: unitPemutuId,
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+          },
+          dataType: 'json',
+          success: function (response) {
+            loadingText.hide();
+            instrumenSelect.prop('disabled', false);
+
+            if (response.status === 'success' && response.data.length > 0) {
+              let options = '<option value="">-- Pilih Instrumen --</option>';
+
+              response.data.forEach(function (item) {
+                options += `<option value="${item.id}" 
                                         data-lembaga="${item.nama_lembaga}"
                                         data-jenjang="${item.jenjang}"
                                         data-indikator="${item.indikator}"
@@ -220,65 +232,65 @@
                                         data-batas="${item.batas}">
                                         ${item.text}
                                       </option>`;
-                        });
-                        
-                        instrumenSelect.html(options);
-                        
-                        // Jika mode edit, set selected instrumen
-                        <?php if ($isEdit && !empty($edit['id_instrumen'])): ?>
-                        instrumenSelect.val('<?= $edit['id_instrumen'] ?>').trigger('change');
-                        <?php endif; ?>
-                        
-                    } else {
-                        instrumenSelect.html('<option value="">Tidak ada instrumen tersedia</option>');
-                        console.warn('No instruments found:', response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    loadingText.hide();
-                    instrumenSelect.prop('disabled', false);
-                    instrumenSelect.html('<option value="">Terjadi kesalahan koneksi</option>');
-                    console.error('AJAX Error:', error);
-                }
-            });
-        } else {
-            instrumenSelect.prop('disabled', true);
-            instrumenSelect.html('<option value="">-- Pilih Unit Pemutu Terlebih Dahulu --</option>');
-        }
+              });
+
+              instrumenSelect.html(options);
+
+              // Jika mode edit, set selected instrumen
+              <?php if ($isEdit && !empty($edit['id_instrumen'])): ?>
+                instrumenSelect.val('<?= $edit['id_instrumen'] ?>').trigger('change');
+              <?php endif; ?>
+
+            } else {
+              instrumenSelect.html('<option value="">Tidak ada instrumen tersedia</option>');
+              console.warn('No instruments found:', response.message);
+            }
+          },
+          error: function (xhr, status, error) {
+            loadingText.hide();
+            instrumenSelect.prop('disabled', false);
+            instrumenSelect.html('<option value="">Terjadi kesalahan koneksi</option>');
+            console.error('AJAX Error:', error);
+          }
+        });
+      } else {
+        instrumenSelect.prop('disabled', true);
+        instrumenSelect.html('<option value="">-- Pilih Unit Pemutu Terlebih Dahulu --</option>');
+      }
     });
 
     // Event handler untuk perubahan instrumen
-    $('#id_instrumen').change(function() {
-        const selectedOption = $(this).find('option:selected');
-        
-        if (selectedOption.val() !== '') {
-            // Isi detail instrumen
-            $('#lembaga').val(selectedOption.data('lembaga') || '');
-            $('#jenjang_instrumen').val(jenjangMap[selectedOption.data('jenjang')] || '');
-            $('#indikator').val(selectedOption.data('indikator') || '');
-            $('#kondisi').val(selectedOption.data('kondisi') || '');
-            $('#batas').val(selectedOption.data('batas') || '');
-        } else {
-            clearInstrumenDetails();
-        }
-        
-        // Trigger perhitungan status jika ada isian
-        $('#isian').trigger('input');
+    $('#id_instrumen').change(function () {
+      const selectedOption = $(this).find('option:selected');
+
+      if (selectedOption.val() !== '') {
+        // Isi detail instrumen
+        $('#lembaga').val(selectedOption.data('lembaga') || '');
+        $('#jenjang_instrumen').val(jenjangMap[selectedOption.data('jenjang')] || '');
+        $('#indikator').val(selectedOption.data('indikator') || '');
+        $('#kondisi').val(selectedOption.data('kondisi') || '');
+        $('#batas').val(selectedOption.data('batas') || '');
+      } else {
+        clearInstrumenDetails();
+      }
+
+      // Trigger perhitungan status jika ada isian
+      $('#isian').trigger('input');
     });
 
     // Event handler untuk perubahan isian (menghitung status)
-    $('#isian').on('input', function() {
-        calculateStatus();
+    $('#isian').on('input', function () {
+      calculateStatus();
     });
 
     // Trigger change event jika mode edit
     <?php if ($isEdit && !empty($edit['id_unitpemutu'])): ?>
-    $('#id_unitpemutu').trigger('change');
+      $('#id_unitpemutu').trigger('change');
     <?php endif; ?>
-});
+  });
 
-// Function untuk clear detail instrumen
-function clearInstrumenDetails() {
+  // Function untuk clear detail instrumen
+  function clearInstrumenDetails() {
     $('#lembaga').val('');
     $('#jenjang_instrumen').val('');
     $('#indikator').val('');
@@ -286,35 +298,35 @@ function clearInstrumenDetails() {
     $('#batas').val('');
     $('#status_display').val('');
     $('#status_hidden').val('');
-}
+  }
 
-// Function untuk menghitung status
-function calculateStatus() {
+  // Function untuk menghitung status
+  function calculateStatus() {
     const isian = parseFloat($('#isian').val());
     const kondisi = $('#kondisi').val().trim();
     const batas = parseFloat($('#batas').val());
     let status = '';
 
     if (!isNaN(isian) && !isNaN(batas) && kondisi !== '') {
-        switch (kondisi) {
-            case '>':
-                status = isian > batas ? 1 : 0;
-                break;
-            case '>=':
-                status = isian >= batas ? 1 : 0;
-                break;
-            case '<':
-                status = isian < batas ? 1 : 0;
-                break;
-            case '<=':
-                status = isian <= batas ? 1 : 0;
-                break;
-            case '=':
-                status = isian == batas ? 1 : 0;
-                break;
-            default:
-                status = '';
-        }
+      switch (kondisi) {
+        case '>':
+          status = isian > batas ? 1 : 0;
+          break;
+        case '>=':
+          status = isian >= batas ? 1 : 0;
+          break;
+        case '<':
+          status = isian < batas ? 1 : 0;
+          break;
+        case '<=':
+          status = isian <= batas ? 1 : 0;
+          break;
+        case '=':
+          status = isian == batas ? 1 : 0;
+          break;
+        default:
+          status = '';
+      }
     }
 
     // Update display dan hidden input
@@ -327,14 +339,14 @@ function calculateStatus() {
     $('.js-example-basic-single').val(null).trigger('change');
     clearInstrumenDetails();
     $('#id_instrumen').prop('disabled', true);
-}
+  }
 
-// Function untuk modal update
-function showUpdateModal() {
+  // Function untuk modal update
+  function showUpdateModal() {
     $('#updateModal').modal('show');
-}
+  }
 
-function submitUpdate() {
+  function submitUpdate() {
     $('#isianPemutuForm').submit();
-}
+  }
 </script>
