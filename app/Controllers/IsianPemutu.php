@@ -25,6 +25,7 @@ class IsianPemutu extends BaseController
         if ($this->request->isAJAX() && $this->request->getPost('action') === 'get-instrumen') {
             try {
                 $unitPemutuId = $this->request->getPost('id_unitpemutu');
+                $editId = $this->request->getPost('edit_id'); // ID data yang sedang diedit (jika ada)
 
                 if (empty($unitPemutuId)) {
                     return $this->response->setJSON([
@@ -39,11 +40,16 @@ class IsianPemutu extends BaseController
                 // Ambil instrumen berdasarkan unit pemutu
                 $instrumenList = $this->instrumenPemutuModel->getByUnitPemutu($unitPemutuId);
 
+                // Ambil instrumen yang sudah digunakan untuk unit pemutu ini
+                $usedInstrumenIds = $this->isianPemutuModel->getUsedInstrumenByUnitPemutu($unitPemutuId, $editId);
+
                 // Debug information
                 $debugInfo = [
                     'unit_pemutu_id' => $unitPemutuId,
                     'lembaga_id' => $lembagaId,
-                    'instrument_count' => count($instrumenList)
+                    'instrument_count' => count($instrumenList),
+                    'used_instruments' => $usedInstrumenIds,
+                    'edit_id' => $editId
                 ];
 
                 if (empty($instrumenList)) {
@@ -54,9 +60,23 @@ class IsianPemutu extends BaseController
                     ]);
                 }
 
+                // Filter instrumen yang belum digunakan
+                $availableInstrumen = array_filter($instrumenList, function($instrumen) use ($usedInstrumenIds) {
+                    return !in_array($instrumen['id'], $usedInstrumenIds);
+                });
+
+                // Jika tidak ada instrumen yang tersedia
+                if (empty($availableInstrumen)) {
+                    return $this->response->setJSON([
+                        'status' => 'warning',
+                        'message' => 'Semua instrumen untuk unit pemutu ini sudah digunakan',
+                        'data' => []
+                    ]);
+                }
+
                 // Format data untuk response
                 $formattedData = [];
-                foreach ($instrumenList as $index => $instrumen) {
+                foreach ($availableInstrumen as $index => $instrumen) {
                     $formattedData[] = [
                         'id' => $instrumen['id'],
                         'text' => ($index + 1) . ' - ' . $instrumen['nama_lembaga'] . ' - ' . $instrumen['indikator'],
@@ -71,7 +91,8 @@ class IsianPemutu extends BaseController
                 return $this->response->setJSON([
                     'status' => 'success',
                     'message' => 'Data berhasil dimuat',
-                    'data' => $formattedData
+                    'data' => $formattedData,
+                    'debug' => $debugInfo // Untuk debugging, bisa dihapus di production
                 ]);
 
             } catch (\Exception $e) {
@@ -110,7 +131,32 @@ class IsianPemutu extends BaseController
                     return redirect()->back()->withInput();
                 }
 
+                // Validasi duplikasi instrumen untuk unit pemutu yang sama
+                if (!$id) { // Hanya untuk data baru
+                    $existingData = $this->isianPemutuModel
+                        ->where('id_unitpemutu', $data['id_unitpemutu'])
+                        ->where('id_instrumen', $data['id_instrumen'])
+                        ->first();
+
+                    if ($existingData) {
+                        session()->setFlashdata('error', 'Instrumen ini sudah digunakan untuk unit pemutu yang dipilih!');
+                        return redirect()->back()->withInput();
+                    }
+                }
+
                 if ($id) {
+                    // Untuk update, pastikan tidak ada duplikasi dengan data lain
+                    $existingData = $this->isianPemutuModel
+                        ->where('id_unitpemutu', $data['id_unitpemutu'])
+                        ->where('id_instrumen', $data['id_instrumen'])
+                        ->where('id !=', $id)
+                        ->first();
+
+                    if ($existingData) {
+                        session()->setFlashdata('error', 'Instrumen ini sudah digunakan untuk unit pemutu yang dipilih!');
+                        return redirect()->back()->withInput();
+                    }
+
                     $this->isianPemutuModel->update($id, $data);
                     session()->setFlashdata('success', 'Data berhasil diperbarui!');
                 } else {
@@ -136,9 +182,9 @@ class IsianPemutu extends BaseController
                 ->where('p_isian_pemutu.id', $id)
                 ->first();
 
-                if ($editData) {
-        log_message('debug', 'Edit data: ' . json_encode($editData));
-    }
+            if ($editData) {
+                log_message('debug', 'Edit data: ' . json_encode($editData));
+            }
         }
 
         // === Prepare data untuk view ===

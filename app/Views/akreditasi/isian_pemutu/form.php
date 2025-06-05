@@ -194,6 +194,7 @@
     };
 
     const editInstrumenId = '<?= $isEdit && !empty($edit['id_instrumen']) ? $edit['id_instrumen'] : '' ?>';
+    const editId = '<?= $isEdit && !empty($edit['id']) ? $edit['id'] : '' ?>';
 
     $('#id_unitpemutu').change(function () {
       const unitPemutuId = $(this).val();
@@ -213,6 +214,7 @@
           data: {
             action: 'get-instrumen',
             id_unitpemutu: unitPemutuId,
+            edit_id: editId, // Kirim ID data yang sedang diedit
             '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
           },
           dataType: 'json',
@@ -241,9 +243,18 @@
                 instrumenSelect.val('<?= $edit['id_instrumen'] ?>').trigger('change');
               <?php endif; ?>
 
+            } else if (response.status === 'warning') {
+              // Jika semua instrumen sudah digunakan
+              instrumenSelect.html('<option value="">Semua instrumen sudah digunakan</option>');
+              showAlert('warning', response.message);
+              console.warn('All instruments used:', response.message);
             } else {
               instrumenSelect.html('<option value="">Tidak ada instrumen tersedia</option>');
               console.warn('No instruments found:', response.message);
+            }
+            // Debug info (bisa dihapus di production)
+            if (response.debug) {
+              console.log('Debug info:', response.debug);
             }
           },
           error: function (xhr, status, error) {
@@ -283,6 +294,41 @@
       calculateStatus();
     });
 
+    // Validasi form sebelum submit
+    $('form').on('submit', function(e) {
+      const unitPemutu = $('#id_unitpemutu').val();
+      const instrumen = $('#id_instrumen').val();
+      const isian = $('#isian').val();
+
+      if (!unitPemutu) {
+        e.preventDefault();
+        showAlert('danger', 'Unit Pemutu harus dipilih!');
+        $('#id_unitpemutu').focus();
+        return false;
+      }
+
+      if (!instrumen) {
+        e.preventDefault();
+        showAlert('danger', 'Instrumen harus dipilih!');
+        $('#id_instrumen').focus();
+        return false;
+      }
+
+      if (!isian || isian.trim() === '') {
+        e.preventDefault();
+        showAlert('danger', 'Isian harus diisi!');
+        $('#isian').focus();
+        return false;
+      }
+
+      if (isNaN(isian) || parseFloat(isian) < 0) {
+        e.preventDefault();
+        showAlert('danger', 'Isian harus berupa angka positif!');
+        $('#isian').focus();
+        return false;
+      }
+    });
+    
     // Trigger change event jika mode edit
     <?php if ($isEdit && !empty($edit['id_unitpemutu'])): ?>
       $('#id_unitpemutu').trigger('change');
