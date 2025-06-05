@@ -12,7 +12,7 @@
       </div>
 
       <!--begin::Form-->
-      <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+      <form id="form" class="m-form m-form--fit m-form--label-align-right" method="post" action="">
         <?php if ($isEdit): ?>
           <input type="hidden" name="id" value="<?= esc($edit['id']) ?>">
         <?php endif ?>
@@ -381,7 +381,7 @@
   }
 
   function resetForm() {
-    $('#isianPemutuForm')[0].reset();
+    $('#form')[0].reset();
     $('.js-example-basic-single').val(null).trigger('change');
     clearInstrumenDetails();
     $('#id_instrumen').prop('disabled', true);
@@ -393,6 +393,6 @@
   }
 
   function submitUpdate() {
-    $('#isianPemutuForm').submit();
+    $('#form').submit();
   }
 </script>
