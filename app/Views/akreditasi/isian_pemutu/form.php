@@ -60,18 +60,18 @@
             </div>
           </div>
 
-          <!-- Baris 2: Indikator + Kondisi (masuk dalam Lembaga) dan Batas (sejajar Jenjang) -->
+          <!-- Baris 2: Indikator (75%) + Kondisi (25%) dan Batas (50%) -->
           <div class="row">
-            <!-- Kolom kiri: indikator & kondisi (masuk ke dalam 50%) -->
+            <!-- Kolom kiri: indikator & kondisi -->
             <div class="col-md-6">
               <div class="row">
-                <div class="col-md-6 pr-1">
+                <div class="col-md-9 pr-1">
                   <input type="text" class="form-control m-input mb-2" id="indikator" name="indikator"
                     placeholder="Indikator" readonly>
                 </div>
-                <div class="col-md-6 pl-1">
-                  <input type="text" class="form-control m-input mb-2" id="kondisi" name="kondisi" placeholder="Kondisi"
-                    readonly>
+                <div class="col-md-3">
+                  <input type="text" class="form-control m-input mb-2 text-center" id="kondisi" name="kondisi"
+                    placeholder="Kondisi" readonly>
                 </div>
               </div>
             </div>
