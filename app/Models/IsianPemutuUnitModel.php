@@ -19,6 +19,7 @@ class IsianPemutuUnitModel extends Model
             unit.nama AS nama_unit,
             periode.ts AS tahun_ajaran,
             instrumen.jenjang AS jenjang,
+            instrumen.indikator AS indikator,
             isian.isian,
             isian.status
         ')

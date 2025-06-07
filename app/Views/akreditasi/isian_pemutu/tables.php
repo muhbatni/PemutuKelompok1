@@ -68,7 +68,7 @@
               <tr>
                 <td><?= $no++ ?></td>
                 <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
-                <td><?= esc($row['jenjang_text']) ?></td>
+                <td><?= esc($row['indikator']) ?></td>
                 <td><?= esc($row['isian']) ?></td>
                 <td>
                   <?php if ($row['status']): ?>

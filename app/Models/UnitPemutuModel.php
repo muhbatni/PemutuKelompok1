@@ -107,7 +107,6 @@ class UnitPemutuModel extends Model
 
         $result = $builder->get()->getRowArray();
 
-        // Pastikan mengembalikan array dengan nilai default jika tidak ada data
         return [
             'total_isian' => $result['total_isian'] ?? 0,
             'jumlah_lolos' => $result['jumlah_lolos'] ?? 0
@@ -117,7 +116,7 @@ class UnitPemutuModel extends Model
     private function countInstrumenByLembaga($id_lembaga)
     {
         try {
-            return $this->db->table('m_instrumen_pemutu')  // Ubah nama tabel sesuai struktur
+            return $this->db->table('m_instrumen_pemutu')  
                 ->where('id_lembaga', $id_lembaga)
                 ->countAllResults();
         } catch (\Exception $e) {
@@ -146,7 +145,7 @@ class UnitPemutuModel extends Model
     {
         $total = (int) $data['total_isian'];
         $lolos = (int) $data['jumlah_lolos'];
-        
+
         // Hitung jumlah instrumen dengan lembaga yang sama
         $jumlah_lembaga_sama = $this->db->table('p_instrumen_pemutu')
             ->where('id_lembaga', $data['id_lembaga'])
@@ -165,13 +164,19 @@ class UnitPemutuModel extends Model
 
         if ($percentage > 50) {
             return [
-                'status' => "Lolos ($percentage%)",
+                'status' => "Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
                 'status_class' => 'text-success',
                 'status_value' => 1
             ];
+        } elseif ($percentage == 50) {
+            return [
+                'status' => "Tidak Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
+                'status_class' => 'text-danger',
+                'status_value' => 0
+            ];
         } else {
             return [
-                'status' => "Tidak Lolos ($percentage%)",
+                'status' => "Tidak Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
                 'status_class' => 'text-danger',
                 'status_value' => 0
             ];
@@ -201,7 +206,7 @@ class UnitPemutuModel extends Model
             return null;
         }
 
-        // Hitung total instrumen untuk lembaga ini
+        // Hitung total instrumen 
         $result['total_instrumen'] = $this->countInstrumenByLembaga($result['id_lembaga']);
 
         return $this->calculateStatusBasedOnIsian($result);
