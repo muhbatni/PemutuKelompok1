@@ -9,17 +9,30 @@ class PelaksanaanAuditModel extends Model
 
     public function getPelaksanaanAudit($id_audit = null)
     {
-        $builder = $this->select('a_pelaksanaan_audit.*, a_standar_audit.id_standar AS id_standar_audit, a_standar_audit.id_audit AS id_audit, a_audit.kode AS kode_audit, m_user.nama AS nama_auditor, m_unit.nama AS nama_unit')
+        $builder = $this->select('
+            a_audit.id AS id_audit,
+            a_audit.kode AS kode_audit,
+            m_user.nama AS nama_auditor,
+            m_unit.nama AS nama_unit,
+            MIN(a_pelaksanaan_audit.id) AS min_id_pelaksanaan,
+            MIN(a_pelaksanaan_audit.id_standar_audit) AS min_id_standar_audit
+        ')
             ->join('a_standar_audit', 'a_standar_audit.id = a_pelaksanaan_audit.id_standar_audit')
             ->join('a_audit', 'a_audit.id = a_standar_audit.id_audit')
             ->join('a_auditor', 'a_auditor.id = a_pelaksanaan_audit.id_auditor', 'left')
             ->join('m_user', 'm_user.id = a_auditor.id', 'left')
             ->join('m_unit', 'm_unit.id = a_pelaksanaan_audit.id_unit', 'left');
+
         if ($id_audit) {
             $builder->where('a_standar_audit.id_audit', $id_audit);
         }
+
+        $builder->groupBy('a_audit.id, a_audit.kode, m_user.nama, m_unit.nama');
+        $builder->orderBy('a_audit.kode', 'ASC');
+
         return $builder->findAll();
     }
+
 
     public function getListAuditForDropdown()
     {
@@ -106,6 +119,8 @@ class PelaksanaanAuditModel extends Model
             ->where('a_pelaksanaan_audit.id_standar_audit', $id_standar_audit)
             ->findAll();
     }
+
+
 
 
 }

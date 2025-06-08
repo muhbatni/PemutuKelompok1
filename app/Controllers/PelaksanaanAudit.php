@@ -40,11 +40,9 @@ class PelaksanaanAudit extends BaseController
 
     if ($id_audit) {
       $data['pelaksanaan_audit'] = $this->pelaksanaanAuditModel->getPelaksanaanAudit($id_audit);
-      $data['list_standar_audit'] = $this->auditStandarModel->getByAuditId($id_audit);
     } else {
       // Ambil semua data jika tidak ada filter
       $data['pelaksanaan_audit'] = $this->pelaksanaanAuditModel->getPelaksanaanAudit(null);
-      $data['list_standar_audit'] = [];
     }
 
     $data["title"] = "Pelaksanaan Audit";
@@ -55,30 +53,34 @@ class PelaksanaanAudit extends BaseController
 
   public function edit($id_standar_audit)
   {
+    // Pastikan variabel $pelaksanaan terdefinisi sebelum digunakan di $isExistingData
+    $pelaksanaan = $this->pelaksanaanAuditModel->getPelaksanaanAuditById($id_standar_audit);
+    $firstStandar = !empty($pelaksanaan) ? $pelaksanaan[0] : null;
 
-    $isExistingData = !empty($pelaksanaan); // true jika data sudah ada → artinya sedang edit
+    $isExistingData = !empty($firstStandar); // true jika data sudah ada → artinya sedang edit
 
     $id_audit = $this->auditStandarModel->getAuditIdByStandar($id_standar_audit);
 
-    $pelaksanaan = $this->pelaksanaanAuditModel->getPelaksanaanAuditById($id_standar_audit);
-    $firstStandar = !empty($pelaksanaan) ? $pelaksanaan[0] : null;
+    // Ambil id_pelaksanaan dari $firstStandar
+    $pelaksanaan_audit_id = $firstStandar['id'] ?? null; // REVISI: Ambil ID Pelaksanaan Audit
+
     $standar_audit_id = $firstStandar['id_standar_audit'] ?? $id_standar_audit;
 
     $standar = $this->auditStandarModel->getStandarByAudit($id_audit);
-    $pernyataan = $this->pelaksanaanAuditModel->getPernyataanByStandar($id_standar_audit);
+
     $auditor_list = $this->pelaksanaanAuditModel->getAuditorList();
     $unit_list = $this->pelaksanaanAuditModel->getUnitList();
 
     $data = [
       'title' => 'Pelaksanaan Audit',
       'standar' => $standar,
-      'pernyataan' => $pernyataan,
       'auditor_list' => $auditor_list,
       'unit_list' => $unit_list,
       'id_audit' => $id_audit,
       'standar_audit_id' => $standar_audit_id,
       'firstStandar' => $firstStandar,
-      'isExistingData' => !empty($firstStandar) // ⬅️ kuncinya di sini
+      'isExistingData' => $isExistingData,
+      'pelaksanaan_audit_id' => $pelaksanaan_audit_id // REVISI: Kirim ID Pelaksanaan ke view
     ];
 
     echo view('layouts/header', $data);
@@ -86,8 +88,7 @@ class PelaksanaanAudit extends BaseController
     echo view('layouts/footer');
   }
 
-
-  public function simpan()
+  public function simpanunitauditor()
   {
     $db = \Config\Database::connect();
     $db->transBegin();
@@ -103,7 +104,7 @@ class PelaksanaanAudit extends BaseController
       }
 
       // Ambil semua standar audit berdasarkan id_audit
-      $standarModel = new AuditStandarModel(); // pastikan model ini ada
+      $standarModel = new AuditStandarModel();
       $standarList = $standarModel->where('id_audit', $id_audit)->findAll();
 
       if (empty($standarList)) {
@@ -111,67 +112,142 @@ class PelaksanaanAudit extends BaseController
       }
 
       $pelaksanaanModel = new PelaksanaanAuditModel();
+      $pernyataanModel = new PernyataanModel();
+      $isianModel = new IsianAuditModel();
 
       foreach ($standarList as $standar) {
+        $id_standar_audit_junction = $standar['id'];
+        $id_standar_murni = $standar['id_standar'];
+
         $pelaksanaanData = [
           'id_unit' => $id_unit,
           'id_auditor' => $id_auditor,
-          'id_standar_audit' => $standar['id'],
+          'id_standar_audit' => $id_standar_audit_junction,
         ];
 
         // Cek apakah pelaksanaan sudah ada
         $existing = $pelaksanaanModel
           ->where('id_unit', $id_unit)
           ->where('id_auditor', $id_auditor)
-          ->where('id_standar_audit', $standar['id'])
+          ->where('id_standar_audit', $id_standar_audit_junction)
           ->first();
 
+        $idPelaksanaan = null;
         if ($existing) {
-          $pelaksanaanModel->update($existing['id'], $pelaksanaanData);
           $idPelaksanaan = $existing['id'];
+          $pelaksanaanModel->update($idPelaksanaan, $pelaksanaanData);
         } else {
           $pelaksanaanModel->insert($pelaksanaanData);
           $idPelaksanaan = $pelaksanaanModel->getInsertID();
         }
 
-        // Simpan isian audit jika ada
-        if ($this->request->getPost('id_pernyataan')) {
-          $isianModel = new IsianAuditModel();
-          $isianData = [
-            'id_pelaksanaan' => $idPelaksanaan,
-            'id_pernyataan' => $this->request->getPost('id_pernyataan'),
-            'capaian' => $this->request->getPost('capaian'),
-            'kondisi' => $this->request->getPost('kondisi'),
-            'akar' => $this->request->getPost('akar'),
-            'akibat' => $this->request->getPost('akibat'),
-            'rekom' => $this->request->getPost('rekom'),
-            'tanggapan' => $this->request->getPost('tanggapan'),
-            'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
-            'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
-            'rencana_pencegahan' => $this->request->getPost('rencana_pencegahan'),
-            'tanggal_pencegahan' => $this->request->getPost('tanggal_pencegahan'),
-            'is_temuan' => $this->request->getPost('is_temuan') === 'on' ? true : false
-          ];
-          $isianModel->insert($isianData);
-          $idIsian = $isianModel->getInsertID();
+        if ($idPelaksanaan) {
+          $pernyataanlist = $pernyataanModel->getPernyataanByStandarId($id_standar_murni);
 
-          // Simpan temuan jika is_temuan dicentang
-          if ($this->request->getPost('is_temuan')) {
-            $temuanModel = new TemuanModel();
-            $temuanData = [
-              'id_unit' => $id_unit,
-              'id_isian_audit' => $idIsian,
-              'kondisi' => $this->request->getPost('kondisi'),
-              'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
-              'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
-              'catatan' => $this->request->getPost('catatan'),
-              'status' => $this->request->getPost('status'),
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ];
-            $temuanModel->insert($temuanData);
+          foreach ($pernyataanlist as $pernyataan) {
+            $existingIsian = $isianModel
+              ->where('id_pelaksanaan', $idPelaksanaan)
+              ->where('id_pernyataan', $pernyataan['id'])
+              ->first();
+
+            if (!$existingIsian) {
+              $isianData = [
+                'id_pelaksanaan' => $idPelaksanaan,
+                'id_pernyataan' => $pernyataan['id'],
+                'capaian' => null,
+                'kondisi' => null,
+                'akar' => null,
+                'akibat' => null,
+                'rekom' => null,
+                'tanggapan' => null,
+                'rencana_perbaikan' => null,
+                'tanggal_perbaikan' => null,
+                'rencana_pencegahan' => null,
+                'tanggal_pencegahan' => null,
+                'is_temuan' => false
+              ];
+              $isianModel->insert($isianData);
+            }
           }
         }
+      }
+
+      $db->transCommit();
+      return redirect()->back()->with('success', 'Data berhasil disimpan.');
+    } catch (\Exception $e) {
+      $db->transRollback();
+      return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+    }
+  }
+
+
+  public function simpan()
+  {
+    $db = \Config\Database::connect();
+    $db->transBegin();
+
+    try {
+      $id_pernyataan = $this->request->getPost('id_pernyataan');
+      $id_pelaksanaan = $this->request->getPost('id_pelaksanaan');
+
+      // Validasi input
+      if (empty($id_pernyataan) || empty($id_pelaksanaan)) {
+        return redirect()->back()->with('error', 'Data isian tidak lengkap. Harap pilih pernyataan dan pastikan data pelaksanaan sudah ada.');
+      }
+
+      $isianModel = new IsianAuditModel();
+
+      $existingIsian = $isianModel
+        ->where('id_pelaksanaan', $id_pelaksanaan)
+        ->where('id_pernyataan', $id_pernyataan)
+        ->first();
+
+      $isianData = [
+        'capaian' => $this->request->getPost('capaian'),
+        'kondisi' => $this->request->getPost('kondisi'),
+        'akar' => $this->request->getPost('akar'),
+        'akibat' => $this->request->getPost('akibat'),
+        'rekom' => $this->request->getPost('rekom'),
+        'tanggapan' => $this->request->getPost('tanggapan'),
+        'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
+        'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
+        'rencana_pencegahan' => $this->request->getPost('rencana_pencegahan'),
+        'tanggal_pencegahan' => $this->request->getPost('tanggal_pencegahan'),
+        'is_temuan' => $this->request->getPost('is_temuan') === 'on' ? true : false
+      ];
+
+      $idIsian = null;
+      if ($existingIsian) {
+        $isianModel->update($existingIsian['id'], $isianData);
+        $idIsian = $existingIsian['id'];
+      } else {
+        $isianData['id_pelaksanaan'] = $id_pelaksanaan;
+        $isianData['id_pernyataan'] = $id_pernyataan;
+        $isianModel->insert($isianData);
+        $idIsian = $isianModel->getInsertID();
+      }
+
+      $temuanModel = new TemuanModel();
+      if ($isianData['is_temuan']) {
+        $existingTemuan = $temuanModel->where('id_isian_audit', $idIsian)->first();
+        $temuanData = [
+          'id_unit' => $this->request->getPost('id_unit'),
+          'id_isian_audit' => $idIsian,
+          'kondisi' => $this->request->getPost('kondisi'),
+          'rencana_perbaikan' => $this->request->getPost('rencana_perbaikan'),
+          'tanggal_perbaikan' => $this->request->getPost('tanggal_perbaikan'),
+          'catatan' => $this->request->getPost('catatan'),
+          'status' => $this->request->getPost('status'),
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s'),
+        ];
+        if ($existingTemuan) {
+          $temuanModel->update($existingTemuan['id'], $temuanData);
+        } else {
+          $temuanModel->insert($temuanData);
+        }
+      } else {
+        $temuanModel->where('id_isian_audit', $idIsian)->delete();
       }
 
       $db->transCommit();
@@ -198,6 +274,20 @@ class PelaksanaanAudit extends BaseController
   public function getDetailPernyataan($id)
   {
     $data = $this->pernyataanModel->getDetailPernyataan($id);
+    return $this->response->setJSON($data);
+  }
+
+  public function getIsianAuditData($id_pelaksanaan, $id_pernyataan)
+  {
+    $isianModel = new IsianAuditModel();
+    $data = $isianModel
+      ->where('id_pelaksanaan', $id_pelaksanaan)
+      ->where('id_pernyataan', $id_pernyataan)
+      ->first();
+
+    log_message('debug', 'getIsianAuditData called with id_pelaksanaan: ' . $id_pelaksanaan . ' and id_pernyataan: ' . $id_pernyataan);
+    log_message('debug', 'Data returned by isianModel->first(): ' . json_encode($data));
+
     return $this->response->setJSON($data);
   }
 

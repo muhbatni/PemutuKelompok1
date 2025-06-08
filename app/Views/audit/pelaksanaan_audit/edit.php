@@ -13,6 +13,7 @@
     </div>
 
     <form id="audit-form" class="mt-4" method="POST" action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>">
+      <input type="hidden" name="id_pelaksanaan" value="<?= esc($pelaksanaan_audit_id ?? ''); ?>">
       <input type="hidden" name="id_standar_audit" value="<?= esc($standar_audit_id ?? $id_standar_audit ?? ''); ?>">
       <div class="m-portlet__body">
         <!-- Begin: Filter Section -->
@@ -123,6 +124,8 @@
     // Initialize select2 for better dropdown experience
     $('.m-select2').select2();
 
+    var currentPelaksanaanAuditId = '<?= esc($pelaksanaan_audit_id ?? '') ?>';
+
     // Handle audit and unit selection
     $('#audit_select, #unit_select').change(function () {
       var auditId = $('#audit_select').val();
@@ -201,11 +204,11 @@
       $('.pernyataan-item').removeClass('active bg-light');
       $(this).addClass('active bg-light');
 
-      var id = $(this).attr('data-id');
-      console.log("ID pernyataan:", id);
+      var idPernyataan = $(this).attr('data-id');
+      console.log("ID pernyataan:", idPernyataan);
 
       // Periksa apakah id tersedia
-      if (!id) {
+      if (!idPernyataan) {
         console.error("Error: id pernyataan tidak ditemukan");
         return;
       }
@@ -214,7 +217,7 @@
       $('#indicator-content').html('<div class="text-center p-5"><i class="fa fa-spinner fa-spin"></i> Memuat detail...</div>');
 
       $.ajax({
-        url: '<?= base_url('public/audit/pelaksanaan-audit/getDetailPernyataan/') ?>' + id,
+        url: '<?= base_url('public/audit/pelaksanaan-audit/getDetailPernyataan/') ?>' + idPernyataan,
         method: 'GET',
         dataType: 'json',
         success: function (item) {
@@ -223,29 +226,30 @@
             <div class="card border-0">
               <div class="card-body p-0">
                 <div class="mb-4">
-                  <h5 class="card-title border-bottom pb-2">Pernyataan</h5>
-                  <p class="card-text">${item.pernyataan || '-'}</p>
+                  <p class="card-title border-bottom pb-2">Pernyataan</p>
+                  <h5 class="card-text" style="font-weight: bold;">${item.pernyataan || '-'}</h5>
                 </div>
                 
                 <div class="mb-4">
-                  <h5 class="card-title border-bottom pb-2">Indikator</h5>
-                  <p class="card-text">${item.indikator || '-'}</p>
+                  <p class="card-title border-bottom pb-2">Indikator</p>
+                  <h5 class="card-text" style="font-weight: bold;">${item.indikator || '-'}</h5>
                 </div>
                 
                 <div class="mb-4">
-                  <h5 class="card-title border-bottom pb-2">Kondisi</h5>
-                  <p class="card-text">${item.kondisi || '-'}</p>
+                  <p class="card-title border-bottom pb-2">Kondisi</p>
+                  <h5 class="card-text" style="font-weight: bold;">${item.kondisi || '-'}</h5>
                 </div>
                 
                 <div class="mb-4">
-                  <h5 class="card-title border-bottom pb-2">Batas</h5>
-                  <p class="card-text">${item.batas || '-'}</p>
+                  <p class="card-title border-bottom pb-2">Batas</p>
+                  <h5 class="card-text" style="font-weight: bold;">${item.batas || '-'}</h5>
                 </div>
                 
-                  <input type="hidden" name="id_pernyataan" value="${id}">
+                  <input type="hidden" name="id_pernyataan" value="${idPernyataan}">
                   <input type="hidden" name="id_unit" value="${$('#unit_select').val()}">
                   <input type="hidden" name="id_auditor" value="${$('#audit_select').val()}">
                   <input type="hidden" name="id_standar_audit" value="<?= $standar_audit_id ?>">
+                  <input type="hidden" name="id_pelaksanaan" value="${currentPelaksanaanAuditId}">
                   
                   <div class="form-row">
                     <div class="form-group col-md-6">
@@ -312,6 +316,8 @@
             </div>
           `;
           $('#indicator-content').html(html);
+
+          loadIsianAuditData(currentPelaksanaanAuditId, idPernyataan);
         },
         error: function (xhr, status, error) {
           console.error('Error AJAX:', xhr.responseText);
@@ -320,6 +326,62 @@
       });
     });
   });
+
+  function loadIsianAuditData(idPelaksanaan, idPernyataan) {
+    console.log("loadIsianAuditData dipanggil. idPelaksanaan:", idPelaksanaan, "idPernyataan:", idPernyataan); // DEBUGGING 1
+
+    if (!idPelaksanaan || !idPernyataan) {
+      console.error("Tidak dapat memuat isian audit: ID pelaksanaan atau ID pernyataan kosong.");
+      resetIsianAuditForm();
+      return;
+    }
+
+    $.ajax({
+      url: '<?= base_url('public/audit/pelaksanaan-audit/get-isian-audit-data/') ?>' + idPelaksanaan + '/' + idPernyataan,
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log("AJAX success. Data diterima:", data); // DEBUGGING 2
+        if (data) {
+          // Pastikan nama properti data cocok dengan nama kolom di database
+          console.log("Mengisi form. Capaian:", data.capaian, "Kondisi:", data.kondisi); // DEBUGGING 3
+          $('#capaian').val(data.capaian);
+          $('#kondisi').val(data.kondisi);
+          $('#akar').val(data.akar);
+          $('#akibat').val(data.akibat);
+          $('#rekom').val(data.rekom);
+          $('#tanggapan').val(data.tanggapan);
+          $('#rencana_perbaikan').val(data.rencana_perbaikan);
+          $('#tanggal_perbaikan').val(data.tanggal_perbaikan);
+          $('#rencana_pencegahan').val(data.rencana_pencegahan);
+          $('#tanggal_pencegahan').val(data.tanggal_pencegahan);
+          $('#is_temuan').prop('checked', data.is_temuan == 1 || data.is_temuan === true);
+        } else {
+          console.log("Data tidak ditemukan, mereset form."); // DEBUGGING 4
+          resetIsianAuditForm();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('Error AJAX loadIsianAuditData:', xhr.responseText, status, error); // DEBUGGING 5
+        resetIsianAuditForm();
+      }
+    });
+  }
+
+  function resetIsianAuditForm() {
+    $('#capaian').val('');
+    $('#kondisi').val('');
+    $('#akar').val('');
+    $('#akibat').val('');
+    $('#rekom').val('');
+    $('#tanggapan').val('');
+    $('#rencana_perbaikan').val('');
+    $('#tanggal_perbaikan').val('');
+    $('#rencana_pencegahan').val('');
+    $('#tanggal_pencegahan').val('');
+    $('#is_temuan').prop('checked', false);
+  }
+
   document.querySelector('.btn-success').addEventListener('click', function () {
     if ($('#audit-form')[0].checkValidity()) {
       $('#audit-form').submit();
@@ -328,12 +390,13 @@
     }
   });
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     <?php if (!empty($isExistingData)): ?>
       $('select[name="id_auditor"]').prop('disabled', true);
       $('select[name="id_unit"]').prop('disabled', true);
     <?php endif; ?>
   });
+
 </script>
 
 <style>

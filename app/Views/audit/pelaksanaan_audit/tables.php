@@ -66,7 +66,7 @@
                   <?= !empty($data['nama_unit']) ? esc($data['nama_unit']) : 'Belum dipilih'; ?>
                 </td>
                 <td>
-                  <a href="<?= base_url('public/audit/pelaksanaan-audit/edit/' . $data['id_standar_audit']); ?>"
+                  <a href="<?= base_url('public/audit/pelaksanaan-audit/edit/' . $data['min_id_standar_audit']); ?>"
                     class="btn btn-success btn-sm">
                     Laksanakan Audit
                   </a>
@@ -84,7 +84,7 @@
 <!-- Modal Tambah Pelaksanaan Audit -->
 <div class="modal fade" id="modalTambahPelaksanaan" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>" method="POST">
+    <form action="<?= base_url('public/audit/pelaksanaan-audit/simpanunitauditor') ?>" method="POST">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalLabel">Pilih Auditor dan Unit</h5>
