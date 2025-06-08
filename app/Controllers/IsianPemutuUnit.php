@@ -15,7 +15,10 @@ class IsianPemutuUnit extends BaseController
     $model = new IsianPemutuUnitModel();
     $unitPemutuModel = new UnitPemutuModel();
     $instrumenPemutuModel = new InstrumenPemutuModel();
-
+    $userModel = new \App\Models\UserModel();
+    $unit = $userModel->getUnit() ?: "null";
+    ;
+    
     // Cek apakah form disubmit
     if ($this->request->getMethod() === 'POST') {
       $id = $this->request->getPost('id');
@@ -54,7 +57,9 @@ class IsianPemutuUnit extends BaseController
       ->select('p_unit_pemutu.id, m_unit.nama as nama_unit, m_periode.ts as tahun_ajaran')
       ->join('m_unit', 'p_unit_pemutu.id_unit = m_unit.id')
       ->join('m_periode', 'p_unit_pemutu.id_periode = m_periode.id')
+      ->like('m_unit.nama', $unit) // ⬅️ filter berdasarkan nama unit login
       ->findAll();
+
 
     $data['jenjang'] = $instrumenPemutuModel->select('id, jenjang')->findAll();
 
