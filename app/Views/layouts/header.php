@@ -363,6 +363,13 @@ $isSurveyActive = in_array($segment1, $surveyPages);
                       <span class="m-menu__link-text">Manajemen Survey</span>
                     </a>
                   </li>
+                  <li class="m-menu__item <?= $segment1 === 'pelaksanaan-survey' ? 'm-menu__item--active' : '' ?>"
+                    aria-haspopup="true">
+                    <a href="<?= base_url("public/pelaksanaan-survey") ?>" class="m-menu__link">
+                      <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
+                      <span class="m-menu__link-text">Pelaksanaan Survey</span>
+                    </a>
+                  </li>
                   <li class="m-menu__item <?= $segment1 === 'isi-survey' ? 'm-menu__item--active' : '' ?>"
                     aria-haspopup="true">
                     <a href="<?= base_url("public/isi-survey") ?>" class="m-menu__link">

@@ -10,6 +10,7 @@ use App\Controllers\DokumenPenetapan;
 use App\Controllers\InputDataPemutu;
 use App\Controllers\InstrumenPemutu;
 use App\Controllers\IsiSurvey;
+use App\Controllers\PelaksanaanSurvey;
 use App\Controllers\KriteriaAkreditasi;
 use App\Controllers\Login;
 use App\Controllers\PelaksanaanAudit;
@@ -54,6 +55,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
   $routes->post('profile/edit', [Profile::class, 'edit']);
   $routes->get('isi-survey', [IsiSurvey::class, 'index']);
   $routes->match(['GET', 'POST'], 'isi-survey/(:segment)-(:num)', [IsiSurvey::class, 'isiSurvey/$1-$2']);
+  $routes->get('pelaksanaan-survey', [PelaksanaanSurvey::class, 'index']);
 });
 
 $routes->group('audit', ['filter' => 'auth'], function ($routes) {
@@ -94,7 +96,7 @@ $routes->group('audit', ['filter' => 'auth'], function ($routes) {
   $routes->get('get-pernyataan-by-standar/(:num)', 'InputDataDukung::getPernyataanByStandar/$1');
   $routes->get('data-dukung/download/(:segment)', 'InputDataDukung::download/$1');
   $routes->get('temuan', [Temuan::class, 'index']);
-  $routes->match(['get','post'],'input-temuan', [InputTemuan::class, 'index']);
+  $routes->match(['get', 'post'], 'input-temuan', [InputTemuan::class, 'index']);
   $routes->get('input-temuan/edit/(:num)', [InputTemuan::class, 'edit/$1']);
   $routes->post('input-temuan/update/(:num)', [InputTemuan::class, 'update/$1']);
   $routes->get('input-temuan/delete/(:num)', [InputTemuan::class, 'delete/$1']);
