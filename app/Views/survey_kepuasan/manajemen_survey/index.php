@@ -104,9 +104,6 @@
                           class="la la-edit"></i> Edit Detail</a> -->
                       <a class="dropdown-item" href="<?= base_url("public/survey/view?id_survey=$survey[id]") ?>"><i
                           class="la la-bar-chart"></i> Lihat Hasil</a>
-                      <a class="dropdown-item" href="#" data-toggle="modal"
-                        data-target="#pelaksanaanModal-<?= $survey['id']; ?>" fdprocessedid="yus45"><i
-                          class="la la-calendar-plus-o"></i> Pelaksanaan</a>
                       <a class="dropdown-item" href="<?= base_url("public/survey/delete?id_survey=$survey[id]") ?>"
                         data-toggle="modal" data-target="#deleteModal-<?= $survey['id']; ?>" fdprocessedid="yus45">
                         <i class="la la-trash"></i>Hapus Survey</a>

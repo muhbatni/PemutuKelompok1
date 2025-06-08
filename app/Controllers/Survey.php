@@ -344,10 +344,10 @@ class Survey extends BaseController
       $data['id_periode'] = $idPeriode;
       $this->createPelaksanaanSurvey($database, $data);
       $database->close();
-      return redirectWithMessage('survey', 'success', 'Pelaksanaan survey berhasil dibuat!');
+      return redirectWithMessage('pelaksanaan-survey', 'success', 'Pelaksanaan survey berhasil dibuat!');
     } catch (Throwable $exception) {
       log_message('error', 'Database error: ' . $exception->getMessage());
-      return redirectWithMessage('survey', 'error', $exception->getMessage());
+      return redirectWithMessage('pelaksanaan-survey', 'error', $exception->getMessage());
     }
   }
 

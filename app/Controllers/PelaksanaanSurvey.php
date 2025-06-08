@@ -31,9 +31,10 @@ class PelaksanaanSurvey extends BaseController
     $this->periodeData = $this->periodeModel->orderBy('id', 'asc')->findAll();
   }
 
-  public function index()
+  public function getIndex()
   {
-    $data['surveys'] = $this->surveyModel->getActiveSurveys();
+    $data['pelaksanaan'] = $this->pelaksanaanSurveyModel->getPelaksanaanSurvey();
+    $data['surveys'] = $this->surveyModel->findAll();
     $data['periode'] = $this->periodeData;
     echo view('layouts/header.php', ["title" => "Pelaksanaan Survey"]);
     echo view('survey_kepuasan/pelaksanaan_survey/index.php', $data);
@@ -57,34 +58,5 @@ class PelaksanaanSurvey extends BaseController
     return $result;
   }
 
-  public function postCreatePelaksanaan()
-  {
-    try {
-      $params = $this->request->getPostGet();
-      if (!isset($params['id_survey'])) {
-        throw new Exception("Survey tidak ditemukan!");
-      }
-      $idSurvey = $params['id_survey'];
-      $idPeriode = $this->request->getPost('id_periode');
-      $database = Database::connect();
-      $isExist = $this->pelaksanaanSurveyModel->isPeriodSurveyExist($idSurvey, $idPeriode);
-      if ($isExist) {
-        throw new Exception("Pelaksanaan survey sudah ada pada periode ini!");
-      }
-      $data = $database->table('s_pelaksanaan_survey s')
-        ->select("s.id_survey, s.id_periode, s.deskripsi AS deskripsi_survey, s.tanggal_mulai, s.tanggal_selesai")
-        ->where('id_survey', $idSurvey)->get()->getRowArray();
-      if (!$data) {
-        throw new Exception("Survey tidak ditemukan!");
-      }
-      $data['id_periode'] = $idPeriode;
-      $this->createPelaksanaanSurvey($database, $data);
-      $database->close();
-      return redirectWithMessage('survey', 'success', 'Pelaksanaan survey berhasil dibuat!');
-    } catch (Throwable $exception) {
-      log_message('error', 'Database error: ' . $exception->getMessage());
-      return redirectWithMessage('survey', 'error', $exception->getMessage());
-    }
-  }
 }
 ?>

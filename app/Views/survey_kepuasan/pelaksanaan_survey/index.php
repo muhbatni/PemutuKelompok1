@@ -60,7 +60,7 @@
                           <select class="form-control" id="id_survey" name="id_survey" required>
                             <?php foreach ($surveys as $survey): ?>
                               <option value="<?= $survey['id']; ?>">
-                                <?= $survey['id']; ?>
+                                <?= $survey['nama']; ?>
                               </option>
                             <?php endforeach; ?>
                           </select>
@@ -118,29 +118,29 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($surveys as $survey): ?>
+            <?php foreach ($pelaksanaan as $pel): ?>
               <tr>
                 <td>
-                  <?php echo esc($survey['id']); ?>
+                  <?php echo esc($pel['id']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['kode']); ?>
+                  <?php echo esc($pel['kode']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['nama']); ?>
+                  <?php echo esc($pel['nama']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['tahun']); ?>
+                  <?php echo esc($pel['tahun']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['tanggal_mulai']); ?>
+                  <?php echo esc($pel['tanggal_mulai']); ?>
                 </td>
                 <td>
-                  <?php echo esc($survey['tanggal_selesai']); ?>
+                  <?php echo esc($pel['tanggal_selesai']); ?>
                 </td>
                 <td>
                   <div class="w-5 text-center">
-                    <?php if ($survey['status'] === "t"): ?>
+                    <?php if ($pel['status'] === "t"): ?>
                       <span class="m-badge m-badge--success w-24 m-badge--wide">Aktif</span>
                     <?php else: ?>
                       <span class="m-badge m-badge--danger w-24 m-badge--wide">Tidak Aktif</span>

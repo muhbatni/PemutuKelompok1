@@ -74,7 +74,7 @@ $isAuditActive = $uri->getSegment(1) === 'audit' && in_array($segment2, $auditPa
 $akreditasiPages = ['lembaga', 'kriteria', 'syarat-unggul', 'instrumen-pemutu', 'dokumen-penetapan', '', 'periode', 'unit', 'input-data-pemutu', 'isian-pemutu', 'isian-pemutu-unit', 'dashboard-periode'];
 $isAkreditasiActive = $uri->getSegment(1) === 'akreditasi' && in_array($segment2, $akreditasiPages);
 
-$surveyPages = ['survey', 'isi-survey'];
+$surveyPages = ['survey', 'isi-survey', 'pelaksanaan-survey'];
 $isSurveyActive = in_array($segment1, $surveyPages);
 ?>
 
