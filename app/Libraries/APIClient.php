@@ -4,14 +4,14 @@ namespace App\Libraries;
 
 class APIClient
 {
-  protected $baseUrl = 'http://localhost:3000/api';
+  protected static $baseUrl = 'http://localhost:3000/api';
 
-  protected function request($method, $endpoint, $data = null)
+  protected static function request($method, $endpoint, $data = null)
   {
     if (!extension_loaded('curl')) {
       throw new \RuntimeException('cURL extension is not loaded. Please enable it in php.ini');
     }
-    $url = $this->baseUrl . $endpoint;
+    $url = self::$baseUrl . $endpoint;
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -28,19 +28,18 @@ class APIClient
     return json_decode($response, true);
   }
 
-  public function getAllStandar()
+  public static function getAllStandar()
   {
-    return $this->request('get', '/standar');
+    return self::request('get', '/standar');
   }
 
-  public function getStandar($id)
+  public static function getStandar($id)
   {
-    return $this->request('get', "/standar/{$id}");
+    return self::request('get', "/standar/{$id}");
   }
 
-  public function createStandar($data)
+  public static function createStandar($data)
   {
-    // Validasi field yang diperlukan
     $requiredFields = ['id_parent', 'nama', 'dokumen', 'is_aktif'];
     foreach ($requiredFields as $field) {
       if (!isset($data[$field])) {
@@ -48,12 +47,11 @@ class APIClient
       }
     }
 
-    return $this->request('post', '/standar', $data);
+    return self::request('post', '/standar', $data);
   }
 
-  public function updateStandar($id, $data)
+  public static function updateStandar($id, $data)
   {
-    // Validasi field yang diperlukan untuk update
     $requiredFields = ['nama', 'dokumen', 'is_aktif', 'id_parent'];
     foreach ($requiredFields as $field) {
       if (!array_key_exists($field, $data)) {
@@ -61,15 +59,15 @@ class APIClient
       }
     }
 
-    return $this->request('put', "/standar/{$id}", $data);
+    return self::request('put', "/standar/{$id}", $data);
   }
 
-  public function deleteStandar($id)
+  public static function deleteStandar($id)
   {
-    return $this->request('delete', "/standar/{$id}");
+    return self::request('delete', "/standar/{$id}");
   }
 
-  public function createStandarWithParams($id_parent, $nama, $dokumen, $is_aktif = true)
+  public static function createStandarWithParams($id_parent, $nama, $dokumen, $is_aktif = true)
   {
     $data = [
       'id_parent' => $id_parent,
@@ -78,11 +76,10 @@ class APIClient
       'is_aktif' => $is_aktif
     ];
 
-    return $this->createStandar($data);
+    return self::createStandar($data);
   }
 
-
-  public function updateStandarWithParams($id, $nama, $dokumen, $is_aktif = true, $id_parent = null)
+  public static function updateStandarWithParams($id, $nama, $dokumen, $is_aktif = true, $id_parent = null)
   {
     $data = [
       'nama' => $nama,
@@ -90,7 +87,6 @@ class APIClient
       'is_aktif' => $is_aktif,
       'id_parent' => $id_parent
     ];
-
-    return $this->updateStandar($id, $data);
+    return self::updateStandar($id, $data);
   }
 }

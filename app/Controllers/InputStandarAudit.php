@@ -5,160 +5,160 @@ use App\Libraries\APIClient;
 
 class InputStandarAudit extends BaseController
 {
-    public function index()
-    {
-        $client = new APIClient();
+  public function index()
+  {
+    $client = new APIClient();
 
-        if ($this->request->getMethod() === 'POST') {
-            $id_parent = $this->request->getPost('id_parent');
-            $id_parent = ($id_parent === null || $id_parent === '') ? null : $id_parent;
+    if ($this->request->getMethod() === 'POST') {
+      $id_parent = $this->request->getPost('id_parent');
+      $id_parent = ($id_parent === null || $id_parent === '') ? null : $id_parent;
 
-            $nama = $this->request->getPost('judul');
-            $is_aktif = $this->request->getPost('is_aktif') === '1' ? true : false;
+      $nama = $this->request->getPost('judul');
+      $is_aktif = $this->request->getPost('is_aktif') === '1' ? true : false;
 
-            $dokumenFile = $this->request->getFile('dokumen');
-            $fileName = '';
+      $dokumenFile = $this->request->getFile('dokumen');
+      $fileName = '';
 
-            if ($dokumenFile && $dokumenFile->isValid() && !$dokumenFile->hasMoved()) {
-                $uploadPath = WRITEPATH . 'uploads/dokumen/';
-                if (!is_dir($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
-                }
-
-                $fileName = $dokumenFile->getClientName();
-                $dokumenFile->move($uploadPath, $fileName);
-            }
-
-            // Kirim ke APIClient
-            $response = $client->createStandarWithParams(
-                $id_parent,
-                $nama,
-                $fileName,
-                $is_aktif
-            );
-
-            if (!$response || isset($response['error'])) {
-                echo "<pre>";
-                echo "DATA YANG DIKIRIM:\n";
-                print_r([
-                    'id_parent' => $id_parent,
-                    'nama' => $nama,
-                    'dokumen' => $fileName,
-                    'is_aktif' => $is_aktif
-                ]);
-                echo "\nRESPON DARI API:\n";
-                print_r($response);
-                echo "</pre>";
-                exit;
-            }
-
-            return redirect()->to(base_url('public/audit/standar'))->with('success', 'Data berhasil ditambahkan!');
+      if ($dokumenFile && $dokumenFile->isValid() && !$dokumenFile->hasMoved()) {
+        $uploadPath = WRITEPATH . 'uploads/dokumen/';
+        if (!is_dir($uploadPath)) {
+          mkdir($uploadPath, 0777, true);
         }
 
-        // Ambil daftar standar yang sudah ada untuk pilihan parent
-        $data['standars'] = $client->getAllStandar();
-        $data['title'] = "Input Standar Audit";
-        $data['isEdit'] = false;
-        $data['edit'] = null;
+        $fileName = $dokumenFile->getClientName();
+        $dokumenFile->move($uploadPath, $fileName);
+      }
 
-        echo view('layouts/header.php', $data);
-        echo view('audit/standar_audit/form.php', $data);
-        echo view('layouts/footer.php');
+      // Kirim ke APIClient
+      $response = $client->createStandarWithParams(
+        $id_parent,
+        $nama,
+        $fileName,
+        $is_aktif
+      );
+
+      if (!$response || isset($response['error'])) {
+        echo "<pre>";
+        echo "DATA YANG DIKIRIM:\n";
+        print_r([
+          'id_parent' => $id_parent,
+          'nama' => $nama,
+          'dokumen' => $fileName,
+          'is_aktif' => $is_aktif
+        ]);
+        echo "\nRESPON DARI API:\n";
+        print_r($response);
+        echo "</pre>";
+        exit;
+      }
+
+      return redirect()->to(base_url('public/audit/standar'))->with('success', 'Data berhasil ditambahkan!');
     }
 
-    public function edit($id)
-    {
-        $api = new APIClient();
-        $standar = $api->getStandar($id);
+    // Ambil daftar standar yang sudah ada untuk pilihan parent
+    $data['standars'] = $client->getAllStandar();
+    $data['title'] = "Input Standar Audit";
+    $data['isEdit'] = false;
+    $data['edit'] = null;
 
-        if (!$standar || isset($standar['error'])) {
-            return redirect()->to(base_url('public/audit/input-standar'))->with('error', 'Standar tidak ditemukan!');
-        }
+    echo view('layouts/header.php', $data);
+    echo view('audit/standar_audit/form.php', $data);
+    echo view('layouts/footer.php');
+  }
 
-        $allStandars = $api->getAllStandar();
+  public function edit($id)
+  {
+    $api = new APIClient();
+    $standar = $api->getStandar($id);
 
-        $data['title'] = "Edit Standar Audit";
-        $data['standar'] = $standar;
-        $data['edit'] = $standar;
-        $data['isEdit'] = true;
-        $data['standars'] = $allStandars;
-
-        echo view('layouts/header.php', $data);
-        echo view('audit/standar_audit/form.php', $data);
-        echo view('layouts/footer.php');
+    if (!$standar || isset($standar['error'])) {
+      return redirect()->to(base_url('public/audit/input-standar'))->with('error', 'Standar tidak ditemukan!');
     }
 
-    public function update($id)
-    {
-        $api = new APIClient();
+    $allStandars = $api->getAllStandar();
 
-        $parent = $this->request->getPost('id_parent');
-        $parent = ($parent === null || $parent === '') ? null : $parent;
+    $data['title'] = "Edit Standar Audit";
+    $data['standar'] = $standar;
+    $data['edit'] = $standar;
+    $data['isEdit'] = true;
+    $data['standars'] = $allStandars;
 
-        $nama = $this->request->getPost('judul');
-        $isAktif = $this->request->getPost('is_aktif') == '1' ? true : false;
+    echo view('layouts/header.php', $data);
+    echo view('audit/standar_audit/form.php', $data);
+    echo view('layouts/footer.php');
+  }
 
-        $dokumen = $this->request->getFile('dokumen');
-        $dokumenName = null;
+  public function update($id)
+  {
+    $api = new APIClient();
 
-        if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
-            $uploadPath = WRITEPATH . 'uploads/dokumen/';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-            }
+    $parent = $this->request->getPost('id_parent');
+    $parent = ($parent === null || $parent === '') ? null : $parent;
 
-            $dokumenName = $dokumen->getClientName();
-            $dokumen->move($uploadPath, $dokumenName);
-        }
+    $nama = $this->request->getPost('judul');
+    $isAktif = $this->request->getPost('is_aktif') == '1' ? true : false;
 
-        // Data yang dikirim ke API
-        $data = [
-            'nama' => $nama,
-            'is_aktif' => $isAktif,
-            'id_parent' => $parent,
-        ];
+    $dokumen = $this->request->getFile('dokumen');
+    $dokumenName = null;
 
-        if ($dokumenName) {
-            $data['dokumen'] = $dokumenName;
-        }
+    if ($dokumen && $dokumen->isValid() && !$dokumen->hasMoved()) {
+      $uploadPath = WRITEPATH . 'uploads/dokumen/';
+      if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
+      }
 
-        $response = $api->updateStandar($id, $data);
-
-        if (!$response || isset($response['error'])) {
-                echo "<pre>";
-                echo "DATA YANG DIKIRIM:\n";
-                print_r([
-                    'id_parent' => $parent,
-                    'nama' => $nama,
-                    'dokumen' => $dokumenName,
-                    'is_aktif' => $isAktif
-                ]);
-                echo "\nRESPON DARI API:\n";
-                print_r($response);
-                echo "</pre>";
-                exit;
-            }
-
-
-        if (isset($response['error'])) {
-            session()->setFlashdata('error', 'Gagal memperbarui data: ' . $response['error']);
-            return redirect()->to(base_url("public/audit/input-standar/edit/$id"));
-        }
-
-        session()->setFlashdata('success', 'Data berhasil diperbarui!');
-        return redirect()->to(base_url('public/audit/standar'));
+      $dokumenName = $dokumen->getClientName();
+      $dokumen->move($uploadPath, $dokumenName);
     }
 
-    public function download($fileName)
-    {
-        $filePath = WRITEPATH . 'uploads/dokumen/' . $fileName;
+    // Data yang dikirim ke API
+    $data = [
+      'nama' => $nama,
+      'is_aktif' => $isAktif,
+      'id_parent' => $parent,
+    ];
 
-        if (file_exists($filePath)) {
-            return $this->response->download($filePath, null)->setFileName($fileName);
-        }
-
-        return redirect()->to(base_url('public/audit/standar'))->with('error', 'File tidak ditemukan!');
+    if ($dokumenName) {
+      $data['dokumen'] = $dokumenName;
     }
+
+    $response = $api->updateStandar($id, $data);
+
+    if (!$response || isset($response['error'])) {
+      echo "<pre>";
+      echo "DATA YANG DIKIRIM:\n";
+      print_r([
+        'id_parent' => $parent,
+        'nama' => $nama,
+        'dokumen' => $dokumenName,
+        'is_aktif' => $isAktif
+      ]);
+      echo "\nRESPON DARI API:\n";
+      print_r($response);
+      echo "</pre>";
+      exit;
+    }
+
+
+    if (isset($response['error'])) {
+      session()->setFlashdata('error', 'Gagal memperbarui data: ' . $response['error']);
+      return redirect()->to(base_url("public/audit/input-standar/edit/$id"));
+    }
+
+    session()->setFlashdata('success', 'Data berhasil diperbarui!');
+    return redirect()->to(base_url('public/audit/standar'));
+  }
+
+  public function download($fileName)
+  {
+    $filePath = WRITEPATH . 'uploads/dokumen/' . $fileName;
+
+    if (file_exists($filePath)) {
+      return $this->response->download($filePath, null)->setFileName($fileName);
+    }
+
+    return redirect()->to(base_url('public/audit/standar'))->with('error', 'File tidak ditemukan!');
+  }
 
 }
 ?>
