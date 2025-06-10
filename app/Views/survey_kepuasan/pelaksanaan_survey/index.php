@@ -77,8 +77,32 @@
                             <?php endforeach; ?>
                           </select>
                         </div>
+                        <label for="tanggal_mulai" class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai</label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                          <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+                        </div>
+                        <label for="tanggal_selesai" class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai</label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                          <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
+                        </div>
+                        <label for="deskripsi_survey" class="col-form-label col-lg-3 col-sm-12">Deskripsi</label>
+                        <div class="col-lg-9 col-md-9 col-sm-12">
+                          <textarea class="form-control" id="deskripsi_survey" name="deskripsi_survey"
+                            required></textarea>
+                        </div>
                       </div>
                     </div>
+                    <script>
+                      document.getElementById("id_periode").addEventListener("change", function () {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const tahun = selectedOption.textContent.trim();
+                        document.getElementById("tanggal_mulai").setAttribute("min", tahun + "-01-01");
+                        document.getElementById("tanggal_mulai").setAttribute("max", tahun + "-12-31");
+                        document.getElementById("tanggal_selesai").setAttribute("min", tahun + "-01-01");
+                        document.getElementById("tanggal_selesai").setAttribute("max", tahun + "-12-31");
+                      });
+                      document.getElementById("id_periode").dispatchEvent(new Event("change"));
+                    </script>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                       <input type="submit" class="btn btn-primary" value="Tambah">

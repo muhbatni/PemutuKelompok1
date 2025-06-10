@@ -55,14 +55,14 @@
                     <table class="table table-bordered table-hover table-checkable">
                       <thead>
                         <tr>
-                          <th>ID Pengisi</th>
+                          <!-- <th>ID Pengisi</th> -->
                           <th>Jawaban</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($data['jawaban'] as $jawaban): ?>
                           <tr>
-                            <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['id_pengisi']) ?></td>
+                            <!-- <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['id_pengisi']) ?></td> -->
                             <td style="max-width: 100px; word-break: break-word;"><?php echo esc($jawaban['teks']) ?></td>
                           </tr>
                         <?php endforeach; ?>

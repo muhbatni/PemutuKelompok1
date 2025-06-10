@@ -334,13 +334,21 @@ class Survey extends BaseController
       if ($isExist) {
         throw new Exception("Pelaksanaan survey sudah ada pada periode ini!");
       }
-      $data = $database->table('s_pelaksanaan_survey s')
-        ->select("s.id_survey, s.id_periode, s.deskripsi AS deskripsi_survey, s.tanggal_mulai, s.tanggal_selesai")
-        ->where('id_survey', $idSurvey)->get()->getRowArray();
-      if (!$data) {
+      $survey = $this->surveyModel->find($idSurvey);
+      // $data = $database->table('s_pelaksanaan_survey s')
+      //   ->select("s.id_survey, s.id_periode, s.deskripsi AS deskripsi_survey, s.tanggal_mulai, s.tanggal_selesai")
+      //   ->where('id_survey', $idSurvey)->get()->getRowArray();
+      if (!$survey) {
         throw new Exception("Survey tidak ditemukan!");
       }
       $data['id_periode'] = $idPeriode;
+      $data['id_survey'] = $idSurvey;
+      $data['tanggal_mulai'] = $this->request->getPost('tanggal_mulai');
+      $data['tanggal_selesai'] = $this->request->getPost('tanggal_selesai');
+      $data['deskripsi_survey'] = $this->request->getPost('deskripsi_survey');
+      if (empty($data['tanggal_mulai']) || empty($data['tanggal_selesai'])) {
+        throw new Exception("Tanggal mulai dan selesai tidak boleh kosong!");
+      }
       $this->createPelaksanaanSurvey($database, $data);
       $database->close();
       return redirectWithMessage('pelaksanaan-survey', 'success', 'Pelaksanaan survey berhasil dibuat!');
