@@ -65,19 +65,7 @@
               <?php endif; ?>
             </div>
           </div>
-          <div class="form-group m-form__group row">
-            <label for="id_periode" class="col-form-label col-lg-3 col-sm-12">Pilih Periode<span
-                style="color: red">*</span></label>
-            <div class="col-lg-7 col-md-7 col-sm-12">
-              <select class="form-control" id="id_periode" name="id_periode" required>
-                <?php foreach ($periode as $p): ?>
-                  <option value="<?= $p['id']; ?>" <?= isset($pelaksanaan_survey['id_periode']) && ($pelaksanaan_survey['id_periode'] == $p['id']) ? 'selected' : '' ?>>
-                    <?= $p['tahun']; ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-          </div>
+
           <div class="form-group m-form__group row">
             <label for="id_kriteria" class="col-form-label col-lg-3 col-sm-12">Pilih Kriteria<span
                 style="color: red">*</span></label>
@@ -89,30 +77,6 @@
                   </option>
                 <?php endforeach; ?>
               </select>
-            </div>
-          </div>
-          <div class="form-group m-form__group row">
-            <label class="col-form-label col-lg-3 col-sm-12">Tanggal Mulai<span style="color: red">*</span></label>
-            <div class="col-lg-7 col-md-7 col-sm-12">
-              <input type="date" class="form-control" name="tanggal_mulai" required
-                value="<?= isset($old['tanggal_mulai']) ? $old['tanggal_mulai'] : $pelaksanaan_survey['tanggal_mulai'] ?>">
-            </div>
-          </div>
-          <div class="form-group m-form__group row">
-            <label class="col-form-label col-lg-3 col-sm-12">Tanggal Selesai<span style="color: red">*</span></label>
-            <div class="col-lg-7 col-md-7 col-sm-12">
-              <input type="date" class="form-control" name="tanggal_selesai" required
-                value="<?= isset($old['tanggal_selesai']) ? $old['tanggal_selesai'] : $pelaksanaan_survey['tanggal_selesai'] ?>">
-              <?php if (isset($errors['tanggal_selesai'])): ?>
-                <span class="m-form__help text-danger"><?= esc($errors['tanggal_selesai']) ?></span>
-              <?php endif; ?>
-            </div>
-          </div>
-          <div class="form-group m-form__group row">
-            <label class="col-form-label col-lg-3 col-sm-12">Deskripsi<span style="color: red">*</span></label>
-            <div class="col-lg-7 col-md-7 col-sm-12">
-              <textarea class="form-control" id="deskripsi" name="deskripsi_survey" rows="3"
-                required><?= isset($old['deskripsi_survey']) ? $old['deskripsi_survey'] : $pelaksanaan_survey['deskripsi'] ?></textarea>
             </div>
           </div>
           <div class="form-group m-form__group row">
@@ -185,7 +149,10 @@
                         </div>
                       </div>
                     </div>
-                  <?php endforeach; else: ?>
+                    <?php
+                  endforeach;
+                endif;
+                if (isset($pertanyaan)): ?>
                   <?php foreach ($pertanyaan as $p): ?>
                     <div class="col-lg-12 portlet-template">
                       <div class="m-portlet m-portlet--mobile m-portlet--sortable m-portlet--bordered" style="">
@@ -243,7 +210,9 @@
                         </div>
                       </div>
                     </div>
-                  <?php endforeach; endif; ?>
+                    <?php
+                  endforeach;
+                endif; ?>
               </div>
               <div class="form-group row">
                 <div class="col-lg-4">

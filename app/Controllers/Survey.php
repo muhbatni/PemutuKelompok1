@@ -58,6 +58,7 @@ class Survey extends BaseController
   {
     $data = $this->surveyModel->getPaginatedSurveys(10);
     $data['periode'] = $this->periodeModel->orderBy('id', 'asc')->findAll();
+    $data['kriteria'] = $this->kriteriaAkreditasiData;
     echo view('layouts/header.php', ["title" => "Manajemen Survey"]);
     echo view('survey_kepuasan/manajemen_survey/index.php', $data);
     echo view('layouts/footer.php');
@@ -130,7 +131,6 @@ class Survey extends BaseController
   private function editPelaksanaanSurvey($database, $data)
   {
     $result = editSurveydata($database, 's_pelaksanaan_survey', [
-      // 'id_survey' => $data['id_survey'],
       'tanggal_mulai' => $data['tanggal_mulai'],
       'tanggal_selesai' => $data['tanggal_selesai'],
       'deskripsi' => $data['deskripsi_survey'],
@@ -162,7 +162,7 @@ class Survey extends BaseController
       echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
       echo view(
         "survey_kepuasan/manajemen_survey/create_survey.php",
-        ['errors' => $validation->getErrors(), 'old' => $data, 'periode' => $this->periodeData]
+        ['errors' => $validation->getErrors(), 'old' => $data, 'periode' => $this->periodeData, 'kriteria' => $this->kriteriaAkreditasiData]
       );
       echo view("layouts/footer.php");
       return null;
@@ -177,7 +177,6 @@ class Survey extends BaseController
     $database->transStart();
     try {
       $data['id_survey'] = $this->createSurvey($database, $data);
-      $this->createPelaksanaanSurvey($database, $data);
       $this->createPertanyaanSurvey($database, $data);
       $database->transCommit();
       $database->close();
@@ -250,7 +249,7 @@ class Survey extends BaseController
       echo view("layouts/header.php", ["title" => "Manajemen Survey"]);
       echo view(
         "survey_kepuasan/manajemen_survey/edit_survey.php",
-        ['errors' => $validation->getErrors(), 'old' => $data, 'idSurvey' => $idSurvey, 'periode' => $this->periodeData]
+        ['errors' => $validation->getErrors(), 'old' => $data, 'idSurvey' => $idSurvey, 'periode' => $this->periodeData, 'kriteria' => $this->kriteriaAkreditasiData]
       );
       echo view("layouts/footer.php");
       return null;

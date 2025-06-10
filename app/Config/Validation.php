@@ -90,11 +90,11 @@ class Validation extends BaseConfig
   public array $create_surveys = [
     'kode_survey' => 'required|is_unique[s_survey.kode]|max_length[10]',
     'nama_survey' => 'required|min_length[5]|max_length[30]',
-    'deskripsi_survey' => 'required',
+    // 'deskripsi_survey' => 'required',
     'status_survey' => 'required',
     'dokumen_pendukung_survey' => 'permit_empty',
-    'tanggal_mulai' => 'required',
-    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
+    // 'tanggal_mulai' => 'required',
+    // 'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
     'pertanyaan.*' => 'required',
     'jenis.*' => 'required|in_list[1,2]',
   ];
@@ -113,13 +113,13 @@ class Validation extends BaseConfig
     'status_survey' => [
       'required' => 'Status survey harus diisi.',
     ],
-    'tanggal_mulai' => [
-      'required' => 'Tanggal mulai harus diisi.'
-    ],
-    'tanggal_selesai' => [
-      'required_with' => 'Tanggal mulai juga harus diisi.',
-      'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
-    ],
+    // 'tanggal_mulai' => [
+    //   'required' => 'Tanggal mulai harus diisi.'
+    // ],
+    // 'tanggal_selesai' => [
+    //   'required_with' => 'Tanggal mulai juga harus diisi.',
+    //   'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
+    // ],
     'pertanyaan.*' => [
       'required' => 'Pertanyaan ke-{index} harus diisi.'
     ],
@@ -132,11 +132,11 @@ class Validation extends BaseConfig
   public array $edit_surveys = [
     'kode_survey' => 'required|max_length[10]',
     'nama_survey' => 'required|min_length[5]|max_length[30]',
-    'deskripsi_survey' => 'required',
+    // 'deskripsi_survey' => 'required',
     'status_survey' => 'required',
     'dokumen_pendukung_survey' => 'permit_empty',
-    'tanggal_mulai' => 'required',
-    'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
+    // 'tanggal_mulai' => 'required',
+    // 'tanggal_selesai' => 'required_with[tanggal_mulai]|startEnd[tanggal_mulai,tanggal_selesai]',
     'pertanyaan.*' => 'required',
     'jenis.*' => 'required|in_list[1,2]',
   ];
@@ -154,13 +154,13 @@ class Validation extends BaseConfig
     'status_survey' => [
       'required' => 'Status survey harus diisi.',
     ],
-    'tanggal_mulai' => [
-      'required' => 'Tanggal mulai harus diisi.'
-    ],
-    'tanggal_selesai' => [
-      'required_with' => 'Tanggal mulai juga harus diisi.',
-      'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
-    ],
+    // 'tanggal_mulai' => [
+    //   'required' => 'Tanggal mulai harus diisi.'
+    // ],
+    // 'tanggal_selesai' => [
+    //   'required_with' => 'Tanggal mulai juga harus diisi.',
+    //   'startEnd' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.'
+    // ],
     'pertanyaan.*' => [
       'required' => 'Pertanyaan ke-{index} harus diisi.'
     ],
