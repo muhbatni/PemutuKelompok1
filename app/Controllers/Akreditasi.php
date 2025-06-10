@@ -29,6 +29,9 @@ class Akreditasi extends BaseController
     $editData = $akreditasiModel->find($id);
     if ($editData) {
       $data['editData'] = $editData;
+      if (!empty($editData['file'])) {
+        $data['uploadedFile'] = $editData['file'];
+    }
     }
 
     // Ambil nama unit dan lembaga berdasarkan ID yang diambil
@@ -157,5 +160,4 @@ class Akreditasi extends BaseController
     }
   }
 }
-
 ?>

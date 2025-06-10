@@ -18,8 +18,7 @@ class Lembaga extends BaseController
         $model = new LembagaModel();
         $id = $this->request->getGet('id');
         $editData = null;
-    
-        // Ambil data jika mode edit
+            // Ambil data jika mode edit
         if ($id) {
             $editData = $model->find($id);
             if (!$editData) {
@@ -27,10 +26,10 @@ class Lembaga extends BaseController
             }
         }
     
-        // Jika form disubmit
+        // Jika form disubmit/update
         if ($this->request->getMethod() === 'post') {
             $data = [
-                'nama'      => $this->request->getPost('nama'),
+                'nama' => $this->request->getPost('nama'),
                 'deskripsi' => $this->request->getPost('deskripsi'),
             ];
     
@@ -41,20 +40,19 @@ class Lembaga extends BaseController
                 $model->save($data);
                 session()->setFlashdata('success', 'Data berhasil ditambahkan.');
             }
-    
-            return redirect()->to(base_url('akreditasi/lembaga'));
+
+            return redirect()->to(site_url('akreditasi/lembaga'));
         }
-    
-        // Tampilkan form
+
         $data = [
-            'title'     => $id ? 'Edit Lembaga Akreditasi' : 'Tambah Lembaga Akreditasi',
-            'editData'  => $editData, // INI YANG DIBUTUHKAN OLEH VIEW
+            'title' => $id ? 'Edit Lembaga Akreditasi' : 'Tambah Lembaga Akreditasi',
+            'editData' => $editData,
         ];
     
         echo view('layouts/header', $data);
         echo view('akreditasi/lembaga/form', $data);
         echo view('layouts/footer');
-    }    
+    }
     
     public function index()
     {
@@ -62,7 +60,7 @@ class Lembaga extends BaseController
         $idEdit = $this->request->getGet('edit');
         $dataEdit = null;
 
-        // Proses simpan / update
+        // Proses simpan
         if ($this->request->getMethod() === 'POST') {
             $id = $this->request->getPost('id');
 
@@ -78,8 +76,8 @@ class Lembaga extends BaseController
                 $model->save($dataInput);
                 session()->setFlashdata('success', 'Data berhasil disimpan!');
             }
-
-            return redirect()->to(base_url('public/akreditasi/lembaga'));
+            // Redirect ke halaman lembaga
+            return redirect()->to(site_url('akreditasi/lembaga'));
         }
 
         // Proses hapus
@@ -89,14 +87,9 @@ class Lembaga extends BaseController
             return redirect()->to(base_url('public/akreditasi/lembaga'));
         }
 
-        // Ambil data untuk form edit jika ada
-        if ($idEdit) {
-            $dataEdit = $model->find($idEdit);
-        }
-
         $data = [
             "title" => "Formulir Lembaga Akreditasi",
-            "lembaga" => $model->orderBy('id','ASC')->findAll(),
+            "lembaga" => $model->orderBy('id', 'ASC')->findAll(),
             "editData" => $dataEdit,
         ];
 

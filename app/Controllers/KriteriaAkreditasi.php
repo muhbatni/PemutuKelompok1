@@ -31,6 +31,7 @@ class KriteriaAkreditasi extends BaseController
             'title' => 'Kriteria Akreditasi',
             'kriteria' => $this->kriteriaModel->getKriteriaWithLembaga(),
             'lembagas' => $this->lembagaModel->getLembagas(),
+            'lembagaList' => $this->kriteriaModel->getAllLembaga(),
         ];
 
         return view('layouts/header', $data)

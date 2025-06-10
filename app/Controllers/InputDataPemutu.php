@@ -30,6 +30,7 @@ class InputDataPemutu extends BaseController
       'periodes' => $this->periodeModel->getPeriodes(),
       'validation' => \Config\Services::validation(),
       'data_pemutu' => $this->unitpemutumodel->getPemutuData(),
+      'lembagas' => $this->lembagaModel->getLembagas(),
       'editData' => null
     ];
 
@@ -88,29 +89,29 @@ class InputDataPemutu extends BaseController
           ->with('pesan', '<div class="alert alert-danger">Data untuk unit dan periode ini sudah ada.</div>');
       }
 
-      $data = [
-        'id_unit' => $this->request->getPost('id_unit'),
-        'id_periode' => $this->request->getPost('id_periode'),
-        'id_lembaga' => $this->request->getPost('id_lembaga'),
-        'status' => $this->request->getPost('status'),
-        'created_at' => date('Y-m-d H:i:s'),
-        'updated_at' => date('Y-m-d H:i:s')
-      ];
+       $data = [
+            'id_unit' => $this->request->getPost('id_unit'),
+            'id_periode' => $this->request->getPost('id_periode'),
+            'id_lembaga' => $this->request->getPost('id_lembaga'),
+            'status' => $this->request->getPost('status'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
 
-      if ($this->unitpemutumodel->insert($data)) {
-        return redirect()->to('/akreditasi/input-data-pemutu')
-          ->with('pesan', '<div class="alert alert-success">✅ Data berhasil disimpan.</div>');
-      } else {
-        return redirect()->back()
-          ->withInput()
-          ->with('pesan', '<div class="alert alert-danger">Gagal menyimpan data.</div>');
-      }
+        $inserted = $this->unitpemutumodel->insert($data);
+        
+        if ($inserted) {
+            return redirect()->to('/akreditasi/input-data-pemutu')
+                ->with('pesan', '<div class="alert alert-success">✅ Data berhasil disimpan.</div>');
+        }
+        
+        throw new \Exception('Gagal menyimpan data');
 
     } catch (\Exception $e) {
-      log_message('error', 'Error saving data: ' . $e->getMessage());
-      return redirect()->back()
-        ->withInput()
-        ->with('pesan', '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan data.</div>');
+        log_message('error', 'Error saving data: ' . $e->getMessage());
+        return redirect()->back()
+            ->withInput()
+            ->with('pesan', '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan data.</div>');
     }
   }
 

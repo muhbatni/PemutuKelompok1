@@ -22,20 +22,21 @@ class UnitPemutuModel extends Model
     {
         $result = $this->db->table($this->table)
             ->select('
-            p_unit_pemutu.id,
-            m_unit.nama as unit,
-            m_periode.tahun as periode,
-            m_lembaga_akreditasi.nama as lembaga,
-            p_unit_pemutu.status as status_awal,
-            p_unit_pemutu.created_at,
-            (SELECT COUNT(isi.id) 
-             FROM p_isian_pemutu isi 
-             WHERE isi.id_unitpemutu = p_unit_pemutu.id) as total_isian,
-            (SELECT COUNT(isi.id) 
-             FROM p_isian_pemutu isi 
-             WHERE isi.id_unitpemutu = p_unit_pemutu.id 
-             AND isi.status = 1) as jumlah_lolos
-        ')
+        p_unit_pemutu.id,
+        p_unit_pemutu.id_lembaga,
+        m_unit.nama as unit,
+        m_periode.tahun as periode,
+        m_lembaga_akreditasi.nama as lembaga,
+        p_unit_pemutu.status as status_awal,
+        p_unit_pemutu.created_at,
+        (SELECT COUNT(isi.id) 
+         FROM p_isian_pemutu isi 
+         WHERE isi.id_unitpemutu = p_unit_pemutu.id) as total_isian,
+        (SELECT COUNT(isi.id) 
+         FROM p_isian_pemutu isi 
+         WHERE isi.id_unitpemutu = p_unit_pemutu.id 
+         AND isi.status = 1) as jumlah_lolos
+    ')
             ->join('m_unit', 'm_unit.id = p_unit_pemutu.id_unit')
             ->join('m_periode', 'm_periode.id = p_unit_pemutu.id_periode')
             ->join('m_lembaga_akreditasi', 'm_lembaga_akreditasi.id = p_unit_pemutu.id_lembaga')
@@ -44,7 +45,10 @@ class UnitPemutuModel extends Model
             ->getResultArray();
 
         foreach ($result as &$row) {
-            $statusData = $this->calculateStatusBasedOnIsian($row); // Perhatikan huruf besar 'I'
+            // Hitung total instrumen untuk lembaga ini
+            $row['total_instrumen'] = $this->countInstrumenByLembaga($row['id_lembaga']);
+
+            $statusData = $this->calculateStatusBasedOnIsian($row);
             $row['status'] = $statusData['status'];
             $row['status_class'] = $statusData['status_class'];
             $row['status_value'] = $statusData['status_value'];
@@ -103,11 +107,38 @@ class UnitPemutuModel extends Model
 
         $result = $builder->get()->getRowArray();
 
-        // Pastikan mengembalikan array dengan nilai default jika tidak ada data
         return [
             'total_isian' => $result['total_isian'] ?? 0,
             'jumlah_lolos' => $result['jumlah_lolos'] ?? 0
         ];
+    }
+
+    private function countInstrumenByLembaga($id_lembaga)
+    {
+        try {
+            return $this->db->table('m_instrumen_pemutu')  
+                ->where('id_lembaga', $id_lembaga)
+                ->countAllResults();
+        } catch (\Exception $e) {
+            log_message('error', 'Error counting instrumen: ' . $e->getMessage());
+            return 0;
+        }
+    }
+
+    private function countLembagaInstrumen($id_lembaga)
+    {
+        try {
+            // Hitung jumlah instrumen yang memiliki lembaga yang sama
+            $count = $this->db->table('m_instrumen_pemutu')
+                ->where('id_lembaga', $id_lembaga)
+                ->countAllResults();
+
+            log_message('debug', "Jumlah lembaga yang sama: $count");
+            return $count;
+        } catch (\Exception $e) {
+            log_message('error', 'Error counting lembaga: ' . $e->getMessage());
+            return 0;
+        }
     }
 
     private function calculateStatusBasedOnIsian($data)
@@ -115,25 +146,37 @@ class UnitPemutuModel extends Model
         $total = (int) $data['total_isian'];
         $lolos = (int) $data['jumlah_lolos'];
 
-        if ($total === 0) {
+        // Hitung jumlah instrumen dengan lembaga yang sama
+        $jumlah_lembaga_sama = $this->db->table('p_instrumen_pemutu')
+            ->where('id_lembaga', $data['id_lembaga'])
+            ->countAllResults();
+
+        if ($jumlah_lembaga_sama === 0) {
             return [
                 'status' => '-',
-                'status_class' => 'text-primary', // Ubah menjadi text-primary untuk warna biru
+                'status_class' => 'text-primary',
                 'status_value' => 0
             ];
         }
 
-        $percentage = round(($lolos / $total) * 100);
+        // Hitung persentase berdasarkan jumlah lembaga yang sama
+        $percentage = min(round(($lolos / $jumlah_lembaga_sama) * 100), 100);
 
         if ($percentage > 50) {
             return [
-                'status' => "Lolos ($percentage%)",
+                'status' => "Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
                 'status_class' => 'text-success',
                 'status_value' => 1
             ];
+        } elseif ($percentage == 50) {
+            return [
+                'status' => "Tidak Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
+                'status_class' => 'text-danger',
+                'status_value' => 0
+            ];
         } else {
             return [
-                'status' => "Tidak Lolos ($percentage%)",
+                'status' => "Tidak Lolos ($percentage% - $lolos/$jumlah_lembaga_sama)",
                 'status_class' => 'text-danger',
                 'status_value' => 0
             ];
@@ -144,16 +187,17 @@ class UnitPemutuModel extends Model
     {
         $result = $this->db->table($this->table)
             ->select('
-            p_unit_pemutu.id,
-            p_unit_pemutu.status as status_awal,
-            (SELECT COUNT(isi.id) 
-             FROM p_isian_pemutu isi 
-             WHERE isi.id_unitpemutu = p_unit_pemutu.id) as total_isian,
-            (SELECT COUNT(isi.id) 
-             FROM p_isian_pemutu isi 
-             WHERE isi.id_unitpemutu = p_unit_pemutu.id 
-             AND isi.status = 1) as jumlah_lolos
-        ')
+        p_unit_pemutu.id,
+        p_unit_pemutu.id_lembaga,
+        p_unit_pemutu.status as status_awal,
+        (SELECT COUNT(isi.id) 
+         FROM p_isian_pemutu isi 
+         WHERE isi.id_unitpemutu = p_unit_pemutu.id) as total_isian,
+        (SELECT COUNT(isi.id) 
+         FROM p_isian_pemutu isi 
+         WHERE isi.id_unitpemutu = p_unit_pemutu.id 
+         AND isi.status = 1) as jumlah_lolos
+    ')
             ->where('p_unit_pemutu.id', $id)
             ->get()
             ->getRowArray();
@@ -161,6 +205,9 @@ class UnitPemutuModel extends Model
         if (!$result) {
             return null;
         }
+
+        // Hitung total instrumen 
+        $result['total_instrumen'] = $this->countInstrumenByLembaga($result['id_lembaga']);
 
         return $this->calculateStatusBasedOnIsian($result);
     }

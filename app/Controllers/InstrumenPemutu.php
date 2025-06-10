@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\InstrumenPemutuModel;
+use App\Models\KriteriaAkreditasiModel;
 use App\Models\LembagaAkreditasiModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
@@ -14,6 +15,7 @@ class InstrumenPemutu extends BaseController
     {
         $this->instrumenModel = new InstrumenPemutuModel();
         $this->lembagaModel   = new LembagaAkreditasiModel();
+        $this->kriteriaModel   = new KriteriaAkreditasiModel();
     }
 
     public function index()

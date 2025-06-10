@@ -44,9 +44,18 @@
 
         <div class="form-group m-form__group">
           <label for="dokumen">Unggah Dokumen</label>
-          <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx" >
+          <input type="file" class="form-control m-input" name="dokumen" id="dokumen" accept=".pdf,.doc,.docx" onchange="updateFileName()">
+          <?php if ($isEdit && !empty($edit['dokumen'])): ?>
+              <div class="mt-2">
+                  <strong>File yang diupload: </strong> <?= $edit['dokumen'] ?> 
+                  <br>
+                  <span>
+                      (Abaikan jika tidak ingin mengganti file)
+                  </span>
+              </div>
+          <?php endif; ?>
           <span class="m-form__help">
-            File yang diperbolehkan: PDF, DOC, DOCX <?= $isEdit && !empty($edit['dokumen']) ? '(Abaikan jika tidak ingin mengganti)' : '' ?>
+              File yang diperbolehkan: PDF, DOC, DOCX
           </span>
         </div>
 
