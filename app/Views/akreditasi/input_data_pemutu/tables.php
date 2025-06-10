@@ -57,14 +57,16 @@
                 <td><?= htmlspecialchars($data['periode']) ?></td>
                 <td><?= htmlspecialchars($data['lembaga']) ?></td>
                 <td>
-                  <span class="status-badge <?= $data['status'] == 0 ? 'status-aktif' : 'status-nonaktif' ?>">
-                    <?= $data['status'] == 0 ? 'Aktif' : 'Nonaktif' ?>
+                  <span class="<?= $data['status_class'] ?>">
+                    <?= $data['status'] ?>
                   </span>
                 </td>
                 <td><?= date('d/m/Y H:i', strtotime($data['created_at'])) ?></td>
                 <td>
                   <a href="<?= base_url('public/akreditasi/input-data-pemutu/edit/' . $data['id']) ?>"
-                    class="btn btn-sm btn-warning">Edit</a>
+                    class="btn btn-sm btn-warning">
+                    Edit
+                  </a>
                   <a href="<?= base_url('public/akreditasi/input-data-pemutu/delete/' . $data['id']) ?>"
                     class="btn btn-sm btn-danger"
                     onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
@@ -105,12 +107,15 @@
 </div>
 
 <script>
-  // Fungsi untuk filter data
+  // Fungsi untuk filter data berdasarkan periode
   $(document).ready(function () {
     $('#generalSearch').on('keyup', function () {
-      let value = $(this).val().toLowerCase();
-      $('#html_table tbody tr').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      let searchValue = $(this).val().toLowerCase();
+      $('#html_table tbody tr').each(function () {
+        // Ambil nilai dari kolom periode (kolom ke-3)
+        let periodeValue = $(this).find('td:eq(2)').text().toLowerCase();
+        // Toggle tampilan baris berdasarkan kecocokan dengan periode
+        $(this).toggle(periodeValue.includes(searchValue));
       });
     });
   });

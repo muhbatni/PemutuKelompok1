@@ -63,7 +63,7 @@
                 <td><?= esc($row['deskripsi']) ?></td>
                 <td class="text-center">
                   <?php if (!empty($row['dokumen'])): ?>
-                    <a href="<?= base_url('public/dokumen-penetapan/download/' . urlencode($row['dokumen'])) ?>" class="btn btn-sm btn-primary">
+                    <a href="<?= site_url('akreditasi/dokumen-penetapan/download/' . urlencode($row['dokumen'])) ?>" class="btn btn-sm btn-primary">
                       <i class="fa fa-download"></i> Download
                     </a>
                   <?php else: ?>
