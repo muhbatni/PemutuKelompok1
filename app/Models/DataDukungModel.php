@@ -94,14 +94,18 @@ class DataDukungModel extends Model
             ->getFirstRow('array');
     }
 
-    public function getStandarList()
+    public function getStandarList($pelaksanaanId = null)
     {
-        return $this->db->table('a_pelaksanaan_audit pa')
+        $builder = $this->db->table('a_pelaksanaan_audit pa')
             ->select('s.id, s.nama as nama_standar')
             ->join('a_standar_audit sa', 'pa.id_standar_audit = sa.id', 'LEFT')
-            ->join('a_pernyataan p', 'sa.id = p.id_standar', 'LEFT')
-            ->join('a_standar s', 'p.id_standar = s.id', 'LEFT')
-            ->where('pa.id IS NOT NULL')
+            ->join('a_standar s', 'sa.id_standar = s.id', 'LEFT');
+
+        if ($pelaksanaanId) {
+            $builder->where('pa.id', $pelaksanaanId);
+        }
+
+        return $builder->groupBy('s.id, s.nama')
             ->get()
             ->getResultArray();
     }
