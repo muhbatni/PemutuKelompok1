@@ -83,14 +83,6 @@ class InputDataDukung extends BaseController
         return $this->response->setJSON($info);
     }
 
-    //Dropdown for indikator by pernyataan
-    public function getPernyataanInfo($id)
-    {
-        $model = new DataDukungModel();
-        $info = $model->getPernyataanInfo($id);
-        return $this->response->setJSON($info);
-    }
-
     //Dropdown for pernyataan by standar
     public function getPernyataanByStandar($standarId)
     {

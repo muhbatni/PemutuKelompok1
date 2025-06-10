@@ -51,41 +51,65 @@
                     <!-- Standar dropdown -->
                     <div class="form-group m-form__group">
                         <label for="id_standar">Standar</label>
-                        <select class="form-control m-input" name="id_standar" id="id_standar" required>
-                            <option value="">Pilih Standar</option>
-                            <?php foreach ($standars as $standar): ?>
-                                <option value="<?= $standar['id'] ?>"
-                                    <?= (isset($dataDukung) && $dataDukung['id_standar'] == $standar['id']) ? 'selected' : '' ?>>
-                                    <?= $standar['nama_standar'] ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <?php if (isset($dataDukung)): ?>
+                            <?php
+                                // Cari nama standar yang sesuai
+                                $nama_standar = '';
+                                foreach ($standars as $standar) {
+                                    if ($standar['id'] == $dataDukung['id_standar']) {
+                                        $nama_standar = $standar['nama_standar'];
+                                        break;
+                                    }
+                                }
+                            ?>
+                            <input type="hidden" name="id_standar" value="<?= $dataDukung['id_standar'] ?>">
+                            <input type="text" class="form-control m-input" value="<?= htmlspecialchars($nama_standar) ?>" readonly>
+                        <?php else: ?>
+                            <select class="form-control m-input" name="id_standar" id="id_standar" required>
+                                <option value="">Pilih Standar</option>
+                                <?php foreach ($standars as $standar): ?>
+                                    <option value="<?= $standar['id'] ?>"
+                                        <?= (isset($dataDukung) && $dataDukung['id_standar'] == $standar['id']) ? 'selected' : '' ?>>
+                                        <?= $standar['nama_standar'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Pernyataan dropdown -->
                     <div class="form-group m-form__group">
                         <label for="id_pernyataan">Pernyataan</label>
-                        <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan" required>
-                            <option value="">Pilih Pernyataan</option>
-                            <?php if (!empty($pernyataans)): ?>
-                                <?php foreach ($pernyataans as $pernyataan): ?>
-                                    <option value="<?= $pernyataan['id'] ?>"
-                                        <?= (isset($dataDukung) && $dataDukung['id_pernyataan'] == $pernyataan['id']) ? 'selected' : '' ?>>
-                                        <?= $pernyataan['pernyataan'] ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
+                        <?php if (isset($dataDukung)): ?>
+                            <?php
+                                // Cari nama pernyataan yang sesuai
+                                $nama_pernyataan = '';
+                                if (!empty($pernyataans)) {
+                                    foreach ($pernyataans as $pernyataan) {
+                                        if ($pernyataan['id'] == $dataDukung['id_pernyataan']) {
+                                            $nama_pernyataan = $pernyataan['pernyataan'];
+                                            break;
+                                        }
+                                    }
+                                }
+                            ?>
+                            <input type="hidden" name="id_pernyataan" value="<?= $dataDukung['id_pernyataan'] ?>">
+                            <input type="text" class="form-control m-input" value="<?= htmlspecialchars($nama_pernyataan) ?>" readonly>
+                        <?php else: ?>
+                            <select class="form-control m-input" name="id_pernyataan" id="id_pernyataan" required>
+                                <option value="">Pilih Pernyataan</option>
+                                <?php if (!empty($pernyataans)): ?>
+                                    <?php foreach ($pernyataans as $pernyataan): ?>
+                                        <option value="<?= $pernyataan['id'] ?>"
+                                            <?= (isset($dataDukung) && $dataDukung['id_pernyataan'] == $pernyataan['id']) ? 'selected' : '' ?>>
+                                            <?= $pernyataan['pernyataan'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        <?php endif; ?>
                     </div>
-
-                    <!-- Indikator display -->
-                    <div class="form-group m-form__group">
-                        <label>Indikator</label>
-                        <input type="text" class="form-control m-input" id="indikator" readonly
-                            value="<?= isset($dataDukung) ? $dataDukung['indikator'] : '' ?>">
-                    </div>
-
-
+                    
                     <!-- Deskripsi -->
                     <div class="form-group m-form__group">
                         <label for="deskripsi">Deskripsi</label>

@@ -84,7 +84,7 @@ class DataDukungModel extends Model
 
         return $result ? $result : ['unit_name' => ''];
     }
-    
+
     public function getPernyataanInfo($id)
     {
         return $this->db->table('a_pernyataan p')
@@ -96,11 +96,16 @@ class DataDukungModel extends Model
 
     public function getStandarList()
     {
-        return $this->db->table('a_standar')
-            ->select('id, nama as nama_standar')
+        return $this->db->table('a_pelaksanaan_audit pa')
+            ->select('s.id, s.nama as nama_standar')
+            ->join('a_standar_audit sa', 'pa.id_standar_audit = sa.id', 'LEFT')
+            ->join('a_pernyataan p', 'sa.id = p.id_standar', 'LEFT')
+            ->join('a_standar s', 'p.id_standar = s.id', 'LEFT')
+            ->where('pa.id IS NOT NULL')
             ->get()
             ->getResultArray();
     }
+
 
     public function getPernyataanByStandar($standarId)
     {
