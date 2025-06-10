@@ -89,4 +89,26 @@ class APIClient
     ];
     return self::updateStandar($id, $data);
   }
+
+  public static function createPelaksanaanSurvey($data)
+  {
+    $requiredFields = ['id_survey', 'id_periode', 'tanggal_mulai', 'tanggal_selesai'];
+    foreach ($requiredFields as $field) {
+      if (!isset($data[$field])) {
+        return ['error' => "Field '{$field}' is required"];
+      }
+    }
+
+    return self::request('post', '/pelaksanaan-survey', $data);
+  }
+
+  public static function getPelaksanaanSurvey()
+  {
+    return self::request('get', "/pelaksanaan-survey");
+  }
+
+  public static function deleteSurvey($id)
+  {
+    return self::request("delete", "/surveys/$id");
+  }
 }

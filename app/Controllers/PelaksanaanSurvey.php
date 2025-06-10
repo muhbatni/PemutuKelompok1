@@ -1,13 +1,11 @@
 <?php
 namespace App\Controllers;
 
+use App\Libraries\APIClient;
 use App\Models\SurveyModel;
 use App\Models\PeriodeModel;
 use App\Models\PelaksanaanSurveyModel;
-use \Config\Database;
 use Exception;
-use Throwable;
-use CodeIgniter\Exceptions\PageNotFoundException;
 
 class PelaksanaanSurvey extends BaseController
 {
@@ -33,7 +31,7 @@ class PelaksanaanSurvey extends BaseController
 
   public function getIndex()
   {
-    $data['pelaksanaan'] = $this->pelaksanaanSurveyModel->getPelaksanaanSurvey();
+    $data['pelaksanaan'] = APIClient::getPelaksanaanSurvey()['data'];
     $data['surveys'] = $this->surveyModel->findAll();
     $data['periode'] = $this->periodeData;
     echo view('layouts/header.php', ["title" => "Pelaksanaan Survey"]);

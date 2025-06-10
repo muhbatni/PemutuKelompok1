@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Libraries\APIClient;
 use App\Models\SurveyModel;
 use App\Models\IsiSurveyModel;
 use App\Models\PertanyaanSurveyModel;
@@ -196,9 +197,10 @@ class Survey extends BaseController
       return redirectWithMessage("survey", 'error', 'Survey tidak ditemukan');
     }
     $idSurvey = $params['id_survey'];
-    if (!$this->surveyModel->delete($idSurvey)) {
+    if (!APIClient::deleteSurvey($idSurvey)) {
       return redirect()->to(base_url('public/survey'))->with('error', 'Survey gagal dihapus!');
     }
+    ;
     return redirect()->to(base_url('public/survey'))->with('success', 'Survey berhasil dihapus!');
   }
 
@@ -335,9 +337,6 @@ class Survey extends BaseController
         throw new Exception("Pelaksanaan survey sudah ada pada periode ini!");
       }
       $survey = $this->surveyModel->find($idSurvey);
-      // $data = $database->table('s_pelaksanaan_survey s')
-      //   ->select("s.id_survey, s.id_periode, s.deskripsi AS deskripsi_survey, s.tanggal_mulai, s.tanggal_selesai")
-      //   ->where('id_survey', $idSurvey)->get()->getRowArray();
       if (!$survey) {
         throw new Exception("Survey tidak ditemukan!");
       }
@@ -345,11 +344,15 @@ class Survey extends BaseController
       $data['id_survey'] = $idSurvey;
       $data['tanggal_mulai'] = $this->request->getPost('tanggal_mulai');
       $data['tanggal_selesai'] = $this->request->getPost('tanggal_selesai');
-      $data['deskripsi_survey'] = $this->request->getPost('deskripsi_survey');
+      $data['deskripsi'] = $this->request->getPost('deskripsi_survey');
       if (empty($data['tanggal_mulai']) || empty($data['tanggal_selesai'])) {
         throw new Exception("Tanggal mulai dan selesai tidak boleh kosong!");
       }
-      $this->createPelaksanaanSurvey($database, $data);
+      if (!APIClient::createPelaksanaanSurvey($data)['success']) {
+        throw new Exception("Gagal membuat pelaksanaan survey!");
+      }
+
+      // $this->createPelaksanaanSurvey($database, $data);
       $database->close();
       return redirectWithMessage('pelaksanaan-survey', 'success', 'Pelaksanaan survey berhasil dibuat!');
     } catch (Throwable $exception) {

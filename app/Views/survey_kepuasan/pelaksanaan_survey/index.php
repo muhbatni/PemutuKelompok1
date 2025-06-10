@@ -164,7 +164,7 @@
                 </td>
                 <td>
                   <div class="w-5 text-center">
-                    <?php if ($pel['status'] === "t"): ?>
+                    <?php if ($pel['status']): ?>
                       <span class="m-badge m-badge--success w-24 m-badge--wide">Aktif</span>
                     <?php else: ?>
                       <span class="m-badge m-badge--danger w-24 m-badge--wide">Tidak Aktif</span>
