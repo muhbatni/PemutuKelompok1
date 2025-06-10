@@ -83,6 +83,13 @@ class InputDataDukung extends BaseController
         return $this->response->setJSON($info);
     }
 
+    public function getStandarByPelaksanaan($pelaksanaanId)
+    {
+        $model = new DataDukungModel();
+        $standars = $model->getStandarList($pelaksanaanId);
+        return $this->response->setJSON($standars);
+    }
+    
     //Dropdown for pernyataan by standar
     public function getPernyataanByStandar($standarId)
     {

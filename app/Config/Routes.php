@@ -84,6 +84,7 @@ $routes->group('audit', ['filter' => 'auth'], function ($routes) {
   $routes->get('pelaksanaan-audit/get-isian-audit-data/(:num)/(:num)', 'PelaksanaanAudit::getIsianAuditData/$1/$2');
   $routes->get('pelaksanaan-audit/getPernyataanByStandar/(:num)', 'PelaksanaanAudit::getPernyataanByStandar/$1');
   $routes->get('pelaksanaan-audit/getDetailPernyataan/(:num)', 'PelaksanaanAudit::getDetailPernyataan/$1');
+  $routes->get('get-standar-by-pelaksanaan/(:num)', 'InputDataDukung::getStandarByPelaksanaan/$1');
   $routes->post('pelaksanaan-audit/simpan', 'PelaksanaanAudit::simpan');
   $routes->post('pelaksanaan-audit/simpanunitauditor', 'PelaksanaanAudit::simpanunitauditor');
   $routes->get('data-dukung', [DataDukung::class, 'index']);

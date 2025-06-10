@@ -53,14 +53,14 @@
                         <label for="id_standar">Standar</label>
                         <?php if (isset($dataDukung)): ?>
                             <?php
-                                // Cari nama standar yang sesuai
-                                $nama_standar = '';
-                                foreach ($standars as $standar) {
-                                    if ($standar['id'] == $dataDukung['id_standar']) {
-                                        $nama_standar = $standar['nama_standar'];
-                                        break;
-                                    }
+                            // Cari nama standar yang sesuai
+                            $nama_standar = '';
+                            foreach ($standars as $standar) {
+                                if ($standar['id'] == $dataDukung['id_standar']) {
+                                    $nama_standar = $standar['nama_standar'];
+                                    break;
                                 }
+                            }
                             ?>
                             <input type="hidden" name="id_standar" value="<?= $dataDukung['id_standar'] ?>">
                             <input type="text" class="form-control m-input" value="<?= htmlspecialchars($nama_standar) ?>" readonly>
@@ -82,16 +82,16 @@
                         <label for="id_pernyataan">Pernyataan</label>
                         <?php if (isset($dataDukung)): ?>
                             <?php
-                                // Cari nama pernyataan yang sesuai
-                                $nama_pernyataan = '';
-                                if (!empty($pernyataans)) {
-                                    foreach ($pernyataans as $pernyataan) {
-                                        if ($pernyataan['id'] == $dataDukung['id_pernyataan']) {
-                                            $nama_pernyataan = $pernyataan['pernyataan'];
-                                            break;
-                                        }
+                            // Cari nama pernyataan yang sesuai
+                            $nama_pernyataan = '';
+                            if (!empty($pernyataans)) {
+                                foreach ($pernyataans as $pernyataan) {
+                                    if ($pernyataan['id'] == $dataDukung['id_pernyataan']) {
+                                        $nama_pernyataan = $pernyataan['pernyataan'];
+                                        break;
                                     }
                                 }
+                            }
                             ?>
                             <input type="hidden" name="id_pernyataan" value="<?= $dataDukung['id_pernyataan'] ?>">
                             <input type="text" class="form-control m-input" value="<?= htmlspecialchars($nama_pernyataan) ?>" readonly>
@@ -109,7 +109,7 @@
                             </select>
                         <?php endif; ?>
                     </div>
-                    
+
                     <!-- Deskripsi -->
                     <div class="form-group m-form__group">
                         <label for="deskripsi">Deskripsi</label>
@@ -295,74 +295,143 @@
                         }
                     });
 
-                    // Handle form validation
-                    const form = document.querySelector('form');
-                    form.addEventListener('submit', function(e) {
-                        const deskripsi = document.getElementById('deskripsi');
-                        if (!deskripsi.value.trim()) {
-                            e.preventDefault();
-                            alert('Deskripsi harus diisi');
-                            deskripsi.focus();
-                        }
-
-                        <?php if (!isset($dataDukung)): ?>
-                            const dokumen = document.getElementById('dokumen');
-                            if (!dokumen.files.length) {
-                                e.preventDefault();
-                                alert('File dokumen harus diupload');
-                                dokumen.focus();
-                            }
-                        <?php endif; ?>
-                    });
-
-                    function confirmBack(url) {
-                        if (confirm('Apakah Anda yakin ingin kembali? Perubahan yang belum disimpan akan hilang.')) {
-                            window.location.href = url;
-                        }
-                    }
-
-                    function confirmBack(backUrl) {
-                        document.getElementById('modalBackLink').href = backUrl;
-                        $('#modalBack').modal('show');
-                    }
-
                     document.addEventListener('DOMContentLoaded', function() {
+                        // Get all required elements
+                        const pelaksanaanSelect = document.getElementById('id_pelaksanaan');
                         const standarSelect = document.getElementById('id_standar');
                         const pernyataanSelect = document.getElementById('id_pernyataan');
+                        const unitInput = document.getElementById('unit-name');
 
-                        if (standarSelect) {
-                            standarSelect.addEventListener('change', function() {
-                                const standarId = this.value;
-                                pernyataanSelect.disabled = true;
-                                pernyataanSelect.innerHTML = '<option value="">Pilih Pernyataan</option>';
+                        // Initially disable standar and pernyataan selects
+                        if (!pelaksanaanSelect?.value) {
+                            standarSelect.disabled = true;
+                            pernyataanSelect.disabled = true;
+                        }
 
-                                if (standarId) {
-                                    fetch('<?= site_url('audit/get-pernyataan-by-standar') ?>/' + standarId)
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Network response was not ok');
-                                            }
-                                            return response.json();
-                                        })
-                                        .then(data => {
-                                            if (data) {
-                                                data.forEach(item => {
-                                                    const option = document.createElement(
-                                                        'option');
-                                                    option.value = item.id;
-                                                    option.textContent = item.pernyataan;
-                                                    pernyataanSelect.appendChild(option);
-                                                });
-                                                pernyataanSelect.disabled = false;
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                            alert('Gagal mengambil data pernyataan');
-                                        });
+                        // Handle pelaksanaan (Kode Audit) change
+                        if (pelaksanaanSelect) {
+                            pelaksanaanSelect.addEventListener('change', function() {
+                                const pelaksanaanId = this.value;
+                                resetDropdowns();
+
+                                if (pelaksanaanId) {
+                                    // Update unit info
+                                    updatePelaksanaanInfo(pelaksanaanId);
+                                    // Get standar options
+                                    fetchStandarOptions(pelaksanaanId);
                                 }
                             });
                         }
+
+                        // Handle standar change
+                        if (standarSelect) {
+                            standarSelect.addEventListener('change', function() {
+                                const standarId = this.value;
+                                resetPernyataanDropdown();
+
+                                if (standarId) {
+                                    fetchPernyataanOptions(standarId);
+                                }
+                            });
+                        }
+
+                        // Helper Functions
+                        function resetDropdowns() {
+                            // Reset and disable standar
+                            standarSelect.innerHTML = '<option value="">Pilih Standar</option>';
+                            standarSelect.disabled = true;
+
+                            // Reset and disable pernyataan
+                            resetPernyataanDropdown();
+
+                            // Reset unit
+                            unitInput.value = '';
+                        }
+
+                        function resetPernyataanDropdown() {
+                            pernyataanSelect.innerHTML = '<option value="">Pilih Pernyataan</option>';
+                            pernyataanSelect.disabled = true;
+                        }
+
+                        function fetchStandarOptions(pelaksanaanId) {
+                            fetch(`<?= base_url('public/audit/get-standar-by-pelaksanaan') ?>/${pelaksanaanId}`)
+                                .then(response => {
+                                    if (!response.ok) throw new Error('Network response was not ok');
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    data.forEach(standar => {
+                                        const option = document.createElement('option');
+                                        option.value = standar.id;
+                                        option.textContent = standar.nama_standar;
+                                        standarSelect.appendChild(option);
+                                    });
+                                    standarSelect.disabled = false;
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Gagal mengambil data standar');
+                                });
+                        }
+
+                        function fetchPernyataanOptions(standarId) {
+                            fetch(`<?= site_url('audit/get-pernyataan-by-standar') ?>/${standarId}`)
+                                .then(response => {
+                                    if (!response.ok) throw new Error('Network response was not ok');
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data && data.length > 0) {
+                                        data.forEach(item => {
+                                            const option = document.createElement('option');
+                                            option.value = item.id;
+                                            option.textContent = item.pernyataan;
+                                            pernyataanSelect.appendChild(option);
+                                        });
+                                        pernyataanSelect.disabled = false;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Gagal mengambil data pernyataan');
+                                });
+                        }
+
+                        // Form validation
+                        const form = document.querySelector('form');
+                        form.addEventListener('submit', function(e) {
+                            const requiredFields = ['id_pelaksanaan', 'id_standar', 'id_pernyataan', 'deskripsi'];
+                            let isValid = true;
+
+                            requiredFields.forEach(fieldId => {
+                                const field = document.getElementById(fieldId);
+                                if (!field.value.trim()) {
+                                    isValid = false;
+                                    e.preventDefault();
+                                    alert(`${field.previousElementSibling.textContent} harus diisi`);
+                                    field.focus();
+                                    return false;
+                                }
+                            });
+
+                            // Validate file upload for new entries
+                            <?php if (!isset($dataDukung)): ?>
+                                const dokumen = document.getElementById('dokumen');
+                                if (!dokumen.files.length) {
+                                    isValid = false;
+                                    e.preventDefault();
+                                    alert('File dokumen harus diupload');
+                                    dokumen.focus();
+                                }
+                            <?php endif; ?>
+
+                            return isValid;
+                        });
+
+                        // Initialize for edit mode
+                        <?php if (isset($dataDukung)): ?>
+                            updatePelaksanaanInfo('<?= $dataDukung['id_pelaksanaan'] ?>');
+                        <?php endif; ?>
                     });
                 </script>
 
