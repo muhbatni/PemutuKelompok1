@@ -33,7 +33,7 @@
       </div>
       <!--begin::Form-->
       <form class="m-form m-form--fit m-form--label-align-right" method="POST" 
-      action="<?= isset($auditor) ? base_url("public/audit/auditor/input-auditor/$auditor[id]") : base_url('public/audit/auditor/input-auditor') ?>" 
+      action="<?= isset($auditor) ? base_url("public/audit/auditor/input-auditor/edit/" . $auditor['id']) : base_url('public/audit/auditor/input-auditor') ?>" 
       enctype="multipart/form-data">
         <div class="m-portlet__body">
           <!-- Field Username -->

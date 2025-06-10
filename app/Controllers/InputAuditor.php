@@ -9,7 +9,18 @@ class InputAuditor extends BaseController
     public function index()
     {
         $userModel = new UserModel();
-        $data['users'] = $userModel->findAll();
+        $db = \Config\Database::connect();
+
+        // Ambil semua id_user yang sudah digunakan di tabel auditor
+        $usedUserIds = $db->table('a_auditor')->select('id')->get()->getResultArray();
+        $usedIds = array_column($usedUserIds, 'id');
+
+        // Ambil user yang ID-nya belum digunakan
+        if (!empty($usedIds)) {
+            $data['users'] = $userModel->whereNotIn('id', $usedIds)->findAll();
+        } else {
+            $data['users'] = $userModel->findAll();
+        }
 
 
 
