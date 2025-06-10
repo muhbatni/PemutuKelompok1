@@ -50,14 +50,13 @@
             <table class="m-datatable" id="html_table" width="100%">
                 <thead>
                     <tr>
-                        <th title="field #2">Judul Audit</th>
-                        <th title="field #3">Unit</th>
+                        <th title="field #1">Judul Audit</th>
+                        <th title="field #2">Unit</th>
                         <th title="field #3">Standar</th>
                         <th title="Field #4">Pernyataan</th>
-                        <th title="Field #5">Indikator</th>
-                        <th title="Field #6">Deskripsi</th>
-                        <th title="Field #7">Dokumen</th>
-                        <th title="Field #8">Aksi</th>
+                        <th title="Field #5">Deskripsi</th>
+                        <th title="Field #6">Dokumen</th>
+                        <th title="Field #7">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,7 +66,6 @@
                         <td><?= $row['nama_unit']; ?></td>
                         <td><?= $row['nama_standar']; ?></td>
                         <td><?= $row['pernyataan']; ?></td>
-                        <td><?= $row['indikator']; ?></td>
                         <td><?= $row['deskripsi']; ?></td>
                         <td>
                             <?php 
@@ -76,9 +74,9 @@
                                 foreach($files as $file): ?>
                                     <div class="mb-2">
                                         <a href="<?= base_url('public/audit/data-dukung/download/' . $file); ?>" 
-                                        class="btn btn-sm btn-info" 
-                                        title="Download">
-                                            <i class="la la-download"></i> Download
+                                            class="btn btn-sm btn-info" 
+                                            title="<?= htmlspecialchars($file); ?>">
+                                             <i class="la la-download"></i> Download
                                         </a>
                                     </div>
                                 <?php endforeach;

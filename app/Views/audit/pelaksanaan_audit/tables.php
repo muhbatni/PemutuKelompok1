@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <div class="m-content">
   <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
@@ -26,8 +28,9 @@
             </select>
           </div>
           <div class="col-xl-4 ml-auto text-right">
-            <a id="btnTambahAudit" href="<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>"
-              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+            <a id="btnTambahAudit" href="#"
+              class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill" data-bs-toggle="modal"
+              data-bs-target="#modalTambahPelaksanaan">
               <span>
                 <i class="flaticon-add"></i>
                 <span>
@@ -78,6 +81,51 @@
   </div>
 </div>
 
+<!-- Modal Tambah Pelaksanaan Audit -->
+<div class="modal fade" id="modalTambahPelaksanaan" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="<?= base_url('public/audit/pelaksanaan-audit/simpan') ?>" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Pilih Auditor dan Unit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="id_standar_audit" id="inputIdStandarAudit" value="">
+          <input type="hidden" name="id_audit" id="inputIdAudit">
+
+          <div class="mb-3">
+            <div id="standarContainer" class="form-control" readonly></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_unit" class="form-label">Unit</label>
+            <select name="id_unit" class="form-control m-input m-input--solid" required>
+              <?php foreach ($unit_list as $unit): ?>
+                <option value="<?= $unit->id_unit ?>"><?= $unit->nama_unit ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_auditor" class="form-label">Auditor</label>
+            <select name="id_auditor" class="form-control m-input m-input--solid" required>
+              <?php foreach ($auditor_list as $auditor): ?>
+                <option value="<?= $auditor->id_auditor ?>"><?= $auditor->nama_auditor ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const filterJudulAudit = document.getElementById('filterJudulAudit');
@@ -91,10 +139,6 @@
         row.style.display = isVisible ? '' : 'none';
       });
 
-      // Update tombol Tambah
-      btnTambahAudit.href = selectedValue
-        ? "<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>/" + encodeURIComponent(selectedValue)
-        : "<?= base_url('public/audit/pelaksanaan-audit/edit'); ?>";
     }
 
     // Trigger initial filter (pakai ?id=... di URL jika ada)
@@ -116,7 +160,24 @@
         newUrl.searchParams.delete('id');
       }
       window.history.replaceState({}, '', newUrl);
+      // TAMPILKAN VALUE DI CONSOLE
+      console.log('Value dropdown Audit:', this.value);
     });
+  });
+
+  document.getElementById('btnTambahAudit').addEventListener('click', function (e) {
+    e.preventDefault();
+    // Ambil value dari dropdown Audit
+    const selectedAuditId = document.getElementById('filterJudulAudit').value;
+    // Hapus value inputIdStandarAudit setiap kali modal dibuka
+    document.getElementById('inputIdStandarAudit').value = '';
+    document.getElementById('inputIdAudit').value = selectedAuditId;
+    // (Optional) tampilkan kode audit di standarContainer
+    const selectedOption = document.getElementById('filterJudulAudit').options[document.getElementById('filterJudulAudit').selectedIndex];
+    document.getElementById('standarContainer').textContent = selectedOption.text !== 'Semua' ? selectedOption.text : '';
+    // Tampilkan modal
+    const modal = new bootstrap.Modal(document.getElementById('modalTambahPelaksanaan'));
+    modal.show();
   });
 </script>
 
