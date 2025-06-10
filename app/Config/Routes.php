@@ -98,6 +98,7 @@ $routes->group('audit', ['filter' => 'auth'], function ($routes) {
   $routes->get('temuan', [Temuan::class, 'index']);
   $routes->match(['get','post'],'input-temuan', [InputTemuan::class, 'index']);
   $routes->get('input-temuan/edit/(:num)', [InputTemuan::class, 'edit/$1']);
+  $routes->post('temuan/update-temuan-status', [Temuan::class, 'update_temuan_status']);
   $routes->post('input-temuan/update/(:num)', [InputTemuan::class, 'update/$1']);
   $routes->get('input-temuan/delete/(:num)', [InputTemuan::class, 'delete/$1']);
 });
