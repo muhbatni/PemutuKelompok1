@@ -81,7 +81,7 @@
                 <td><?= $row['rencana_perbaikan']; ?></td>
                 <td><?= $row['tanggal_perbaikan']; ?></td>
                 <td><?= $row['catatan'] ?? '-' ?></td>
-                <td class="status-cell" data-id="<?= $row['id']; ?>">
+                <td class="m-datatable__cell" data-id="<?= $row['id']; ?>">
                   <?php
                   $currentStatus = $row['status'] ?? '0'; // Default ke '0' (Belum Ditindaklanjuti)
                   if ($currentStatus === '0') {
@@ -231,12 +231,16 @@
         },
         success: function (response) {
           if (response.success) {
-            // --- Update UI on success ---
-
-            // 1. Update the badge in the "Status" column
             var row = clickedBox.closest('tr');
-            var statusCell = row.find('.status-cell');
+            console.log("Found row:", row); // Pastikan 'row' ditemukan
+            var statusCell = row.find('.m-datatable__cell');
+            console.log("Found statusCell (jQuery object):", statusCell); // Periksa objek jQuery ini
+            console.log("statusCell HTML after finding:", statusCell.html()); // Ini akan sangat membantu
+
             var statusBadgeElement = statusCell.find('.status-badge');
+            console.log("Current statusBadgeElement (jQuery object):", statusBadgeElement); // Pastikan ini bukan length:0 lagi
+            console.log("statusBadgeElement length:", statusBadgeElement.length); // Konfirmasi length
+
             var newBadgeText = '';
             var newBadgeClass = '';
 
@@ -250,14 +254,14 @@
               newBadgeText = 'Selesai';
               newBadgeClass = 'badge-success';
             }
-            console.log("Updating badge for ID:", temuanId, "to", newBadgeText, newBadgeClass);
-            console.log("Current statusBadgeElement:", statusBadgeElement);
-            console.log("statusCell HTML:", statusCell.html());
 
             if (statusBadgeElement.length === 0) {
-              // Jika tidak ketemu, update seluruh isi statusCell
+              // Logika ini akan dijalankan jika badge tidak ditemukan,
+              // Ini yang perlu diperbaiki agar badge selalu ada
+              console.log("statusBadgeElement not found. Re-creating HTML.");
               statusCell.html('<span class="badge badge-pill ' + newBadgeClass + ' px-3 py-2 status-badge" style="font-weight: 500; white-space: normal;">' + newBadgeText + '</span>');
             } else {
+              console.log("statusBadgeElement found. Updating text and class.");
               statusBadgeElement.text(newBadgeText)
                 .removeClass('badge-danger badge-warning badge-success')
                 .addClass(newBadgeClass);
