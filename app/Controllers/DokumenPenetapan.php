@@ -31,15 +31,21 @@ class DokumenPenetapan extends BaseController
       if ($file && $file->isValid() && !$file->hasMoved()) {
         $fileName = $file->getRandomName();
         $file->move(WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/', $fileName);
+        if (!is_dir($uploadPath)){
+          mkdir($uploadPath,0777,true);
+        }
+
+        $filename = $file->getRandomName();
+        $file->move($uploadPath,$fileName);
         $data['dokumen'] = $fileName;
 
         if ($id) {
           $old = $model->find($id);
-          if ($old && !empty($old->dokumen)) {
-            $oldPath = WRITEPATH . 'uploads/akreditasi/dokumen-penetapan/' . $old->dokumen;
-            if (file_exists($oldPath)) {
-              unlink($oldPath);
-            }
+          if ($old && !empty($old->dokumen)){
+            $oldPath = $uploadPath . $old->dokumen;
+              if (file_exists($oldPath)){
+                unlink($oldPath);
+              }
           }
         }
       }

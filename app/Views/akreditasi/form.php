@@ -99,17 +99,24 @@
           </div>
 
           <!-- File Upload -->
-          <div class="form-group m-form__group">
-            <label for="file_upload">Unggah Dokumen</label>
-            <input type="file" class="form-control m-input" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx">
-            <span class="m-form__help">
-              File yang diperbolehkan: PDF, DOC, DOCX 
-              <?php if (isset($editData['file']) && !empty($editData['file'])): ?>
-                (Abaikan jika tidak ingin mengganti)
-              <?php endif; ?>
-            </span>
-          </div>
-          </div>
+        <div class="form-group m-form__group">
+          <label for="file_upload">Unggah Dokumen</label>
+          <input type="file" class="form-control m-input" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx" 
+            onchange="updateFileName()">
+          <?php if (isset($uploadedFile)): ?>
+            <div class="mt-2">
+              <strong>File yang diupload: </strong> <?= $uploadedFile ?> 
+              <br>
+              <span>
+                (Abaikan jika tidak ingin mengganti file)
+              </span>
+            </div>
+          <?php endif; ?>
+          <span class="m-form__help">
+            File yang diperbolehkan: PDF, DOC, DOCX
+          </span>
+        </div>
+
 
         <!-- Submit Button -->
         <div class="m-portlet_foot m-portlet_foot--fit">
@@ -177,4 +184,11 @@
       var id = document.getElementById('editId').value;
       window.location.href = 'akreditasi?id=' + id;
   }
+
+  function updateFileName() {
+  var fileInput = document.getElementById("file_upload");
+  var fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
+  
+  fileInput.nextElementSibling.innerHTML = fileName;
+}
 </script>

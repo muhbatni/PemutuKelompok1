@@ -23,6 +23,15 @@ public function delete_by_id($id)
     return $this->delete($id); // langsung gunakan fungsi delete() dari CI Model
 }
 
+public function getAllLembaga()
+{
+    return $this->db->table('m_lembaga_akreditasi')
+        ->select('id, nama')
+        ->orderBy('nama', 'ASC')
+        ->get()
+        ->getResultArray();
+}
+
 
 }
 

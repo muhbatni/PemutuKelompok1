@@ -10,26 +10,38 @@
 
     ```
     <div class="m-portlet__body">
-      <!-- Tombol Tambah dan Pencarian -->
-      <div class="row mb-4 align-items-center">
-        <div class="col-md-6 mb-2 mb-md-0">
-          <a href=instrumen-pemutu/input class="btn btn-accent">
-            <i class="flaticon-add"></i> Input Instrumen
-          </a>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group m-form__group mb-0">
-            <div class="m-input-icon m-input-icon--left">
-              <input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
-              <span class="m-input-icon__icon m-input-icon__icon--left">
-                <span><i class="la la-search"></i></span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Tombol Tambah, Filter, dan Search -->
+<div class="row mb-4 align-items-center">
+  <!-- Tombol Input -->
+  <div class="col-md-4 mb-2 mb-md-0">
+    <a href="instrumen-pemutu/input" class="btn btn-accent">
+      <i class="flaticon-add"></i> Input Instrumen
+    </a>
+  </div>
 
-      <!-- Table -->
+  <!-- Filter Lembaga -->
+  <div class="col-md-4 mb-2 mb-md-0">
+    <select id="lembagaFilter" class="form-control m-input m-input--solid">
+      <option value="">Filter Lembaga...</option>
+      <?php foreach ($lembagas as $lembaga): ?>
+        <option value="<?= esc($lembaga['nama']) ?>"><?= esc($lembaga['nama']) ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+
+  <!-- Search -->
+  <div class="col-md-4">
+    <div class="form-group m-form__group mb-0">
+      <div class="m-input-icon m-input-icon--left">
+        <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
+        <span class="m-input-icon__icon m-input-icon__icon--left">
+          <span><i class="la la-search"></i></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Table -->
       <div class="table-responsive">
         <form method="get" action="<?= base_url('public/akreditasi/instrumen-pemutu') ?>">
           <?= csrf_field() ?>
@@ -118,13 +130,26 @@
     $('#deleteModal').modal('show');
   }
 
-  $(document).ready(function() {
-  $('#generalSearch').on('keyup', function() {
-    let value = $(this).val().toLowerCase();
-    $('#instrumenTable tbody tr').filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+ $(document).ready(function () {
+  // Fungsi filter umum
+  function filterTable(value) {
+    const searchValue = value.toLowerCase();
+    $('#instrumenTable tbody tr').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
     });
+  }
+
+  // General Search
+  $('#generalSearch').on('keyup', function () {
+    filterTable($(this).val());
+  });
+
+  // Filter dari dropdown Lembaga
+  $('#lembagaFilter').on('change', function () {
+    const selected = $(this).val();
+    filterTable(selected); // Langsung panggil filter, tanpa isi input search
   });
 });
+
 
 </script>

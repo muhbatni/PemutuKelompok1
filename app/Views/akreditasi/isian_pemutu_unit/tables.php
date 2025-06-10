@@ -75,9 +75,21 @@
             <tr>
               <td><?= $no++ ?></td>
               <td><?= esc($row['nama_unit']) ?> - <?= esc($row['tahun_ajaran']) ?></td>
-              <td><?= esc($row['jenjang_text']) ?></td>
+              <td><?= esc($row['indikator']) ?></td>
               <td><?= esc($row['isian']) ?></td>
-              <td><?= $row['status'] ? 'Lolos' : 'Tidak Lolos' ?></td>
+              <td>
+                  <?php if ($row['status']): ?>
+                    <span class="badge badge-light border border-success text-success py-1 px-2"
+                      style="min-width: 100px; display: inline-block; text-align: center;">
+                      Lolos
+                    </span>
+                  <?php else: ?>
+                    <span class="badge badge-light border border-danger text-danger py-1 px-2"
+                      style="min-width: 100px; display: inline-block; text-align: center;">
+                      Tidak Lolos
+                    </span>
+                  <?php endif; ?>
+                </td>
               <td>
                 <a href="<?= site_url('akreditasi/isian-pemutu-unit/input?id=' . $row['id']) ?>"
                   class="btn btn-sm btn-warning">Edit</a>
