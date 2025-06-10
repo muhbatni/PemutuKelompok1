@@ -11,22 +11,19 @@ class StandarAudit extends BaseController
 
   protected $AuditStandarModel;  // Menambahkan properti untuk model
   protected $PernyataanModel;   // Pastikan model PernyataanModel juga ditambahkan
-  protected $apiClient; // Menambahkan properti untuk APIClient
 
   public function __construct()
   {
     // Inisialisasi model
     $this->AuditStandarModel = new AuditStandarModel(); // Membuat instance model AuditStandar
     $this->PernyataanModel = new PernyataanModel();  // Membuat instance model PernyataanModel
-    $this->apiClient = new APIClient(); // Inisialisasi APIClient
   }
 
   public function index()
   {
 
     try {
-      $client = new APIClient();
-      $response = $client->getAllStandar();
+      $response = APIClient::getAllStandar();
 
       if (!$response || isset($response['error'])) {
         throw new \Exception('Empty or error response from API');
@@ -34,8 +31,8 @@ class StandarAudit extends BaseController
 
       $data['standar'] = $response;
 
-    } catch (\Exception $e) {
-      log_message('error', 'API Error: ' . $e->getMessage());
+    } catch (\Exception $exception) {
+      log_message('error', 'API Error: ' . $exception->getMessage());
       $data['standar'] = [];
       session()->setFlashdata('error', 'Gagal mengambil data dari API. Silahkan coba lagi.');
     }

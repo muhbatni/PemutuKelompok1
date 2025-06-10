@@ -7,7 +7,6 @@ class InputStandarAudit extends BaseController
 {
   public function index()
   {
-    $client = new APIClient();
 
     if ($this->request->getMethod() === 'POST') {
       $id_parent = $this->request->getPost('id_parent');
@@ -30,7 +29,7 @@ class InputStandarAudit extends BaseController
       }
 
       // Kirim ke APIClient
-      $response = $client->createStandarWithParams(
+      $response = APIClient::createStandarWithParams(
         $id_parent,
         $nama,
         $fileName,
@@ -56,7 +55,7 @@ class InputStandarAudit extends BaseController
     }
 
     // Ambil daftar standar yang sudah ada untuk pilihan parent
-    $data['standars'] = $client->getAllStandar();
+    $data['standars'] = APIClient::getAllStandar();
     $data['title'] = "Input Standar Audit";
     $data['isEdit'] = false;
     $data['edit'] = null;
@@ -68,14 +67,13 @@ class InputStandarAudit extends BaseController
 
   public function edit($id)
   {
-    $api = new APIClient();
-    $standar = $api->getStandar($id);
+    $standar = APIClient::getStandar($id);
 
     if (!$standar || isset($standar['error'])) {
       return redirect()->to(base_url('public/audit/input-standar'))->with('error', 'Standar tidak ditemukan!');
     }
 
-    $allStandars = $api->getAllStandar();
+    $allStandars = APIClient::getAllStandar();
 
     $data['title'] = "Edit Standar Audit";
     $data['standar'] = $standar;
@@ -90,8 +88,6 @@ class InputStandarAudit extends BaseController
 
   public function update($id)
   {
-    $api = new APIClient();
-
     $parent = $this->request->getPost('id_parent');
     $parent = ($parent === null || $parent === '') ? null : $parent;
 
@@ -122,7 +118,7 @@ class InputStandarAudit extends BaseController
       $data['dokumen'] = $dokumenName;
     }
 
-    $response = $api->updateStandar($id, $data);
+    $response = APIClient::updateStandar($id, $data);
 
     if (!$response || isset($response['error'])) {
       echo "<pre>";
