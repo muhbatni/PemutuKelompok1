@@ -9,14 +9,13 @@ use App\Libraries\APIClient;
 class StandarAudit extends BaseController
 {
 
-  protected $AuditStandarModel;  // Menambahkan properti untuk model
-  protected $PernyataanModel;   // Pastikan model PernyataanModel juga ditambahkan
+  protected $AuditStandarModel;
+  protected $PernyataanModel;
 
   public function __construct()
   {
-    // Inisialisasi model
-    $this->AuditStandarModel = new AuditStandarModel(); // Membuat instance model AuditStandar
-    $this->PernyataanModel = new PernyataanModel();  // Membuat instance model PernyataanModel
+    $this->AuditStandarModel = new AuditStandarModel();
+    $this->PernyataanModel = new PernyataanModel();
   }
 
   public function index()
@@ -69,7 +68,7 @@ class StandarAudit extends BaseController
   public function insert()
   {
     $model = new PernyataanModel();
-    $pernyataanModel = new PernyataanModel(); // <-- Ini yang benar untuk ambil data
+    $pernyataanModel = new PernyataanModel();
 
     // $data["data_standar"] = $pernyataanModel->findAll();
     $data['title'] = "Input Pernyataan Standar";
