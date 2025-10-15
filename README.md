@@ -1,3 +1,5 @@
+Website ini bertujuan untuk memenuhi tugas akhir matakuliah, bertema akreditasi perguruan tinggi - kelompok1 sebagai lembagaAkreditasi
+
 # CodeIgniter 4 Application Starter
 
 ## What is CodeIgniter?
